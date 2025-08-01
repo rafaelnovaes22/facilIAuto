@@ -1,0 +1,46 @@
+# 🧪 Dependências para Testes - FacilIAuto
+
+# Testing Framework
+pytest==7.4.4
+pytest-asyncio==0.23.2
+pytest-cov==4.1.0
+pytest-mock==3.12.0
+pytest-xdist==3.5.0
+
+# HTTP Testing
+httpx==0.26.0
+requests-mock==1.11.0
+
+# Database Testing
+pytest-postgresql==5.0.0
+sqlalchemy-utils==0.41.1
+
+# E2E Testing
+playwright==1.40.0
+pytest-playwright==0.4.3
+
+# Code Quality
+flake8==7.0.0
+black==23.12.1
+isort==5.13.2
+mypy==1.8.0
+
+# Coverage
+coverage==7.3.4
+
+# Fixtures and Factories
+factory-boy==3.3.0
+faker==21.0.0
+
+# Performance Testing
+locust==2.20.0
+
+# CI/CD
+tox==4.11.4
+
+# Security Testing
+bandit==1.7.5
+
+# Documentation Testing
+sphinx==7.2.6
+sphinx-autodoc-typehints==1.25.2

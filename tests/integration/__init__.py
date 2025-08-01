@@ -1,0 +1,1 @@
+# 🧪 Integration Tests - FacilIAuto XP
