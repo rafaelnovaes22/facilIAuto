@@ -215,8 +215,7 @@ class CarroRepository:
         # Determina uso recomendado
         uso_recomendado = self._determinar_uso_recomendado(categoria, veiculo)
         
-        # Determina disponibilidade (simula baseado no destaque)
-        disponibilidade = "imediata" if veiculo.get("destaque") else "30_dias"
+        # Veículos usados estão sempre disponíveis (removido campo disponibilidade)
         
         return {
             "id": veiculo["id"],
@@ -241,7 +240,6 @@ class CarroRepository:
             "conforto": atributos["conforto"],  # Estimado
             "economia": atributos["economia"],  # Estimado
             "performance": atributos["performance"],  # Estimado
-            "disponibilidade": disponibilidade,
             "regiao": ["SP", "RJ", "MG", "PR", "SC", "RS"],  # Default - pode ser expandido
             "fotos": veiculo.get("fotos", []),
             "descricao": veiculo.get("descricao"),

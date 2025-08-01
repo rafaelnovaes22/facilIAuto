@@ -5,6 +5,8 @@ from app.models import QuestionarioBusca, RespostaBusca
 from app.busca_inteligente import processar_busca_inteligente
 from app.database import get_carros, get_carro_by_id
 from app.enhanced_api import buscar_carros_enhanced
+from app.validation_api import router as validation_router
+from app.enhanced_brand_processor import enhanced_brand_processor
 
 app = FastAPI(
     title="FacilIAuto - Busca Inteligente de Carros",
@@ -24,6 +26,9 @@ app.add_middleware(
 # Serve arquivos estáticos (CSS, JS, imagens)
 from fastapi.staticfiles import StaticFiles
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# Incluir rotas de validação
+app.include_router(validation_router, prefix="/api", tags=["validation"])
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root():
@@ -155,53 +160,139 @@ async def read_root():
                             </div>
 
                             <form id="questionarioForm">
-                                <!-- Pergunta 1 -->
+                                <!-- Pergunta 1 - Sistema Avançado de Preferências -->
                                 <div class="question-step" id="step1">
-                                    <h4 class="mb-3"><i class="fas fa-star text-warning"></i> 1. Tem alguma marca ou modelo específico em mente?</h4>
-                                    <div class="row">
+                                    <h4 class="mb-3"><i class="fas fa-star text-warning"></i> 1. Preferências de Marca e Modelo</h4>
+                                    <p class="text-muted mb-4">💡 <strong>Dica:</strong> Quanto mais específico, melhores serão suas recomendações! Você pode escolher múltiplas opções.</p>
+                                    
+                                    <!-- Marca Principal -->
+                                    <div class="row mb-4">
                                         <div class="col-md-6 mb-3">
-                                            <label class="form-label">Marca preferida (opcional)</label>
-                                            <select class="form-select" name="marca_preferida">
-                                                <option value="sem_preferencia">Nenhuma preferência</option>
-                                                <option value="Toyota">Toyota</option>
-                                                <option value="Honda">Honda</option>
-                                                <option value="Volkswagen">Volkswagen</option>
-                                                <option value="Hyundai">Hyundai</option>
-                                                <option value="Chevrolet">Chevrolet</option>
-                                                <option value="Ford">Ford</option>
-                                                <option value="Nissan">Nissan</option>
-                                                <option value="BMW">BMW</option>
-                                                <option value="Fiat">Fiat</option>
-                                                <option value="Jeep">Jeep</option>
+                                            <label class="form-label">
+                                                <i class="fas fa-crown text-warning"></i> Marca preferida (principal)
+                                                <small class="text-muted d-block">Esta terá prioridade máxima</small>
+                                            </label>
+                                            <select class="form-select" name="marca_preferida" id="marcaPrincipal">
+                                                <option value="sem_preferencia">🤷 Não tenho preferência</option>
+                                                <option value="TOYOTA">🚗 Toyota</option>
+                                                <option value="HONDA">🚗 Honda</option>
+                                                <option value="VOLKSWAGEN">🚗 Volkswagen</option>
+                                                <option value="HYUNDAI">🚗 Hyundai</option>
+                                                <option value="CHEVROLET">🚗 Chevrolet</option>
+                                                <option value="FORD">🚗 Ford</option>
+                                                <option value="NISSAN">🚗 Nissan</option>
+                                                <option value="BMW">🚗 BMW</option>
+                                                <option value="FIAT">🚗 Fiat</option>
+                                                <option value="JEEP">🚗 Jeep</option>
+                                                <option value="RENAULT">🚗 Renault</option>
+                                                <option value="KIA">🚗 KIA</option>
+                                                <option value="MITSUBISHI">🚗 Mitsubishi</option>
+                                                <option value="PEUGEOT">🚗 Peugeot</option>
+                                                <option value="AUDI">🚗 Audi</option>
+                                                <option value="MERCEDES">🚗 Mercedes</option>
                                             </select>
                                         </div>
+                                        
                                         <div class="col-md-6 mb-3">
-                                            <label class="form-label">Modelo preferido (opcional)</label>
-                                            <input type="text" class="form-control" name="modelo_especifico" placeholder="Ex: Corolla, Civic...">
+                                            <label class="form-label">
+                                                <i class="fas fa-car text-primary"></i> Modelo específico (opcional)
+                                                <small class="text-muted d-block">Digite para ver sugestões</small>
+                                            </label>
+                                            <div class="position-relative">
+                                                <input type="text" class="form-control" name="modelo_especifico" id="modeloEspecifico" 
+                                                       placeholder="Ex: Corolla, Civic, HB20..." autocomplete="off">
+                                                <div id="modeloSuggestions" class="position-absolute w-100 bg-white border rounded-bottom shadow-sm" style="display: none; z-index: 1000; max-height: 200px; overflow-y: auto;">
+                                                    <!-- Sugestões aparecem aqui -->
+                                                </div>
+                                            </div>
+                                            <div id="modeloFeedback" class="form-text text-muted mt-1">
+                                                💡 Digite pelo menos 2 letras para ver sugestões
+                                            </div>
                                         </div>
+                                    </div>
+                                    
+                                    <!-- Marcas Alternativas -->
+                                    <div class="card border-light bg-light mb-3" id="marcasAlternativasCard" style="display: none;">
+                                        <div class="card-body">
+                                            <h6 class="card-title">
+                                                <i class="fas fa-plus-circle text-success"></i> Marcas alternativas
+                                                <small class="text-muted">(opcional - para ampliar opções)</small>
+                                            </h6>
+                                            <div class="row">
+                                                <div class="col-md-4 mb-2">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="marcas_alternativas" value="TOYOTA" id="alt_toyota">
+                                                        <label class="form-check-label" for="alt_toyota">Toyota</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 mb-2">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="marcas_alternativas" value="HONDA" id="alt_honda">
+                                                        <label class="form-check-label" for="alt_honda">Honda</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 mb-2">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="marcas_alternativas" value="VOLKSWAGEN" id="alt_vw">
+                                                        <label class="form-check-label" for="alt_vw">Volkswagen</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 mb-2">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="marcas_alternativas" value="HYUNDAI" id="alt_hyundai">
+                                                        <label class="form-check-label" for="alt_hyundai">Hyundai</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 mb-2">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="marcas_alternativas" value="CHEVROLET" id="alt_chevrolet">
+                                                        <label class="form-check-label" for="alt_chevrolet">Chevrolet</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 mb-2">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="marcas_alternativas" value="FORD" id="alt_ford">
+                                                        <label class="form-check-label" for="alt_ford">Ford</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Toggle para mostrar marcas alternativas -->
+                                    <div class="text-center mb-3">
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" id="toggleMarcasAlternativas">
+                                            <i class="fas fa-plus"></i> Adicionar marcas alternativas
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Feedback de validação -->
+                                    <div id="preferenciasFeedback" class="alert alert-info" style="display: none;">
+                                        <i class="fas fa-info-circle"></i> <strong>Verificação:</strong>
+                                        <div id="feedbackContent"></div>
                                     </div>
                                 </div>
 
                                 <!-- Pergunta 2 -->
                                 <div class="question-step d-none" id="step2">
-                                    <h4 class="mb-3"><i class="fas fa-clock text-info"></i> 2. Qual a urgência da compra?</h4>
+                                    <h4 class="mb-3"><i class="fas fa-clock text-info"></i> 2. Qual a urgência para finalizar a compra?</h4>
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-check mb-2">
-                                                <input class="form-check-input" type="radio" name="urgencia" value="imediato" required>
-                                                <label class="form-check-label">Imediata (preciso comprar agora)</label>
+                                                <input class="form-check-input" type="radio" name="urgencia" value="hoje_amanha" required>
+                                                <label class="form-check-label">Hoje ou amanhã (quero comprar agora)</label>
                                             </div>
                                             <div class="form-check mb-2">
-                                                <input class="form-check-input" type="radio" name="urgencia" value="proximo_mes">
-                                                <label class="form-check-label">Próximo mês</label>
+                                                <input class="form-check-input" type="radio" name="urgencia" value="esta_semana">
+                                                <label class="form-check-label">Até o final desta semana</label>
                                             </div>
                                             <div class="form-check mb-2">
-                                                <input class="form-check-input" type="radio" name="urgencia" value="proximos_meses">
-                                                <label class="form-check-label">Próximos meses</label>
+                                                <input class="form-check-input" type="radio" name="urgencia" value="ate_15_dias">
+                                                <label class="form-check-label">Tenho até 15 dias</label>
                                             </div>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="urgencia" value="sem_pressa">
-                                                <label class="form-check-label">Sem pressa (posso esperar)</label>
+                                                <label class="form-check-label">Sem pressa (posso pesquisar com calma)</label>
                                             </div>
                                         </div>
                                     </div>
@@ -389,6 +480,265 @@ async def read_root():
         <script>
             let currentStepNum = 1;
             const totalSteps = 8;
+            
+            // Sistema Avançado de Preferências de Marca/Modelo
+            class AdvancedBrandSystem {
+                constructor() {
+                    this.modelSuggestions = {
+                        'TOYOTA': ['Corolla', 'Hilux', 'Camry', 'Prius', 'Etios', 'Yaris', 'RAV4'],
+                        'HONDA': ['Civic', 'City', 'Fit', 'HR-V', 'Accord', 'CR-V'],
+                        'VOLKSWAGEN': ['Gol', 'Polo', 'Jetta', 'Passat', 'Tiguan', 'Fox', 'T-Cross'],
+                        'HYUNDAI': ['HB20', 'Creta', 'Tucson', 'Elantra', 'IX35', 'Azera'],
+                        'CHEVROLET': ['Onix', 'Cruze', 'Tracker', 'S10', 'Cobalt', 'Spin'],
+                        'FORD': ['Ka', 'Fiesta', 'Focus', 'Fusion', 'Ranger', 'EcoSport'],
+                        'NISSAN': ['March', 'Versa', 'Sentra', 'Kicks', 'Frontier'],
+                        'BMW': ['320i', 'X1', 'X3', '318i', 'Série 1', 'Série 3'],
+                        'FIAT': ['Uno', 'Argo', 'Toro', 'Strada', 'Palio', 'Mobi'],
+                        'JEEP': ['Compass', 'Renegade', 'Commander', 'Wrangler']
+                    };
+                    
+                    this.initializeEvents();
+                }
+                
+                initializeEvents() {
+                    // Auto-complete para modelo
+                    const modeloInput = document.getElementById('modeloEspecifico');
+                    const marcaSelect = document.getElementById('marcaPrincipal');
+                    const suggestionsDiv = document.getElementById('modeloSuggestions');
+                    
+                    if (modeloInput) {
+                        modeloInput.addEventListener('input', (e) => {
+                            this.handleModelInput(e.target.value, marcaSelect.value, suggestionsDiv);
+                        });
+                        
+                        modeloInput.addEventListener('focus', (e) => {
+                            if (e.target.value.length >= 2) {
+                                this.handleModelInput(e.target.value, marcaSelect.value, suggestionsDiv);
+                            }
+                        });
+                        
+                        modeloInput.addEventListener('blur', () => {
+                            // Delay para permitir clique nas sugestões
+                            setTimeout(() => {
+                                suggestionsDiv.style.display = 'none';
+                            }, 200);
+                        });
+                    }
+                    
+                    // Mudança de marca afeta sugestões de modelo
+                    if (marcaSelect) {
+                        marcaSelect.addEventListener('change', (e) => {
+                            this.updateModelSuggestions(e.target.value);
+                            this.updateAlternativeOptions(e.target.value);
+                        });
+                    }
+                    
+                    // Toggle marcas alternativas
+                    const toggleBtn = document.getElementById('toggleMarcasAlternativas');
+                    if (toggleBtn) {
+                        toggleBtn.addEventListener('click', () => {
+                            this.toggleAlternativeBrands();
+                        });
+                    }
+                    
+                    // Validação em tempo real
+                    document.addEventListener('change', () => {
+                        this.validatePreferences();
+                    });
+                }
+                
+                handleModelInput(value, selectedBrand, suggestionsDiv) {
+                    const feedback = document.getElementById('modeloFeedback');
+                    
+                    if (value.length < 2) {
+                        suggestionsDiv.style.display = 'none';
+                        feedback.innerHTML = '💡 Digite pelo menos 2 letras para ver sugestões';
+                        feedback.className = 'form-text text-muted mt-1';
+                        return;
+                    }
+                    
+                    const suggestions = this.getModelSuggestions(value, selectedBrand);
+                    
+                    if (suggestions.length > 0) {
+                        this.displaySuggestions(suggestions, suggestionsDiv);
+                        feedback.innerHTML = `✨ ${suggestions.length} sugestão(ões) encontrada(s)`;
+                        feedback.className = 'form-text text-success mt-1';
+                    } else {
+                        suggestionsDiv.style.display = 'none';
+                        feedback.innerHTML = '🔍 Nenhuma sugestão encontrada. Você pode digitar livremente.';
+                        feedback.className = 'form-text text-warning mt-1';
+                    }
+                }
+                
+                getModelSuggestions(input, brand) {
+                    const allSuggestions = [];
+                    const inputLower = input.toLowerCase();
+                    
+                    // Buscar na marca selecionada primeiro
+                    if (brand && brand !== 'sem_preferencia' && this.modelSuggestions[brand]) {
+                        this.modelSuggestions[brand].forEach(model => {
+                            if (model.toLowerCase().includes(inputLower)) {
+                                allSuggestions.push({ model, brand, priority: 1 });
+                            }
+                        });
+                    }
+                    
+                    // Buscar em outras marcas se não houver preferência ou poucas sugestões
+                    if (brand === 'sem_preferencia' || allSuggestions.length < 3) {
+                        Object.keys(this.modelSuggestions).forEach(brandKey => {
+                            if (brandKey !== brand) {
+                                this.modelSuggestions[brandKey].forEach(model => {
+                                    if (model.toLowerCase().includes(inputLower)) {
+                                        allSuggestions.push({ model, brand: brandKey, priority: 2 });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                    
+                    // Ordenar por prioridade e relevância
+                    return allSuggestions
+                        .sort((a, b) => a.priority - b.priority)
+                        .slice(0, 6); // Top 6 sugestões
+                }
+                
+                displaySuggestions(suggestions, container) {
+                    container.innerHTML = '';
+                    
+                    suggestions.forEach(suggestion => {
+                        const item = document.createElement('div');
+                        item.className = 'p-2 border-bottom suggestion-item';
+                        item.style.cursor = 'pointer';
+                        item.innerHTML = `
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span><strong>${suggestion.model}</strong></span>
+                                <small class="text-muted">${suggestion.brand}</small>
+                            </div>
+                        `;
+                        
+                        item.addEventListener('mouseenter', () => {
+                            item.style.backgroundColor = '#f8f9fa';
+                        });
+                        
+                        item.addEventListener('mouseleave', () => {
+                            item.style.backgroundColor = 'white';
+                        });
+                        
+                        item.addEventListener('click', () => {
+                            document.getElementById('modeloEspecifico').value = suggestion.model;
+                            container.style.display = 'none';
+                            
+                            // Se a marca não foi selecionada, sugerir
+                            const marcaSelect = document.getElementById('marcaPrincipal');
+                            if (marcaSelect.value === 'sem_preferencia') {
+                                this.suggestBrandChange(suggestion.brand);
+                            }
+                            
+                            this.validatePreferences();
+                        });
+                        
+                        container.appendChild(item);
+                    });
+                    
+                    container.style.display = 'block';
+                }
+                
+                suggestBrandChange(suggestedBrand) {
+                    const feedback = document.getElementById('preferenciasFeedback');
+                    const content = document.getElementById('feedbackContent');
+                    
+                    content.innerHTML = `
+                        <p>💡 Você escolheu um modelo da marca <strong>${suggestedBrand}</strong>.</p>
+                        <button type="button" class="btn btn-sm btn-outline-primary me-2" onclick="brandSystem.setBrand('${suggestedBrand}')">
+                            Definir ${suggestedBrand} como marca preferida
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="brandSystem.dismissSuggestion()">
+                            Manter "sem preferência"
+                        </button>
+                    `;
+                    feedback.style.display = 'block';
+                }
+                
+                setBrand(brand) {
+                    document.getElementById('marcaPrincipal').value = brand;
+                    this.updateAlternativeOptions(brand);
+                    this.dismissSuggestion();
+                }
+                
+                dismissSuggestion() {
+                    document.getElementById('preferenciasFeedback').style.display = 'none';
+                }
+                
+                toggleAlternativeBrands() {
+                    const card = document.getElementById('marcasAlternativasCard');
+                    const btn = document.getElementById('toggleMarcasAlternativas');
+                    
+                    if (card.style.display === 'none') {
+                        card.style.display = 'block';
+                        btn.innerHTML = '<i class="fas fa-minus"></i> Ocultar marcas alternativas';
+                    } else {
+                        card.style.display = 'none';
+                        btn.innerHTML = '<i class="fas fa-plus"></i> Adicionar marcas alternativas';
+                        // Limpar seleções
+                        const checkboxes = card.querySelectorAll('input[type="checkbox"]');
+                        checkboxes.forEach(cb => cb.checked = false);
+                    }
+                }
+                
+                updateAlternativeOptions(selectedBrand) {
+                    const checkboxes = document.querySelectorAll('input[name="marcas_alternativas"]');
+                    checkboxes.forEach(checkbox => {
+                        // Desabilitar a marca principal nas alternativas
+                        if (checkbox.value === selectedBrand) {
+                            checkbox.disabled = true;
+                            checkbox.checked = false;
+                            checkbox.parentElement.style.opacity = '0.5';
+                        } else {
+                            checkbox.disabled = false;
+                            checkbox.parentElement.style.opacity = '1';
+                        }
+                    });
+                }
+                
+                updateModelSuggestions(brand) {
+                    const modeloInput = document.getElementById('modeloEspecifico');
+                    const feedback = document.getElementById('modeloFeedback');
+                    
+                    if (brand && brand !== 'sem_preferencia' && this.modelSuggestions[brand]) {
+                        feedback.innerHTML = `💡 Digite para ver modelos populares da ${brand}`;
+                        feedback.className = 'form-text text-info mt-1';
+                    } else {
+                        feedback.innerHTML = '💡 Digite pelo menos 2 letras para ver sugestões';
+                        feedback.className = 'form-text text-muted mt-1';
+                    }
+                }
+                
+                validatePreferences() {
+                    const marca = document.getElementById('marcaPrincipal').value;
+                    const modelo = document.getElementById('modeloEspecifico').value;
+                    const alternativas = Array.from(document.querySelectorAll('input[name="marcas_alternativas"]:checked')).map(cb => cb.value);
+                    
+                    // Validação básica - mais validações serão feitas no backend
+                    if (marca !== 'sem_preferencia' && modelo && this.modelSuggestions[marca]) {
+                        const isValidModel = this.modelSuggestions[marca].some(m => 
+                            m.toLowerCase() === modelo.toLowerCase()
+                        );
+                        
+                        if (!isValidModel && modelo.length > 2) {
+                            // Modelo pode não estar na lista - isso é OK, mas vamos avisar
+                            const feedback = document.getElementById('modeloFeedback');
+                            feedback.innerHTML = '⚠️ Modelo não reconhecido. Será validado internamente.';
+                            feedback.className = 'form-text text-warning mt-1';
+                        }
+                    }
+                }
+            }
+            
+            // Inicializar sistema
+            let brandSystem;
+            document.addEventListener('DOMContentLoaded', () => {
+                brandSystem = new AdvancedBrandSystem();
+            });
 
             function updateProgress() {
                 const progress = (currentStepNum / totalSteps) * 100;
@@ -467,6 +817,12 @@ async def read_root():
                     if (key === 'uso_principal') {
                         if (!data[key]) data[key] = [];
                         data[key].push(value);
+                    } else if (key === 'marcas_alternativas') {
+                        if (!data[key]) data[key] = [];
+                        data[key].push(value);
+                    } else if (key === 'modelos_alternativos') {
+                        if (!data[key]) data[key] = [];
+                        data[key].push(value);
                     } else if (key === 'criancas' || key === 'animais') {
                         data[key] = true;
                     } else if (key === 'pessoas_transportar') {
@@ -481,6 +837,10 @@ async def read_root():
                         data[key] = value || null;
                     }
                 }
+                
+                // Garantir arrays vazios para campos de múltipla seleção
+                if (!data.marcas_alternativas) data.marcas_alternativas = [];
+                if (!data.modelos_alternativos) data.modelos_alternativos = [];
                 
                 // Validação de orçamento: se um for preenchido, ambos devem ser
                 if ((data.orcamento_min !== null && data.orcamento_max === null) ||

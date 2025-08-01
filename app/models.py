@@ -2,12 +2,14 @@ from pydantic import BaseModel, field_validator
 from typing import List, Optional
 
 class QuestionarioBusca(BaseModel):
-    # 1) Preferência de marca/modelo
-    marca_preferida: str  # ou "sem_preferencia"
+    # 1) Preferência de marca/modelo (Sistema Avançado)
+    marca_preferida: str  # ou "sem_preferencia" 
+    marcas_alternativas: Optional[List[str]] = []  # múltiplas marcas com prioridade
     modelo_especifico: str  # ou "aberto_opcoes"
+    modelos_alternativos: Optional[List[str]] = []  # múltiplos modelos
     
-    # 2) Urgência
-    urgencia: str  # "imediato", "proximo_mes", "proximos_meses", "sem_pressa"
+    # 2) Urgência do Processo de Compra
+    urgencia: str  # "hoje_amanha", "esta_semana", "ate_15_dias", "sem_pressa"
     
     # 3) Região
     regiao: str  # nome da cidade/região
@@ -30,6 +32,15 @@ class QuestionarioBusca(BaseModel):
     # 8) Vamos definir sua faixa de investimento (campos opcionais)
     orcamento_min: Optional[int] = None
     orcamento_max: Optional[int] = None
+    
+    @field_validator('marcas_alternativas', 'modelos_alternativos', mode='before')
+    @classmethod
+    def validate_alternative_lists(cls, v):
+        if v is None:
+            return []
+        if isinstance(v, str):
+            return [v] if v.strip() else []
+        return v
 
 class CarroRecomendacao(BaseModel):
     id: str
