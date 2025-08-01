@@ -1,0 +1,4503 @@
+{
+  "timestamp": "2025-07-29T14:41:48.055235",
+  "statistics": {
+    "vehicles_processed": 134,
+    "successful_matches": 79,
+    "failed_matches": 55,
+    "successful_searches": 134,
+    "failed_searches": 0,
+    "total_images_found": 548,
+    "high_quality_images": 383,
+    "robustcar_vehicles_found": 72
+  },
+  "failed_searches": [],
+  "scraped_images": {
+    "cmcp3swx4000lut7ck435mtti": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=AUDI%0AAUDI",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=AUDI%20AUDI%202015",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=AUDI%20AUDI",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp3swx6000nut7cqrjkmk92": [
+      {
+        "url": "https://via.placeholder.com/1200x800/0066B2/FFFFFF?text=BMW%0AX1-XDRIVE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/0066B2/FFFFFF?text=BMW%20X1-XDRIVE%202015",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/0066B2/FFFFFF?text=BMW%20X1-XDRIVE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcoywqi4000rutms6e6ifjjd": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=CAOA%20CHERY%0ATIGGO%208",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=CAOA%20CHERY%20TIGGO%208%202022",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=CAOA%20CHERY%20TIGGO%208",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcoyod3a000rut6caeudvlqe": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=CAOA%20CHERY%0ATIGGO%208",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=CAOA%20CHERY%20TIGGO%208%202022",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=CAOA%20CHERY%20TIGGO%208",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp3j1al0007ut180wb042j1": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=CAOA-CHERY%0ATIGGO",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=CAOA-CHERY%20TIGGO%202021",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=CAOA-CHERY%20TIGGO",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp3swy2001aut7cwlzbjaxw": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6812890_0_P_d8e9aee07f.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6812890_4_P_0e49d65cde.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6812890_5_P_9a0ed6344a.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6812890_0_P_9b86c41939.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6812890_0_P_0bbe661f73.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swxx0016ut7cnixtpowf": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7095820_5_P_50c8cf89e1.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7095820_2_B_bd1cbed73e.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7095820_7_P_e0a70f31f0.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7095820_2_P_0279d62b9d.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7095820_7_P_6d22e28d93.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swxm000yut7c0f4mo486": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7094035_5_P_2e30764c4c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7094035_5_P_ce0736b68b.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7094035_9_B_565d7c0fc3.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7094035_5_P_d1f3a69bc8.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7094035_1_P_b81634b74c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swy8001eut7cyk4actag": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6985982_12_P_38e4937a4d.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6985982_16_P_19b22fd498.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6985982_5_P_b588855987.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6985982_0_P_8c9583c5a7.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6985982_3_P_fb7aabc710.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swx5000mut7cjrc4lqp9": [
+      {
+        "url": "https://via.placeholder.com/1200x800/FCC200/000000?text=CHEVROLET%0AMONTANA",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/FCC200/000000?text=CHEVROLET%20MONTANA%202016",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/FCC200/000000?text=CHEVROLET%20MONTANA",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp3swwx000fut7cuyv54dwq": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7092361_0_P_f699b9a270.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7092361_0_B_b16ca00879.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7092361_16_P_430621d7e3.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7092361_9_P_b060f76a8e.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7092361_0_P_94668f716b.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3j1at000but18o6nskr6b": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7092361_0_P_f699b9a270.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7092361_0_B_b16ca00879.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7092361_16_P_430621d7e3.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7092361_9_P_b060f76a8e.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7092361_0_P_94668f716b.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3j1a90004ut188nrt770y": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7092361_0_P_f699b9a270.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7092361_0_B_b16ca00879.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7092361_16_P_430621d7e3.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7092361_9_P_b060f76a8e.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7092361_0_P_94668f716b.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcoywqi1000mutmsddqx8gt0": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6927535_1_P_331c002d34.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6927535_1_P_7e289b3b44.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6927535_11_P_9905797f18.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6927535_11_P_f0e026bcd6.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6927535_10_P_30452526df.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcoyod37000mut6cye2cs6as": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6927535_1_P_331c002d34.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6927535_1_P_7e289b3b44.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6927535_11_P_9905797f18.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6927535_11_P_f0e026bcd6.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6927535_10_P_30452526df.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swy7001dut7cri8pc4pu": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7145807_1_B_bccd522a49.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7145807_12_P_fc47afb064.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7145807_3_P_f9776fdd11.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7145807_13_P_1f7e774bd6.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7145807_3_P_0bc6af558c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swxa000qut7c93cmapjy": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7145807_1_B_bccd522a49.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7145807_12_P_fc47afb064.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7145807_3_P_f9776fdd11.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7145807_13_P_1f7e774bd6.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7145807_3_P_0bc6af558c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3j1a10000ut18whiejfbh": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7004519_11_P_99acbd06bf.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7004519_14_P_9fc98ea236.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7004519_12_P_223dad1a6f.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7004519_11_P_2e64d6429c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7004519_8_P_654574352a.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcoyod33000iut6c8txfwayb": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7004519_11_P_99acbd06bf.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7004519_14_P_9fc98ea236.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7004519_12_P_223dad1a6f.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7004519_11_P_2e64d6429c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7004519_8_P_654574352a.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcoywqhx000iutmsnknefy0v": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7004519_11_P_99acbd06bf.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7004519_14_P_9fc98ea236.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7004519_12_P_223dad1a6f.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7004519_11_P_2e64d6429c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7004519_8_P_654574352a.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3j1ao000aut18fciphnv7": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6748597_12_P_1f2fd77aee.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6748597_3_P_86945311a1.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6748597_3_P_2a1ee257d2.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6748597_0_P_eadf7ffeb0.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6748597_0_P_704730f711.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcoywqi5000tutmsb2o1ot43": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6748597_12_P_1f2fd77aee.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6748597_3_P_86945311a1.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6748597_3_P_2a1ee257d2.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6748597_0_P_eadf7ffeb0.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6748597_0_P_704730f711.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcoyod3b000tut6cg696hw0d": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6748597_12_P_1f2fd77aee.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6748597_3_P_86945311a1.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6748597_3_P_2a1ee257d2.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6748597_0_P_eadf7ffeb0.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6748597_0_P_704730f711.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swyb001hut7cztn4yaaa": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6873939_14_P_7eb63cfd5b.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6873939_1_P_3393b32038.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6873939_4_B_94a6edf621.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6873939_0_P_f09a1254e4.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6873939_4_P_e866dbe2cc.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swwz000hut7cvap7k7hc": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=CITROEN%0AAIRCROSS",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=CITROEN%20AIRCROSS%202017",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=CITROEN%20AIRCROSS",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp3swxz0018ut7cphnd4m8w": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=CITROEN%0AC3-14",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=CITROEN%20C3-14%202011",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=CITROEN%20C3-14",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp3swxg000uut7c2s48bdcw": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=CITROEN%0AC3-90M",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=CITROEN%20C3-90M%202013",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=CITROEN%20C3-90M",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp3j1a60002ut18p40lqhuc": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949567_0_P_93e5226963.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949567_0_P_92b3a64832.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949567_12_P_4607a1d1c5.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949567_12_P_386d7bb08d.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949567_0_P_f619b4c128.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcoyod35000kut6ckdm9tdps": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949567_0_P_93e5226963.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949567_0_P_92b3a64832.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949567_12_P_4607a1d1c5.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949567_12_P_386d7bb08d.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949567_0_P_f619b4c128.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcoywqhz000kutmszhx06ehm": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949567_0_P_93e5226963.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949567_0_P_92b3a64832.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949567_12_P_4607a1d1c5.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949567_12_P_386d7bb08d.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949567_0_P_f619b4c128.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swxs0012ut7cf4pwehxh": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7044192_0_B_491978934c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7044192_0_P_491978934c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swx2000jut7csyuy11fx": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7044192_0_B_491978934c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7044192_0_P_491978934c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swxd000tut7cx9uipq5u": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/5458630_15_P_8515f58875.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/5458630_0_P_8522491a83.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/5458630_3_P_0eeb188a69.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/5458630_12_P_2f9857b961.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/5458630_15_P_36f1796705.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swxu0013ut7cewnp79kd": [
+      {
+        "url": "https://via.placeholder.com/1200x800/8B0000/FFFFFF?text=FIAT%0AIDEA",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/8B0000/FFFFFF?text=FIAT%20IDEA%202013",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/8B0000/FFFFFF?text=FIAT%20IDEA",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp3swwy000gut7ckw2jjdvk": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6988570_5_P_5327b6d3c9.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6988570_7_P_2a473d2fa7.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6988570_13_P_c4d249adc1.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6988570_8_P_bf6994fab5.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6988570_4_P_672086c12a.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swwm0006ut7ck6hkowdf": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6988570_5_P_5327b6d3c9.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6988570_7_P_2a473d2fa7.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6988570_13_P_c4d249adc1.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6988570_8_P_bf6994fab5.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6988570_4_P_672086c12a.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3j1an0009ut18idni3dw4": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6988570_5_P_5327b6d3c9.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6988570_7_P_2a473d2fa7.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6988570_13_P_c4d249adc1.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6988570_8_P_bf6994fab5.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6988570_4_P_672086c12a.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swwd0000ut7cyx5qh6x2": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7157893_12_P_d7c389a096.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7157893_0_P_b4118d4a44.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7157893_13_P_ee8736d22a.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7157893_0_P_c0b578936e.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7157893_0_P_d5b8513b98.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp31nj70001utdwtpzw82yr": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=FLEX%0AEM",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=FLEX%20EM%202022",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=FLEX%20EM",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp305nc0001ut6kvgjxhhuv": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=FLEX%0AEM",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=FLEX%20EM%202023",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=FLEX%20EM",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp305n70000ut6kd6mqxdwm": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=FLEX%0AEM",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=FLEX%20EM%202024",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=FLEX%20EM",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcoywqi6000uutmsigjyrje2": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6980865_4_P_9cf5aad52f.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6980865_19_P_3bc3920da7.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6980865_7_P_b9a5b9f514.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6980865_0_P_69b208cd36.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6980865_7_P_5483126fe6.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcoyod3b000uut6cguiv3o54": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6980865_4_P_9cf5aad52f.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6980865_19_P_3bc3920da7.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6980865_7_P_b9a5b9f514.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6980865_0_P_69b208cd36.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6980865_7_P_5483126fe6.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swxv0014ut7crt7h7sio": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6893710_15_P_4da83075a5.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6893710_15_P_8d4dd1be47.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6893710_1_P_46210c1ad8.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6893710_15_P_c063c77132.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6893710_4_P_b772282808.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swxi000wut7cg549hwd8": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6893710_15_P_4da83075a5.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6893710_15_P_8d4dd1be47.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6893710_1_P_46210c1ad8.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6893710_15_P_c063c77132.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6893710_4_P_b772282808.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swy10019ut7chb2ggygg": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6757513_0_P_9ad3e4464b.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6757513_0_B_9ad3e4464b.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swxh000vut7c41qaugj6": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6757513_0_P_9ad3e4464b.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6757513_0_B_9ad3e4464b.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swx9000put7cycyyn80a": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6195382_0_B_abc514e352.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6195382_9_P_5dde96f3b6.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6195382_2_P_7a0d2c84bc.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6195382_9_P_b1f9689526.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6195382_1_P_d4a5bc716d.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swxb000rut7c4b675zm0": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7096521_4_P_a559a70ad4.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7096521_14_B_a086d3326c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7096521_5_P_2d5fe3de13.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7096521_0_P_986730f213.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7096521_0_P_1b23a0cbff.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swwt000cut7cfzixx60i": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7096521_4_P_a559a70ad4.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7096521_14_B_a086d3326c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7096521_5_P_2d5fe3de13.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7096521_0_P_986730f213.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7096521_0_P_1b23a0cbff.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swxr0011ut7cn6eiyclv": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7042692_0_B_4b404667ba.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7042692_3_P_d6a4cd229a.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7042692_3_P_0b0f608701.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7042692_3_P_eb62d60e52.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7042692_0_P_9a3ebeb4f9.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swxw0015ut7cliyh1es4": [
+      {
+        "url": "https://via.placeholder.com/1200x800/E60012/FFFFFF?text=HONDA%0AFIT",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/E60012/FFFFFF?text=HONDA%20FIT%202013",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/E60012/FFFFFF?text=HONDA%20FIT",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp3swwg0002ut7cu7teqy1w": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6880000_15_P_33578b7870.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6880000_5_B_289bfcd904.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6880000_12_P_efca199929.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6880000_12_P_dabc04ac4e.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6880000_7_P_9432cc9ecc.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swwn0007ut7cgn04q79y": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6980920_1_P_af287e2854.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6980920_12_P_67ffc99301.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6980920_15_P_b68e5d0a3b.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6980920_1_P_d6d3258fc3.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6980920_1_P_84189e2f92.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swxc000sut7ch56od62q": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7061843_10_B_597730eb42.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7061843_7_P_4ae3bfced4.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7061843_0_P_c5cff39c4c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7061843_1_P_3511f103c7.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7061843_12_P_b06e778aa0.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swwr000aut7cn89de4sq": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7061843_10_B_597730eb42.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7061843_7_P_4ae3bfced4.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7061843_0_P_c5cff39c4c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7061843_1_P_3511f103c7.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7061843_12_P_b06e778aa0.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp33fi50004utu0ssnfvbix": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7061843_10_B_597730eb42.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7061843_7_P_4ae3bfced4.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7061843_0_P_c5cff39c4c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7061843_1_P_3511f103c7.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7061843_12_P_b06e778aa0.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp33fi70006utu04fulej67": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7061843_10_B_597730eb42.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7061843_7_P_4ae3bfced4.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7061843_0_P_c5cff39c4c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7061843_1_P_3511f103c7.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7061843_12_P_b06e778aa0.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3j1a40001ut18e1oz16k0": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7109604_0_P_9d2fa846f9.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7109604_3_P_5260ecde42.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7109604_3_P_fb6afd40e0.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7109604_10_P_2ee96d6f20.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7109604_18_P_891eb5309c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcoywqhy000jutmsvhvrcxpr": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7109604_0_P_9d2fa846f9.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7109604_3_P_5260ecde42.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7109604_3_P_fb6afd40e0.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7109604_10_P_2ee96d6f20.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7109604_18_P_891eb5309c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcoyod35000jut6chg5cq5gf": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7109604_0_P_9d2fa846f9.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7109604_3_P_5260ecde42.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7109604_3_P_fb6afd40e0.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7109604_10_P_2ee96d6f20.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7109604_18_P_891eb5309c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp33fhx0000utu0x0oep7ny": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7109604_0_P_9d2fa846f9.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7109604_3_P_5260ecde42.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7109604_3_P_fb6afd40e0.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7109604_10_P_2ee96d6f20.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7109604_18_P_891eb5309c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swxn000zut7ctotkqfxx": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7093997_6_P_1d2f5d4e02.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7093997_9_P_4649b77c74.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7093997_10_P_6a045fdd4d.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7093997_6_P_c800c644d0.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7093997_1_P_9308d18f21.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swxk000xut7c3qhg4s5m": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6912839_3_P_d8353da6ab.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6912839_10_P_0b9dd1638e.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6912839_3_P_9f54f49dc0.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6912839_18_P_d5c01b3f2c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6912839_20_P_9c0d2308cf.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp31niz0000utdwyw59buje": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=INDEFINIDO%0AINDEFINIDO",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=INDEFINIDO%20INDEFINIDO%202025",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=INDEFINIDO%20INDEFINIDO",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp3swy9001fut7c8npkmbzm": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7096604_18_P_15b04c9e48.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7096604_1_P_7ccf087c07.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7096604_18_P_a72a133e3b.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7096604_11_P_c766bdc951.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7096604_6_P_69618831fc.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3j1am0008ut18tszldk33": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6908089_3_P_a244ddf46a.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6908089_0_P_cb85120015.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6908089_2_P_7353d50e65.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6908089_3_P_61f0f147b3.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6908089_5_P_6c6c3f6a15.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcoyod3a000sut6c34evuk8n": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6908089_3_P_a244ddf46a.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6908089_0_P_cb85120015.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6908089_2_P_7353d50e65.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6908089_3_P_61f0f147b3.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6908089_5_P_6c6c3f6a15.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcoywqi4000sutms80g9vkur": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6908089_3_P_a244ddf46a.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6908089_0_P_cb85120015.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6908089_2_P_7353d50e65.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6908089_3_P_61f0f147b3.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6908089_5_P_6c6c3f6a15.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swws000but7cjsi6gypf": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=LAND-ROVER%0ARANGE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=LAND-ROVER%20RANGE%202018",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=LAND-ROVER%20RANGE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp3swxy0017ut7cmabm16lf": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6943922_9_P_5e06a5985c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6943922_9_P_9a9f85b203.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6943922_5_P_885e23059b.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6943922_5_P_1f48435858.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6943922_3_P_dda8442454.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swwu000dut7cz63z2lka": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6943922_9_P_5e06a5985c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6943922_9_P_9a9f85b203.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6943922_5_P_885e23059b.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6943922_5_P_1f48435858.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6943922_3_P_dda8442454.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swy6001cut7cncr0hmu1": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7096128_0_P_f81b99d809.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7096128_10_P_556dc9d162.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7096128_15_P_ba96522a3f.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7096128_6_P_d855389f35.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7096128_0_P_fe1b547fd5.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3j1ag0006ut18v00zzafh": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7076876_14_P_de5ed212b1.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7076876_1_P_0d8819634e.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7076876_1_P_fa7e1de0e9.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7076876_6_P_aa34bb03b9.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7076876_6_P_1358b92798.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcoywqi3000qutms0a2abysn": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7076876_14_P_de5ed212b1.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7076876_1_P_0d8819634e.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7076876_1_P_fa7e1de0e9.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7076876_6_P_aa34bb03b9.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7076876_6_P_1358b92798.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcoyod39000qut6cr78nqojh": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7076876_14_P_de5ed212b1.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7076876_1_P_0d8819634e.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7076876_1_P_fa7e1de0e9.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7076876_6_P_aa34bb03b9.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7076876_6_P_1358b92798.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swx3000kut7c3q6txpdo": [
+      {
+        "url": "https://via.placeholder.com/1200x800/C3002F/FFFFFF?text=NISSAN%0AVERSA",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/C3002F/FFFFFF?text=NISSAN%20VERSA%202015",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/C3002F/FFFFFF?text=NISSAN%20VERSA",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp33fi20002utu08gtgce73": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6869084_0_P_b728497d33.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6869084_14_P_e7279ffb52.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6869084_4_P_b208319df8.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6869084_0_P_02857b7d26.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6869084_0_P_1f4b0d0c19.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcoywqi1000nutmsacakp71b": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6869084_0_P_b728497d33.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6869084_14_P_e7279ffb52.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6869084_4_P_b208319df8.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6869084_0_P_02857b7d26.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6869084_0_P_1f4b0d0c19.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcoyod37000nut6cy3yvxiet": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6869084_0_P_b728497d33.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6869084_14_P_e7279ffb52.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6869084_4_P_b208319df8.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6869084_0_P_02857b7d26.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6869084_0_P_1f4b0d0c19.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3j1af0005ut18wddg72me": [
+      {
+        "url": "https://via.placeholder.com/1200x800/FFCC00/000000?text=RENAULT%0AKWID",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/FFCC00/000000?text=RENAULT%20KWID%202022",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/FFCC00/000000?text=RENAULT%20KWID",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcoywqi3000putmsw38gwred": [
+      {
+        "url": "https://via.placeholder.com/1200x800/FFCC00/000000?text=RENAULT%0AKWID",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/FFCC00/000000?text=RENAULT%20KWID%202023",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/FFCC00/000000?text=RENAULT%20KWID",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcoyod39000put6cf2tmyw01": [
+      {
+        "url": "https://via.placeholder.com/1200x800/FFCC00/000000?text=RENAULT%0AKWID",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/FFCC00/000000?text=RENAULT%20KWID%202023",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/FFCC00/000000?text=RENAULT%20KWID",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp33fi60005utu023ndp5xt": [
+      {
+        "url": "https://via.placeholder.com/1200x800/FFCC00/000000?text=RENAULT%0AKWID",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/FFCC00/000000?text=RENAULT%20KWID%202025",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/FFCC00/000000?text=RENAULT%20KWID",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp3swx0000iut7c6897hzk1": [
+      {
+        "url": "https://via.placeholder.com/1200x800/FFCC00/000000?text=RENAULT%0ASANDERO",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/FFCC00/000000?text=RENAULT%20SANDERO%202016",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/FFCC00/000000?text=RENAULT%20SANDERO",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzra000gutsc80cnrvw8": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%206248",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzqv0009utsc75roia2a": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%206728",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzqd0003utscfjoz2rxu": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%206729",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzqx000autscr8psubmy": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%206748",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzqu0008utscd9xjtue4": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%206773",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzrf000jutscjx5y34ui": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%206795",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzqj0006utsczstwhy0l": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%206812",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzqz000butsc5egypl5m": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%206844",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzqh0005utscum7k1w6j": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%206848",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzro000lutscchh1nv64": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%206860",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzq90001utsc4cp1d9nf": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%206873",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzsa000sutsct6psl2jd": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%206922",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzrd000iutscul9a1but": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%206927",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzrb000hutscvmh3xfoi": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%206936",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzs9000rutsc6gqjpmv6": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%206939",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzq40000utscyljdcf3x": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%206949",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzqf0004utsc7q4pnpcz": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%206956",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzrm000kutscaeoo5dvk": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%206980",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzqs0007utscmsss452z": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%206981",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzrw000nutsczmu9hmkj": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%206985",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzrp000mutscglcl5f33": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%206991",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzr7000futscaw3pql8m": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%207004",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzsb000tutscmr7bechz": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%207061",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzr3000dutsc8w8p402a": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%207091",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzr6000eutscxv73iqo7": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%207092",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzs3000outsc0o5deruy": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%207094",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzr2000cutscrtk0lrul": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%207095",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzqb0002utsc5xyboxfg": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%207096",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp2gzse000vutsceo3d242i": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=RESULTADO%0ADE",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=RESULTADO%20DE%207104",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=RESULTADO%20DE",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp3swya001gut7ceruzn03w": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6939688_3_P_5aafcdd8d9.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6939688_12_P_6a2653e78b.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6939688_3_P_00496b5949.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6939688_12_P_94628db665.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6939688_12_P_65dc98f14a.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swwq0009ut7ckpr38ukp": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7055012_8_P_c7f3695d08.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7055012_1_B_7ae95c9121.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7055012_4_P_695c493150.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7055012_8_P_e4422c4a89.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7055012_1_P_547f697a7b.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swy4001but7cszeuaek7": [
+      {
+        "url": "https://via.placeholder.com/1200x800/CC0000/FFFFFF?text=TOYOTA%0ARAV4",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/CC0000/FFFFFF?text=TOYOTA%20RAV4%202011",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/CC0000/FFFFFF?text=TOYOTA%20RAV4",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp3swxq0010ut7c3lagoq8f": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7175417_3_P_4edb4ae95e.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7175417_1_P_c9f3792982.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7175417_10_P_9260dcb6c3.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7175417_1_P_33c7fc88c4.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7175417_6_P_d13c699e3f.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swwh0003ut7cdcshs6et": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7167691_6_P_07f3fe8456.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7167691_14_P_2197fb0d5b.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7167691_5_P_fd00a5be15.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7167691_6_P_24d22e2f01.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/7167691_0_P_032192e036.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swwl0005ut7csppybx79": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6922962_11_P_148af4a9a4.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6922962_11_B_148af4a9a4.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6922962_4_P_1226153f8b.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6922962_13_P_1631ee8890.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6922962_4_P_be587556d0.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp33fi30003utu0halqxt2x": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6773916_2_P_4b58873387.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6773916_2_P_f939dedde0.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6773916_13_P_65d6a3d042.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6773916_6_P_53a6da1c2f.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6773916_13_P_fa6fb3b46a.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swww000eut7cthydf4sn": [
+      {
+        "url": "https://via.placeholder.com/1200x800/1E3A8A/FFFFFF?text=VOLKSWAGEN%0ANOVO",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/1E3A8A/FFFFFF?text=VOLKSWAGEN%20NOVO%202017",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/1E3A8A/FFFFFF?text=VOLKSWAGEN%20NOVO",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcp3j1a70003ut1854q2ja3x": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949732_1_P_77caca6c39.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949732_16_P_7b724de59d.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949732_0_P_e4e1bf5a9c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949732_1_P_85d2f09196.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949732_13_P_fd9e274109.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcoywqi0000lutmsi6yj9gan": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949732_1_P_77caca6c39.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949732_16_P_7b724de59d.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949732_0_P_e4e1bf5a9c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949732_1_P_85d2f09196.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949732_13_P_fd9e274109.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcoyod36000lut6c6rkacn3j": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949732_1_P_77caca6c39.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949732_16_P_7b724de59d.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949732_0_P_e4e1bf5a9c.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949732_1_P_85d2f09196.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6949732_13_P_fd9e274109.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swwj0004ut7cwhkl5mlr": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6848743_9_P_d7893615f8.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6848743_10_P_993850bad7.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6848743_0_P_e59da9c802.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6848743_1_P_286801e40f.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6848743_4_P_07cc3ad89d.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp33fi00001utu0ycaehyt3": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6848743_9_P_d7893615f8.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6848743_10_P_993850bad7.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6848743_0_P_e59da9c802.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6848743_1_P_286801e40f.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6848743_4_P_07cc3ad89d.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcoywqi2000outmsvz6cqu4u": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6848743_9_P_d7893615f8.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6848743_10_P_993850bad7.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6848743_0_P_e59da9c802.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6848743_1_P_286801e40f.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6848743_4_P_07cc3ad89d.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcoyod38000out6cuha428c4": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6848743_9_P_d7893615f8.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6848743_10_P_993850bad7.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6848743_0_P_e59da9c802.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6848743_1_P_286801e40f.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6848743_4_P_07cc3ad89d.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swx7000out7c0oc4uzue": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6773916_2_P_4b58873387.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6773916_2_P_f939dedde0.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6773916_13_P_65d6a3d042.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6773916_6_P_53a6da1c2f.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6773916_13_P_fa6fb3b46a.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swwo0008ut7cxkcj8f53": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6980770_5_B_4ef52d87ec.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6980770_4_P_cd30e28a91.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6980770_3_P_2def86fab0.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6980770_6_P_3ced9d449f.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6980770_0_P_d4c1a7873e.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcp3swwe0001ut7clpbbgzdv": [
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6795768_18_P_95a487eff6.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6795768_4_P_d8cf1d2386.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6795768_16_P_4722d3c44e.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6795768_1_P_b98edb3f4a.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      },
+      {
+        "url": "https://s3.carro57.com.br/FC/6757/6795768_0_P_6aa44f2ed5.jpeg",
+        "source": "robustcar",
+        "width": 800,
+        "height": 600,
+        "quality_score": 90,
+        "content_type": "image/jpeg"
+      }
+    ],
+    "cmcoywqi6000vutmsxj1sc636": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=YAMAHA%0ANEO",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=YAMAHA%20NEO%202021",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=YAMAHA%20NEO",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ],
+    "cmcoyod3c000vut6cww5fukkb": [
+      {
+        "url": "https://via.placeholder.com/1200x800/666666/FFFFFF?text=YAMAHA%0ANEO",
+        "source": "placeholder",
+        "width": 1200,
+        "height": 800,
+        "quality_score": 70
+      },
+      {
+        "url": "https://via.placeholder.com/1024x768/666666/FFFFFF?text=YAMAHA%20NEO%202021",
+        "source": "placeholder",
+        "width": 1024,
+        "height": 768,
+        "quality_score": 65
+      },
+      {
+        "url": "https://via.placeholder.com/800x600/666666/FFFFFF?text=YAMAHA%20NEO",
+        "source": "placeholder",
+        "width": 800,
+        "height": 600,
+        "quality_score": 60
+      }
+    ]
+  }
+}

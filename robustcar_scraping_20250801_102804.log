@@ -1,0 +1,12 @@
+2025-08-01 10:28:04,367 - INFO - Buscando veículos disponíveis no RobustCar...
+2025-08-01 10:28:04,367 - INFO - Buscando página 1: https://www.robustcar.com.br/busca//pag/1/ordem/ano-desc/
+2025-08-01 10:28:05,863 - INFO - Encontrados 19 veículos na página 1
+2025-08-01 10:28:06,863 - INFO - Buscando página 2: https://www.robustcar.com.br/busca//pag/2/ordem/ano-desc/
+2025-08-01 10:28:07,633 - INFO - Encontrados 19 veículos na página 2
+2025-08-01 10:28:08,638 - INFO - Buscando página 3: https://www.robustcar.com.br/busca//pag/3/ordem/ano-desc/
+2025-08-01 10:28:09,241 - INFO - Encontrados 18 veículos na página 3
+2025-08-01 10:28:10,245 - INFO - Buscando página 4: https://www.robustcar.com.br/busca//pag/4/ordem/ano-desc/
+2025-08-01 10:28:10,834 - INFO - Encontrados 14 veículos na página 4
+2025-08-01 10:28:11,837 - INFO - Buscando página 5: https://www.robustcar.com.br/busca//pag/5/ordem/ano-desc/
+2025-08-01 10:28:12,499 - INFO - Nenhum veículo encontrado na página 5
+2025-08-01 10:28:12,500 - INFO - Total: 66 veículos únicos encontrados no RobustCar

@@ -1,0 +1,2032 @@
+[
+  {
+    "id": "cmcoyod33000iut6c8txfwayb",
+    "marca": "CHEVROLET",
+    "modelo": "SPIN",
+    "fotos": [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoyod35000jut6chg5cq5gf",
+    "marca": "HYUNDAI",
+    "modelo": "HB20S",
+    "fotos": [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoyod35000kut6ckdm9tdps",
+    "marca": "FIAT",
+    "modelo": "CRONOS",
+    "fotos": [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoyod36000lut6c6rkacn3j",
+    "marca": "VOLKSWAGEN",
+    "modelo": "POLO",
+    "fotos": [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoyod37000mut6cye2cs6as",
+    "marca": "CHEVROLET",
+    "modelo": "ONIX PLUS",
+    "fotos": [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoyod37000nut6cy3yvxiet",
+    "marca": "RENAULT",
+    "modelo": "DUSTER",
+    "fotos": [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoyod38000out6cuha428c4",
+    "marca": "VOLKSWAGEN",
+    "modelo": "T-CROSS",
+    "fotos": [
+      "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoyod39000put6cf2tmyw01",
+    "marca": "RENAULT",
+    "modelo": "KWID",
+    "fotos": [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoyod39000qut6cr78nqojh",
+    "marca": "NISSAN",
+    "modelo": "FRONTIER",
+    "fotos": [
+      "https://images.unsplash.com/photo-1563720223185-11003d516935?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoyod3a000rut6caeudvlqe",
+    "marca": "CAOA CHERY",
+    "modelo": "TIGGO 8",
+    "fotos": [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoyod3a000sut6c34evuk8n",
+    "marca": "KIA",
+    "modelo": "STONIC",
+    "fotos": [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoyod3b000tut6cg696hw0d",
+    "marca": "CHEVROLET",
+    "modelo": "TRACKER",
+    "fotos": [
+      "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoyod3b000uut6cguiv3o54",
+    "marca": "FORD",
+    "modelo": "BRONCO",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6980865_3_B_62bc49ff8a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980865_3_P_62bc49ff8a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980865_19_P_4bacf75eba.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980865_3_P_99193a0c6f.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980865_0_P_1d08c3a9cf.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980865_16_P_d14842e8d6.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980865_3_P_8f23e7bf04.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980865_3_P_590295540c.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980865_16_P_0b73916a02.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980865_3_P_9517ab2e7f.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoyod3c000vut6cww5fukkb",
+    "marca": "YAMAHA",
+    "modelo": "NEO",
+    "fotos": [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoywqhx000iutmsnknefy0v",
+    "marca": "CHEVROLET",
+    "modelo": "SPIN",
+    "fotos": [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoywqhy000jutmsvhvrcxpr",
+    "marca": "HYUNDAI",
+    "modelo": "HB20S",
+    "fotos": [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoywqhz000kutmszhx06ehm",
+    "marca": "FIAT",
+    "modelo": "CRONOS",
+    "fotos": [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoywqi0000lutmsi6yj9gan",
+    "marca": "VOLKSWAGEN",
+    "modelo": "POLO",
+    "fotos": [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoywqi1000mutmsddqx8gt0",
+    "marca": "CHEVROLET",
+    "modelo": "ONIX PLUS",
+    "fotos": [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoywqi1000nutmsacakp71b",
+    "marca": "RENAULT",
+    "modelo": "DUSTER",
+    "fotos": [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoywqi2000outmsvz6cqu4u",
+    "marca": "VOLKSWAGEN",
+    "modelo": "T-CROSS",
+    "fotos": [
+      "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoywqi3000putmsw38gwred",
+    "marca": "RENAULT",
+    "modelo": "KWID",
+    "fotos": [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoywqi3000qutms0a2abysn",
+    "marca": "NISSAN",
+    "modelo": "FRONTIER",
+    "fotos": [
+      "https://images.unsplash.com/photo-1563720223185-11003d516935?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoywqi4000rutms6e6ifjjd",
+    "marca": "CAOA CHERY",
+    "modelo": "TIGGO 8",
+    "fotos": [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoywqi4000sutms80g9vkur",
+    "marca": "KIA",
+    "modelo": "STONIC",
+    "fotos": [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoywqi5000tutmsb2o1ot43",
+    "marca": "CHEVROLET",
+    "modelo": "TRACKER",
+    "fotos": [
+      "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoywqi6000uutmsigjyrje2",
+    "marca": "FORD",
+    "modelo": "BRONCO",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6980865_3_B_62bc49ff8a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980865_3_P_62bc49ff8a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980865_19_P_4bacf75eba.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980865_3_P_99193a0c6f.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980865_0_P_1d08c3a9cf.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980865_16_P_d14842e8d6.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980865_3_P_8f23e7bf04.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980865_3_P_590295540c.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980865_16_P_0b73916a02.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980865_3_P_9517ab2e7f.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcoywqi6000vutmsxj1sc636",
+    "marca": "YAMAHA",
+    "modelo": "NEO",
+    "fotos": [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzq40000utscyljdcf3x",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6949754_3_M_49640e7427.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzq90001utsc4cp1d9nf",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6873939_4_M_94a6edf621.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzqb0002utsc5xyboxfg",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7096604_3_M_e8180c3847.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzqd0003utscfjoz2rxu",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6729061_0_M_9ef54ccc2f.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzqf0004utsc7q4pnpcz",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6956342_6_M_cdc2a09e78.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzqh0005utscum7k1w6j",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6848743_15_M_7b37864a62.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzqj0006utsczstwhy0l",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6812890_1_M_de529afdee.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzqs0007utscmsss452z",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzqu0008utscd9xjtue4",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6773916_13_M_ce35ea771d.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzqv0009utsc75roia2a",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6728820_13_M_38313959c1.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzqx000autscr8psubmy",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6748597_12_M_1f2fd77aee.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzqz000butsc5egypl5m",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6844659_1_M_e742760f82.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzr2000cutscrtk0lrul",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7095820_2_M_bd1cbed73e.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzr3000dutsc8w8p402a",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7091946_11_M_5befe577cc.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzr6000eutscxv73iqo7",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7092324_3_M_629aee80f8.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzr7000futscaw3pql8m",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7004519_14_M_fe5f66a8b6.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzra000gutsc80cnrvw8",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6248716_1_M_63b405e903.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzrb000hutscvmh3xfoi",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6936084_9_M_01b60e6354.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzrd000iutscul9a1but",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6927535_1_M_7e289b3b44.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzrf000jutscjx5y34ui",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6795768_9_M_80af6fd904.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzrm000kutscaeoo5dvk",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6980576_1_M_9d099823ef.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzro000lutscchh1nv64",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6860367_14_M_3dfc25fdf8.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzrp000mutscglcl5f33",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7076876_1_M_c0fc1911ff.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6991343_0_M_9955584145.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzrw000nutsczmu9hmkj",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6985982_5_M_d7bec44f35.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzs3000outsc0o5deruy",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7094035_9_M_565d7c0fc3.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzs6000putscxtvmck20",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7109604_15_M_a6a20fd59f.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7016990_15_M_f0d8e22361.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6871356_9_M_5abc640f26.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980920_1_M_0cf104d133.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7090325_10_M_0756446a62.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzs7000qutscjtdaxnrh",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6869084_4_M_b208319df8.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6716582_10_M_f74a9b1e2a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7090340_6_M_4cf86aa325.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzs9000rutsc6gqjpmv6",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7055012_1_M_7ae95c9121.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7017121_1_M_3dab519747.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6939688_0_M_019d0c6b75.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzsa000sutsct6psl2jd",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6922962_11_M_148af4a9a4.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzsb000tutscmr7bechz",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7061276_1_M_d1e8b23bbe.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzsc000uutsc71h66jsa",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6980865_3_M_62bc49ff8a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6195382_0_M_abc514e352.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6757513_0_M_9ad3e4464b.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6893710_9_M_056b035211.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6929280_11_M_892c5ccf87.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp2gzse000vutsceo3d242i",
+    "marca": "RESULTADO",
+    "modelo": "DE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6248716_1_M_63b405e903.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6474259_0_M_fca45b2dc1.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7104561_0_M_74ce30e1c8.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp305n70000ut6kd6mqxdwm",
+    "marca": "FLEX",
+    "modelo": "EM",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6869084_4_B_b208319df8.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_4_P_b208319df8.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_12_P_a56bb4005a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_7_P_10d38f7ab3.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_16_P_f08c5a4fc1.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_4_P_2c797405f0.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_14_P_e7279ffb52.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_16_P_ad2131ae74.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_7_P_db409d7053.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_7_P_d0f7c4945f.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp305nc0001ut6kvgjxhhuv",
+    "marca": "FLEX",
+    "modelo": "EM",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6869084_4_B_b208319df8.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_4_P_b208319df8.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_12_P_a56bb4005a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_7_P_10d38f7ab3.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_16_P_f08c5a4fc1.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_4_P_2c797405f0.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_14_P_e7279ffb52.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_16_P_ad2131ae74.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_7_P_db409d7053.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_7_P_d0f7c4945f.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp31niz0000utdwyw59buje",
+    "marca": "INDEFINIDO",
+    "modelo": "INDEFINIDO",
+    "fotos": [
+      "https://robustcar.com.br/img/anuncios/0a.jpg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp31nj70001utdwtpzw82yr",
+    "marca": "FLEX",
+    "modelo": "EM",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6871356_9_B_5abc640f26.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6871356_9_P_5abc640f26.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6871356_5_P_eca202a603.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6871356_1_P_df8587e0cb.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6871356_6_P_70f8e22397.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6871356_9_P_70841c216e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6871356_9_P_35ee842884.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6871356_1_P_332b19fecd.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6871356_17_P_8541779657.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6871356_0_P_606e26bad1.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp33fhx0000utu0x0oep7ny",
+    "marca": "HYUNDAI",
+    "modelo": "HB20S",
+    "fotos": [
+      "https://robustcar.com.br/img/anuncios/0a.jpg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp33fi00001utu0ycaehyt3",
+    "marca": "VOLKSWAGEN",
+    "modelo": "T-CROSS",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6848743_15_B_7b37864a62.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6848743_15_P_7b37864a62.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6848743_14_P_57d026d01f.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6848743_10_P_90acf2a3cf.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6848743_0_P_57867230e9.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6848743_1_P_96d2b7a0f1.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6848743_10_P_993850bad7.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6848743_15_P_841ea66b8f.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6848743_15_P_d80c28e8a2.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6848743_0_P_659f220b42.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp33fi20002utu08gtgce73",
+    "marca": "RENAULT",
+    "modelo": "DUSTER",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6869084_4_B_b208319df8.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_4_P_b208319df8.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_12_P_a56bb4005a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_7_P_10d38f7ab3.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_16_P_f08c5a4fc1.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_4_P_2c797405f0.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_14_P_e7279ffb52.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_16_P_ad2131ae74.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_7_P_db409d7053.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6869084_7_P_d0f7c4945f.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp33fi30003utu0halqxt2x",
+    "marca": "VOLKSWAGEN",
+    "modelo": "NOVA",
+    "fotos": [
+      "https://robustcar.com.br/img/anuncios/0a.jpg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp33fi50004utu0ssnfvbix",
+    "marca": "HYUNDAI",
+    "modelo": "HB20",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6871356_9_B_5abc640f26.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6871356_9_P_5abc640f26.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6871356_5_P_eca202a603.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6871356_1_P_df8587e0cb.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6871356_6_P_70f8e22397.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6871356_9_P_70841c216e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6871356_9_P_35ee842884.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6871356_1_P_332b19fecd.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6871356_17_P_8541779657.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6871356_0_P_606e26bad1.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp33fi60005utu023ndp5xt",
+    "marca": "RENAULT",
+    "modelo": "KWID",
+    "fotos": [
+      "https://robustcar.com.br/img/anuncios/0a.jpg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp33fi70006utu04fulej67",
+    "marca": "HYUNDAI",
+    "modelo": "HB20",
+    "fotos": [
+      "https://robustcar.com.br/img/anuncios/0a.jpg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3j1a10000ut18whiejfbh",
+    "marca": "CHEVROLET",
+    "modelo": "SPIN",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7004519_14_B_fe5f66a8b6.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7004519_14_P_fe5f66a8b6.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7004519_1_P_9c033651e4.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7004519_11_P_99acbd06bf.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7004519_11_P_4d0843484e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7004519_20_P_d7fd971034.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7004519_0_P_b105f48327.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7004519_5_P_fcf5672be1.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7004519_8_P_a4e46ca7ce.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7004519_8_P_654574352a.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3j1a40001ut18e1oz16k0",
+    "marca": "HYUNDAI",
+    "modelo": "HB20S",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7109604_15_B_a6a20fd59f.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7109604_15_P_a6a20fd59f.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7109604_18_P_58abb26cc5.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7109604_0_P_012f74ac3a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7109604_3_P_fb6afd40e0.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7109604_0_P_0081d3ac4e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7109604_10_P_cce0d5775a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7109604_3_P_5260ecde42.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7109604_15_P_72c5c35405.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7109604_10_P_2ee96d6f20.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3j1a60002ut18p40lqhuc",
+    "marca": "FIAT",
+    "modelo": "CRONOS",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6949567_12_B_6aa30fbf5a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949567_12_P_6aa30fbf5a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949567_0_P_068d71ef67.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949567_12_P_007b778f1a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949567_0_P_3113aefff7.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949567_0_P_92b3a64832.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949567_12_P_5c60d453d0.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949567_0_P_93e5226963.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949567_18_P_9b7bfe6d4f.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949567_0_P_fc09ac3f25.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3j1a70003ut1854q2ja3x",
+    "marca": "VOLKSWAGEN",
+    "modelo": "POLO",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6949732_1_B_ac86cd1163.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949732_1_P_ac86cd1163.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949732_13_P_fd9e274109.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949732_4_P_da9f053179.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949732_13_P_391ccf5d55.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949732_1_P_77caca6c39.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949732_1_P_60178761e6.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949732_16_P_b2c4e90aad.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949732_1_P_3351998ec2.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949732_1_P_d0835f2040.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3j1a90004ut188nrt770y",
+    "marca": "CHEVROLET",
+    "modelo": "ONIX",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6927535_1_B_7e289b3b44.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6927535_1_P_7e289b3b44.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6927535_18_P_9d490421b2.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6927535_1_P_331c002d34.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6927535_1_P_b79c9d65ad.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6927535_1_P_da9c2c9476.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6927535_11_P_9905797f18.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6927535_15_P_349ebbf0b2.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6927535_15_P_beb2244c36.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6927535_10_P_30452526df.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3j1af0005ut18wddg72me",
+    "marca": "RENAULT",
+    "modelo": "KWID",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6716582_10_B_f74a9b1e2a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6716582_10_P_f74a9b1e2a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6716582_1_P_f72a8efe57.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6716582_3_P_c2260d699a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6716582_3_P_86c9945d6e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6716582_0_P_3bb16a7d72.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6716582_10_P_7910c1a9b2.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6716582_1_P_a7e6a587bc.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6716582_4_P_ec0584efdd.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6716582_4_P_4976ddacb1.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3j1ag0006ut18v00zzafh",
+    "marca": "NISSAN",
+    "modelo": "FRONTIER",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7076876_1_B_c0fc1911ff.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7076876_1_P_c0fc1911ff.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7076876_14_P_de5ed212b1.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7076876_1_P_b78cfe9d47.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7076876_0_P_50f55e18ad.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7076876_6_P_02f6b08c1c.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7076876_17_P_89aa7bae10.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7076876_1_P_9f62f3d880.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7076876_17_P_ad579da1cd.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7076876_7_P_e679411604.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3j1al0007ut180wb042j1",
+    "marca": "CAOA-CHERY",
+    "modelo": "TIGGO",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6956342_6_B_cdc2a09e78.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6956342_6_P_cdc2a09e78.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6956342_6_P_e39e2d3964.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6956342_14_P_9ea24877d8.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6956342_14_P_5eae5da6d0.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6956342_7_P_9959381f59.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6956342_1_P_b6d5abf338.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6956342_14_P_814bd84c38.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6956342_23_P_d89fda409e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6956342_14_P_06fa09c112.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3j1am0008ut18tszldk33",
+    "marca": "KIA",
+    "modelo": "STONIC",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6908089_6_B_40c9a2ec51.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6908089_6_P_40c9a2ec51.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6908089_3_P_9bbdf89287.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6908089_4_P_9e817d1bb9.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6908089_6_P_e521a23b4b.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6908089_6_P_eaa0db467a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6908089_6_P_11ce4a63b8.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6908089_3_P_3784146c75.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6908089_6_P_c79974f4c8.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6908089_3_P_a244ddf46a.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3j1an0009ut18idni3dw4",
+    "marca": "FIAT",
+    "modelo": "STRADA",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7100009_13_B_7b3be8651b.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7100009_13_P_7b3be8651b.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7100009_2_P_a1b96848ee.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7100009_13_P_fa987a1dd0.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7100009_11_P_27c57907b7.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7100009_7_P_a7a8e51a35.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7100009_16_P_1c2371131e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7100009_2_P_bb7df85365.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7100009_1_P_f6a3ef4154.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7100009_16_P_10ae67a315.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3j1ao000aut18fciphnv7",
+    "marca": "CHEVROLET",
+    "modelo": "TRACKER",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6748597_12_B_1f2fd77aee.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6748597_12_P_1f2fd77aee.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6748597_11_P_82af1e44f9.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6748597_3_P_15f7c790f8.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6748597_3_P_2a1ee257d2.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6748597_3_P_784f5d180f.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6748597_12_P_fbc59fa12e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6748597_14_P_3b052341ec.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6748597_0_P_1ce59bef54.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6748597_12_P_055a8f35dd.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3j1at000but18o6nskr6b",
+    "marca": "CHEVROLET",
+    "modelo": "ONIX",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6980576_1_B_9d099823ef.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980576_1_P_9d099823ef.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980576_6_P_3ac3437fc7.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980576_6_P_7201bd652f.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980576_14_P_ef8b7ccced.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980576_10_P_a53a860173.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980576_14_P_34a0618467.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980576_6_P_b0acbc9d31.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980576_14_P_27eb8b7e07.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980576_15_P_32c35ffacf.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swwd0000ut7cyx5qh6x2",
+    "marca": "FIAT",
+    "modelo": "TORO",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6949775_5_B_02b226f63e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949775_5_P_02b226f63e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949775_6_P_d99877d42e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949775_5_P_68db88d08a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949775_12_P_92e10147c7.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949775_0_P_3816ea5a3e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949775_5_P_148a66454a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949775_0_P_daced02278.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949775_0_P_a222b8527d.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949775_12_P_6d1636ba54.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swwe0001ut7clpbbgzdv",
+    "marca": "VOLVO",
+    "modelo": "XC-40",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6795768_9_B_80af6fd904.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6795768_9_P_80af6fd904.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6795768_18_P_95a487eff6.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6795768_4_P_dec627266f.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6795768_4_P_1bb430b65e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6795768_0_P_53c1048272.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6795768_4_P_00bb73bfce.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6795768_11_P_a952e9dea5.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6795768_18_P_67c443a900.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6795768_4_P_d8cf1d2386.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swwg0002ut7cu7teqy1w",
+    "marca": "HONDA",
+    "modelo": "HR-V",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6880000_5_B_289bfcd904.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6880000_5_P_289bfcd904.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6880000_0_P_6cd63bc9a5.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6880000_15_P_33578b7870.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6880000_3_P_86318bd24a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6880000_12_P_efca199929.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6880000_2_P_42ae56e459.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6880000_12_P_dabc04ac4e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6880000_7_P_9432cc9ecc.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6880000_8_P_d785925802.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swwh0003ut7cdcshs6et",
+    "marca": "VOLKSWAGEN",
+    "modelo": "GOL",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6844587_10_B_4326bc0cbb.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6844587_10_P_4326bc0cbb.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6844587_1_P_480d26527a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6844587_0_P_298fe8aae0.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6844587_5_P_100b2424ec.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6844587_0_P_f1c00c590f.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6844587_11_P_1243843746.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6844587_1_P_f7d5337e07.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6844587_14_P_0047800b32.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6844587_4_P_e93fa0eace.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swwj0004ut7cwhkl5mlr",
+    "marca": "VOLKSWAGEN",
+    "modelo": "T-CROSS",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6728651_12_B_dfe2aeb141.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6728651_12_P_dfe2aeb141.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6728651_8_P_83f86bd273.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6728651_16_P_9217135577.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6728651_2_P_0d8e0238ac.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6728651_2_P_47074502b7.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6728651_9_P_a4a326d316.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6728651_16_P_1291f65c51.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6728651_0_P_2262e2c03e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6728651_12_P_034d36174e.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swwl0005ut7csppybx79",
+    "marca": "VOLKSWAGEN",
+    "modelo": "JETTA",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6922962_11_B_148af4a9a4.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6922962_11_P_148af4a9a4.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6922962_11_P_87d80db19a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6922962_4_P_1226153f8b.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6922962_11_P_6b76925806.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6922962_14_P_87d2d78763.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6922962_20_P_c0a9b1ea3b.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6922962_20_P_73f50b4671.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6922962_2_P_f2ace1d1a7.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6922962_20_P_6abe66dbe4.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swwm0006ut7ck6hkowdf",
+    "marca": "FIAT",
+    "modelo": "STRADA",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6988570_2_B_9c87e7805b.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6988570_2_P_9c87e7805b.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6988570_11_P_f4f55fd9d8.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6988570_3_P_e0c0e0a4d1.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6988570_12_P_f27036a881.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6988570_5_P_5327b6d3c9.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6988570_13_P_bbac232f24.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6988570_9_P_8e99da858c.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6988570_13_P_93b7002fd5.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6988570_13_P_c4d249adc1.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swwn0007ut7cgn04q79y",
+    "marca": "HYUNDAI",
+    "modelo": "CRETA",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6980920_1_B_0cf104d133.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980920_1_P_0cf104d133.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980920_8_P_5d58790671.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980920_18_P_28c87f2d51.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980920_13_P_2ecc812928.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980920_15_P_7bd9f096b0.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980920_1_P_44f3c182fb.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980920_0_P_5aa9f8207c.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980920_8_P_c9a56d93d1.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980920_1_P_7c1b629ff2.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swwo0008ut7cxkcj8f53",
+    "marca": "VOLKSWAGEN",
+    "modelo": "UP-PEPPER",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6980770_5_B_4ef52d87ec.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980770_5_P_4ef52d87ec.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980770_5_P_27997e7ae6.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980770_5_P_0992350cef.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980770_5_P_3cc81282b6.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980770_5_P_68af8a406c.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980770_5_P_417595b44c.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980770_5_P_915ba36fca.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980770_5_P_d8cf489a95.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6980770_1_P_0f470474d4.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swwq0009ut7ckpr38ukp",
+    "marca": "TOYOTA",
+    "modelo": "ETIOS",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7055012_1_B_7ae95c9121.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7055012_1_P_7ae95c9121.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7055012_8_P_e4422c4a89.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7055012_1_P_b7f6bd95cc.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7055012_0_P_1a104b35ac.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7055012_8_P_2675af5d50.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7055012_4_P_695c493150.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7055012_1_P_bb9a87e068.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7055012_8_P_b15689614e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7055012_8_P_e8fb83d97d.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swwr000aut7cn89de4sq",
+    "marca": "HYUNDAI",
+    "modelo": "HB20",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7090325_10_B_0756446a62.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7090325_10_P_0756446a62.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7090325_9_P_1a0e518c85.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7090325_9_P_c61fa26f02.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7090325_10_P_b0eb87621d.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7090325_10_P_ef20d9772b.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7090325_10_P_84249238df.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7090325_1_P_9f6644b2a7.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7090325_1_P_c25921c965.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7090325_2_P_74d87bcfc0.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swws000but7cjsi6gypf",
+    "marca": "LAND-ROVER",
+    "modelo": "RANGE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6729855_8_B_e3697e055a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6729855_8_P_e3697e055a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6729855_0_P_6b6c70f85e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6729855_17_P_c135c0814b.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6729855_14_P_42ef1e8f56.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6729855_0_P_479de52b3b.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6729855_14_P_08485e8fe6.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6729855_0_P_5f5ce15302.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6729855_17_P_f1155088c3.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6729855_17_P_5040e20593.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swwt000cut7cfzixx60i",
+    "marca": "HONDA",
+    "modelo": "CIVIC",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6744770_14_B_dd7778e3d1.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6744770_14_P_dd7778e3d1.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6744770_14_P_fd4ee71338.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6744770_6_P_d676c61f42.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6744770_14_P_9d40cd8592.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6744770_1_P_4c5916ae56.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6744770_6_P_2df653a98d.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6744770_14_P_9eed9bf491.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6744770_14_P_0432ee796c.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6744770_0_P_3b043d6a10.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swwu000dut7cz63z2lka",
+    "marca": "MITSUBISHI",
+    "modelo": "ASX",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6943922_9_B_ef1ee99650.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6943922_9_P_ef1ee99650.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6943922_3_P_dda8442454.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6943922_0_P_4e10d95d0b.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6943922_9_P_f3577d8fff.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6943922_9_P_5e06a5985c.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6943922_5_P_bd2a58ec18.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6943922_9_P_71c06cdd39.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6943922_0_P_9dfd399315.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6943922_5_P_a832ef3bcf.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swww000eut7cthydf4sn",
+    "marca": "VOLKSWAGEN",
+    "modelo": "NOVO",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6985931_1_B_42fa34bb6f.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6985931_1_P_42fa34bb6f.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6985931_0_P_487828b723.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6985931_0_P_e4ed8eb28b.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6985931_11_P_9777975ed0.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6985931_9_P_76aed702fd.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6985931_11_P_70f85af16d.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6985931_0_P_8b1ff4c38a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6985931_11_P_a48ffd23c4.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6985931_1_P_31ba6d6dd9.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swwx000fut7cuyv54dwq",
+    "marca": "CHEVROLET",
+    "modelo": "ONIX",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7092361_0_B_b16ca00879.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092361_0_P_b16ca00879.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092361_0_P_e746790848.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092361_6_P_3742bc82b1.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092361_9_P_b060f76a8e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092361_9_P_030fa698d9.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092361_0_P_4fc67905e3.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092361_0_P_8cbb5ae57d.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092361_0_P_f699b9a270.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092361_9_P_55654447cd.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swwy000gut7ckw2jjdvk",
+    "marca": "FIAT",
+    "modelo": "STRADA",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6790613_0_B_bc6147ca3a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6790613_0_P_bc6147ca3a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6790613_1_P_9bae0ccc14.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6790613_8_P_29dfd507e5.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6790613_9_P_37fe573492.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6790613_2_P_91bf0114e5.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6790613_9_P_9d8138ce03.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6790613_9_P_df11936aa1.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6790613_1_P_1eb7dcbc4c.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6790613_8_P_4ab61c1819.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swwz000hut7cvap7k7hc",
+    "marca": "CITROEN",
+    "modelo": "AIRCROSS",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6248716_1_B_63b405e903.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6248716_1_P_63b405e903.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6248716_2_P_c09acec6b5.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6248716_10_P_9b67bf7efe.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6248716_5_P_6ec8fc0e2b.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6248716_17_P_ad80414291.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6248716_15_P_f1eb8101f7.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6248716_5_P_8ae4d9ec30.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6248716_2_P_475a961892.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6248716_16_P_44e2f9f334.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swx0000iut7c6897hzk1",
+    "marca": "RENAULT",
+    "modelo": "SANDERO",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7090340_6_B_4cf86aa325.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7090340_6_P_4cf86aa325.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7090340_1_P_d7a373307a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7090340_5_P_0de6f36b62.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7090340_0_P_18bf6dabd0.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7090340_1_P_b3372251a6.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7090340_14_P_4fdacdabae.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7090340_6_P_30a51ad20b.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7090340_7_P_cd2ba6a1db.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7090340_6_P_a83980abdb.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swx2000jut7csyuy11fx",
+    "marca": "FIAT",
+    "modelo": "FIAT",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7044192_0_B_491978934c.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7044192_0_P_491978934c.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swx3000kut7c3q6txpdo",
+    "marca": "NISSAN",
+    "modelo": "VERSA",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6991343_0_B_9955584145.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6991343_0_P_9955584145.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6991343_0_P_a1fbde242d.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6991343_13_P_48bf8d7ca5.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6991343_8_P_53da88a5ef.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6991343_0_P_76c926d6ef.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6991343_0_P_b19e9da0f0.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6991343_8_P_55349402ac.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6991343_8_P_5a26f759ee.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6991343_0_P_f21400aeae.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swx4000lut7ck435mtti",
+    "marca": "AUDI",
+    "modelo": "AUDI",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6728820_13_B_38313959c1.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6728820_13_P_38313959c1.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6728820_0_P_76104d73eb.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6728820_0_P_f53b3e975c.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6728820_13_P_e1bfa0f606.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6728820_13_P_1da1c92dd0.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6728820_13_P_625c437f45.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6728820_13_P_fc573d387b.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6728820_0_P_ea88cf6826.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6728820_12_P_3f79260d10.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swx5000mut7cjrc4lqp9",
+    "marca": "CHEVROLET",
+    "modelo": "MONTANA",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7061276_1_B_d1e8b23bbe.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7061276_1_P_d1e8b23bbe.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7061276_1_P_74a2eab886.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7061276_4_P_7ac7666781.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7061276_0_P_859ef29c78.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7061276_15_P_ec16f24dbc.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7061276_0_P_aaac505631.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7061276_8_P_d14f6f9a3b.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7061276_6_P_f5c39c3557.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7061276_13_P_0f08d76918.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swx6000nut7cqrjkmk92",
+    "marca": "BMW",
+    "modelo": "X1-XDRIVE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6844659_1_B_e742760f82.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6844659_1_P_e742760f82.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6844659_4_P_caf295eb3d.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6844659_16_P_7fd562a790.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6844659_16_P_e3f3599ea7.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6844659_6_P_db3f57839a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6844659_7_P_0957b6a7bd.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6844659_13_P_696e23934c.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6844659_4_P_b22124d073.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6844659_6_P_b770232734.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swx7000out7c0oc4uzue",
+    "marca": "VOLKSWAGEN",
+    "modelo": "UP-MOVE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6773916_13_B_ce35ea771d.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6773916_13_P_ce35ea771d.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6773916_6_P_a0f538b4e2.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6773916_2_P_bf1d485510.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6773916_13_P_b24e0a3fb9.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6773916_2_P_f939dedde0.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6773916_13_P_7fa61dabf3.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6773916_2_P_21adb92922.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6773916_2_P_2cd75d701b.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6773916_11_P_5e6e5987a8.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swx9000put7cycyyn80a",
+    "marca": "FORD",
+    "modelo": "FOCUS",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6195382_0_B_abc514e352.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6195382_0_P_abc514e352.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6195382_5_P_83a7921144.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6195382_14_P_6b01c4ad7a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6195382_9_P_4a2425c1a5.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6195382_0_P_a211467ca9.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6195382_17_P_c5764daa0d.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6195382_0_P_4ffbbc22fb.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6195382_9_P_36135d8358.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6195382_9_P_b25529bb6b.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swxa000qut7c93cmapjy",
+    "marca": "CHEVROLET",
+    "modelo": "PRISMA",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7092384_9_B_47a3cbe522.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092384_9_P_47a3cbe522.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092384_9_P_e60d9535bc.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092384_9_P_d844e27118.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092384_5_P_0412bc80f1.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092384_4_P_5a98cf39f7.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092384_4_P_53817e3ef5.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092384_10_P_2db137137f.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092384_1_P_8f377990b3.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092384_3_P_09c70dc791.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swxb000rut7c4b675zm0",
+    "marca": "HONDA",
+    "modelo": "CIVIC",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7096521_14_B_a086d3326c.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096521_14_P_a086d3326c.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096521_0_P_79a85fe31b.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096521_7_P_6678676248.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096521_6_P_6e0274a751.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096521_6_P_004f068a1f.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096521_0_P_f36509acec.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096521_14_P_c0b8a99769.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096521_8_P_999f653bf0.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096521_6_P_9edf94bfdc.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swxc000sut7ch56od62q",
+    "marca": "HYUNDAI",
+    "modelo": "HB20",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7061843_10_B_597730eb42.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7061843_10_P_597730eb42.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7061843_7_P_4ae3bfced4.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7061843_12_P_1755c9b80a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7061843_12_P_b06e778aa0.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7061843_1_P_55d69e48d4.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7061843_7_P_d79d2cad25.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7061843_12_P_5f2f4855fe.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7061843_12_P_91a2cda657.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7061843_1_P_c58e7a50d4.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swxd000tut7cx9uipq5u",
+    "marca": "FIAT",
+    "modelo": "FREEMONT",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/5458630_15_B_1059a727cb.jpeg",
+      "https://s3.carro57.com.br/FC/6757/5458630_15_P_1059a727cb.jpeg",
+      "https://s3.carro57.com.br/FC/6757/5458630_1_P_3d29c26125.jpeg",
+      "https://s3.carro57.com.br/FC/6757/5458630_2_P_8de2b963ba.jpeg",
+      "https://s3.carro57.com.br/FC/6757/5458630_0_P_2f3c7c76d3.jpeg",
+      "https://s3.carro57.com.br/FC/6757/5458630_2_P_a84dcaf74e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/5458630_2_P_fc63a48577.jpeg",
+      "https://s3.carro57.com.br/FC/6757/5458630_0_P_8522491a83.jpeg",
+      "https://s3.carro57.com.br/FC/6757/5458630_15_P_55a51390de.jpeg",
+      "https://s3.carro57.com.br/FC/6757/5458630_3_P_0eeb188a69.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swxg000uut7c2s48bdcw",
+    "marca": "CITROEN",
+    "modelo": "C3-90M",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6474259_0_B_fca45b2dc1.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6474259_0_P_fca45b2dc1.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swxh000vut7c41qaugj6",
+    "marca": "FORD",
+    "modelo": "FIESTA",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6929280_11_B_892c5ccf87.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6929280_11_P_892c5ccf87.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6929280_2_P_3e97e0a484.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6929280_11_P_fd24258d96.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6929280_11_P_728f67e640.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6929280_6_P_39d6a977f5.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6929280_12_P_166a8fadf0.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6929280_11_P_608abe5669.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6929280_11_P_4298cb8e04.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6929280_1_P_7183ceb543.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swxi000wut7cg549hwd8",
+    "marca": "FORD",
+    "modelo": "ECOSPORT",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6893710_9_B_056b035211.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6893710_9_P_056b035211.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6893710_1_P_46210c1ad8.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6893710_15_P_6a62b00ab6.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6893710_15_P_c063c77132.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6893710_0_P_9be527b0c2.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6893710_9_P_131fb06c66.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6893710_15_P_2ea0028ae9.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6893710_9_P_bd7a06c604.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6893710_9_P_3c9f7f968c.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swxk000xut7c3qhg4s5m",
+    "marca": "HYUNDAI",
+    "modelo": "SANTA",
+    "fotos": [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swxm000yut7c0f4mo486",
+    "marca": "CHEVROLET",
+    "modelo": "CRUZE",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7094035_9_B_565d7c0fc3.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7094035_9_P_565d7c0fc3.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7094035_10_P_8a6d0cf38a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7094035_5_P_21e2853f77.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7094035_5_P_ce0736b68b.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7094035_5_P_d1f3a69bc8.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7094035_1_P_ef098f7436.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7094035_1_P_b81634b74c.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7094035_1_P_68f3900d8f.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7094035_11_P_48d33c1ef3.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swxn000zut7ctotkqfxx",
+    "marca": "HYUNDAI",
+    "modelo": "IX35",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7093997_1_B_8721a207c3.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7093997_1_P_8721a207c3.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7093997_1_P_9308d18f21.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7093997_10_P_b068a0992f.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7093997_10_P_988cab1d71.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7093997_2_P_8ba0fb1d43.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7093997_4_P_6e92b6e03e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7093997_10_P_6a045fdd4d.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7093997_3_P_61cc399049.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7093997_9_P_62ba3c522b.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swxq0010ut7c3lagoq8f",
+    "marca": "VOLKSWAGEN",
+    "modelo": "FOX",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6949754_3_B_49640e7427.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949754_3_P_49640e7427.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949754_3_P_639b4de9ad.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949754_3_P_daed723c93.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949754_3_P_38cb61fddc.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949754_16_P_f3f2ded087.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949754_0_P_bdf6cb712c.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949754_3_P_cf52f1288f.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949754_3_P_dc532788e9.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6949754_3_P_16410ead47.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swxr0011ut7cn6eiyclv",
+    "marca": "HONDA",
+    "modelo": "CR-V",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7042692_0_B_4b404667ba.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7042692_0_P_4b404667ba.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7042692_14_P_faf14ce7b4.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7042692_3_P_23793889d0.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7042692_14_P_6d2a7fd97f.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7042692_3_P_65d07b1281.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7042692_14_P_35e5056f8b.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7042692_3_P_c4e884c6aa.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7042692_14_P_f6a78fb510.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7042692_3_P_0b0f608701.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swxs0012ut7cf4pwehxh",
+    "marca": "FIAT",
+    "modelo": "FIAT",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7099722_0_B_61d84a5d3e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7099722_0_P_61d84a5d3e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7099722_14_P_17b905b548.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7099722_0_P_358dacceac.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7099722_1_P_6c010b10ac.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7099722_9_P_a77426059b.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7099722_8_P_15fee9979c.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7099722_14_P_25078dcb41.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7099722_3_P_42d1da15e0.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7099722_3_P_ae784ee2fe.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swxu0013ut7cewnp79kd",
+    "marca": "FIAT",
+    "modelo": "IDEA",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7092419_17_B_8d58be97d5.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092419_17_P_8d58be97d5.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092419_0_P_fdcb37a0f1.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092419_14_P_9cd8aa9156.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092419_8_P_932f66d5a3.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092419_5_P_9832e43b41.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092419_0_P_309ff693eb.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092419_0_P_1be488dbc4.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092419_9_P_2ffa7918da.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092419_13_P_86e96fdca3.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swxv0014ut7crt7h7sio",
+    "marca": "FORD",
+    "modelo": "ECOSPORT",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7092406_6_B_e8b70bf056.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092406_6_P_e8b70bf056.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092406_0_P_394e303977.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092406_5_P_92b9cca8ee.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092406_12_P_86192261fc.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092406_12_P_8236b30d5b.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092406_5_P_ee657b6941.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092406_5_P_6ec6914d83.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092406_4_P_4e103c37a2.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092406_0_P_1c1ed5a8f1.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swxw0015ut7cliyh1es4",
+    "marca": "HONDA",
+    "modelo": "FIT",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7092458_2_B_7bc91258f8.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092458_2_P_7bc91258f8.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092458_8_P_f034f714a5.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092458_13_P_caec6e58f8.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092458_2_P_d02aab0172.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092458_2_P_f4a160ce0c.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092458_8_P_00efb1452c.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092458_16_P_f9ae78e1d3.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092458_8_P_f605ca2985.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092458_13_P_47943bbad0.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swxx0016ut7cnixtpowf",
+    "marca": "CHEVROLET",
+    "modelo": "CELTA",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7095820_2_B_bd1cbed73e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7095820_2_P_bd1cbed73e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7095820_2_P_7c5e3d545f.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7095820_2_P_153bdd890a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7095820_2_P_dfe0791b36.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7095820_6_P_19c4d5d304.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7095820_4_P_8ad8c4dd36.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7095820_0_P_1c507bdea1.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7095820_7_P_f79e979842.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7095820_5_P_50c8cf89e1.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swxy0017ut7cmabm16lf",
+    "marca": "MITSUBISHI",
+    "modelo": "ASX",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6927567_4_B_790dd6f327.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6927567_4_P_790dd6f327.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6927567_14_P_a6a9393901.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6927567_4_P_4f373d57ba.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6927567_14_P_0b82249ccc.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6927567_2_P_a760ab66db.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6927567_0_P_a3d1e24a00.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6927567_0_P_f050ec73a7.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6927567_14_P_94da079752.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6927567_11_P_dd4a189106.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swxz0018ut7cphnd4m8w",
+    "marca": "CITROEN",
+    "modelo": "C3-14",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7104561_0_B_74ce30e1c8.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7104561_0_P_74ce30e1c8.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swy10019ut7chb2ggygg",
+    "marca": "FORD",
+    "modelo": "FIESTA",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7058250_1_B_710e9560e9.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7058250_1_P_710e9560e9.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7058250_1_P_747a07514c.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7058250_1_P_d77aca9c30.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7058250_6_P_a4fab6f289.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7058250_6_P_3acb611f59.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7058250_6_P_ac2e6ca3fc.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7058250_6_P_9cd7fb4b0f.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7058250_6_P_d7333be718.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7058250_6_P_562ca1868b.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swy2001aut7cwlzbjaxw",
+    "marca": "CHEVROLET",
+    "modelo": "AGILE",
+    "fotos": [
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop&crop=center"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swy4001but7cszeuaek7",
+    "marca": "TOYOTA",
+    "modelo": "RAV4",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7017121_1_B_3dab519747.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7017121_1_P_3dab519747.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7017121_7_P_30ad8f5267.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7017121_10_P_31c5cdc9fb.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7017121_7_P_3345171ee4.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7017121_10_P_b884c66738.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7017121_1_P_9ab1142020.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7017121_0_P_8fd96a7c2f.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7017121_10_P_6c1cf29aa1.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7017121_1_P_7f588f4606.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swy6001cut7cncr0hmu1",
+    "marca": "MITSUBISHI",
+    "modelo": "PAJERO",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7096128_10_B_4362b778be.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096128_10_P_4362b778be.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096128_0_P_de980b7076.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096128_15_P_449b160927.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096128_15_P_0880fbfe75.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096128_10_P_556dc9d162.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096128_15_P_725530dfb1.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096128_9_P_b8442634c5.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096128_6_P_a4a567445a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096128_10_P_99d55bd7e8.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swy7001dut7cri8pc4pu",
+    "marca": "CHEVROLET",
+    "modelo": "PRISMA",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7092324_3_B_629aee80f8.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092324_3_P_629aee80f8.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092324_2_P_ebd2ce6c3c.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092324_1_P_1a58dfcba8.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092324_3_P_249a09181a.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092324_6_P_ff0e3a49bd.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092324_6_P_9b0772d57e.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092324_1_P_25c9d00414.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092324_1_P_29df848851.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7092324_3_P_b0233f0856.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swy8001eut7cyk4actag",
+    "marca": "CHEVROLET",
+    "modelo": "MERIVA",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6985982_5_B_d7bec44f35.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6985982_5_P_d7bec44f35.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6985982_5_P_b588855987.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6985982_3_P_2e1c578baf.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6985982_12_P_60d7f78ad2.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6985982_12_P_9ac9edbddd.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6985982_12_P_d29aefb3d4.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6985982_12_P_dd712638b7.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6985982_5_P_a30b01fa52.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6985982_3_P_fb7aabc710.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swy9001fut7c8npkmbzm",
+    "marca": "KIA",
+    "modelo": "PICANTO",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/7096604_3_B_e8180c3847.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096604_3_P_e8180c3847.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096604_11_P_ad8707dd5d.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096604_1_P_355ceb50b0.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096604_11_P_c766bdc951.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096604_6_P_69618831fc.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096604_1_P_6d29e2dec9.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096604_1_P_7ccf087c07.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096604_1_P_6f62de8e52.jpeg",
+      "https://s3.carro57.com.br/FC/6757/7096604_11_P_f8905fddbc.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swya001gut7ceruzn03w",
+    "marca": "TOYOTA",
+    "modelo": "COROLLA",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6939688_0_B_019d0c6b75.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6939688_0_P_019d0c6b75.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  },
+  {
+    "id": "cmcp3swyb001hut7cztn4yaaa",
+    "marca": "CHEVROLET",
+    "modelo": "VECTRA",
+    "fotos": [
+      "https://s3.carro57.com.br/FC/6757/6873939_4_B_94a6edf621.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6873939_4_P_94a6edf621.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6873939_4_P_753ce3f4ef.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6873939_14_P_9d13c79279.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6873939_1_P_3393b32038.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6873939_14_P_9df383f5c2.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6873939_4_P_5495e341ce.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6873939_0_P_11d58faeff.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6873939_14_P_8fe4b3f5a7.jpeg",
+      "https://s3.carro57.com.br/FC/6757/6873939_6_P_80ff5b6a82.jpeg"
+    ],
+    "fotos_validation_status": "pending",
+    "fotos_validated_at": null
+  }
+]
