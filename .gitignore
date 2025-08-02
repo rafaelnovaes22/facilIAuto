@@ -1,0 +1,132 @@
+# 🚫 FacilIAuto - Gitignore Profissional
+
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# === PyInstaller ===
+*.manifest
+*.spec
+
+# === Unit Test / Coverage ===
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# === Jupyter Notebook ===
+.ipynb_checkpoints
+
+# === pyenv ===
+.python-version
+
+# === Environments ===
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# === IDEs ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# === Database ===
+*.db
+*.sqlite
+*.sqlite3
+faciliauto_memory.db
+
+# === Logs ===
+*.log
+logs/*.log
+
+# === Temporary Files ===
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# === Application Specific ===
+# Backup files
+backups/*.json
+logs/*.log
+
+# Static files (user uploads)
+static/uploads/
+static/temp/
+
+# Analysis reports
+analysis_report_*.json
+scraped_images_*.json
+backup_images_*.json
+
+# === Docker ===
+.dockerignore
+Dockerfile
+docker-compose*.yml
+
+# === CI/CD ===
+.github/workflows/secrets.yml
+
+# === OS ===
+# Windows
+*.ini
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# === Node.js (para Playwright) ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# === Playwright ===
+test-results/
+playwright-report/
+playwright/.cache/
