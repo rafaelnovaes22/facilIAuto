@@ -6,6 +6,8 @@ from app.busca_inteligente import processar_busca_inteligente
 from app.database import get_carros, get_carro_by_id
 from app.enhanced_api import buscar_carros_enhanced
 from app.validation_api import router as validation_router
+from app.chatbot_api import router as chatbot_router
+from app.memory_api import router as memory_router
 from app.enhanced_brand_processor import enhanced_brand_processor
 
 app = FastAPI(
@@ -29,6 +31,12 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Incluir rotas de validação
 app.include_router(validation_router, prefix="/api", tags=["validation"])
+
+# Incluir rotas do chatbot
+app.include_router(chatbot_router, prefix="/api", tags=["chatbot"])
+
+# Incluir rotas de memória persistente
+app.include_router(memory_router, prefix="/api", tags=["memory"])
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root():
@@ -1202,6 +1210,544 @@ async def obter_carro(carro_id: int):
     if not carro:
         raise HTTPException(status_code=404, detail="Carro não encontrado")
     return carro
+
+@app.get("/carro/{carro_id}", response_class=HTMLResponse)
+async def pagina_detalhes_carro(carro_id: int):
+    """Página de detalhes do carro com chatbot integrado"""
+    carro = get_carro_by_id(carro_id)
+    if not carro:
+        raise HTTPException(status_code=404, detail="Carro não encontrado")
+    
+    # Formatar dados para exibição
+    preco_formatado = f"R$ {carro['preco']:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
+    preco_promocional_formatado = ""
+    if carro.get('preco_promocional'):
+        preco_promocional_formatado = f"R$ {carro['preco_promocional']:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
+    
+    html_content = f"""
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{carro['marca']} {carro['modelo']} - FacilIAuto</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        <style>
+            .gradient-bg {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }}
+            .card-custom {{ border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }}
+            
+            /* Chatbot Styles */
+            .chatbot-container {{
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width: 400px;
+                max-height: 600px;
+                z-index: 1000;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                background: white;
+                transition: all 0.3s ease;
+            }}
+            
+            .chatbot-minimized {{
+                height: 60px;
+                width: 60px;
+                border-radius: 50%;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                font-size: 24px;
+            }}
+            
+            .chatbot-header {{
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 15px;
+                border-radius: 15px 15px 0 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }}
+            
+            .chatbot-body {{
+                height: 400px;
+                overflow-y: auto;
+                padding: 15px;
+                background: #f8f9fa;
+            }}
+            
+            .chatbot-input {{
+                padding: 15px;
+                border-top: 1px solid #dee2e6;
+                background: white;
+                border-radius: 0 0 15px 15px;
+            }}
+            
+            .message {{
+                margin-bottom: 15px;
+                padding: 10px 15px;
+                border-radius: 15px;
+                max-width: 80%;
+                word-wrap: break-word;
+            }}
+            
+            .message.user {{
+                background: #007bff;
+                color: white;
+                margin-left: auto;
+                text-align: right;
+            }}
+            
+            .message.bot {{
+                background: white;
+                color: #333;
+                border: 1px solid #dee2e6;
+            }}
+            
+            .agent-badge {{
+                font-size: 0.75rem;
+                padding: 2px 8px;
+                border-radius: 10px;
+                margin-bottom: 5px;
+                display: inline-block;
+            }}
+            
+            .agent-tecnico {{ background: #e3f2fd; color: #1976d2; }}
+            .agent-financeiro {{ background: #e8f5e8; color: #388e3c; }}
+            .agent-comparacao {{ background: #fff3e0; color: #f57c00; }}
+            .agent-manutencao {{ background: #fce4ec; color: #c2185b; }}
+            .agent-avaliacao {{ background: #f3e5f5; color: #7b1fa2; }}
+            
+            .quick-questions {{
+                display: flex;
+                flex-wrap: wrap;
+                gap: 5px;
+                margin-top: 10px;
+            }}
+            
+            .quick-question {{
+                background: #e9ecef;
+                border: none;
+                padding: 5px 10px;
+                border-radius: 15px;
+                font-size: 0.8rem;
+                cursor: pointer;
+                transition: all 0.2s;
+            }}
+            
+            .quick-question:hover {{
+                background: #007bff;
+                color: white;
+            }}
+            
+            /* Detalhes do carro */
+            .spec-item {{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 0;
+                border-bottom: 1px solid #f0f0f0;
+            }}
+            
+            .spec-item:last-child {{
+                border-bottom: none;
+            }}
+            
+            .price-highlight {{
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 20px;
+                border-radius: 15px;
+                text-align: center;
+                margin-bottom: 20px;
+            }}
+            
+            .gallery-image {{
+                border-radius: 10px;
+                object-fit: cover;
+                cursor: pointer;
+                transition: transform 0.2s;
+            }}
+            
+            .gallery-image:hover {{
+                transform: scale(1.05);
+            }}
+        </style>
+    </head>
+    <body class="bg-light">
+        <!-- Header -->
+        <nav class="navbar navbar-expand-lg gradient-bg">
+            <div class="container">
+                <a class="navbar-brand text-white" href="/">
+                    <i class="fas fa-car"></i> FacilIAuto
+                </a>
+                <a href="/" class="btn btn-outline-light">
+                    <i class="fas fa-arrow-left"></i> Voltar à busca
+                </a>
+            </div>
+        </nav>
+
+        <div class="container py-4">
+            <div class="row">
+                <!-- Coluna principal - Detalhes do carro -->
+                <div class="col-lg-8">
+                    <!-- Preço destacado -->
+                    <div class="price-highlight">
+                        <h2 class="mb-2">{carro['marca']} {carro['modelo']}</h2>
+                        <p class="mb-2">{carro.get('versao', '')} {carro['ano']}</p>
+                        {"<del class='text-muted'>" + preco_formatado + "</del><br>" if preco_promocional_formatado else ""}
+                        <h3 class="mb-0">{preco_promocional_formatado or preco_formatado}</h3>
+                        {"<small class='text-warning'><i class='fas fa-tag'></i> Promoção!</small>" if preco_promocional_formatado else ""}
+                    </div>
+
+                    <!-- Galeria de fotos -->
+                    <div class="card card-custom mb-4">
+                        <div class="card-body">
+                            <h5><i class="fas fa-images text-primary"></i> Galeria de Fotos</h5>
+                            <div id="carouselFotos" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    {"".join([f'''
+                                    <div class="carousel-item {"active" if i == 0 else ""}">
+                                        <img src="{foto}" class="d-block w-100 gallery-image" alt="Foto {i+1}" style="height: 300px;">
+                                    </div>
+                                    ''' for i, foto in enumerate(carro.get('fotos', ['/static/images/placeholder-car.jpg']))]) if carro.get('fotos') else '''
+                                    <div class="carousel-item active">
+                                        <div class="d-flex align-items-center justify-content-center" style="height: 300px; background: #f8f9fa;">
+                                            <div class="text-center text-muted">
+                                                <i class="fas fa-car fa-3x mb-3"></i>
+                                                <p>Fotos em breve</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    '''}
+                                </div>
+                                {"" if not carro.get('fotos') or len(carro.get('fotos', [])) <= 1 else '''
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselFotos" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselFotos" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon"></span>
+                                </button>
+                                '''}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Especificações técnicas -->
+                    <div class="card card-custom mb-4">
+                        <div class="card-body">
+                            <h5><i class="fas fa-cogs text-primary"></i> Especificações Técnicas</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="spec-item">
+                                        <span><i class="fas fa-calendar"></i> Ano</span>
+                                        <strong>{carro['ano']}</strong>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span><i class="fas fa-gas-pump"></i> Combustível</span>
+                                        <strong>{carro.get('combustivel', 'N/A').title()}</strong>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span><i class="fas fa-cog"></i> Câmbio</span>
+                                        <strong>{carro.get('cambio', 'N/A').title()}</strong>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span><i class="fas fa-palette"></i> Cor</span>
+                                        <strong>{carro.get('cor', 'N/A')}</strong>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="spec-item">
+                                        <span><i class="fas fa-road"></i> Quilometragem</span>
+                                        <strong>{f"{carro.get('km', 0):,}".replace(',', '.')} km</strong>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span><i class="fas fa-bolt"></i> Potência</span>
+                                        <strong>{carro.get('potencia', 'N/A')} cv</strong>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span><i class="fas fa-leaf"></i> Consumo</span>
+                                        <strong>{carro.get('consumo', 'N/A')} km/l</strong>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span><i class="fas fa-users"></i> Lugares</span>
+                                        <strong>{carro.get('capacidade_pessoas', 'N/A')}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Descrição -->
+                    {f'''
+                    <div class="card card-custom mb-4">
+                        <div class="card-body">
+                            <h5><i class="fas fa-info-circle text-primary"></i> Descrição</h5>
+                            <p>{carro.get('descricao', 'Informações detalhadas sobre este veículo em breve.')}</p>
+                        </div>
+                    </div>
+                    ''' if carro.get('descricao') else ''}
+
+                    <!-- Opcionais -->
+                    {f'''
+                    <div class="card card-custom mb-4">
+                        <div class="card-body">
+                            <h5><i class="fas fa-plus-circle text-primary"></i> Opcionais</h5>
+                            <div class="row">
+                                {"".join([f'<div class="col-md-6 mb-2"><i class="fas fa-check text-success"></i> {opcional}</div>' for opcional in carro.get('opcionais', [])])}
+                            </div>
+                        </div>
+                    </div>
+                    ''' if carro.get('opcionais') else ''}
+                </div>
+
+                <!-- Coluna lateral - Informações adicionais -->
+                <div class="col-lg-4">
+                    <!-- Contato -->
+                    <div class="card card-custom mb-4">
+                        <div class="card-body text-center">
+                            <h5><i class="fas fa-handshake text-primary"></i> Interesse?</h5>
+                            <p class="text-muted">Entre em contato para mais informações</p>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary">
+                                    <i class="fas fa-phone"></i> Ligar
+                                </button>
+                                <button class="btn btn-outline-primary">
+                                    <i class="fab fa-whatsapp"></i> WhatsApp
+                                </button>
+                                <button class="btn btn-outline-secondary">
+                                    <i class="fas fa-envelope"></i> E-mail
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Financiamento -->
+                    <div class="card card-custom mb-4">
+                        <div class="card-body">
+                            <h5><i class="fas fa-calculator text-primary"></i> Simulação</h5>
+                            <p class="text-muted">Simule seu financiamento</p>
+                            <div class="text-center">
+                                <small class="text-muted">Entrada de 30%</small><br>
+                                <strong class="text-primary">48x de R$ {(carro.get('preco_promocional', carro['preco']) * 0.7 / 48):,.0f}</strong>
+                            </div>
+                            <button class="btn btn-outline-primary btn-sm w-100 mt-2" onclick="perguntarChatbot('Quero simular um financiamento para este carro')">
+                                Simular detalhado
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Avaliação rápida -->
+                    <div class="card card-custom">
+                        <div class="card-body">
+                            <h5><i class="fas fa-star text-warning"></i> Avaliação</h5>
+                            <div class="mb-2">
+                                <span>Economia:</span>
+                                <div class="float-end">
+                                    {"★" * carro.get('economia', 3)}{"☆" * (5 - carro.get('economia', 3))}
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <span>Conforto:</span>
+                                <div class="float-end">
+                                    {"★" * carro.get('conforto', 3)}{"☆" * (5 - carro.get('conforto', 3))}
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <span>Performance:</span>
+                                <div class="float-end">
+                                    {"★" * carro.get('performance', 3)}{"☆" * (5 - carro.get('performance', 3))}
+                                </div>
+                            </div>
+                            <div>
+                                <span>Segurança:</span>
+                                <div class="float-end">
+                                    {"★" * carro.get('seguranca', 3)}{"☆" * (5 - carro.get('seguranca', 3))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chatbot -->
+        <div id="chatbotContainer" class="chatbot-container chatbot-minimized">
+            <i class="fas fa-comments"></i>
+        </div>
+
+        <!-- Chatbot expandido (inicialmente oculto) -->
+        <div id="chatbotExpanded" class="chatbot-container" style="display: none;">
+            <div class="chatbot-header">
+                <div>
+                    <strong><i class="fas fa-robot"></i> AssistenteAuto</strong>
+                    <br><small>Tire suas dúvidas sobre este carro</small>
+                </div>
+                <button class="btn btn-sm text-white" onclick="minimizarChatbot()">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+            <div class="chatbot-body" id="chatbotMessages">
+                <div class="message bot">
+                    <div class="agent-badge agent-tecnico">🤖 AssistenteAuto</div>
+                    Olá! 👋 Sou seu assistente pessoal para este {carro['marca']} {carro['modelo']}.<br><br>
+                    Posso ajudar com:
+                    <div class="quick-questions">
+                        <button class="quick-question" onclick="perguntarChatbot('Como funciona o financiamento?')">💰 Financiamento</button>
+                        <button class="quick-question" onclick="perguntarChatbot('Qual o consumo real?')">⛽ Consumo</button>
+                        <button class="quick-question" onclick="perguntarChatbot('Custos de manutenção?')">🔧 Manutenção</button>
+                        <button class="quick-question" onclick="perguntarChatbot('Como está no mercado?')">📊 Avaliação</button>
+                        <button class="quick-question" onclick="perguntarChatbot('Compare com outros carros')">⚖️ Comparação</button>
+                    </div>
+                </div>
+            </div>
+            <div class="chatbot-input">
+                <div class="input-group">
+                    <input type="text" id="chatInput" class="form-control" placeholder="Digite sua pergunta...">
+                    <button class="btn btn-primary" onclick="enviarMensagem()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            const carroId = {carro['id']};
+            const carroData = {str(carro).replace("'", '"')};
+            
+            // Estado do chatbot com memória persistente
+            let chatbotMinimizado = true;
+            let conversationId = null;
+            let userSessionId = generateUserSessionId();
+
+            // Toggle chatbot
+            document.getElementById('chatbotContainer').addEventListener('click', function() {{
+                if (chatbotMinimizado) {{
+                    expandirChatbot();
+                }}
+            }});
+
+            function expandirChatbot() {{
+                document.getElementById('chatbotContainer').style.display = 'none';
+                document.getElementById('chatbotExpanded').style.display = 'block';
+                chatbotMinimizado = false;
+                
+                // Focar no input
+                setTimeout(() => document.getElementById('chatInput').focus(), 100);
+            }}
+
+            function minimizarChatbot() {{
+                document.getElementById('chatbotContainer').style.display = 'block';
+                document.getElementById('chatbotExpanded').style.display = 'none';
+                chatbotMinimizado = true;
+            }}
+
+            // Enviar mensagem
+            document.getElementById('chatInput').addEventListener('keypress', function(e) {{
+                if (e.key === 'Enter') {{
+                    enviarMensagem();
+                }}
+            }});
+
+            function enviarMensagem() {{
+                const input = document.getElementById('chatInput');
+                const mensagem = input.value.trim();
+                
+                if (!mensagem) return;
+                
+                // Adicionar mensagem do usuário
+                adicionarMensagem(mensagem, 'user');
+                input.value = '';
+                
+                // Enviar para API
+                perguntarChatbot(mensagem);
+            }}
+
+            // Gerar user session ID persistente
+            function generateUserSessionId() {{
+                // Tentar recuperar do localStorage primeiro
+                let sessionId = localStorage.getItem('faciliauto_user_session_id');
+                
+                if (!sessionId) {{
+                    // Gerar novo ID baseado em timestamp + random
+                    sessionId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                    localStorage.setItem('faciliauto_user_session_id', sessionId);
+                    console.log('🆔 Novo user session ID gerado:', sessionId);
+                }} else {{
+                    console.log('🔄 User session ID recuperado:', sessionId);
+                }}
+                
+                return sessionId;
+            }}
+
+            function perguntarChatbot(pergunta) {{
+                // Mostrar loading
+                adicionarMensagem('🤔 Pensando...', 'bot', 'loading');
+                
+                // Enviar para API com memória persistente
+                fetch('/api/chatbot/perguntar', {{
+                    method: 'POST',
+                    headers: {{
+                        'Content-Type': 'application/json',
+                    }},
+                    body: JSON.stringify({{
+                        carro_id: carroId,
+                        pergunta: pergunta,
+                        conversation_id: conversationId,
+                        user_session_id: userSessionId
+                    }})
+                }})
+                .then(response => response.json())
+                .then(data => {{
+                    // Remover loading
+                    const messages = document.querySelectorAll('.message.loading');
+                    messages.forEach(msg => msg.remove());
+                    
+                    // Adicionar resposta
+                    adicionarMensagem(data.resposta, 'bot', data.agente);
+                    conversationId = data.conversation_id;
+                }})
+                .catch(error => {{
+                    console.error('Erro:', error);
+                    const messages = document.querySelectorAll('.message.loading');
+                    messages.forEach(msg => msg.remove());
+                    adicionarMensagem('Desculpe, ocorreu um erro. Tente novamente.', 'bot');
+                }});
+            }}
+
+            function adicionarMensagem(texto, tipo, agente = null) {{
+                const messagesContainer = document.getElementById('chatbotMessages');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${{tipo}} ${{agente === 'loading' ? 'loading' : ''}}`;
+                
+                let badgeHtml = '';
+                if (agente && agente !== 'loading') {{
+                    const agenteBadges = {{
+                        'tecnico': '<div class="agent-badge agent-tecnico">🔧 Esp. Técnico</div>',
+                        'financeiro': '<div class="agent-badge agent-financeiro">💰 Consultor Financeiro</div>',
+                        'comparacao': '<div class="agent-badge agent-comparacao">⚖️ Analista Comparativo</div>',
+                        'manutencao': '<div class="agent-badge agent-manutencao">🔧 Esp. Manutenção</div>',
+                        'avaliacao': '<div class="agent-badge agent-avaliacao">📊 Avaliador</div>'
+                    }};
+                    badgeHtml = agenteBadges[agente] || '';
+                }}
+                
+                messageDiv.innerHTML = badgeHtml + texto;
+                messagesContainer.appendChild(messageDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }}
+        </script>
+    </body>
+    </html>
+    """
+    
+    return html_content
 
 @app.post("/buscar-carros-enhanced")
 async def buscar_carros_enhanced_endpoint(questionario: QuestionarioBusca):
