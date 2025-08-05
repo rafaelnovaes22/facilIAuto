@@ -331,23 +331,67 @@ async def read_root():
                                 <!-- Pergunta 4 -->
                                 <div class="question-step d-none" id="step4">
                                     <h4 class="mb-3"><i class="fas fa-road text-success"></i> 4. Como você vai usar o carro?</h4>
+                                    <p class="text-muted mb-3">Selecione um ou mais tipos de uso. Isso nos ajuda a recomendar características técnicas específicas.</p>
                                     <div class="row">
                                         <div class="col-12">
-                                            <div class="form-check mb-2">
-                                                <input class="form-check-input" type="checkbox" name="uso_principal" value="urbano">
-                                                <label class="form-check-label">Uso urbano (cidade)</label>
+                                            <div class="card mb-3">
+                                                <div class="card-body">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="uso_principal" value="urbano" id="uso_urbano">
+                                                        <label class="form-check-label fw-bold" for="uso_urbano">
+                                                            🏙️ Uso Urbano (Cidade)
+                                                        </label>
+                                                    </div>
+                                                    <small class="text-muted d-block mt-1">
+                                                        Ideal para: trânsito, estacionamento, economia de combustível. 
+                                                        <strong>Priorizamos:</strong> carros compactos, baixo consumo, tecnologia de assistência.
+                                                    </small>
+                                                </div>
                                             </div>
-                                            <div class="form-check mb-2">
-                                                <input class="form-check-input" type="checkbox" name="uso_principal" value="viagem">
-                                                <label class="form-check-label">Viagens longas</label>
+                                            
+                                            <div class="card mb-3">
+                                                <div class="card-body">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="uso_principal" value="viagem" id="uso_viagem">
+                                                        <label class="form-check-label fw-bold" for="uso_viagem">
+                                                            🛣️ Viagens Longas
+                                                        </label>
+                                                    </div>
+                                                    <small class="text-muted d-block mt-1">
+                                                        Ideal para: rodovias, conforto, segurança. 
+                                                        <strong>Priorizamos:</strong> espaço interno, porta-malas, potência, sistemas de segurança.
+                                                    </small>
+                                                </div>
                                             </div>
-                                            <div class="form-check mb-2">
-                                                <input class="form-check-input" type="checkbox" name="uso_principal" value="trabalho">
-                                                <label class="form-check-label">Trabalho/negócios</label>
+                                            
+                                            <div class="card mb-3">
+                                                <div class="card-body">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="uso_principal" value="trabalho" id="uso_trabalho">
+                                                        <label class="form-check-label fw-bold" for="uso_trabalho">
+                                                            💼 Trabalho/Negócios
+                                                        </label>
+                                                    </div>
+                                                    <small class="text-muted d-block mt-1">
+                                                        Ideal para: uso profissional, transporte de equipamentos. 
+                                                        <strong>Priorizamos:</strong> durabilidade, capacidade de carga, custo-benefício.
+                                                    </small>
+                                                </div>
                                             </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="uso_principal" value="familia">
-                                                <label class="form-check-label">Uso familiar</label>
+                                            
+                                            <div class="card mb-3">
+                                                <div class="card-body">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="uso_principal" value="familia" id="uso_familia">
+                                                        <label class="form-check-label fw-bold" for="uso_familia">
+                                                            👨‍👩‍👧‍👦 Uso Familiar
+                                                        </label>
+                                                    </div>
+                                                    <small class="text-muted d-block mt-1">
+                                                        Ideal para: família, crianças, segurança. 
+                                                        <strong>Priorizamos:</strong> espaço para passageiros, segurança avançada, conforto, praticidade.
+                                                    </small>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

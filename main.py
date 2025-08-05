@@ -15,10 +15,16 @@ if __name__ == "__main__":
     print("Para parar o servidor, pressione Ctrl+C")
     print("-" * 50)
     
+    # Configuração otimizada para evitar erros de hot reload
     uvicorn.run(
         "app.api:app", 
         host="0.0.0.0", 
         port=8000,
         reload=True,
-        log_level="info"
+        reload_excludes=["*.pyc", "*/__pycache__/*", "*/logs/*", "*/backups/*"],
+        reload_includes=["*.py"],
+        log_level="info",
+        access_log=False,  # Reduz verbosidade
+        use_colors=True,
+        loop="asyncio"
     ) 

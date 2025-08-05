@@ -3,6 +3,7 @@ from langgraph.graph import StateGraph, END
 from langgraph.prebuilt import create_react_agent
 from app.models import QuestionarioBusca, CarroRecomendacao, RespostaBusca
 from app.database import get_carros, get_carro_by_id
+from app.uso_principal_processor import UsoMatcher
 import json
 
 class EstadoBuscaDict(TypedDict):
@@ -87,12 +88,11 @@ def calcular_scores_compatibilidade(state: EstadoBuscaDict) -> EstadoBuscaDict:
         score += marca_score
         score += modelo_score
         
-        # Score por uso principal (peso: 15%)
-        uso_match = len(set(questionario.uso_principal) & set(carro["uso_recomendado"]))
-        if uso_match > 0:
-            uso_score = (uso_match / len(questionario.uso_principal)) * 15
-            score += uso_score
-            razoes.append(f"Adequado para: {', '.join(set(questionario.uso_principal) & set(carro['uso_recomendado']))}")
+        # Score por uso principal avançado (peso: 25%)
+        uso_score, uso_razoes, uso_pontos_fortes = UsoMatcher.calcular_score_uso_principal(questionario, carro)
+        score += uso_score
+        razoes.extend(uso_razoes)
+        pontos_fortes.extend(uso_pontos_fortes)
         
         # Score por capacidade de pessoas (peso: 10%)
         if carro["capacidade_pessoas"] >= questionario.pessoas_transportar:
@@ -267,11 +267,9 @@ def gerar_sugestoes_gerais(state: EstadoBuscaDict) -> EstadoBuscaDict:
     if q.criancas:
         sugestoes.append("Para segurança das crianças, considere modelos com 5 estrelas em segurança")
     
-    if "urbano" in q.uso_principal:
-        sugestoes.append("Para uso urbano, priorize carros com boa economia de combustível e facilidade de estacionamento")
-    
-    if "viagem" in q.uso_principal:
-        sugestoes.append("Para viagens, considere conforto, porta-malas amplo e economia em estrada")
+    # Sugestões avançadas baseadas no uso principal
+    sugestoes_uso = UsoMatcher.gerar_sugestoes_uso(q)
+    sugestoes.extend(sugestoes_uso)
     
     if q.prioridade == "economia":
         sugestoes.append("Considere também os custos de manutenção e seguro além do preço de compra")

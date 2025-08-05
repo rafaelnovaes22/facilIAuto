@@ -8,6 +8,7 @@ from app.langgraph_chatbot_nodes import (
     comparacao_agent_node,
     manutencao_agent_node,
     avaliacao_agent_node,
+    uso_principal_agent_node,
     finalizer_node
 )
 from app.memory_manager import get_memory_manager
@@ -45,6 +46,7 @@ class FacilIAutoChatbotGraph:
         workflow.add_node("comparacao_agent", comparacao_agent_node)
         workflow.add_node("manutencao_agent", manutencao_agent_node)
         workflow.add_node("avaliacao_agent", avaliacao_agent_node)
+        workflow.add_node("uso_principal_agent", uso_principal_agent_node)
         workflow.add_node("finalizer", finalizer_node)
         workflow.add_node("memory_persister", self._memory_persister_node)
         
@@ -64,6 +66,7 @@ class FacilIAutoChatbotGraph:
                 "comparacao": "comparacao_agent",
                 "manutencao": "manutencao_agent",
                 "avaliacao": "avaliacao_agent",
+                "uso_principal": "uso_principal_agent",
                 "finalizer": "finalizer"
             }
         )
@@ -74,6 +77,7 @@ class FacilIAutoChatbotGraph:
         workflow.add_edge("comparacao_agent", "finalizer")
         workflow.add_edge("manutencao_agent", "finalizer")
         workflow.add_edge("avaliacao_agent", "finalizer")
+        workflow.add_edge("uso_principal_agent", "finalizer")
         
         # Finalizer vai para memory persister
         workflow.add_edge("finalizer", "memory_persister")
@@ -83,7 +87,7 @@ class FacilIAutoChatbotGraph:
         
         return workflow
     
-    def _decide_next_agent(self, state: ChatbotState) -> Literal["tecnico", "financeiro", "comparacao", "manutencao", "avaliacao", "finalizer"]:
+    def _decide_next_agent(self, state: ChatbotState) -> Literal["tecnico", "financeiro", "comparacao", "manutencao", "avaliacao", "uso_principal", "finalizer"]:
         """
         Função de decisão que determina qual agente usar baseado no estado
         """
@@ -99,6 +103,8 @@ class FacilIAutoChatbotGraph:
             return "manutencao"
         elif agente_selecionado == AgentType.AVALIACAO:
             return "avaliacao"
+        elif agente_selecionado == "uso_principal":
+            return "uso_principal"
         else:
             # Fallback para finalizer (resposta genérica)
             return "finalizer"

@@ -1,5 +1,6 @@
 from typing import Dict, Any, List, Tuple
 from app.langgraph_chatbot_state import ChatbotState, AgentType, adicionar_resposta_agente
+from app.uso_principal_processor import UsoMatcher
 import re
 from langchain_core.messages import AIMessage
 
@@ -46,6 +47,13 @@ class ChatbotKeywords:
         "revenda", "venda", "fipe", "tabela", "depreciação", "depreciacao",
         "investimento", "custo", "benefício", "beneficio", "vale", "pena"
     ]
+    
+    USO_PRINCIPAL = [
+        "urbano", "cidade", "transito", "trânsito", "estacionamento",
+        "viagem", "viagens", "estrada", "rodovia", "longa distancia", "longa distância",
+        "trabalho", "profissional", "negócios", "negocios", "comercial",
+        "familia", "família", "crianças", "criancas", "filhos", "familiar"
+    ]
 
 def router_node(state: ChatbotState) -> ChatbotState:
     """
@@ -75,6 +83,13 @@ def router_node(state: ChatbotState) -> ChatbotState:
     # Agente Avaliação
     matches_avaliacao = sum(1 for keyword in ChatbotKeywords.AVALIACAO if keyword in pergunta)
     confidencias[AgentType.AVALIACAO] = min(matches_avaliacao / len(ChatbotKeywords.AVALIACAO) * 3, 1.0)
+    
+    # Agente Uso Principal - novo agente especializado
+    matches_uso = sum(1 for keyword in ChatbotKeywords.USO_PRINCIPAL if keyword in pergunta)
+    # Boost para perguntas específicas sobre adequação de uso
+    if any(phrase in pergunta for phrase in ["adequado para", "serve para", "é bom para", "recomendado para"]):
+        matches_uso += 2
+    confidencias["uso_principal"] = min(matches_uso / len(ChatbotKeywords.USO_PRINCIPAL) * 3, 1.0)
     
     # Encontrar o agente com maior confiança
     melhor_agente = max(confidencias.items(), key=lambda x: x[1])
@@ -620,3 +635,234 @@ def _avaliar_quilometragem(km, ano):
 
 def _conclusao_avaliacao(marca, modelo, ano, preco): 
     return "Boa compra para suas necessidades."
+
+def uso_principal_agent_node(state: ChatbotState) -> ChatbotState:
+    """
+    Nó do agente especializado em adequação de uso principal
+    """
+    carro = state["carro_data"]
+    pergunta = state["pergunta_atual"].lower()
+    
+    # Detectar tipo de uso mencionado na pergunta
+    tipos_uso_mencionados = []
+    if any(word in pergunta for word in ["urbano", "cidade", "transito", "trânsito"]):
+        tipos_uso_mencionados.append("urbano")
+    if any(word in pergunta for word in ["viagem", "estrada", "rodovia"]):
+        tipos_uso_mencionados.append("viagem")
+    if any(word in pergunta for word in ["trabalho", "profissional", "negócios"]):
+        tipos_uso_mencionados.append("trabalho")
+    if any(word in pergunta for word in ["familia", "família", "crianças", "filhos"]):
+        tipos_uso_mencionados.append("familia")
+    
+    # Se não detectou uso específico, analisar todos
+    if not tipos_uso_mencionados:
+        tipos_uso_mencionados = ["urbano", "viagem", "trabalho", "familia"]
+    
+    resposta_partes = []
+    resposta_partes.append(f"🎯 **Adequação do {carro['marca']} {carro['modelo']} para diferentes usos:**\n")
+    
+    for uso in tipos_uso_mencionados:
+        analise = _analisar_adequacao_uso(carro, uso)
+        resposta_partes.append(analise)
+    
+    # Adicionar recomendação geral
+    recomendacao = _gerar_recomendacao_uso_geral(carro, tipos_uso_mencionados)
+    resposta_partes.append(f"\n💡 **Recomendação:**\n{recomendacao}")
+    
+    resposta_final = "\n".join(resposta_partes)
+    
+    return adicionar_resposta_agente(state, "uso_principal", resposta_final)
+
+def _analisar_adequacao_uso(carro: Dict[str, Any], uso: str) -> str:
+    """Analisa a adequação do carro para um tipo específico de uso"""
+    categoria = carro.get("categoria", "")
+    
+    if uso == "urbano":
+        pontos_positivos = []
+        pontos_atencao = []
+        
+        # Análise para uso urbano
+        if categoria in ["Hatch", "Sedan Compacto"]:
+            pontos_positivos.append("Categoria ideal para manobras urbanas")
+        elif categoria in ["SUV Grande", "Pickup"]:
+            pontos_atencao.append("Veículo grande para uso urbano")
+        
+        if carro.get("potencia_desejada") == "economica":
+            pontos_positivos.append("Motor econômico reduz custos")
+        
+        opcoes_urbanas = ["conectividade", "sensor", "camera"]
+        opcionais = carro.get("opcionais", [])
+        tech_count = sum(1 for tech in opcoes_urbanas 
+                        if any(tech in opcional.lower() for opcional in opcionais))
+        if tech_count > 0:
+            pontos_positivos.append("Tecnologias que auxiliam no trânsito")
+        
+        resultado = f"🏙️ **USO URBANO:**\n"
+        if pontos_positivos:
+            resultado += f"✅ {'; '.join(pontos_positivos)}\n"
+        if pontos_atencao:
+            resultado += f"⚠️ {'; '.join(pontos_atencao)}\n"
+        
+        # Score de adequação
+        score_urbano = len(pontos_positivos) * 2 - len(pontos_atencao)
+        if score_urbano >= 4:
+            resultado += "🌟 **Excelente para uso urbano**"
+        elif score_urbano >= 2:
+            resultado += "👍 **Adequado para uso urbano**"
+        else:
+            resultado += "⚖️ **Considere outros fatores**"
+    
+    elif uso == "viagem":
+        pontos_positivos = []
+        pontos_atencao = []
+        
+        # Análise para viagens
+        if categoria in ["SUV", "Sedan Médio", "SUV Médio"]:
+            pontos_positivos.append("Categoria oferece bom espaço interno")
+        
+        if carro.get("espaco_carga") in ["medio", "muito"]:
+            pontos_positivos.append("Porta-malas adequado para bagagens")
+        
+        if carro.get("potencia_desejada") in ["media", "alta"]:
+            pontos_positivos.append("Potência adequada para rodovia")
+        elif carro.get("potencia_desejada") == "economica":
+            pontos_atencao.append("Motor pode ser limitado em ultrapassagens")
+        
+        if carro.get("seguranca", 0) >= 4:
+            pontos_positivos.append("Alta segurança para rodovias")
+        
+        resultado = f"🛣️ **VIAGENS LONGAS:**\n"
+        if pontos_positivos:
+            resultado += f"✅ {'; '.join(pontos_positivos)}\n"
+        if pontos_atencao:
+            resultado += f"⚠️ {'; '.join(pontos_atencao)}\n"
+        
+        score_viagem = len(pontos_positivos) * 2 - len(pontos_atencao)
+        if score_viagem >= 4:
+            resultado += "🌟 **Excelente para viagens**"
+        elif score_viagem >= 2:
+            resultado += "👍 **Adequado para viagens**"
+        else:
+            resultado += "⚖️ **Considere outros fatores**"
+    
+    elif uso == "trabalho":
+        pontos_positivos = []
+        pontos_atencao = []
+        
+        # Análise para trabalho
+        if categoria in ["SUV", "Pickup", "Van"]:
+            pontos_positivos.append("Categoria versátil para uso profissional")
+        
+        if carro.get("espaco_carga") == "muito":
+            pontos_positivos.append("Grande capacidade de carga")
+        
+        # Verificar durabilidade
+        km = carro.get("km", 0)
+        if km <= 80000:
+            pontos_positivos.append("Quilometragem adequada para uso profissional")
+        else:
+            pontos_atencao.append("Quilometragem alta para uso intensivo")
+        
+        # Verificar idade
+        from datetime import datetime
+        idade = datetime.now().year - carro.get("ano", 2020)
+        if idade <= 8:
+            pontos_positivos.append("Veículo relativamente novo")
+        
+        resultado = f"💼 **TRABALHO/NEGÓCIOS:**\n"
+        if pontos_positivos:
+            resultado += f"✅ {'; '.join(pontos_positivos)}\n"
+        if pontos_atencao:
+            resultado += f"⚠️ {'; '.join(pontos_atencao)}\n"
+        
+        score_trabalho = len(pontos_positivos) * 2 - len(pontos_atencao)
+        if score_trabalho >= 4:
+            resultado += "🌟 **Excelente para trabalho**"
+        elif score_trabalho >= 2:
+            resultado += "👍 **Adequado para trabalho**"
+        else:
+            resultado += "⚖️ **Considere outros fatores**"
+    
+    elif uso == "familia":
+        pontos_positivos = []
+        pontos_atencao = []
+        
+        # Análise para família
+        if carro.get("capacidade_pessoas", 0) >= 5:
+            pontos_positivos.append("Comporta toda a família")
+        else:
+            pontos_atencao.append("Espaço limitado para família grande")
+        
+        if carro.get("seguranca", 0) >= 4:
+            pontos_positivos.append("Alta segurança protege a família")
+        elif carro.get("seguranca", 0) < 3:
+            pontos_atencao.append("Segurança pode ser melhor para família")
+        
+        if categoria in ["SUV", "Minivan"]:
+            pontos_positivos.append("Facilita acesso de crianças e idosos")
+        
+        # Verificar itens de conforto
+        opcionais = carro.get("opcionais", [])
+        conforto_familia = ["ar_condicionado", "vidros_eletricos", "direcao_assistida"]
+        conforto_count = sum(1 for item in conforto_familia 
+                           if any(item in opcional.lower() for opcional in opcionais))
+        if conforto_count > 1:
+            pontos_positivos.append("Bons itens de conforto familiar")
+        
+        resultado = f"👨‍👩‍👧‍👦 **USO FAMILIAR:**\n"
+        if pontos_positivos:
+            resultado += f"✅ {'; '.join(pontos_positivos)}\n"
+        if pontos_atencao:
+            resultado += f"⚠️ {'; '.join(pontos_atencao)}\n"
+        
+        score_familia = len(pontos_positivos) * 2 - len(pontos_atencao)
+        if score_familia >= 4:
+            resultado += "🌟 **Excelente para família**"
+        elif score_familia >= 2:
+            resultado += "👍 **Adequado para família**"
+        else:
+            resultado += "⚖️ **Considere outros fatores**"
+    
+    else:
+        resultado = f"❓ **Uso {uso} não reconhecido**"
+    
+    return resultado + "\n"
+
+def _gerar_recomendacao_uso_geral(carro: Dict[str, Any], usos_analisados: List[str]) -> str:
+    """Gera uma recomendação geral baseada nos usos analisados"""
+    categoria = carro.get("categoria", "")
+    
+    # Recomendações específicas por categoria
+    if categoria == "Hatch":
+        return "Este hatch é **ideal para uso urbano** e adequado para viagens curtas. Perfeito para quem valoriza economia e praticidade na cidade."
+    
+    elif categoria in ["SUV", "SUV Médio"]:
+        return "Este SUV oferece **versatilidade para múltiplos usos**. Excelente para família e viagens, também adequado para trabalho e cidade."
+    
+    elif categoria == "Sedan Compacto":
+        return "Este sedan combina **economia urbana com conforto**. Ideal para uso diário na cidade e adequado para viagens ocasionais."
+    
+    elif categoria == "Sedan Médio":
+        return "Este sedan oferece **equilíbrio entre todos os usos**. Confortável para família, adequado para trabalho e viagens longas."
+    
+    elif categoria == "Pickup":
+        return "Esta pickup é **excelente para trabalho** e adequada para família aventureira. Ideal para quem precisa de capacidade de carga."
+    
+    else:
+        # Recomendação genérica baseada nos usos analisados
+        usos_principais = []
+        if "urbano" in usos_analisados:
+            usos_principais.append("uso urbano")
+        if "viagem" in usos_analisados:
+            usos_principais.append("viagens")
+        if "trabalho" in usos_analisados:
+            usos_principais.append("trabalho")
+        if "familia" in usos_analisados:
+            usos_principais.append("uso familiar")
+        
+        if len(usos_principais) > 1:
+            return f"Este veículo oferece boa versatilidade para {', '.join(usos_principais)}."
+        elif usos_principais:
+            return f"Este veículo é adequado principalmente para {usos_principais[0]}."
+        else:
+            return "Analise bem suas necessidades específicas antes da decisão."
