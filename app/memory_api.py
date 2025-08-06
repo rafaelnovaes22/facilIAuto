@@ -5,8 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel
 
 from app.memory_manager import get_memory_manager
-from app.memory_models import (Conversation, ConversationContext,
-                               ConversationMessage)
+from app.memory_models import Conversation, ConversationContext, ConversationMessage
 
 logger = logging.getLogger(__name__)
 

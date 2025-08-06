@@ -8,8 +8,13 @@ from sqlalchemy import and_, create_engine, desc, or_
 from sqlalchemy.orm import Session
 
 from app.langgraph_chatbot_state import AgentType, ChatbotState
-from app.memory_models import (Base, Conversation, ConversationContext,
-                               ConversationMessage, UserSession)
+from app.memory_models import (
+    Base,
+    Conversation,
+    ConversationContext,
+    ConversationMessage,
+    UserSession,
+)
 
 logger = logging.getLogger(__name__)
 

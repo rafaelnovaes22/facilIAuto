@@ -35,10 +35,8 @@ def test_imports():
 
     try:
         print_step("Importando módulos LangGraph...")
-        from app.chatbot_models import (PerguntaChatbot, RespostaChatbot,
-                                        TipoAgente)
-        from app.langgraph_chatbot_graph import (get_chatbot_graph,
-                                                 reset_chatbot_graph)
+        from app.chatbot_models import PerguntaChatbot, RespostaChatbot, TipoAgente
+        from app.langgraph_chatbot_graph import get_chatbot_graph, reset_chatbot_graph
         from app.langgraph_chatbot_state import AgentType, ChatbotState
 
         print_step("Importações realizadas com sucesso", "ok")

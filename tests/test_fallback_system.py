@@ -11,9 +11,12 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from app.database import get_carros
-from app.fallback_images import (FallbackImageService,
-                                 create_vehicle_placeholder, get_best_fallback,
-                                 get_fallback_images)
+from app.fallback_images import (
+    FallbackImageService,
+    create_vehicle_placeholder,
+    get_best_fallback,
+    get_fallback_images,
+)
 from app.image_validation import validate_image_urls_sync
 
 

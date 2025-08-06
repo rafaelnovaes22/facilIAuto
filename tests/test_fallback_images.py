@@ -4,9 +4,13 @@ Testes unitários para o sistema de fallback de imagens
 
 import pytest
 
-from app.fallback_images import (FallbackImageService, VehicleCategory,
-                                 create_vehicle_placeholder, get_best_fallback,
-                                 get_fallback_images)
+from app.fallback_images import (
+    FallbackImageService,
+    VehicleCategory,
+    create_vehicle_placeholder,
+    get_best_fallback,
+    get_fallback_images,
+)
 
 
 class TestFallbackImageService:

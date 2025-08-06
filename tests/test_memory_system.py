@@ -36,12 +36,15 @@ def test_memory_imports():
 
     try:
         print_step("Importando modelos de memória...")
-        from app.memory_models import (Conversation, ConversationContext,
-                                       ConversationMessage, UserSession)
+        from app.memory_models import (
+            Conversation,
+            ConversationContext,
+            ConversationMessage,
+            UserSession,
+        )
 
         print_step("Importando gerenciador de memória...")
-        from app.memory_manager import (ConversationMemoryManager,
-                                        get_memory_manager)
+        from app.memory_manager import ConversationMemoryManager, get_memory_manager
 
         print_step("Importando API de memória...")
         from app.memory_api import router

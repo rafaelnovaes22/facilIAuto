@@ -3,8 +3,11 @@ from typing import Any, Dict, List, Tuple
 
 from langchain_core.messages import AIMessage
 
-from app.langgraph_chatbot_state import (AgentType, ChatbotState,
-                                         adicionar_resposta_agente)
+from app.langgraph_chatbot_state import (
+    AgentType,
+    ChatbotState,
+    adicionar_resposta_agente,
+)
 from app.uso_principal_processor import UsoMatcher
 
 

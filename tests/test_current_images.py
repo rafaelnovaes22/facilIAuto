@@ -13,8 +13,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from app.config import test_connection
 from app.database import get_carros
-from app.image_validation import (ImageValidationService,
-                                  validate_image_urls_sync)
+from app.image_validation import ImageValidationService, validate_image_urls_sync
 
 
 def collect_all_image_urls() -> Dict[str, List[str]]:

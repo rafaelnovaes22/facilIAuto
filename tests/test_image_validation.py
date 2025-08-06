@@ -7,9 +7,13 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from app.image_validation import (ImageValidationError, ImageValidationResult,
-                                  ImageValidationService, validate_image_urls,
-                                  validate_image_urls_sync)
+from app.image_validation import (
+    ImageValidationError,
+    ImageValidationResult,
+    ImageValidationService,
+    validate_image_urls,
+    validate_image_urls_sync,
+)
 
 
 class TestImageValidationService:

@@ -4,14 +4,17 @@ from typing import Any, Dict, Literal
 
 from langgraph.graph import END, StateGraph
 
-from app.langgraph_chatbot_nodes import (avaliacao_agent_node,
-                                         comparacao_agent_node, finalizer_node,
-                                         financeiro_agent_node,
-                                         manutencao_agent_node, router_node,
-                                         tecnico_agent_node,
-                                         uso_principal_agent_node)
-from app.langgraph_chatbot_state import (AgentType, ChatbotState,
-                                         criar_estado_inicial)
+from app.langgraph_chatbot_nodes import (
+    avaliacao_agent_node,
+    comparacao_agent_node,
+    finalizer_node,
+    financeiro_agent_node,
+    manutencao_agent_node,
+    router_node,
+    tecnico_agent_node,
+    uso_principal_agent_node,
+)
+from app.langgraph_chatbot_state import AgentType, ChatbotState, criar_estado_inicial
 from app.memory_manager import get_memory_manager
 
 logger = logging.getLogger(__name__)
