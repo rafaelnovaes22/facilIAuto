@@ -98,9 +98,7 @@ class TestUserJourney:
         await page.fill("#modeloEspecifico", "cor")
 
         # 3. Aguardar sugestões aparecerem
-        await page.wait_for_selector(
-            "#modeloSuggestions .suggestion-item", timeout=3000
-        )
+        await page.wait_for_selector("#modeloSuggestions .suggestion-item", timeout=3000)
         suggestions = page.locator("#modeloSuggestions .suggestion-item")
         await expect(suggestions.first()).to_be_visible()
 
@@ -198,7 +196,7 @@ class TestUserJourney:
             await page.wait_for_selector("#resultados", timeout=10000)
             # Se chegou aqui, a API funcionou
             await expect(page.locator("#resultados")).to_be_visible()
-        except:
+        except Exception:
             # Se deu timeout, verificar se há mensagem de erro apropriada
             error_message = page.locator(".alert-danger, .error-message")
             if await error_message.count() > 0:
@@ -277,9 +275,7 @@ class TestPerformance:
 
         # Assert
         load_time = end_time - start_time
-        assert (
-            load_time < 5.0
-        ), f"Página carregou em {load_time:.2f}s, mas deveria ser < 5s"
+        assert load_time < 5.0, f"Página carregou em {load_time:.2f}s, mas deveria ser < 5s"
 
     @pytest.mark.asyncio
     async def test_form_submission_performance(self, page: Page):
@@ -305,6 +301,4 @@ class TestPerformance:
 
         # Assert
         response_time = end_time - start_time
-        assert (
-            response_time < 10.0
-        ), f"API respondeu em {response_time:.2f}s, mas deveria ser < 10s"
+        assert response_time < 10.0, f"API respondeu em {response_time:.2f}s, mas deveria ser < 10s"

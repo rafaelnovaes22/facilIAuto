@@ -2,7 +2,6 @@
 Testes unitários para o processador de uso principal do veículo
 """
 
-import pytest
 
 from app.models import QuestionarioBusca
 from app.uso_principal_processor import UsoMatcher
@@ -50,19 +49,14 @@ class TestUsoMatcher:
             "preco": 45000,
         }
 
-        score, razoes, pontos_fortes = UsoMatcher.calcular_score_uso_principal(
-            questionario, carro
-        )
+        score, razoes, pontos_fortes = UsoMatcher.calcular_score_uso_principal(questionario, carro)
 
         # Score deve ser significativamente melhor que antes (>50%)
         assert score > 12.5  # Mais de 50% do total (25)
         assert len(razoes) >= 6  # Múltiplos critérios
         assert len(pontos_fortes) >= 6
         assert any("economia" in razao.lower() for razao in razoes)
-        assert any(
-            "manobra" in razao.lower() or "compacto" in razao.lower()
-            for razao in razoes
-        )
+        assert any("manobra" in razao.lower() or "compacto" in razao.lower() for razao in razoes)
         assert any("tecnologia" in razao.lower() for razao in razoes)
 
     def test_calcular_score_uso_viagem(self):
@@ -108,23 +102,15 @@ class TestUsoMatcher:
             "preco": 80000,
         }
 
-        score, razoes, pontos_fortes = UsoMatcher.calcular_score_uso_principal(
-            questionario, carro
-        )
+        score, razoes, pontos_fortes = UsoMatcher.calcular_score_uso_principal(questionario, carro)
 
         # Score deve ser significativamente melhor que antes (>75%)
         assert score > 18.75  # Mais de 75% do total (25)
         assert len(razoes) >= 6  # Múltiplos critérios
         assert len(pontos_fortes) >= 6
         assert any("conforto" in razao.lower() for razao in razoes)
-        assert any(
-            "desempenho" in razao.lower() or "estrada" in razao.lower()
-            for razao in razoes
-        )
-        assert any(
-            "tecnologia" in razao.lower() or "entretenimento" in razao.lower()
-            for razao in razoes
-        )
+        assert any("desempenho" in razao.lower() or "estrada" in razao.lower() for razao in razoes)
+        assert any("tecnologia" in razao.lower() or "entretenimento" in razao.lower() for razao in razoes)
 
     def test_calcular_score_uso_trabalho(self):
         """Testa o cálculo de score para trabalho/negócios"""
@@ -158,17 +144,13 @@ class TestUsoMatcher:
             "preco": 45000,
         }
 
-        score, razoes, pontos_fortes = UsoMatcher.calcular_score_uso_principal(
-            questionario, carro
-        )
+        score, razoes, pontos_fortes = UsoMatcher.calcular_score_uso_principal(questionario, carro)
 
         # Veículo deve ter score alto para trabalho
         assert score > 0
         assert any("trabalho" in razao.lower() for razao in razoes)
         assert any(
-            "economia" in ponto.lower()
-            or "profissional" in ponto.lower()
-            or "plataformas" in ponto.lower()
+            "economia" in ponto.lower() or "profissional" in ponto.lower() or "plataformas" in ponto.lower()
             for ponto in pontos_fortes
         )
 
@@ -216,22 +198,15 @@ class TestUsoMatcher:
             "ano": 2020,
         }
 
-        score, razoes, pontos_fortes = UsoMatcher.calcular_score_uso_principal(
-            questionario, carro
-        )
+        score, razoes, pontos_fortes = UsoMatcher.calcular_score_uso_principal(questionario, carro)
 
         # Score deve ser significativamente melhor que antes (>75%)
         assert score > 18.75  # Mais de 75% do total (25)
         assert len(razoes) >= 6  # Múltiplos critérios
         assert len(pontos_fortes) >= 6
         assert any("segurança" in razao.lower() for razao in razoes)
-        assert any(
-            "espaço" in razao.lower() or "família" in razao.lower() for razao in razoes
-        )
-        assert any(
-            "praticidade" in razao.lower() or "custo" in razao.lower()
-            for razao in razoes
-        )
+        assert any("espaço" in razao.lower() or "família" in razao.lower() for razao in razoes)
+        assert any("praticidade" in razao.lower() or "custo" in razao.lower() for razao in razoes)
 
     def test_uso_multiplo(self):
         """Testa o cálculo de score para múltiplos usos"""
@@ -261,9 +236,7 @@ class TestUsoMatcher:
             "preco": 90000,
         }
 
-        score, razoes, pontos_fortes = UsoMatcher.calcular_score_uso_principal(
-            questionario, carro
-        )
+        score, razoes, pontos_fortes = UsoMatcher.calcular_score_uso_principal(questionario, carro)
 
         # Deve ter score dividido entre os usos
         assert score > 0
@@ -271,11 +244,7 @@ class TestUsoMatcher:
 
         # Deve mencionar diferentes tipos de uso
         razoes_texto = " ".join(razoes).lower()
-        assert (
-            "urbano" in razoes_texto
-            or "família" in razoes_texto
-            or "viagem" in razoes_texto
-        )
+        assert "urbano" in razoes_texto or "família" in razoes_texto or "viagem" in razoes_texto
 
     def test_gerar_sugestoes_uso(self):
         """Testa a geração de sugestões baseadas no uso"""
@@ -295,11 +264,7 @@ class TestUsoMatcher:
 
         assert len(sugestoes) > 0
         assert any(
-            any(
-                word in sugestao.lower()
-                for word in ["cidade", "compacto", "economia", "estacion"]
-            )
-            for sugestao in sugestoes
+            any(word in sugestao.lower() for word in ["cidade", "compacto", "economia", "estacion"]) for sugestao in sugestoes
         )
         # Não deve ter duplicatas
         assert len(sugestoes) == len(set(sugestoes))

@@ -62,14 +62,12 @@ def app_server():
             print("✅ Servidor já está rodando")
             yield "http://localhost:8000"
             return
-    except:
+    except Exception:
         pass
 
     # Iniciar servidor para testes
     print("🚀 Iniciando servidor para testes E2E...")
-    process = subprocess.Popen(
-        ["python", "main.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE
-    )
+    process = subprocess.Popen(["python", "main.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     # Aguardar servidor inicializar
     for _ in range(30):  # 30 segundos timeout
@@ -78,7 +76,7 @@ def app_server():
             if response.status_code == 200:
                 print("✅ Servidor iniciado com sucesso")
                 break
-        except:
+        except Exception:
             time.sleep(1)
     else:
         process.terminate()
@@ -161,7 +159,5 @@ async def mock_api_responses(page):
     # Mock de auto-complete
     await page.route(
         "**/api/autocomplete/**",
-        lambda route: route.fulfill(
-            json={"suggestions": ["Corolla", "Camry", "Civic"]}
-        ),
+        lambda route: route.fulfill(json={"suggestions": ["Corolla", "Camry", "Civic"]}),
     )

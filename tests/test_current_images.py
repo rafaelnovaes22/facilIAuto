@@ -3,6 +3,9 @@
 Script para testar a validação das imagens atuais no banco de dados
 """
 
+from app.image_validation import ImageValidationService, validate_image_urls_sync
+from app.database import get_carros
+from app.config import test_connection
 import asyncio
 import os
 import sys
@@ -10,10 +13,6 @@ from typing import Dict, List
 
 # Adicionar o diretório do projeto ao path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
-from app.config import test_connection
-from app.database import get_carros
-from app.image_validation import ImageValidationService, validate_image_urls_sync
 
 
 def collect_all_image_urls() -> Dict[str, List[str]]:
@@ -69,9 +68,7 @@ async def test_image_validation_service():
             status = "✅ VÁLIDA" if result.is_valid else "❌ INVÁLIDA"
             print(f"{status} - {result.url}")
             if not result.is_valid:
-                print(
-                    f"   Erro: {result.error_type.value if result.error_type else 'N/A'}"
-                )
+                print(f"   Erro: {result.error_type.value if result.error_type else 'N/A'}")
                 print(f"   Mensagem: {result.error_message}")
             else:
                 print(f"   Tipo: {result.content_type}")
@@ -124,14 +121,14 @@ def validate_current_database_images():
         valid_urls = [r for r in results if r.is_valid]
         invalid_urls = [r for r in results if not r.is_valid]
 
-        print(f"\n📊 Resultados da validação:")
+        print("\n📊 Resultados da validação:")
         print(f"✅ URLs válidas: {len(valid_urls)}")
         print(f"❌ URLs inválidas: {len(invalid_urls)}")
         print(f"📈 Taxa de sucesso: {len(valid_urls)/len(results)*100:.1f}%")
 
         # Mostrar URLs inválidas
         if invalid_urls:
-            print(f"\n❌ URLs com problemas:")
+            print("\n❌ URLs com problemas:")
             error_counts = {}
             for result in invalid_urls:
                 error_type = result.error_type.value if result.error_type else "unknown"
@@ -139,12 +136,12 @@ def validate_current_database_images():
                 print(f"   {result.url}")
                 print(f"     Erro: {result.error_message}")
 
-            print(f"\n📋 Resumo dos erros:")
+            print("\n📋 Resumo dos erros:")
             for error_type, count in error_counts.items():
                 print(f"   {error_type}: {count} URLs")
 
         # Identificar carros afetados
-        print(f"\n🚗 Carros com imagens problemáticas:")
+        print("\n🚗 Carros com imagens problemáticas:")
         affected_cars = []
 
         for car_name, fotos in car_images.items():

@@ -7,8 +7,6 @@ Executa o servidor e abre uma página de teste
 import os
 import subprocess
 import sys
-import time
-import webbrowser
 
 
 def test_carousel_functionality():

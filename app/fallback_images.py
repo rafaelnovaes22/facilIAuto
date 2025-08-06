@@ -3,13 +3,10 @@ Sistema de fallback de imagens para o FacilIAuto
 Fornece imagens de alta qualidade quando as originais não funcionam
 """
 
-import hashlib
-import json
 import logging
-import os
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 
 
 class VehicleCategory(Enum):
@@ -148,9 +145,7 @@ class FallbackImageService:
             "https://loremflickr.com/400/300/car,automotive/",
         ]
 
-    def get_fallback_images(
-        self, marca: str, modelo: str, categoria: Optional[str] = None
-    ) -> List[str]:
+    def get_fallback_images(self, marca: str, modelo: str, categoria: Optional[str] = None) -> List[str]:
         """
         Obtém imagens de fallback para um veículo específico
 
@@ -165,13 +160,9 @@ class FallbackImageService:
         # Atualizar estatísticas
         self.usage_stats["fallback_requests"] += 1
         if categoria:
-            self.usage_stats["category_usage"][categoria] = (
-                self.usage_stats["category_usage"].get(categoria, 0) + 1
-            )
+            self.usage_stats["category_usage"][categoria] = self.usage_stats["category_usage"].get(categoria, 0) + 1
         if marca:
-            self.usage_stats["brand_usage"][marca.upper()] = (
-                self.usage_stats["brand_usage"].get(marca.upper(), 0) + 1
-            )
+            self.usage_stats["brand_usage"][marca.upper()] = self.usage_stats["brand_usage"].get(marca.upper(), 0) + 1
 
         # Verificar cache primeiro
         cache_key = f"{marca.lower()}-{modelo.lower()}-{categoria or 'none'}"
@@ -196,7 +187,9 @@ class FallbackImageService:
         text_color = "FFFFFF" if self._is_dark_color(brand_color) else "000000"
 
         # Placeholder personalizado
-        custom_placeholder = f"https://via.placeholder.com/400x300/{brand_color.replace('#', '')}/{text_color}?text={marca}+{modelo}"
+        custom_placeholder = (
+            f"https://via.placeholder.com/400x300/{brand_color.replace('#', '')}/{text_color}?text={marca}+{modelo}"
+        )
         fallback_urls.append(custom_placeholder)
 
         # 3. Adicionar imagens aleatórias de carros
@@ -207,20 +200,14 @@ class FallbackImageService:
                 fallback_urls.append(service)
 
         # 4. Fallback final genérico
-        fallback_urls.append(
-            "https://via.placeholder.com/400x300/CCCCCC/666666?text=Imagem+Indisponivel"
-        )
+        fallback_urls.append("https://via.placeholder.com/400x300/CCCCCC/666666?text=Imagem+Indisponivel")
 
-        result = fallback_urls[
-            :5
-        ]  # Retornar as 5 melhores opções para maior flexibilidade
+        result = fallback_urls[:5]  # Retornar as 5 melhores opções para maior flexibilidade
 
         # Armazenar no cache
         self._cache_result(cache_key, result)
 
-        self.logger.info(
-            f"Geradas {len(result)} imagens de fallback para {marca} {modelo} ({categoria})"
-        )
+        self.logger.info(f"Geradas {len(result)} imagens de fallback para {marca} {modelo} ({categoria})")
         return result
 
     def get_category_fallback_images(self, categoria: str) -> List[str]:
@@ -395,9 +382,7 @@ class FallbackImageService:
         """Retorna estatísticas de uso do sistema de fallback"""
         total_requests = self.usage_stats["fallback_requests"]
         cache_hits = self.usage_stats["cache_hits"]
-        cache_hit_rate = (
-            (cache_hits / total_requests * 100) if total_requests > 0 else 0
-        )
+        cache_hit_rate = (cache_hits / total_requests * 100) if total_requests > 0 else 0
 
         return {
             "total_requests": total_requests,
@@ -426,8 +411,6 @@ def get_best_fallback(
     return fallback_service.select_best_fallback(marca, modelo, categoria, failed_urls)
 
 
-def create_vehicle_placeholder(
-    marca: str, modelo: str, ano: Optional[int] = None, cor: Optional[str] = None
-) -> str:
+def create_vehicle_placeholder(marca: str, modelo: str, ano: Optional[int] = None, cor: Optional[str] = None) -> str:
     """Função utilitária para criar placeholder personalizado"""
     return fallback_service.get_placeholder_with_info(marca, modelo, ano, cor)

@@ -33,7 +33,7 @@ class CarroRepository:
 
         try:
             query = """
-                SELECT 
+                SELECT
                     id,
                     marca,
                     modelo,
@@ -51,7 +51,7 @@ class CarroRepository:
                     disponivel,
                     destaque,
                     concessionaria_id
-                FROM veiculos 
+                FROM veiculos
                 WHERE disponivel = true
                 ORDER BY destaque DESC, preco ASC
             """
@@ -78,7 +78,7 @@ class CarroRepository:
 
         try:
             query = """
-                SELECT 
+                SELECT
                     id,
                     marca,
                     modelo,
@@ -96,7 +96,7 @@ class CarroRepository:
                     disponivel,
                     destaque,
                     concessionaria_id
-                FROM veiculos 
+                FROM veiculos
                 WHERE id = %s AND disponivel = true
             """
 
@@ -149,8 +149,8 @@ class CarroRepository:
                 where_clauses.append("UPPER(combustivel) = UPPER(%s)")
                 params.append(filtros["combustivel"])
 
-            query = f"""
-                SELECT 
+            query = """
+                SELECT
                     id,
                     marca,
                     modelo,
@@ -168,7 +168,7 @@ class CarroRepository:
                     disponivel,
                     destaque,
                     concessionaria_id
-                FROM veiculos 
+                FROM veiculos
                 WHERE {' AND '.join(where_clauses)}
                 ORDER BY destaque DESC, preco ASC
             """
@@ -210,9 +210,7 @@ class CarroRepository:
         }
 
         # Determina categoria baseada no modelo
-        categoria = self._determinar_categoria(
-            veiculo["modelo"], veiculo.get("versao", "")
-        )
+        categoria = self._determinar_categoria(veiculo["modelo"], veiculo.get("versao", ""))
 
         # Estima atributos baseados nos dados disponíveis
         atributos = self._estimar_atributos(veiculo)
@@ -229,9 +227,7 @@ class CarroRepository:
             "versao": veiculo.get("versao"),
             "ano": veiculo["ano"],
             "preco": float(veiculo["preco"]),
-            "preco_promocional": float(veiculo["preco_promocional"])
-            if veiculo.get("preco_promocional")
-            else None,
+            "preco_promocional": float(veiculo["preco_promocional"]) if veiculo.get("preco_promocional") else None,
             "categoria": categoria,
             "consumo": atributos["consumo"],  # Estimado
             "potencia": atributos["potencia"],  # Estimado
@@ -282,34 +278,22 @@ class CarroRepository:
         ):
             return "suv_compacto"
 
-        if any(
-            word in modelo_lower
-            for word in ["santa fe", "sorento", "pilot", "pathfinder"]
-        ):
+        if any(word in modelo_lower for word in ["santa fe", "sorento", "pilot", "pathfinder"]):
             return "suv_medio"
 
         if any(word in modelo_lower for word in ["x1", "x3", "q3", "glc", "macan"]):
             return "suv_premium"
 
         # Picapes
-        if any(
-            word in modelo_lower
-            for word in ["ranger", "hilux", "amarok", "frontier", "s10", "toro"]
-        ):
+        if any(word in modelo_lower for word in ["ranger", "hilux", "amarok", "frontier", "s10", "toro"]):
             return "pickup"
 
         # Sedans
-        if any(
-            word in modelo_lower
-            for word in ["corolla", "civic", "jetta", "cruze", "sentra", "city"]
-        ):
+        if any(word in modelo_lower for word in ["corolla", "civic", "jetta", "cruze", "sentra", "city"]):
             return "sedan"
 
         # Hatches
-        if any(
-            word in modelo_lower
-            for word in ["onix", "hb20", "polo", "gol", "argo", "ka", "march"]
-        ):
+        if any(word in modelo_lower for word in ["onix", "hb20", "polo", "gol", "argo", "ka", "march"]):
             return "hatch"
 
         # Default baseado na versão ou tamanho típico
@@ -320,9 +304,9 @@ class CarroRepository:
 
     def _estimar_atributos(self, veiculo: Dict) -> Dict:
         """Estima atributos baseado no modelo e características conhecidas"""
-        modelo = veiculo["modelo"].lower()
+        veiculo["modelo"].lower()
         categoria = self._determinar_categoria(veiculo["modelo"])
-        ano = veiculo["ano"]
+        veiculo["ano"]
 
         # Estimativas baseadas em dados típicos do mercado
         if categoria == "hatch":

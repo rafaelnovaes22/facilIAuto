@@ -1,14 +1,11 @@
-import re
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List
 
-from langchain_core.messages import AIMessage
 
 from app.langgraph_chatbot_state import (
     AgentType,
     ChatbotState,
     adicionar_resposta_agente,
 )
-from app.uso_principal_processor import UsoMatcher
 
 
 class ChatbotKeywords:
@@ -207,58 +204,31 @@ def router_node(state: ChatbotState) -> ChatbotState:
     confidencias = {}
 
     # Agente Técnico
-    matches_tecnico = sum(
-        1 for keyword in ChatbotKeywords.TECNICO if keyword in pergunta
-    )
-    confidencias[AgentType.TECNICO] = min(
-        matches_tecnico / len(ChatbotKeywords.TECNICO) * 3, 1.0
-    )
+    matches_tecnico = sum(1 for keyword in ChatbotKeywords.TECNICO if keyword in pergunta)
+    confidencias[AgentType.TECNICO] = min(matches_tecnico / len(ChatbotKeywords.TECNICO) * 3, 1.0)
 
     # Agente Financeiro
-    matches_financeiro = sum(
-        1 for keyword in ChatbotKeywords.FINANCEIRO if keyword in pergunta
-    )
-    confidencias[AgentType.FINANCEIRO] = min(
-        matches_financeiro / len(ChatbotKeywords.FINANCEIRO) * 3, 1.0
-    )
+    matches_financeiro = sum(1 for keyword in ChatbotKeywords.FINANCEIRO if keyword in pergunta)
+    confidencias[AgentType.FINANCEIRO] = min(matches_financeiro / len(ChatbotKeywords.FINANCEIRO) * 3, 1.0)
 
     # Agente Comparação
-    matches_comparacao = sum(
-        1 for keyword in ChatbotKeywords.COMPARACAO if keyword in pergunta
-    )
-    confidencias[AgentType.COMPARACAO] = min(
-        matches_comparacao / len(ChatbotKeywords.COMPARACAO) * 3, 1.0
-    )
+    matches_comparacao = sum(1 for keyword in ChatbotKeywords.COMPARACAO if keyword in pergunta)
+    confidencias[AgentType.COMPARACAO] = min(matches_comparacao / len(ChatbotKeywords.COMPARACAO) * 3, 1.0)
 
     # Agente Manutenção
-    matches_manutencao = sum(
-        1 for keyword in ChatbotKeywords.MANUTENCAO if keyword in pergunta
-    )
-    confidencias[AgentType.MANUTENCAO] = min(
-        matches_manutencao / len(ChatbotKeywords.MANUTENCAO) * 3, 1.0
-    )
+    matches_manutencao = sum(1 for keyword in ChatbotKeywords.MANUTENCAO if keyword in pergunta)
+    confidencias[AgentType.MANUTENCAO] = min(matches_manutencao / len(ChatbotKeywords.MANUTENCAO) * 3, 1.0)
 
     # Agente Avaliação
-    matches_avaliacao = sum(
-        1 for keyword in ChatbotKeywords.AVALIACAO if keyword in pergunta
-    )
-    confidencias[AgentType.AVALIACAO] = min(
-        matches_avaliacao / len(ChatbotKeywords.AVALIACAO) * 3, 1.0
-    )
+    matches_avaliacao = sum(1 for keyword in ChatbotKeywords.AVALIACAO if keyword in pergunta)
+    confidencias[AgentType.AVALIACAO] = min(matches_avaliacao / len(ChatbotKeywords.AVALIACAO) * 3, 1.0)
 
     # Agente Uso Principal - novo agente especializado
-    matches_uso = sum(
-        1 for keyword in ChatbotKeywords.USO_PRINCIPAL if keyword in pergunta
-    )
+    matches_uso = sum(1 for keyword in ChatbotKeywords.USO_PRINCIPAL if keyword in pergunta)
     # Boost para perguntas específicas sobre adequação de uso
-    if any(
-        phrase in pergunta
-        for phrase in ["adequado para", "serve para", "é bom para", "recomendado para"]
-    ):
+    if any(phrase in pergunta for phrase in ["adequado para", "serve para", "é bom para", "recomendado para"]):
         matches_uso += 2
-    confidencias[AgentType.USO_PRINCIPAL] = min(
-        matches_uso / len(ChatbotKeywords.USO_PRINCIPAL) * 3, 1.0
-    )
+    confidencias[AgentType.USO_PRINCIPAL] = min(matches_uso / len(ChatbotKeywords.USO_PRINCIPAL) * 3, 1.0)
 
     # Encontrar o agente com maior confiança
     melhor_agente = max(confidencias.items(), key=lambda x: x[1])
@@ -319,13 +289,9 @@ def financeiro_agent_node(state: ChatbotState) -> ChatbotState:
     carro = state["carro_data"]
     pergunta = state["pergunta_atual"].lower()
 
-    if any(
-        word in pergunta for word in ["simulação", "simulacao", "parcela", "prestação"]
-    ):
+    if any(word in pergunta for word in ["simulação", "simulacao", "parcela", "prestação"]):
         resposta = _simular_financiamento(carro)
-    elif any(
-        word in pergunta for word in ["documentação", "documentacao", "documento"]
-    ):
+    elif any(word in pergunta for word in ["documentação", "documentacao", "documento"]):
         resposta = _documentacao_necessaria()
     elif any(word in pergunta for word in ["consórcio", "consorcio"]):
         resposta = _explicar_consorcio(carro)
@@ -428,18 +394,18 @@ def finalizer_node(state: ChatbotState) -> ChatbotState:
     """
     Nó finalizador para respostas genéricas e formatação final
     """
-    carro = state["carro_data"]
+    state["carro_data"]
 
     if not state["resposta_final"]:
         # Gerar resposta genérica
-        resposta = f"""🤖 **Assistente Geral**
+        resposta = """🤖 **Assistente Geral**
 
 Oi! Sou especialista em informações sobre o **{carro.get('marca')} {carro.get('modelo')}**.
 
 Posso te ajudar com:
 
 🔧 **Especificações técnicas** - motor, consumo, potência
-💰 **Financiamento** - simulações, documentação, consórcio  
+💰 **Financiamento** - simulações, documentação, consórcio
 ⚖️ **Comparações** - outros modelos similares
 🛠️ **Manutenção** - custos, cuidados, revisões
 📊 **Avaliação** - valor de mercado, revenda
@@ -468,10 +434,10 @@ Ou use os botões rápidos para perguntas comuns! 😊"""
 
 
 def _responder_motor_potencia(carro: Dict[str, Any]) -> str:
-    potencia = carro.get("potencia", "N/A")
-    combustivel = carro.get("combustivel", "flex").title()
+    carro.get("potencia", "N/A")
+    carro.get("combustivel", "flex").title()
 
-    return f"""🔧 **Especificações do Motor**
+    return """🔧 **Especificações do Motor**
 
 **Potência:** {potencia} cv
 **Combustível:** {combustivel}
@@ -484,20 +450,19 @@ def _responder_motor_potencia(carro: Dict[str, Any]) -> str:
 
 def _responder_consumo_combustivel(carro: Dict[str, Any]) -> str:
     consumo = carro.get("consumo", "N/A")
-    combustivel = carro.get("combustivel", "flex").title()
+    carro.get("combustivel", "flex").title()
 
-    contexto_consumo = ""
     if isinstance(consumo, (int, float)) and consumo > 0:
         if consumo >= 14:
-            contexto_consumo = "✅ **Excelente** economia de combustível!"
+            pass
         elif consumo >= 12:
-            contexto_consumo = "👍 **Boa** economia para a categoria."
+            pass
         elif consumo >= 10:
-            contexto_consumo = "⚖️ Consumo **moderado** para o porte."
+            pass
         else:
-            contexto_consumo = "⚠️ Consumo mais elevado, mas com boa performance."
+            pass
 
-    return f"""⛽ **Consumo e Combustível**
+    return """⛽ **Consumo e Combustível**
 
 **Consumo médio:** {consumo} km/l (cidade/estrada)
 **Tipo de combustível:** {combustivel}
@@ -510,7 +475,7 @@ def _responder_consumo_combustivel(carro: Dict[str, Any]) -> str:
 
 
 def _responder_cambio(carro: Dict[str, Any]) -> str:
-    cambio = carro.get("cambio", "manual").title()
+    carro.get("cambio", "manual").title()
 
     vantagens = {
         "Manual": "• Maior controle sobre o veículo\n• Menor custo de manutenção\n• Economia de combustível",
@@ -518,7 +483,7 @@ def _responder_cambio(carro: Dict[str, Any]) -> str:
         "Cvt": "• Aceleração contínua suave\n• Ótima economia de combustível\n• Tecnologia moderna",
     }
 
-    return f"""⚙️ **Sistema de Transmissão**
+    return """⚙️ **Sistema de Transmissão**
 
 **Tipo de câmbio:** {cambio}
 
@@ -529,11 +494,11 @@ def _responder_cambio(carro: Dict[str, Any]) -> str:
 
 
 def _responder_dimensoes(carro: Dict[str, Any]) -> str:
-    porta_malas = carro.get("porta_malas", "N/A")
-    capacidade = carro.get("capacidade_pessoas", 5)
-    categoria = carro.get("categoria", "sedan").title()
+    carro.get("porta_malas", "N/A")
+    carro.get("capacidade_pessoas", 5)
+    carro.get("categoria", "sedan").title()
 
-    return f"""📏 **Dimensões e Espaço**
+    return """📏 **Dimensões e Espaço**
 
 **Categoria:** {categoria}
 **Capacidade:** {capacidade} pessoas
@@ -546,10 +511,10 @@ def _responder_dimensoes(carro: Dict[str, Any]) -> str:
 
 
 def _responder_seguranca(carro: Dict[str, Any]) -> str:
-    seguranca = carro.get("seguranca", 3)
-    ano = carro.get("ano")
+    carro.get("seguranca", 3)
+    carro.get("ano")
 
-    return f"""🛡️ **Segurança e Proteção**
+    return """🛡️ **Segurança e Proteção**
 
 **Nível de segurança:** {"★" * seguranca}{"☆" * (5-seguranca)} ({seguranca}/5)
 **Ano:** {ano}
@@ -564,7 +529,7 @@ def _responder_geral_tecnico(carro: Dict[str, Any]) -> str:
     return f"""🔧 **Resumo Técnico - {carro.get('marca')} {carro.get('modelo')}**
 
 • **Motor:** {carro.get('potencia', 'N/A')} cv, {carro.get('combustivel', 'flex').title()}
-• **Câmbio:** {carro.get('cambio', 'manual').title()}  
+• **Câmbio:** {carro.get('cambio', 'manual').title()}
 • **Consumo:** {carro.get('consumo', 'N/A')} km/l
 • **Capacidade:** {carro.get('capacidade_pessoas', 5)} pessoas
 • **Porta-malas:** {carro.get('porta_malas', 'N/A')} litros
@@ -581,7 +546,7 @@ def _simular_financiamento(carro: Dict[str, Any]) -> str:
     sim_30_48_prestacao = sim_30_48_valor_financiado * 0.0215  # 2.15% para 48x com 30%
     sim_30_36_prestacao = sim_30_48_valor_financiado * 0.0275  # 2.75% para 36x com 30%
 
-    return f"""💰 **Simulação de Financiamento**
+    return """💰 **Simulação de Financiamento**
 
 **Valor do veículo:** R$ {preco:,.2f}
 
@@ -599,7 +564,7 @@ def _simular_financiamento(carro: Dict[str, Any]) -> str:
 • Entrada: R$ {preco * 0.3:,.0f}
 • 36x de R$ {sim_30_36_prestacao:,.0f}
 
-⚠️ **Importante:** 
+⚠️ **Importante:**
 • Taxas variam conforme seu perfil de crédito
 • Simulação com taxa estimada de 1,2% a.m.
 • Valores finais dependem da aprovação bancária"""
@@ -631,7 +596,7 @@ def _explicar_consorcio(carro: Dict[str, Any]) -> str:
     preco = carro.get("preco_promocional", carro.get("preco", 0))
     prestacao_consorcio = preco / 100  # 100 meses típico
 
-    return f"""🎯 **Consórcio de Veículos**
+    return """🎯 **Consórcio de Veículos**
 
 **Como funciona:**
 • Grupo de pessoas compra o mesmo bem
@@ -655,9 +620,9 @@ def _explicar_consorcio(carro: Dict[str, Any]) -> str:
 
 
 def _explicar_leasing(carro: Dict[str, Any]) -> str:
-    preco = carro.get("preco_promocional", carro.get("preco", 0))
+    carro.get("preco_promocional", carro.get("preco", 0))
 
-    return f"""🏢 **Leasing Operacional**
+    return """🏢 **Leasing Operacional**
 
 **O que é:**
 • Aluguel de longo prazo (2-5 anos)
@@ -688,7 +653,7 @@ def _orientacoes_credito() -> str:
 
 **🎯 Score Ideal:**
 • 700+ = Melhores taxas e condições
-• 500-699 = Boas opções disponíveis  
+• 500-699 = Boas opções disponíveis
 • 300-499 = Possível com restrições
 • <300 = Dificuldade, considere melhorar
 
@@ -714,7 +679,7 @@ def _opcoes_financiamento_geral(carro: Dict[str, Any]) -> str:
 
 **🏦 1. Financiamento Bancário (CDC)**
 • ✅ Leva o carro na hora
-• ✅ Vira proprietário imediatamente  
+• ✅ Vira proprietário imediatamente
 • ⚠️ Juros + altos
 
 **🎯 2. Consórcio**
@@ -823,7 +788,7 @@ Este veículo tem bom posicionamento em sua categoria. Para comparações espec�
 """
 
     for i, similar in enumerate(similares[:3], 1):
-        comparacao += f"""
+        comparacao += """
 **{i}. {similar['marca']} {similar['modelo']}**
 • Preço: R$ {similar['preco']:,.2f}
 • Consumo: {similar['consumo']} km/l
@@ -837,7 +802,7 @@ def _orientacoes_manutencao(carro: Dict[str, Any]) -> str:
     marca = carro.get("marca", "").upper()
     modelo = carro.get("modelo", "")
     ano = carro.get("ano", 2020)
-    km = carro.get("km", 0)
+    carro.get("km", 0)
 
     return f"""🔧 **Manutenção - {marca} {modelo}**
 
@@ -941,9 +906,7 @@ def uso_principal_agent_node(state: ChatbotState) -> ChatbotState:
         tipos_uso_mencionados = ["urbano", "viagem", "trabalho", "familia"]
 
     resposta_partes = []
-    resposta_partes.append(
-        f"🎯 **Adequação do {carro['marca']} {carro['modelo']} para diferentes usos:**\n"
-    )
+    resposta_partes.append(f"🎯 **Adequação do {carro['marca']} {carro['modelo']} para diferentes usos:**\n")
 
     for uso in tipos_uso_mencionados:
         analise = _analisar_adequacao_uso(carro, uso)
@@ -977,15 +940,11 @@ def _analisar_adequacao_uso(carro: Dict[str, Any], uso: str) -> str:
 
         opcoes_urbanas = ["conectividade", "sensor", "camera"]
         opcionais = carro.get("opcionais", [])
-        tech_count = sum(
-            1
-            for tech in opcoes_urbanas
-            if any(tech in opcional.lower() for opcional in opcionais)
-        )
+        tech_count = sum(1 for tech in opcoes_urbanas if any(tech in opcional.lower() for opcional in opcionais))
         if tech_count > 0:
             pontos_positivos.append("Tecnologias que auxiliam no trânsito")
 
-        resultado = f"🏙️ **USO URBANO:**\n"
+        resultado = "🏙️ **USO URBANO:**\n"
         if pontos_positivos:
             resultado += f"✅ {'; '.join(pontos_positivos)}\n"
         if pontos_atencao:
@@ -1019,7 +978,7 @@ def _analisar_adequacao_uso(carro: Dict[str, Any], uso: str) -> str:
         if carro.get("seguranca", 0) >= 4:
             pontos_positivos.append("Alta segurança para rodovias")
 
-        resultado = f"🛣️ **VIAGENS LONGAS:**\n"
+        resultado = "🛣️ **VIAGENS LONGAS:**\n"
         if pontos_positivos:
             resultado += f"✅ {'; '.join(pontos_positivos)}\n"
         if pontos_atencao:
@@ -1058,7 +1017,7 @@ def _analisar_adequacao_uso(carro: Dict[str, Any], uso: str) -> str:
         if idade <= 8:
             pontos_positivos.append("Veículo relativamente novo")
 
-        resultado = f"💼 **TRABALHO/NEGÓCIOS:**\n"
+        resultado = "💼 **TRABALHO/NEGÓCIOS:**\n"
         if pontos_positivos:
             resultado += f"✅ {'; '.join(pontos_positivos)}\n"
         if pontos_atencao:
@@ -1093,15 +1052,11 @@ def _analisar_adequacao_uso(carro: Dict[str, Any], uso: str) -> str:
         # Verificar itens de conforto
         opcionais = carro.get("opcionais", [])
         conforto_familia = ["ar_condicionado", "vidros_eletricos", "direcao_assistida"]
-        conforto_count = sum(
-            1
-            for item in conforto_familia
-            if any(item in opcional.lower() for opcional in opcionais)
-        )
+        conforto_count = sum(1 for item in conforto_familia if any(item in opcional.lower() for opcional in opcionais))
         if conforto_count > 1:
             pontos_positivos.append("Bons itens de conforto familiar")
 
-        resultado = f"👨‍👩‍👧‍👦 **USO FAMILIAR:**\n"
+        resultado = "👨‍👩‍👧‍👦 **USO FAMILIAR:**\n"
         if pontos_positivos:
             resultado += f"✅ {'; '.join(pontos_positivos)}\n"
         if pontos_atencao:
@@ -1121,9 +1076,7 @@ def _analisar_adequacao_uso(carro: Dict[str, Any], uso: str) -> str:
     return resultado + "\n"
 
 
-def _gerar_recomendacao_uso_geral(
-    carro: Dict[str, Any], usos_analisados: List[str]
-) -> str:
+def _gerar_recomendacao_uso_geral(carro: Dict[str, Any], usos_analisados: List[str]) -> str:
     """Gera uma recomendação geral baseada nos usos analisados"""
     categoria = carro.get("categoria", "")
 

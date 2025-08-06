@@ -1,10 +1,8 @@
-import json
 from typing import Any, Dict, List, TypedDict, cast
 
 from langgraph.graph import END, StateGraph
-from langgraph.prebuilt import create_react_agent
 
-from app.database import get_carro_by_id, get_carros
+from app.database import get_carros
 from app.models import CarroRecomendacao, QuestionarioBusca, RespostaBusca
 from app.uso_principal_processor import UsoMatcher
 
@@ -28,15 +26,8 @@ def filtrar_carros_basicos(state: EstadoBuscaDict) -> EstadoBuscaDict:
 
     for carro in carros:
         # Filtro de orçamento (opcional)
-        if (
-            questionario.orcamento_min is not None
-            and questionario.orcamento_max is not None
-        ):
-            if not (
-                questionario.orcamento_min
-                <= carro["preco"]
-                <= questionario.orcamento_max
-            ):
+        if questionario.orcamento_min is not None and questionario.orcamento_max is not None:
+            if not (questionario.orcamento_min <= carro["preco"] <= questionario.orcamento_max):
                 continue
 
         # Filtro de região
@@ -69,19 +60,13 @@ def calcular_scores_compatibilidade(state: EstadoBuscaDict) -> EstadoBuscaDict:
         modelo_score = 0
 
         # Marca principal (prioridade máxima)
-        if (
-            questionario.marca_preferida
-            and questionario.marca_preferida != "sem_preferencia"
-        ):
+        if questionario.marca_preferida and questionario.marca_preferida != "sem_preferencia":
             if questionario.marca_preferida.upper() == carro["marca"].upper():
                 marca_score += 20
                 razoes.append(f"Marca preferida: {carro['marca']}")
 
         # Marcas alternativas (prioridade secundária)
-        if (
-            hasattr(questionario, "marcas_alternativas")
-            and questionario.marcas_alternativas
-        ):
+        if hasattr(questionario, "marcas_alternativas") and questionario.marcas_alternativas:
             for marca_alt in questionario.marcas_alternativas:
                 if marca_alt.upper() == carro["marca"].upper() and marca_score == 0:
                     marca_score += 12  # Menos que a preferida, mas ainda significativo
@@ -89,19 +74,13 @@ def calcular_scores_compatibilidade(state: EstadoBuscaDict) -> EstadoBuscaDict:
                     break
 
         # Modelo específico (prioridade máxima)
-        if (
-            questionario.modelo_especifico
-            and questionario.modelo_especifico != "aberto_opcoes"
-        ):
+        if questionario.modelo_especifico and questionario.modelo_especifico != "aberto_opcoes":
             if questionario.modelo_especifico.lower() in carro["modelo"].lower():
                 modelo_score += 15
                 razoes.append(f"Modelo específico: {carro['modelo']}")
 
         # Modelos alternativos
-        if (
-            hasattr(questionario, "modelos_alternativos")
-            and questionario.modelos_alternativos
-        ):
+        if hasattr(questionario, "modelos_alternativos") and questionario.modelos_alternativos:
             for modelo_alt in questionario.modelos_alternativos:
                 if modelo_alt.lower() in carro["modelo"].lower() and modelo_score == 0:
                     modelo_score += 8  # Peso menor que o modelo principal
@@ -127,9 +106,7 @@ def calcular_scores_compatibilidade(state: EstadoBuscaDict) -> EstadoBuscaDict:
             score += 10
             pontos_fortes.append(f"Comporta {carro['capacidade_pessoas']} pessoas")
         else:
-            consideracoes.append(
-                f"Capacidade limitada: {carro['capacidade_pessoas']} pessoas"
-            )
+            consideracoes.append(f"Capacidade limitada: {carro['capacidade_pessoas']} pessoas")
 
         # Score por espaço de carga (peso: 10%)
         if questionario.espaco_carga == "pequeno" and carro["porta_malas"] >= 250:
@@ -143,9 +120,7 @@ def calcular_scores_compatibilidade(state: EstadoBuscaDict) -> EstadoBuscaDict:
         if questionario.potencia_desejada == "economica" and carro["potencia"] <= 120:
             score += 10
             pontos_fortes.append("Motor econômico")
-        elif (
-            questionario.potencia_desejada == "media" and 120 < carro["potencia"] <= 170
-        ):
+        elif questionario.potencia_desejada == "media" and 120 < carro["potencia"] <= 170:
             score += 10
             pontos_fortes.append("Potência equilibrada")
         elif questionario.potencia_desejada == "alta" and carro["potencia"] > 170:
@@ -166,24 +141,14 @@ def calcular_scores_compatibilidade(state: EstadoBuscaDict) -> EstadoBuscaDict:
             score += 15
             pontos_fortes.append("Alta performance")
         elif questionario.prioridade == "equilibrio":
-            media_atributos = (
-                carro["economia"]
-                + carro["conforto"]
-                + carro["seguranca"]
-                + carro["performance"]
-            ) / 4
+            media_atributos = (carro["economia"] + carro["conforto"] + carro["seguranca"] + carro["performance"]) / 4
             if media_atributos >= 3.5:
                 score += 15
                 pontos_fortes.append("Excelente equilíbrio geral")
 
         # Score por preço dentro do orçamento (peso: 10%)
-        if (
-            questionario.orcamento_min is not None
-            and questionario.orcamento_max is not None
-        ):
-            orcamento_medio = (
-                questionario.orcamento_max + questionario.orcamento_min
-            ) / 2
+        if questionario.orcamento_min is not None and questionario.orcamento_max is not None:
+            orcamento_medio = (questionario.orcamento_max + questionario.orcamento_min) / 2
             if carro["preco"] <= orcamento_medio:
                 score += 10
                 pontos_fortes.append("Preço atrativo dentro do orçamento")
@@ -266,18 +231,16 @@ def gerar_resumo_perfil(state: EstadoBuscaDict) -> EstadoBuscaDict:
     """Gera resumo do perfil do usuário"""
     q = state["questionario"]
 
-    resumo = f"Perfil do usuário: "
+    resumo = "Perfil do usuário: "
     resumo += f"Busca por {', '.join(q.uso_principal)} "
     resumo += f"na região {q.regiao}, "
     resumo += f"para {q.pessoas_transportar} pessoas, "
 
     # Incluir orçamento apenas se fornecido
     if q.orcamento_min is not None and q.orcamento_max is not None:
-        resumo += (
-            f"com orçamento entre R$ {q.orcamento_min:,} e R$ {q.orcamento_max:,}, "
-        )
+        resumo += f"com orçamento entre R$ {q.orcamento_min:,} e R$ {q.orcamento_max:,}, "
     else:
-        resumo += f"sem restrição de orçamento, "
+        resumo += "sem restrição de orçamento, "
 
     resumo += f"priorizando {q.prioridade}, "
 
@@ -304,49 +267,31 @@ def gerar_sugestoes_gerais(state: EstadoBuscaDict) -> EstadoBuscaDict:
 
     # Sugestões baseadas na urgência
     if q.urgencia == "hoje_amanha":
-        sugestoes.append(
-            "Para compra imediata, tenha documentos em mãos e confirme a situação financeira antecipadamente"
-        )
+        sugestoes.append("Para compra imediata, tenha documentos em mãos e confirme a situação financeira antecipadamente")
         sugestoes.append("Priorize carros em destaque que passaram por revisão técnica")
     elif q.urgencia == "esta_semana":
-        sugestoes.append(
-            "Aproveite a semana para testar os carros e negociar condições de pagamento"
-        )
+        sugestoes.append("Aproveite a semana para testar os carros e negociar condições de pagamento")
     elif q.urgencia == "ate_15_dias":
-        sugestoes.append(
-            "Você tem tempo para comparar opções e buscar o melhor custo-benefício"
-        )
+        sugestoes.append("Você tem tempo para comparar opções e buscar o melhor custo-benefício")
     elif q.urgencia == "sem_pressa":
-        sugestoes.append(
-            "Sem pressa você pode encontrar oportunidades únicas e negociar melhores preços"
-        )
+        sugestoes.append("Sem pressa você pode encontrar oportunidades únicas e negociar melhores preços")
 
     if q.criancas:
-        sugestoes.append(
-            "Para segurança das crianças, considere modelos com 5 estrelas em segurança"
-        )
+        sugestoes.append("Para segurança das crianças, considere modelos com 5 estrelas em segurança")
 
     # Sugestões avançadas baseadas no uso principal
     sugestoes_uso = UsoMatcher.gerar_sugestoes_uso(q)
     sugestoes.extend(sugestoes_uso)
 
     if q.prioridade == "economia":
-        sugestoes.append(
-            "Considere também os custos de manutenção e seguro além do preço de compra"
-        )
+        sugestoes.append("Considere também os custos de manutenção e seguro além do preço de compra")
 
     if len(state["carros_filtrados"]) < 3:
-        sugestoes.append(
-            "Considere flexibilizar alguns critérios para ter mais opções disponíveis"
-        )
+        sugestoes.append("Considere flexibilizar alguns critérios para ter mais opções disponíveis")
 
     # Garante que sempre temos uma lista
     sugestoes_finais = (
-        sugestoes
-        if sugestoes
-        else [
-            "Analise cuidadosamente as opções disponíveis e teste os carros antes da compra"
-        ]
+        sugestoes if sugestoes else ["Analise cuidadosamente as opções disponíveis e teste os carros antes da compra"]
     )
     return {**state, "sugestoes_personalizadas": sugestoes_finais}
 

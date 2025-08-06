@@ -1,6 +1,6 @@
+from sqlalchemy import Index
 import uuid
-from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict
 
 from sqlalchemy import (
     JSON,
@@ -19,7 +19,6 @@ from sqlalchemy.sql import func
 
 class Base(DeclarativeBase):
     """Base class para modelos SQLAlchemy"""
-    pass
 
 
 class Conversation(Base):
@@ -36,18 +35,14 @@ class Conversation(Base):
 
     # Identificadores
     carro_id = Column(Integer, nullable=False, index=True)
-    user_session_id = Column(
-        String, nullable=True, index=True
-    )  # Para identificar usuário
+    user_session_id = Column(String, nullable=True, index=True)  # Para identificar usuário
 
     # Dados do veículo (snapshot para preservar contexto)
     carro_data = Column(JSON, nullable=False)
 
     # Metadados da conversa
     started_at = Column(DateTime, default=func.now(), nullable=False)
-    last_activity = Column(
-        DateTime, default=func.now(), onupdate=func.now(), nullable=False
-    )
+    last_activity = Column(DateTime, default=func.now(), onupdate=func.now(), nullable=False)
     ended_at = Column(DateTime, nullable=True)
 
     # Estado da conversa
@@ -80,9 +75,7 @@ class Conversation(Base):
             "user_session_id": self.user_session_id,
             "carro_data": self.carro_data,
             "started_at": self.started_at.isoformat() if self.started_at else None,
-            "last_activity": self.last_activity.isoformat()
-            if self.last_activity
-            else None,
+            "last_activity": self.last_activity.isoformat() if self.last_activity else None,
             "ended_at": self.ended_at.isoformat() if self.ended_at else None,
             "is_active": self.is_active,
             "total_messages": self.total_messages,
@@ -102,9 +95,7 @@ class ConversationMessage(Base):
     __tablename__ = "conversation_messages"
 
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
-    conversation_id = Column(
-        String, ForeignKey("conversations.id"), nullable=False, index=True
-    )
+    conversation_id = Column(String, ForeignKey("conversations.id"), nullable=False, index=True)
 
     # Tipo e conteúdo da mensagem
     message_type = Column(String, nullable=False)  # 'user' ou 'assistant'
@@ -116,12 +107,8 @@ class ConversationMessage(Base):
     processing_time_ms = Column(Integer, nullable=True)  # Tempo de processamento
 
     # Dados utilizados e sugestões geradas
-    data_sources = Column(
-        JSON, default=list, nullable=False
-    )  # Fontes de dados utilizadas
-    followup_suggestions = Column(
-        JSON, default=list, nullable=False
-    )  # Sugestões de follow-up
+    data_sources = Column(JSON, default=list, nullable=False)  # Fontes de dados utilizadas
+    followup_suggestions = Column(JSON, default=list, nullable=False)  # Sugestões de follow-up
 
     # Feedback do usuário (opcional)
     user_rating = Column(Integer, nullable=True)  # 1-5 estrelas
@@ -162,14 +149,10 @@ class ConversationContext(Base):
     __tablename__ = "conversation_context"
 
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
-    conversation_id = Column(
-        String, ForeignKey("conversations.id"), nullable=False, index=True
-    )
+    conversation_id = Column(String, ForeignKey("conversations.id"), nullable=False, index=True)
 
     # Tipo de contexto
-    context_type = Column(
-        String, nullable=False, index=True
-    )  # 'preference', 'intent', 'demographic', etc.
+    context_type = Column(String, nullable=False, index=True)  # 'preference', 'intent', 'demographic', etc.
     context_key = Column(String, nullable=False)  # Chave específica
     context_value = Column(JSON, nullable=False)  # Valor do contexto
 
@@ -180,9 +163,7 @@ class ConversationContext(Base):
     identified_at = Column(DateTime, default=func.now(), nullable=False)
 
     # Fonte da inferência
-    source_message_id = Column(
-        String, ForeignKey("conversation_messages.id"), nullable=True
-    )
+    source_message_id = Column(String, ForeignKey("conversation_messages.id"), nullable=True)
 
     # Relacionamentos
     conversation = relationship("Conversation", back_populates="context_data")
@@ -196,9 +177,7 @@ class ConversationContext(Base):
             "context_key": self.context_key,
             "context_value": self.context_value,
             "confidence": self.confidence,
-            "identified_at": self.identified_at.isoformat()
-            if self.identified_at
-            else None,
+            "identified_at": self.identified_at.isoformat() if self.identified_at else None,
             "source_message_id": self.source_message_id,
         }
 
@@ -231,9 +210,7 @@ class UserSession(Base):
 
     # Timestamps
     first_seen = Column(DateTime, default=func.now(), nullable=False)
-    last_seen = Column(
-        DateTime, default=func.now(), onupdate=func.now(), nullable=False
-    )
+    last_seen = Column(DateTime, default=func.now(), onupdate=func.now(), nullable=False)
 
     def to_dict(self) -> Dict[str, Any]:
         """Converte para dicionário"""
@@ -251,7 +228,6 @@ class UserSession(Base):
 
 
 # Índices para performance
-from sqlalchemy import Index
 
 # Índices compostos para queries frequentes
 Index("idx_conv_carro_active", Conversation.carro_id, Conversation.is_active)
@@ -265,6 +241,4 @@ Index(
     ConversationContext.conversation_id,
     ConversationContext.context_type,
 )
-Index(
-    "idx_conv_user_activity", Conversation.user_session_id, Conversation.last_activity
-)
+Index("idx_conv_user_activity", Conversation.user_session_id, Conversation.last_activity)

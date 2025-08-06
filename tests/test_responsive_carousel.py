@@ -36,14 +36,10 @@ class TestResponsiveCarousel:
         wait = WebDriverWait(driver, 10)
 
         # Verificar se os scripts foram carregados
-        carousel_script = wait.until(
-            EC.presence_of_element_located((By.TAG_NAME, "script"))
-        )
+        wait.until(EC.presence_of_element_located((By.TAG_NAME, "script")))
 
         # Verificar se a classe ResponsiveCarousel está disponível
-        carousel_class_exists = driver.execute_script(
-            "return typeof ResponsiveCarousel !== 'undefined'"
-        )
+        carousel_class_exists = driver.execute_script("return typeof ResponsiveCarousel !== 'undefined'")
         assert carousel_class_exists, "ResponsiveCarousel class não foi carregada"
 
     def test_carousel_responsive_behavior(self, driver):
@@ -75,13 +71,13 @@ class TestResponsiveCarousel:
 
             # Verificar se a altura foi ajustada conforme o tamanho da tela
             if width <= 576:
-                expected_height = "160px"
+                pass
             elif width <= 768:
-                expected_height = "200px"
+                pass
             elif width <= 992:
-                expected_height = "220px"
+                pass
             else:
-                expected_height = "250px"
+                pass
 
             # Note: O teste pode não encontrar carrossel na página inicial
             # mas verifica se o sistema está configurado corretamente
@@ -95,7 +91,7 @@ class TestResponsiveCarousel:
 
         # Aguardar modal de resultados
         wait = WebDriverWait(driver, 10)
-        modal = wait.until(EC.presence_of_element_located((By.ID, "resultadosModal")))
+        wait.until(EC.presence_of_element_located((By.ID, "resultadosModal")))
 
         # Procurar por carrosséis nos resultados
         carousels = driver.find_elements(By.CSS_SELECTOR, ".responsive-carousel")
@@ -115,9 +111,7 @@ class TestResponsiveCarousel:
             time.sleep(0.5)
 
             # Verificar se o slide mudou
-            active_slide = carousel.find_element(
-                By.CSS_SELECTOR, ".carousel-item.active"
-            )
+            active_slide = carousel.find_element(By.CSS_SELECTOR, ".carousel-item.active")
             assert active_slide, "Slide ativo não encontrado após navegação"
 
     def test_carousel_touch_support(self, driver):
@@ -132,7 +126,7 @@ class TestResponsiveCarousel:
 
         # Aguardar resultados
         wait = WebDriverWait(driver, 10)
-        modal = wait.until(EC.presence_of_element_located((By.ID, "resultadosModal")))
+        wait.until(EC.presence_of_element_located((By.ID, "resultadosModal")))
 
         carousels = driver.find_elements(By.CSS_SELECTOR, ".responsive-carousel")
 
@@ -160,24 +154,18 @@ class TestResponsiveCarousel:
 
         # Aguardar resultados
         wait = WebDriverWait(driver, 10)
-        modal = wait.until(EC.presence_of_element_located((By.ID, "resultadosModal")))
+        wait.until(EC.presence_of_element_located((By.ID, "resultadosModal")))
 
         # Verificar se existem imagens com data-src (lazy loading)
         lazy_images = driver.find_elements(By.CSS_SELECTOR, "img[data-src]")
 
         if lazy_images:
             # Verificar se a primeira imagem não tem data-src (carregamento imediato)
-            first_images = driver.find_elements(
-                By.CSS_SELECTOR, ".carousel-item:first-child img"
-            )
+            first_images = driver.find_elements(By.CSS_SELECTOR, ".carousel-item:first-child img")
             if first_images:
                 first_img = first_images[0]
-                assert not first_img.get_attribute(
-                    "data-src"
-                ), "Primeira imagem deveria carregar imediatamente"
-                assert first_img.get_attribute(
-                    "src"
-                ), "Primeira imagem deveria ter src definido"
+                assert not first_img.get_attribute("data-src"), "Primeira imagem deveria carregar imediatamente"
+                assert first_img.get_attribute("src"), "Primeira imagem deveria ter src definido"
 
     def test_carousel_accessibility(self, driver):
         """Testa a acessibilidade do carrossel"""
@@ -188,7 +176,7 @@ class TestResponsiveCarousel:
 
         # Aguardar resultados
         wait = WebDriverWait(driver, 10)
-        modal = wait.until(EC.presence_of_element_located((By.ID, "resultadosModal")))
+        wait.until(EC.presence_of_element_located((By.ID, "resultadosModal")))
 
         carousels = driver.find_elements(By.CSS_SELECTOR, ".responsive-carousel")
 
@@ -196,15 +184,9 @@ class TestResponsiveCarousel:
             carousel = carousels[0]
 
             # Verificar atributos de acessibilidade
-            assert (
-                carousel.get_attribute("tabindex") == "0"
-            ), "Carrossel deveria ser focável"
-            assert (
-                carousel.get_attribute("role") == "region"
-            ), "Carrossel deveria ter role='region'"
-            assert carousel.get_attribute(
-                "aria-label"
-            ), "Carrossel deveria ter aria-label"
+            assert carousel.get_attribute("tabindex") == "0", "Carrossel deveria ser focável"
+            assert carousel.get_attribute("role") == "region", "Carrossel deveria ter role='region'"
+            assert carousel.get_attribute("aria-label"), "Carrossel deveria ter aria-label"
 
             # Verificar controles
             controls = carousel.find_elements(By.CSS_SELECTOR, ".carousel-control")
@@ -225,7 +207,7 @@ class TestResponsiveCarousel:
 
         # Aguardar resultados
         wait = WebDriverWait(driver, 10)
-        modal = wait.until(EC.presence_of_element_located((By.ID, "resultadosModal")))
+        wait.until(EC.presence_of_element_located((By.ID, "resultadosModal")))
 
         # Aguardar inicialização dos carrosséis
         time.sleep(1)
@@ -234,9 +216,7 @@ class TestResponsiveCarousel:
         initialization_time = end_time - start_time
 
         # Verificar se a inicialização foi rápida (menos de 5 segundos)
-        assert (
-            initialization_time < 5
-        ), f"Inicialização muito lenta: {initialization_time}s"
+        assert initialization_time < 5, f"Inicialização muito lenta: {initialization_time}s"
 
         # Verificar se não há erros de JavaScript
         logs = driver.get_log("browser")
@@ -248,7 +228,7 @@ class TestResponsiveCarousel:
         wait = WebDriverWait(driver, 10)
 
         # Aguardar formulário carregar
-        form = wait.until(EC.presence_of_element_located((By.ID, "questionarioForm")))
+        wait.until(EC.presence_of_element_located((By.ID, "questionarioForm")))
 
         # Navegar pelas etapas rapidamente
         for step in range(1, 9):
@@ -271,17 +251,14 @@ class TestCarouselIntegration:
     def test_carousel_with_fallback_images(self):
         """Testa integração do carrossel com sistema de fallback"""
         # Este teste seria executado com dados mockados
-        pass
 
     def test_carousel_with_multiple_images(self):
         """Testa carrossel com múltiplas imagens"""
         # Teste com dados mockados de carros com várias fotos
-        pass
 
     def test_carousel_with_single_image(self):
         """Testa comportamento com uma única imagem"""
         # Teste para verificar se não mostra controles desnecessários
-        pass
 
 
 if __name__ == "__main__":

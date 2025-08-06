@@ -22,9 +22,7 @@ async def processar_pergunta_chatbot(pergunta: PerguntaChatbot):
     especializado, retornando resposta contextualizada e inteligente.
     """
     try:
-        logger.info(
-            f"[LangGraph] Processando pergunta para carro {pergunta.carro_id}: {pergunta.pergunta}"
-        )
+        logger.info(f"[LangGraph] Processando pergunta para carro {pergunta.carro_id}: {pergunta.pergunta}")
 
         # Validar se o carro existe
         from app.database import get_carro_by_id
@@ -50,9 +48,7 @@ async def processar_pergunta_chatbot(pergunta: PerguntaChatbot):
 
         # Converter para formato de resposta esperado
         agente_tipo = (
-            TipoAgente(resultado["agente"])
-            if resultado["agente"] in [e.value for e in TipoAgente]
-            else TipoAgente.GERAL
+            TipoAgente(resultado["agente"]) if resultado["agente"] in [e.value for e in TipoAgente] else TipoAgente.GERAL
         )
 
         resposta = RespostaChatbot(
@@ -64,9 +60,7 @@ async def processar_pergunta_chatbot(pergunta: PerguntaChatbot):
             dados_utilizados=resultado["dados_utilizados"],
         )
 
-        logger.info(
-            f"[LangGraph] Resposta gerada pelo agente {resposta.agente} com confiança {resposta.confianca}"
-        )
+        logger.info(f"[LangGraph] Resposta gerada pelo agente {resposta.agente} com confiança {resposta.confianca}")
 
         return resposta
 
@@ -76,9 +70,7 @@ async def processar_pergunta_chatbot(pergunta: PerguntaChatbot):
 
     except Exception as e:
         logger.error(f"[LangGraph] Erro interno ao processar pergunta: {str(e)}")
-        raise HTTPException(
-            status_code=500, detail="Erro interno do servidor. Tente novamente."
-        )
+        raise HTTPException(status_code=500, detail="Erro interno do servidor. Tente novamente.")
 
 
 @router.get("/chatbot/agentes")
@@ -130,9 +122,7 @@ async def obter_estatisticas_langgraph():
                 "tipo": "State Graph with Conditional Edges",
                 "performance": "Otimizado com singleton pattern",
             },
-            "agentes_especializados": list(
-                chatbot_graph.obter_agentes_disponiveis().keys()
-            ),
+            "agentes_especializados": list(chatbot_graph.obter_agentes_disponiveis().keys()),
             "fluxo_processamento": [
                 "1. Recebe pergunta do usuário",
                 "2. Router analisa contexto e palavras-chave",
@@ -157,9 +147,7 @@ async def debug_langgraph(pergunta: PerguntaChatbot):
     e otimização do roteamento entre agentes.
     """
     try:
-        logger.info(
-            f"[DEBUG] Iniciando debug LangGraph para pergunta: {pergunta.pergunta}"
-        )
+        logger.info(f"[DEBUG] Iniciando debug LangGraph para pergunta: {pergunta.pergunta}")
 
         # Validar se o carro existe
         from app.database import get_carro_by_id
@@ -173,9 +161,7 @@ async def debug_langgraph(pergunta: PerguntaChatbot):
 
         # Executar debug do LangGraph
         chatbot_graph = get_chatbot_graph()
-        debug_info = chatbot_graph.executar_debug(
-            carro_id=pergunta.carro_id, carro_data=carro, pergunta=pergunta.pergunta
-        )
+        debug_info = chatbot_graph.executar_debug(carro_id=pergunta.carro_id, carro_data=carro, pergunta=pergunta.pergunta)
 
         return {
             "debug_langgraph": debug_info,

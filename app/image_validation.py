@@ -6,7 +6,7 @@ import asyncio
 import logging
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional, Tuple, cast
+from typing import Any, Dict, List, Optional, cast
 
 import aiohttp
 from pydantic import BaseModel
@@ -102,9 +102,7 @@ class ImageValidationService:
             if self.session is None:
                 raise RuntimeError("ClientSession não inicializada. Use como context manager.")
             async with self.session.head(url) as response:
-                response_time = int(
-                    (datetime.now() - start_time).total_seconds() * 1000
-                )
+                response_time = int((datetime.now() - start_time).total_seconds() * 1000)
 
                 # Verificar status code
                 if response.status == 200:
@@ -118,9 +116,7 @@ class ImageValidationService:
                             is_valid=True,
                             response_time_ms=response_time,
                             content_type=content_type,
-                            content_length=int(content_length)
-                            if content_length
-                            else None,
+                            content_length=int(content_length) if content_length else None,
                         )
                     else:
                         return ImageValidationResult(
@@ -192,9 +188,7 @@ class ImageValidationService:
                 error_message=f"Erro inesperado: {str(e)}",
             )
 
-    async def validate_multiple_urls(
-        self, urls: List[str]
-    ) -> List[ImageValidationResult]:
+    async def validate_multiple_urls(self, urls: List[str]) -> List[ImageValidationResult]:
         """
         Valida múltiplas URLs de imagem em paralelo
 
@@ -236,9 +230,7 @@ class ImageValidationService:
 
         return processed_results
 
-    def get_validation_summary(
-        self, results: List[ImageValidationResult]
-    ) -> Dict[str, Any]:
+    def get_validation_summary(self, results: List[ImageValidationResult]) -> Dict[str, Any]:
         """
         Gera um resumo dos resultados de validação
 
@@ -263,12 +255,8 @@ class ImageValidationService:
                 error_breakdown[error_type] = error_breakdown.get(error_type, 0) + 1
 
         # Calcular tempo médio de resposta
-        response_times = [
-            r.response_time_ms for r in results if r.response_time_ms is not None
-        ]
-        avg_response_time = (
-            sum(response_times) / len(response_times) if response_times else None
-        )
+        response_times = [r.response_time_ms for r in results if r.response_time_ms is not None]
+        avg_response_time = sum(response_times) / len(response_times) if response_times else None
 
         return {
             "total": total,
@@ -276,16 +264,12 @@ class ImageValidationService:
             "invalid": invalid,
             "success_rate": round((valid / total) * 100, 2),
             "error_breakdown": error_breakdown,
-            "avg_response_time_ms": round(avg_response_time, 2)
-            if avg_response_time
-            else None,
+            "avg_response_time_ms": round(avg_response_time, 2) if avg_response_time else None,
         }
 
 
 # Função utilitária para uso simples
-async def validate_image_urls(
-    urls: List[str], timeout: int = 10
-) -> List[ImageValidationResult]:
+async def validate_image_urls(urls: List[str], timeout: int = 10) -> List[ImageValidationResult]:
     """
     Função utilitária para validar URLs de imagem
 
@@ -301,9 +285,7 @@ async def validate_image_urls(
 
 
 # Função síncrona para compatibilidade
-def validate_image_urls_sync(
-    urls: List[str], timeout: int = 10
-) -> List[ImageValidationResult]:
+def validate_image_urls_sync(urls: List[str], timeout: int = 10) -> List[ImageValidationResult]:
     """
     Versão síncrona da validação de URLs
 

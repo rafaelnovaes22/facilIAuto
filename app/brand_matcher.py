@@ -6,7 +6,7 @@ Implementa fuzzy matching, auto-complete e validação inteligente
 import re
 from dataclasses import dataclass
 from difflib import SequenceMatcher
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List
 
 
 @dataclass
@@ -68,9 +68,7 @@ class AdvancedBrandMatcher:
 
     def calculate_similarity(self, a: str, b: str) -> float:
         """Calcula similaridade entre duas strings"""
-        return SequenceMatcher(
-            None, self.normalize_text(a), self.normalize_text(b)
-        ).ratio()
+        return SequenceMatcher(None, self.normalize_text(a), self.normalize_text(b)).ratio()
 
     def find_best_brand_match(self, user_input: str) -> BrandMatch:
         """Encontra a melhor correspondência para uma marca"""
@@ -104,9 +102,7 @@ class AdvancedBrandMatcher:
 
         return BrandMatch(
             original=user_input,
-            matched=best_match
-            if best_confidence >= self.confidence_threshold
-            else user_input,
+            matched=best_match if best_confidence >= self.confidence_threshold else user_input,
             confidence=best_confidence,
             suggestions=suggestions[:3],  # Top 3 sugestões
         )
@@ -147,9 +143,7 @@ class AdvancedBrandMatcher:
 
         return BrandMatch(
             original=user_input,
-            matched=best_match
-            if best_confidence >= self.confidence_threshold
-            else user_input,
+            matched=best_match if best_confidence >= self.confidence_threshold else user_input,
             confidence=best_confidence,
             suggestions=suggestions[:3],
         )
@@ -172,9 +166,7 @@ class AdvancedBrandMatcher:
 
         return list(set(suggestions))  # Remove duplicatas
 
-    def _generate_model_suggestions(
-        self, user_input: str, brand: str = ""
-    ) -> List[str]:
+    def _generate_model_suggestions(self, user_input: str, brand: str = "") -> List[str]:
         """Gera sugestões de modelos baseadas na entrada e marca"""
         suggestions = []
         normalized_input = self.normalize_text(user_input)
@@ -192,9 +184,7 @@ class AdvancedBrandMatcher:
 
         return suggestions[:5]  # Top 5 sugestões
 
-    def get_autocomplete_suggestions(
-        self, query: str, suggestion_type: str = "brand"
-    ) -> List[str]:
+    def get_autocomplete_suggestions(self, query: str, suggestion_type: str = "brand") -> List[str]:
         """Retorna sugestões para auto-complete"""
         if len(query) < 2:
             return []
@@ -206,9 +196,7 @@ class AdvancedBrandMatcher:
 
         return []
 
-    def validate_and_normalize_preferences(
-        self, marca: str, modelo: str
-    ) -> Dict[str, Any]:
+    def validate_and_normalize_preferences(self, marca: str, modelo: str) -> Dict[str, Any]:
         """Valida e normaliza preferências de marca e modelo"""
         brand_match = self.find_best_brand_match(marca)
         model_match = self.find_best_model_match(modelo, brand_match.matched)
@@ -223,9 +211,7 @@ class AdvancedBrandMatcher:
             "modelo_confianca": model_match.confidence,
             "modelo_sugestoes": model_match.suggestions,
             "needs_confirmation": (
-                brand_match.confidence < 0.8
-                or model_match.confidence < 0.8
-                or len(brand_match.suggestions) > 0
+                brand_match.confidence < 0.8 or model_match.confidence < 0.8 or len(brand_match.suggestions) > 0
             ),
         }
 

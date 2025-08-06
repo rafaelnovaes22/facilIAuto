@@ -2,14 +2,8 @@
 API melhorada com sistema de fallback de imagens integrado
 """
 
-from typing import List
-
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
 
 from app.busca_inteligente import processar_busca_inteligente
-from app.database import get_carro_by_id, get_carros
 from app.fallback_images import get_best_fallback, get_fallback_images
 from app.models import CarroRecomendacao, QuestionarioBusca, RespostaBusca
 
@@ -19,9 +13,7 @@ def enhance_car_with_fallbacks(carro: CarroRecomendacao) -> CarroRecomendacao:
 
     # Se não tem fotos, gerar fallbacks
     if not carro.fotos or len(carro.fotos) == 0:
-        fallback_images = get_fallback_images(
-            carro.marca, carro.modelo, carro.categoria
-        )
+        fallback_images = get_fallback_images(carro.marca, carro.modelo, carro.categoria)
         carro.fotos = fallback_images[:2]  # Máximo 2 imagens
 
     # Garantir que sempre temos pelo menos uma imagem

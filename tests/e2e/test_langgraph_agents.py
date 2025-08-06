@@ -7,23 +7,20 @@ integração com o sistema de memória.
 
 Agentes Testados:
 - Agente Técnico
-- Agente Financeiro 
+- Agente Financeiro
 - Agente de Comparação
 - Agente de Manutenção
 - Agente de Avaliação
 - Agente Geral (fallback)
 """
 
-import json
 import time
 import uuid
-from typing import Any, Dict, List
 
 import pytest
 from fastapi.testclient import TestClient
 
 from app.api import app
-from app.memory_manager import get_memory_manager
 
 
 class TestLangGraphAgentsE2E:
@@ -140,17 +137,13 @@ class TestLangGraphAgentsE2E:
 
             # Validar conteúdo técnico
             resposta = response_data["resposta"].lower()
-            keywords_found = [
-                kw for kw in scenario["expected_keywords"] if kw in resposta
-            ]
+            keywords_found = [kw for kw in scenario["expected_keywords"] if kw in resposta]
             keyword_coverage = len(keywords_found) / len(scenario["expected_keywords"])
 
             # Validar qualidade técnica
             technical_quality = {
                 "has_numbers": any(char.isdigit() for char in resposta),
-                "has_units": any(
-                    unit in resposta for unit in ["km/l", "cv", "hp", "litros", "l"]
-                ),
+                "has_units": any(unit in resposta for unit in ["km/l", "cv", "hp", "litros", "l"]),
                 "sufficient_length": len(response_data["resposta"]) > 100,
                 "mentions_brand": "honda" in resposta or "civic" in resposta,
             }
@@ -171,47 +164,33 @@ class TestLangGraphAgentsE2E:
 
             results.append(result)
 
-            print(
-                f"  Agente: {'✅ Técnico' if agent_correct else '❌ ' + response_data['agente']}"
-            )
-            print(
-                f"  Keywords: {len(keywords_found)}/{len(scenario['expected_keywords'])} ({keyword_coverage:.1%})"
-            )
+            print(f"  Agente: {'✅ Técnico' if agent_correct else '❌ ' + response_data['agente']}")
+            print(f"  Keywords: {len(keywords_found)}/{len(scenario['expected_keywords'])} ({keyword_coverage:.1%})")
             print(f"  Qualidade: {quality_score:.1%}")
             print(f"  Tempo: {response_time:.0f}ms")
             print(f"  Confiança: {response_data['confianca']:.2f}")
 
         # Métricas gerais do Agente Técnico
         avg_agent_accuracy = sum(r["agent_correct"] for r in results) / len(results)
-        avg_keyword_coverage = sum(r["keyword_coverage"] for r in results) / len(
-            results
-        )
+        avg_keyword_coverage = sum(r["keyword_coverage"] for r in results) / len(results)
         avg_quality_score = sum(r["quality_score"] for r in results) / len(results)
         avg_response_time = sum(r["response_time"] for r in results) / len(results)
 
-        print(f"\n📊 MÉTRICAS AGENTE TÉCNICO:")
+        print("\n📊 MÉTRICAS AGENTE TÉCNICO:")
         print(f"   Precisão do Agente: {avg_agent_accuracy:.1%}")
         print(f"   Cobertura Keywords: {avg_keyword_coverage:.1%}")
         print(f"   Qualidade Técnica: {avg_quality_score:.1%}")
         print(f"   Tempo Médio: {avg_response_time:.0f}ms")
 
         # Validações
-        assert (
-            avg_agent_accuracy >= 0.8
-        ), f"Precisão do agente técnico muito baixa: {avg_agent_accuracy:.1%}"
-        assert (
-            avg_keyword_coverage >= 0.6
-        ), f"Cobertura de keywords técnicas muito baixa: {avg_keyword_coverage:.1%}"
-        assert (
-            avg_quality_score >= 0.7
-        ), f"Qualidade técnica das respostas muito baixa: {avg_quality_score:.1%}"
+        assert avg_agent_accuracy >= 0.8, f"Precisão do agente técnico muito baixa: {avg_agent_accuracy:.1%}"
+        assert avg_keyword_coverage >= 0.6, f"Cobertura de keywords técnicas muito baixa: {avg_keyword_coverage:.1%}"
+        assert avg_quality_score >= 0.7, f"Qualidade técnica das respostas muito baixa: {avg_quality_score:.1%}"
 
         return results
 
     @pytest.mark.asyncio
-    async def test_agente_financeiro_comprehensive(
-        self, client, comprehensive_car_data
-    ):
+    async def test_agente_financeiro_comprehensive(self, client, comprehensive_car_data):
         """
         Teste abrangente do Agente Financeiro
         """
@@ -264,25 +243,15 @@ class TestLangGraphAgentsE2E:
             agent_correct = response_data["agente"] == "financeiro"
             resposta = response_data["resposta"].lower()
 
-            keywords_found = [
-                kw for kw in scenario["expected_keywords"] if kw in resposta
-            ]
+            keywords_found = [kw for kw in scenario["expected_keywords"] if kw in resposta]
             keyword_coverage = len(keywords_found) / len(scenario["expected_keywords"])
 
             # Validar qualidade financeira
             financial_quality = {
-                "mentions_price": any(
-                    term in resposta for term in ["preço", "valor", "165000", "165"]
-                ),
-                "has_financial_terms": any(
-                    term in resposta
-                    for term in ["financiamento", "parcela", "juros", "entrada"]
-                ),
+                "mentions_price": any(term in resposta for term in ["preço", "valor", "165000", "165"]),
+                "has_financial_terms": any(term in resposta for term in ["financiamento", "parcela", "juros", "entrada"]),
                 "provides_calculations": any(char.isdigit() for char in resposta),
-                "mentions_documentation": any(
-                    term in resposta
-                    for term in ["documento", "cpf", "renda", "aprovação"]
-                ),
+                "mentions_documentation": any(term in resposta for term in ["documento", "cp", "renda", "aprovação"]),
             }
 
             quality_score = sum(financial_quality.values()) / len(financial_quality)
@@ -298,43 +267,31 @@ class TestLangGraphAgentsE2E:
 
             results.append(result)
 
-            print(
-                f"  Agente: {'✅ Financeiro' if agent_correct else '❌ ' + response_data['agente']}"
-            )
-            print(
-                f"  Keywords: {len(keywords_found)}/{len(scenario['expected_keywords'])}"
-            )
+            print(f"  Agente: {'✅ Financeiro' if agent_correct else '❌ ' + response_data['agente']}")
+            print(f"  Keywords: {len(keywords_found)}/{len(scenario['expected_keywords'])}")
             print(f"  Qualidade Financeira: {quality_score:.1%}")
             print(f"  Menciona Preço: {'✅' if result['mentions_price'] else '❌'}")
 
         # Métricas do Agente Financeiro
         avg_agent_accuracy = sum(r["agent_correct"] for r in results) / len(results)
-        avg_keyword_coverage = sum(r["keyword_coverage"] for r in results) / len(
-            results
-        )
+        avg_keyword_coverage = sum(r["keyword_coverage"] for r in results) / len(results)
         avg_quality_score = sum(r["quality_score"] for r in results) / len(results)
         price_mention_rate = sum(r["mentions_price"] for r in results) / len(results)
 
-        print(f"\n📊 MÉTRICAS AGENTE FINANCEIRO:")
+        print("\n📊 MÉTRICAS AGENTE FINANCEIRO:")
         print(f"   Precisão do Agente: {avg_agent_accuracy:.1%}")
         print(f"   Cobertura Keywords: {avg_keyword_coverage:.1%}")
         print(f"   Qualidade Financeira: {avg_quality_score:.1%}")
         print(f"   Taxa Menção Preço: {price_mention_rate:.1%}")
 
         # Validações
-        assert (
-            avg_agent_accuracy >= 0.8
-        ), f"Precisão do agente financeiro muito baixa: {avg_agent_accuracy:.1%}"
-        assert (
-            avg_quality_score >= 0.6
-        ), f"Qualidade financeira das respostas muito baixa: {avg_quality_score:.1%}"
+        assert avg_agent_accuracy >= 0.8, f"Precisão do agente financeiro muito baixa: {avg_agent_accuracy:.1%}"
+        assert avg_quality_score >= 0.6, f"Qualidade financeira das respostas muito baixa: {avg_quality_score:.1%}"
 
         return results
 
     @pytest.mark.asyncio
-    async def test_agente_comparacao_comprehensive(
-        self, client, comprehensive_car_data
-    ):
+    async def test_agente_comparacao_comprehensive(self, client, comprehensive_car_data):
         """
         Teste abrangente do Agente de Comparação
         """
@@ -397,14 +354,8 @@ class TestLangGraphAgentsE2E:
                         "desvantagem",
                     ]
                 ),
-                "compares_specs": any(
-                    spec in resposta
-                    for spec in ["potência", "consumo", "preço", "espaço", "conforto"]
-                ),
-                "provides_conclusion": any(
-                    word in resposta
-                    for word in ["recomendo", "escolha", "opção", "conclusão"]
-                ),
+                "compares_specs": any(spec in resposta for spec in ["potência", "consumo", "preço", "espaço", "conforto"]),
+                "provides_conclusion": any(word in resposta for word in ["recomendo", "escolha", "opção", "conclusão"]),
             }
 
             quality_score = sum(comparison_quality.values()) / len(comparison_quality)
@@ -420,38 +371,28 @@ class TestLangGraphAgentsE2E:
 
             results.append(result)
 
-            print(
-                f"  Agente: {'✅ Comparação' if agent_correct else '❌ ' + response_data['agente']}"
-            )
+            print(f"  Agente: {'✅ Comparação' if agent_correct else '❌ ' + response_data['agente']}")
             print(f"  Menciona Concorrente: {'✅' if mentions_competitor else '❌'}")
             print(f"  Qualidade Comparativa: {quality_score:.1%}")
 
         # Métricas do Agente de Comparação
         avg_agent_accuracy = sum(r["agent_correct"] for r in results) / len(results)
-        competitor_mention_rate = sum(r["mentions_competitor"] for r in results) / len(
-            results
-        )
+        competitor_mention_rate = sum(r["mentions_competitor"] for r in results) / len(results)
         avg_quality_score = sum(r["quality_score"] for r in results) / len(results)
 
-        print(f"\n📊 MÉTRICAS AGENTE COMPARAÇÃO:")
+        print("\n📊 MÉTRICAS AGENTE COMPARAÇÃO:")
         print(f"   Precisão do Agente: {avg_agent_accuracy:.1%}")
         print(f"   Taxa Menção Concorrente: {competitor_mention_rate:.1%}")
         print(f"   Qualidade Comparativa: {avg_quality_score:.1%}")
 
         # Validações
-        assert (
-            avg_agent_accuracy >= 0.8
-        ), f"Precisão do agente de comparação muito baixa: {avg_agent_accuracy:.1%}"
-        assert (
-            competitor_mention_rate >= 0.8
-        ), f"Taxa de menção a concorrente muito baixa: {competitor_mention_rate:.1%}"
+        assert avg_agent_accuracy >= 0.8, f"Precisão do agente de comparação muito baixa: {avg_agent_accuracy:.1%}"
+        assert competitor_mention_rate >= 0.8, f"Taxa de menção a concorrente muito baixa: {competitor_mention_rate:.1%}"
 
         return results
 
     @pytest.mark.asyncio
-    async def test_agente_manutencao_comprehensive(
-        self, client, comprehensive_car_data
-    ):
+    async def test_agente_manutencao_comprehensive(self, client, comprehensive_car_data):
         """
         Teste abrangente do Agente de Manutenção
         """
@@ -500,20 +441,11 @@ class TestLangGraphAgentsE2E:
 
             # Validar qualidade de manutenção
             maintenance_quality = {
-                "mentions_maintenance": any(
-                    term in resposta for term in ["manutenção", "revisão", "peças"]
-                ),
-                "mentions_costs": any(
-                    term in resposta for term in ["custo", "preço", "valor", "r$"]
-                ),
+                "mentions_maintenance": any(term in resposta for term in ["manutenção", "revisão", "peças"]),
+                "mentions_costs": any(term in resposta for term in ["custo", "preço", "valor", "r$"]),
                 "mentions_warranty": "garantia" in resposta or "3 anos" in resposta,
-                "provides_schedule": any(
-                    term in resposta for term in ["km", "meses", "tempo", "período"]
-                ),
-                "mentions_brand_network": any(
-                    term in resposta
-                    for term in ["honda", "autorizada", "concessionária"]
-                ),
+                "provides_schedule": any(term in resposta for term in ["km", "meses", "tempo", "período"]),
+                "mentions_brand_network": any(term in resposta for term in ["honda", "autorizada", "concessionária"]),
             }
 
             quality_score = sum(maintenance_quality.values()) / len(maintenance_quality)
@@ -527,26 +459,20 @@ class TestLangGraphAgentsE2E:
 
             results.append(result)
 
-            print(
-                f"  Agente: {'✅ Manutenção' if agent_correct else '❌ ' + response_data['agente']}"
-            )
+            print(f"  Agente: {'✅ Manutenção' if agent_correct else '❌ ' + response_data['agente']}")
             print(f"  Qualidade Manutenção: {quality_score:.1%}")
 
         # Métricas do Agente de Manutenção
         avg_agent_accuracy = sum(r["agent_correct"] for r in results) / len(results)
         avg_quality_score = sum(r["quality_score"] for r in results) / len(results)
 
-        print(f"\n📊 MÉTRICAS AGENTE MANUTENÇÃO:")
+        print("\n📊 MÉTRICAS AGENTE MANUTENÇÃO:")
         print(f"   Precisão do Agente: {avg_agent_accuracy:.1%}")
         print(f"   Qualidade Manutenção: {avg_quality_score:.1%}")
 
         # Validações
-        assert (
-            avg_agent_accuracy >= 0.8
-        ), f"Precisão do agente de manutenção muito baixa: {avg_agent_accuracy:.1%}"
-        assert (
-            avg_quality_score >= 0.6
-        ), f"Qualidade de manutenção muito baixa: {avg_quality_score:.1%}"
+        assert avg_agent_accuracy >= 0.8, f"Precisão do agente de manutenção muito baixa: {avg_agent_accuracy:.1%}"
+        assert avg_quality_score >= 0.6, f"Qualidade de manutenção muito baixa: {avg_quality_score:.1%}"
 
         return results
 
@@ -596,19 +522,10 @@ class TestLangGraphAgentsE2E:
             # Validar qualidade de avaliação
             evaluation_quality = {
                 "mentions_price": "165" in resposta or "preço" in resposta,
-                "provides_analysis": any(
-                    term in resposta for term in ["análise", "avaliação", "opinião"]
-                ),
-                "mentions_market": any(
-                    term in resposta for term in ["mercado", "tabela", "fipe"]
-                ),
-                "gives_recommendation": any(
-                    term in resposta for term in ["recomendo", "sugiro", "vale"]
-                ),
-                "mentions_factors": any(
-                    term in resposta
-                    for term in ["quilometragem", "ano", "estado", "marca"]
-                ),
+                "provides_analysis": any(term in resposta for term in ["análise", "avaliação", "opinião"]),
+                "mentions_market": any(term in resposta for term in ["mercado", "tabela", "fipe"]),
+                "gives_recommendation": any(term in resposta for term in ["recomendo", "sugiro", "vale"]),
+                "mentions_factors": any(term in resposta for term in ["quilometragem", "ano", "estado", "marca"]),
             }
 
             quality_score = sum(evaluation_quality.values()) / len(evaluation_quality)
@@ -622,26 +539,20 @@ class TestLangGraphAgentsE2E:
 
             results.append(result)
 
-            print(
-                f"  Agente: {'✅ Avaliação' if agent_correct else '❌ ' + response_data['agente']}"
-            )
+            print(f"  Agente: {'✅ Avaliação' if agent_correct else '❌ ' + response_data['agente']}")
             print(f"  Qualidade Avaliação: {quality_score:.1%}")
 
         # Métricas do Agente de Avaliação
         avg_agent_accuracy = sum(r["agent_correct"] for r in results) / len(results)
         avg_quality_score = sum(r["quality_score"] for r in results) / len(results)
 
-        print(f"\n📊 MÉTRICAS AGENTE AVALIAÇÃO:")
+        print("\n📊 MÉTRICAS AGENTE AVALIAÇÃO:")
         print(f"   Precisão do Agente: {avg_agent_accuracy:.1%}")
         print(f"   Qualidade Avaliação: {avg_quality_score:.1%}")
 
         # Validações
-        assert (
-            avg_agent_accuracy >= 0.7
-        ), f"Precisão do agente de avaliação muito baixa: {avg_agent_accuracy:.1%}"
-        assert (
-            avg_quality_score >= 0.6
-        ), f"Qualidade de avaliação muito baixa: {avg_quality_score:.1%}"
+        assert avg_agent_accuracy >= 0.7, f"Precisão do agente de avaliação muito baixa: {avg_agent_accuracy:.1%}"
+        assert avg_quality_score >= 0.6, f"Qualidade de avaliação muito baixa: {avg_quality_score:.1%}"
 
         return results
 
@@ -699,9 +610,7 @@ class TestLangGraphAgentsE2E:
             consistency_score = 0
 
             for item in expected_items:
-                appears_in_all = all(
-                    item in resp["resposta"] for resp in responses.values()
-                )
+                appears_in_all = all(item in resp["resposta"] for resp in responses.values())
                 if appears_in_all:
                     consistency_score += 1
                 else:
@@ -709,9 +618,7 @@ class TestLangGraphAgentsE2E:
                         {
                             "test": i + 1,
                             "missing_item": item,
-                            "responses": {
-                                k: item in v["resposta"] for k, v in responses.items()
-                            },
+                            "responses": {k: item in v["resposta"] for k, v in responses.items()},
                         }
                     )
 
@@ -722,20 +629,15 @@ class TestLangGraphAgentsE2E:
             print(f"  Itens Consistentes: {consistency_score}/{len(expected_items)}")
 
         overall_consistency = 1.0 - (
-            len(inconsistencies)
-            / sum(
-                len(test.get("expected_consistency", [])) for test in consistency_tests
-            )
+            len(inconsistencies) / sum(len(test.get("expected_consistency", [])) for test in consistency_tests)
         )
 
-        print(f"\n📊 CONSISTÊNCIA GERAL:")
+        print("\n📊 CONSISTÊNCIA GERAL:")
         print(f"   Taxa de Consistência: {overall_consistency:.1%}")
         print(f"   Inconsistências Encontradas: {len(inconsistencies)}")
 
         # Validação
-        assert (
-            overall_consistency >= 0.7
-        ), f"Consistência entre agentes muito baixa: {overall_consistency:.1%}"
+        assert overall_consistency >= 0.7, f"Consistência entre agentes muito baixa: {overall_consistency:.1%}"
 
         return {
             "consistency_rate": overall_consistency,
@@ -763,7 +665,7 @@ def run_all_agent_tests():
     total_tests = len(test_results)
     success_rate = (passed_tests / total_tests) * 100
 
-    print(f"\n📊 RESULTADO DOS TESTES DE AGENTES:")
+    print("\n📊 RESULTADO DOS TESTES DE AGENTES:")
     print(f"   Testes Executados: {total_tests}")
     print(f"   Testes Aprovados: {passed_tests}")
     print(f"   Taxa de Sucesso: {success_rate:.1f}%")

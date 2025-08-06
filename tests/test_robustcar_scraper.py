@@ -12,9 +12,7 @@ from datetime import datetime
 from vehicle_image_scraper import RobustCarScraper
 
 # Configurar logging
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 
@@ -68,9 +66,7 @@ async def test_robustcar_scraper():
     try:
         # Testar scraping para cada veículo
         for i, vehicle in enumerate(test_vehicles, 1):
-            print(
-                f"\n📋 TESTE {i}/5: {vehicle['marca']} {vehicle['modelo']} {vehicle['ano']}"
-            )
+            print(f"\n📋 TESTE {i}/5: {vehicle['marca']} {vehicle['modelo']} {vehicle['ano']}")
             print("-" * 50)
 
             try:
@@ -80,9 +76,7 @@ async def test_robustcar_scraper():
                     print(f"✅ Sucesso! Encontradas {len(images)} imagens:")
                     for j, img in enumerate(images, 1):
                         print(f"   {j}. {img['url']}")
-                        print(
-                            f"      Fonte: {img['source']}, Qualidade: {img['quality_score']}"
-                        )
+                        print(f"      Fonte: {img['source']}, Qualidade: {img['quality_score']}")
                 else:
                     print("❌ Nenhuma imagem encontrada")
 
@@ -107,9 +101,7 @@ async def test_robustcar_scraper():
             "failed_searches": scraper.failed_searches,
         }
 
-        test_file = (
-            f"robustcar_test_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-        )
+        test_file = f"robustcar_test_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
         with open(test_file, "w", encoding="utf-8") as f:
             json.dump(test_results, f, indent=2, ensure_ascii=False)
 
@@ -122,9 +114,7 @@ async def test_robustcar_scraper():
             print(f"🎉 TESTE APROVADO! Taxa de sucesso: {success_rate:.1f}%")
         else:
             print(f"⚠️  TESTE PARCIAL. Taxa de sucesso: {success_rate:.1f}%")
-            print(
-                "   Isso pode ser normal se o site RobustCar não tiver os veículos testados"
-            )
+            print("   Isso pode ser normal se o site RobustCar não tiver os veículos testados")
 
     except Exception as e:
         logger.error(f"❌ Erro durante teste: {str(e)}")
@@ -153,9 +143,7 @@ async def test_robustcar_connection():
                 if response.status == 200:
                     print(f"✅ Conexão com {scraper.base_url} bem-sucedida!")
                     print(f"   Status: {response.status}")
-                    print(
-                        f"   Content-Type: {response.headers.get('content-type', 'N/A')}"
-                    )
+                    print(f"   Content-Type: {response.headers.get('content-type', 'N/A')}")
 
                     # Testar busca de veículos
                     vehicles = await scraper.get_robustcar_vehicles(session)
@@ -163,9 +151,7 @@ async def test_robustcar_connection():
                         print(f"✅ Encontrados {len(vehicles)} veículos no site!")
                         print("   Exemplos:")
                         for vehicle in vehicles[:3]:
-                            print(
-                                f"   - {vehicle['marca']} {vehicle['modelo']} ({vehicle.get('ano', 'N/A')})"
-                            )
+                            print(f"   - {vehicle['marca']} {vehicle['modelo']} ({vehicle.get('ano', 'N/A')})")
                     else:
                         print("⚠️  Nenhum veículo encontrado (pode ser normal)")
                 else:

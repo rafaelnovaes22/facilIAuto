@@ -405,9 +405,7 @@ class UsoMatcher:
             if uso not in cls.CRITERIOS_USO:
                 continue
 
-            score_uso, razoes_uso, pontos_uso = cls._avaliar_uso_especifico(
-                uso, carro, peso_por_uso, questionario
-            )
+            score_uso, razoes_uso, pontos_uso = cls._avaliar_uso_especifico(uso, carro, peso_por_uso, questionario)
             score_total += score_uso
             razoes.extend(razoes_uso)
             pontos_fortes.extend(pontos_uso)
@@ -429,9 +427,7 @@ class UsoMatcher:
         pontos_fortes = []
 
         for criterio, configs in criterios.items():
-            score_criterio, razao, ponto_forte = cls._avaliar_criterio(
-                criterio, configs, carro, questionario
-            )
+            score_criterio, razao, ponto_forte = cls._avaliar_criterio(criterio, configs, carro, questionario)
 
             # Aplica peso do critério dentro do uso
             peso_criterio = configs["peso"] / 100.0  # Converte percentual para decimal
@@ -503,11 +499,7 @@ class UsoMatcher:
             # Verifica sistemas de assistência
             opcionais = carro.get("opcionais", [])
             sistemas = configs.get("sistemas_assistencia", [])
-            tem_sistemas = sum(
-                1
-                for sistema in sistemas
-                if any(sistema in opcional.lower() for opcional in opcionais)
-            )
+            tem_sistemas = sum(1 for sistema in sistemas if any(sistema in opcional.lower() for opcional in opcionais))
             if tem_sistemas > 0:
                 score_parcial += 0.2
                 fatores.append("sistemas de auxílio")
@@ -523,17 +515,9 @@ class UsoMatcher:
             desejados = configs.get("desejados", [])
 
             # Conta itens essenciais
-            tem_essenciais = sum(
-                1
-                for item in essenciais
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
+            tem_essenciais = sum(1 for item in essenciais if any(item in opcional.lower() for opcional in opcionais))
             # Conta itens desejados
-            tem_desejados = sum(
-                1
-                for item in desejados
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
+            tem_desejados = sum(1 for item in desejados if any(item in opcional.lower() for opcional in opcionais))
 
             if tem_essenciais >= len(essenciais) * 0.7:  # 70% dos essenciais
                 score_base = 0.7
@@ -549,11 +533,7 @@ class UsoMatcher:
             # Verifica básicos obrigatórios
             opcionais = carro.get("opcionais", [])
             basicos = configs.get("basicos_obrigatorios", [])
-            tem_basicos = sum(
-                1
-                for item in basicos
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
+            tem_basicos = sum(1 for item in basicos if any(item in opcional.lower() for opcional in opcionais))
 
             if tem_basicos >= len(basicos) * 0.8:  # 80% dos básicos
                 score_parcial += 0.6
@@ -610,11 +590,7 @@ class UsoMatcher:
             # Verifica facilidades
             opcionais = carro.get("opcionais", [])
             facilidades = configs.get("facilidades", [])
-            tem_facilidades = sum(
-                1
-                for item in facilidades
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
+            tem_facilidades = sum(1 for item in facilidades if any(item in opcional.lower() for opcional in opcionais))
             if tem_facilidades > 0:
                 score_parcial += 0.3
                 fatores.append("facilidades")
@@ -629,16 +605,8 @@ class UsoMatcher:
             clima = configs.get("clima", [])
             ergonomia = configs.get("ergonomia", [])
 
-            tem_clima = sum(
-                1
-                for item in clima
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
-            tem_ergonomia = sum(
-                1
-                for item in ergonomia
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
+            tem_clima = sum(1 for item in clima if any(item in opcional.lower() for opcional in opcionais))
+            tem_ergonomia = sum(1 for item in ergonomia if any(item in opcional.lower() for opcional in opcionais))
 
             if tem_clima > 0 or tem_ergonomia > 0:
                 score = 0.7 + min((tem_clima + tem_ergonomia) * 0.1, 0.3)
@@ -659,33 +627,21 @@ class UsoMatcher:
             # Verifica bancos de qualidade
             opcionais = carro.get("opcionais", [])
             bancos_essenciais = configs.get("bancos_essenciais", [])
-            tem_bancos = sum(
-                1
-                for item in bancos_essenciais
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
+            tem_bancos = sum(1 for item in bancos_essenciais if any(item in opcional.lower() for opcional in opcionais))
             if tem_bancos > 0:
                 score_parcial += 0.4
                 fatores.append("bancos de qualidade")
 
             # Verifica climatização
             climatizacao = configs.get("climatizacao", [])
-            tem_clima = sum(
-                1
-                for item in climatizacao
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
+            tem_clima = sum(1 for item in climatizacao if any(item in opcional.lower() for opcional in opcionais))
             if tem_clima > 0:
                 score_parcial += 0.4
                 fatores.append("climatização adequada")
 
             # Verifica ergonomia
             ergonomia = configs.get("ergonomia", [])
-            tem_ergonomia = sum(
-                1
-                for item in ergonomia
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
+            tem_ergonomia = sum(1 for item in ergonomia if any(item in opcional.lower() for opcional in opcionais))
             if tem_ergonomia > 0:
                 score_parcial += 0.2
                 fatores.append("ergonomia")
@@ -701,20 +657,14 @@ class UsoMatcher:
 
             # Verifica potência por cilindrada
             cilindrada = carro.get("cilindrada", 0)
-            if cilindrada >= configs.get("potencia_minima", {}).get(
-                "cilindrada_min", 1.4
-            ):
+            if cilindrada >= configs.get("potencia_minima", {}).get("cilindrada_min", 1.4):
                 score_parcial += 0.4
                 fatores.append(f"motor {cilindrada} potente")
 
             # Verifica estabilidade e freios
             opcionais = carro.get("opcionais", [])
             estabilidade = configs.get("estabilidade", [])
-            tem_estabilidade = sum(
-                1
-                for item in estabilidade
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
+            tem_estabilidade = sum(1 for item in estabilidade if any(item in opcional.lower() for opcional in opcionais))
             if tem_estabilidade > 0:
                 score_parcial += 0.3
                 fatores.append("sistemas estabilidade")
@@ -786,33 +736,21 @@ class UsoMatcher:
             # Verifica navegação
             opcionais = carro.get("opcionais", [])
             navegacao = configs.get("navegacao", [])
-            tem_navegacao = sum(
-                1
-                for item in navegacao
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
+            tem_navegacao = sum(1 for item in navegacao if any(item in opcional.lower() for opcional in opcionais))
             if tem_navegacao > 0:
                 score_parcial += 0.4
                 fatores.append("navegação")
 
             # Verifica conectividade
             conectividade = configs.get("conectividade", [])
-            tem_conectividade = sum(
-                1
-                for item in conectividade
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
+            tem_conectividade = sum(1 for item in conectividade if any(item in opcional.lower() for opcional in opcionais))
             if tem_conectividade > 0:
                 score_parcial += 0.4
                 fatores.append("conectividade")
 
             # Verifica entretenimento
             entretenimento = configs.get("entretenimento", [])
-            tem_entretenimento = sum(
-                1
-                for item in entretenimento
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
+            tem_entretenimento = sum(1 for item in entretenimento if any(item in opcional.lower() for opcional in opcionais))
             if tem_entretenimento > 0:
                 score_parcial += 0.2
                 fatores.append("entretenimento")
@@ -853,16 +791,8 @@ class UsoMatcher:
             direcao = configs.get("direcao", [])
             assistencias = configs.get("assistencias", [])
 
-            tem_direcao = sum(
-                1
-                for item in direcao
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
-            tem_assistencias = sum(
-                1
-                for item in assistencias
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
+            tem_direcao = sum(1 for item in direcao if any(item in opcional.lower() for opcional in opcionais))
+            tem_assistencias = sum(1 for item in assistencias if any(item in opcional.lower() for opcional in opcionais))
 
             if tem_direcao > 0 or tem_assistencias > 0:
                 score = 0.7 + min((tem_direcao + tem_assistencias) * 0.15, 0.3)
@@ -1019,11 +949,7 @@ class UsoMatcher:
             # Verifica airbags essenciais
             opcionais = carro.get("opcionais", [])
             airbags_essenciais = configs.get("airbags_essenciais", [])
-            tem_airbags = sum(
-                1
-                for item in airbags_essenciais
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
+            tem_airbags = sum(1 for item in airbags_essenciais if any(item in opcional.lower() for opcional in opcionais))
             if tem_airbags > 0:
                 score_parcial += 0.4
                 fatores.append(f"{tem_airbags} tipos airbags")
@@ -1036,11 +962,7 @@ class UsoMatcher:
 
             # Verifica sistemas ativos
             sistemas_ativos = configs.get("sistemas_ativos", [])
-            tem_sistemas = sum(
-                1
-                for item in sistemas_ativos
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
+            tem_sistemas = sum(1 for item in sistemas_ativos if any(item in opcional.lower() for opcional in opcionais))
             if tem_sistemas > 0:
                 score_parcial += 0.2
                 fatores.append("sistemas ativos")
@@ -1061,9 +983,7 @@ class UsoMatcher:
                 fatores.append(f"{categoria} espaçoso")
 
             # Verifica capacidade de pessoas
-            pessoas = carro.get(
-                "pessoas_transportar", questionario.pessoas_transportar or 5
-            )
+            pessoas = carro.get("pessoas_transportar", questionario.pessoas_transportar or 5)
             minimo = configs.get("pessoas_capacidade", {}).get("minimo", 5)
             if pessoas >= minimo:
                 score_parcial += 0.3
@@ -1072,11 +992,7 @@ class UsoMatcher:
             # Verifica conforto específico
             opcionais = carro.get("opcionais", [])
             conforto_ocupantes = configs.get("conforto_ocupantes", [])
-            tem_conforto = sum(
-                1
-                for item in conforto_ocupantes
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
+            tem_conforto = sum(1 for item in conforto_ocupantes if any(item in opcional.lower() for opcional in opcionais))
             if tem_conforto > 0:
                 score_parcial += 0.2
                 fatores.append("conforto ocupantes")
@@ -1093,11 +1009,7 @@ class UsoMatcher:
             # Verifica facilidade de acesso
             opcionais = carro.get("opcionais", [])
             facilidades = configs.get("conveniencias", [])
-            tem_facilidades = sum(
-                1
-                for item in facilidades
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
+            tem_facilidades = sum(1 for item in facilidades if any(item in opcional.lower() for opcional in opcionais))
             if tem_facilidades > 0:
                 score_parcial += 0.4
                 fatores.append(f"{tem_facilidades} facilidades")
@@ -1111,11 +1023,7 @@ class UsoMatcher:
 
             # Verifica flexibilidade
             config_flexivel = configs.get("configuracao_flexivel", [])
-            tem_flex = sum(
-                1
-                for item in config_flexivel
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
+            tem_flex = sum(1 for item in config_flexivel if any(item in opcional.lower() for opcional in opcionais))
             if tem_flex > 0:
                 score_parcial += 0.2
                 fatores.append("configuração flexível")
@@ -1187,16 +1095,8 @@ class UsoMatcher:
             travas_seguranca = configs.get("travas_seguranca", [])
             monitoramento = configs.get("monitoramento", [])
 
-            tem_travas = sum(
-                1
-                for item in travas_seguranca
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
-            tem_monitoramento = sum(
-                1
-                for item in monitoramento
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
+            tem_travas = sum(1 for item in travas_seguranca if any(item in opcional.lower() for opcional in opcionais))
+            tem_monitoramento = sum(1 for item in monitoramento if any(item in opcional.lower() for opcional in opcionais))
 
             if tem_travas > 0 or tem_monitoramento > 0:
                 score = 0.6 + min((tem_travas + tem_monitoramento) * 0.2, 0.4)
@@ -1231,16 +1131,8 @@ class UsoMatcher:
             flexibilidade = configs.get("flexibilidade_interior", [])
             facilidades = configs.get("facilidades_familia", [])
 
-            tem_flexibilidade = sum(
-                1
-                for item in flexibilidade
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
-            tem_facilidades = sum(
-                1
-                for item in facilidades
-                if any(item in opcional.lower() for opcional in opcionais)
-            )
+            tem_flexibilidade = sum(1 for item in flexibilidade if any(item in opcional.lower() for opcional in opcionais))
+            tem_facilidades = sum(1 for item in facilidades if any(item in opcional.lower() for opcional in opcionais))
 
             if tem_flexibilidade > 0 or tem_facilidades > 0:
                 score = 0.5 + min((tem_flexibilidade + tem_facilidades) * 0.25, 0.5)

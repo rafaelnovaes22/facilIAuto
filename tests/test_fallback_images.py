@@ -44,9 +44,7 @@ class TestFallbackImageService:
         assert len(sedan_fallbacks) >= 3
 
         # Categoria inválida
-        invalid_fallbacks = service.get_category_fallback_images(
-            "categoria_inexistente"
-        )
+        invalid_fallbacks = service.get_category_fallback_images("categoria_inexistente")
         assert len(invalid_fallbacks) == 3  # Deve retornar fallbacks genéricos
 
     def test_get_brand_fallback_images(self):
@@ -111,9 +109,7 @@ class TestFallbackImageService:
         """Testa geração de placeholder com todas as informações"""
         service = FallbackImageService()
 
-        placeholder = service.get_placeholder_with_info(
-            "BMW", "X1", 2024, "Preto", 500, 400
-        )
+        placeholder = service.get_placeholder_with_info("BMW", "X1", 2024, "Preto", 500, 400)
 
         assert "BMW" in placeholder
         assert "X1" in placeholder

@@ -5,7 +5,6 @@ Testes de integração para endpoints da API
 
 from unittest.mock import patch
 
-import pytest
 from fastapi.testclient import TestClient
 
 
@@ -58,9 +57,7 @@ class TestMainAPIEndpoints:
         assert data[0]["marca"] == "Toyota"
 
     @patch("app.database.get_carro_by_id")
-    def test_carro_by_id_endpoint_success(
-        self, mock_get_carro, test_client: TestClient
-    ):
+    def test_carro_by_id_endpoint_success(self, mock_get_carro, test_client: TestClient):
         """Testa endpoint de carro por ID - sucesso"""
         # Arrange
         mock_get_carro.return_value = {
@@ -81,9 +78,7 @@ class TestMainAPIEndpoints:
         assert data["marca"] == "Toyota"
 
     @patch("app.database.get_carro_by_id")
-    def test_carro_by_id_endpoint_not_found(
-        self, mock_get_carro, test_client: TestClient
-    ):
+    def test_carro_by_id_endpoint_not_found(self, mock_get_carro, test_client: TestClient):
         """Testa endpoint de carro por ID - não encontrado"""
         # Arrange
         mock_get_carro.return_value = None
@@ -101,9 +96,7 @@ class TestSearchAPIEndpoints:
     """Testes para endpoints de busca"""
 
     @patch("app.busca_inteligente.processar_busca_inteligente")
-    def test_buscar_carros_endpoint_success(
-        self, mock_processar, test_client: TestClient
-    ):
+    def test_buscar_carros_endpoint_success(self, mock_processar, test_client: TestClient):
         """Testa endpoint de busca de carros - sucesso"""
         # Arrange
         from app.models import CarroRecomendacao, RespostaBusca
@@ -176,9 +169,7 @@ class TestSearchAPIEndpoints:
         assert "detail" in data
 
     @patch("app.enhanced_api.buscar_carros_enhanced")
-    def test_buscar_enhanced_endpoint(
-        self, mock_buscar_enhanced, test_client: TestClient
-    ):
+    def test_buscar_enhanced_endpoint(self, mock_buscar_enhanced, test_client: TestClient):
         """Testa endpoint de busca enhanced"""
         # Arrange
         mock_buscar_enhanced.return_value = {
@@ -215,9 +206,7 @@ class TestValidationAPIEndpoints:
     """Testes para endpoints de validação"""
 
     @patch("app.enhanced_brand_processor.enhanced_brand_processor")
-    def test_validate_preferences_endpoint_success(
-        self, mock_processor, test_client: TestClient
-    ):
+    def test_validate_preferences_endpoint_success(self, mock_processor, test_client: TestClient):
         """Testa endpoint de validação de preferências - sucesso"""
         # Arrange
         mock_processor.process_and_validate_preferences.return_value = {
@@ -230,9 +219,7 @@ class TestValidationAPIEndpoints:
             "modelos_alternativos": [],
         }
 
-        mock_processor.generate_improvement_suggestions.return_value = [
-            "Sugestão de melhoria"
-        ]
+        mock_processor.generate_improvement_suggestions.return_value = ["Sugestão de melhoria"]
 
         validation_data = {"marca_preferida": "TOYOTA", "modelo_especifico": "Corolla"}
 

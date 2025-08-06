@@ -3,21 +3,16 @@
 Script para testar o sistema de fallback de imagens
 """
 
-import asyncio
+from app.image_validation import validate_image_urls_sync
+from app.fallback_images import (
+    FallbackImageService,
+)
+from app.database import get_carros
 import os
 import sys
 
 # Adicionar o diretório do projeto ao path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
-from app.database import get_carros
-from app.fallback_images import (
-    FallbackImageService,
-    create_vehicle_placeholder,
-    get_best_fallback,
-    get_fallback_images,
-)
-from app.image_validation import validate_image_urls_sync
 
 
 def test_fallback_service():
@@ -72,10 +67,8 @@ def test_fallback_service():
         "https://via.placeholder.com/400x300/CC0000/FFFFFF?text=Toyota+Corolla",
     ]
 
-    best_fallback = service.select_best_fallback(
-        "Toyota", "Corolla", "sedan", failed_urls
-    )
-    print(f"🥇 Melhor fallback (evitando URLs quebradas):")
+    best_fallback = service.select_best_fallback("Toyota", "Corolla", "sedan", failed_urls)
+    print("🥇 Melhor fallback (evitando URLs quebradas):")
     print(f"   {best_fallback}")
     print()
 
@@ -124,7 +117,7 @@ def test_fallback_with_real_data():
 
             # Placeholder personalizado
             placeholder = service.get_placeholder_with_info(marca, modelo, ano, cor)
-            print(f"   Placeholder personalizado:")
+            print("   Placeholder personalizado:")
             print(f"     {placeholder}")
 
     except Exception as e:
@@ -162,7 +155,7 @@ def test_fallback_validation():
         valid_count = sum(1 for r in results if r.is_valid)
         invalid_count = len(results) - valid_count
 
-        print(f"\n📊 Resultados da validação:")
+        print("\n📊 Resultados da validação:")
         print(f"✅ URLs válidas: {valid_count}")
         print(f"❌ URLs inválidas: {invalid_count}")
         print(f"📈 Taxa de sucesso: {valid_count/len(results)*100:.1f}%")
@@ -170,7 +163,7 @@ def test_fallback_validation():
         # Mostrar URLs inválidas
         invalid_results = [r for r in results if not r.is_valid]
         if invalid_results:
-            print(f"\n❌ URLs de fallback com problemas:")
+            print("\n❌ URLs de fallback com problemas:")
             for result in invalid_results:
                 print(f"   {result.url}")
                 print(f"     Erro: {result.error_message}")
@@ -199,19 +192,19 @@ def demonstrate_fallback_priority():
         "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop&crop=center",  # Primeiro fallback
     ]
 
-    print(f"\n❌ URLs que falharam:")
+    print("\n❌ URLs que falharam:")
     for url in failed_urls:
         print(f"   {url}")
 
     # Obter próxima melhor opção
     best_option = service.select_best_fallback(marca, modelo, categoria, failed_urls)
 
-    print(f"\n🏆 Melhor opção disponível:")
+    print("\n🏆 Melhor opção disponível:")
     print(f"   {best_option}")
 
     # Mostrar todas as opções disponíveis
     all_options = service.get_fallback_images(marca, modelo, categoria)
-    print(f"\n📋 Todas as opções de fallback:")
+    print("\n📋 Todas as opções de fallback:")
     for i, url in enumerate(all_options, 1):
         status = "❌ FALHOU" if url in failed_urls else "✅ DISPONÍVEL"
         print(f"   {i}. {status} - {url}")

@@ -1,3 +1,4 @@
+from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
@@ -6,7 +7,6 @@ from app.busca_inteligente import processar_busca_inteligente
 from app.chatbot_api import router as chatbot_router
 from app.database import get_carro_by_id, get_carros
 from app.enhanced_api import buscar_carros_enhanced
-from app.enhanced_brand_processor import enhanced_brand_processor
 from app.memory_api import router as memory_router
 from app.models import QuestionarioBusca, RespostaBusca
 from app.validation_api import router as validation_router
@@ -27,7 +27,6 @@ app.add_middleware(
 )
 
 # Serve arquivos estáticos (CSS, JS, imagens)
-from fastapi.staticfiles import StaticFiles
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -59,7 +58,7 @@ async def read_root():
             .step-indicator { background: #f8f9fa; border-radius: 10px; padding: 15px; margin-bottom: 20px; }
             .btn-custom { border-radius: 25px; padding: 10px 30px; }
             .progress-custom { height: 8px; border-radius: 10px; }
-            
+
             /* Sistema de imagens melhorado */
             .car-image {
                 position: relative;
@@ -68,57 +67,57 @@ async def read_root():
                 border-radius: 10px;
                 min-height: 200px;
             }
-            
+
             .car-image img {
                 transition: opacity 0.3s ease;
                 opacity: 0;
             }
-            
+
             .car-image img.loaded {
                 opacity: 1;
             }
-            
+
             .error-placeholder {
                 background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
                 border: 2px dashed #dee2e6;
                 color: #6c757d;
                 border-radius: 10px;
             }
-            
+
             .error-placeholder i {
                 color: #adb5bd;
             }
-            
+
             /* Carrossel melhorado */
             .carousel {
                 border-radius: 10px;
                 overflow: hidden;
                 background: #f8f9fa;
             }
-            
+
             .carousel-item img {
                 opacity: 0;
                 transition: opacity 0.3s ease;
             }
-            
+
             .carousel-item.active img {
                 opacity: 1;
             }
-            
+
             /* Animações */
             @keyframes fadeIn {
                 from { opacity: 0; transform: translateY(10px); }
                 to { opacity: 1; transform: translateY(0); }
             }
-            
+
             .car-image.loaded img {
                 animation: fadeIn 0.3s ease-out;
             }
-            
+
             .fade-in {
                 animation: fadeIn 0.5s ease-out;
             }
-            
+
             /* Carrossel melhorado */
             .carousel-control-prev,
             .carousel-control-next {
@@ -131,15 +130,15 @@ async def read_root():
                 opacity: 0.8;
                 transition: opacity 0.3s ease;
             }
-            
+
             .carousel-control-prev {
                 left: 10px;
             }
-            
+
             .carousel-control-next {
                 right: 10px;
             }
-            
+
             .carousel-control-prev:hover,
             .carousel-control-next:hover {
                 opacity: 1;
@@ -159,7 +158,7 @@ async def read_root():
                                 </h1>
                                 <p class="lead text-muted">Encontre o carro perfeito para seu perfil com nossa IA</p>
                             </div>
-                            
+
                             <div class="step-indicator">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="badge bg-primary">Questionário Inteligente</span>
@@ -175,7 +174,7 @@ async def read_root():
                                 <div class="question-step" id="step1">
                                     <h4 class="mb-3"><i class="fas fa-star text-warning"></i> 1. Preferências de Marca e Modelo</h4>
                                     <p class="text-muted mb-4">💡 <strong>Dica:</strong> Quanto mais específico, melhores serão suas recomendações! Você pode escolher múltiplas opções.</p>
-                                    
+
                                     <!-- Marca Principal -->
                                     <div class="row mb-4">
                                         <div class="col-md-6 mb-3">
@@ -203,14 +202,14 @@ async def read_root():
                                                 <option value="MERCEDES">🚗 Mercedes</option>
                                             </select>
                                         </div>
-                                        
+
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">
                                                 <i class="fas fa-car text-primary"></i> Modelo específico (opcional)
                                                 <small class="text-muted d-block">Digite para ver sugestões</small>
                                             </label>
                                             <div class="position-relative">
-                                                <input type="text" class="form-control" name="modelo_especifico" id="modeloEspecifico" 
+                                                <input type="text" class="form-control" name="modelo_especifico" id="modeloEspecifico"
                                                        placeholder="Ex: Corolla, Civic, HB20..." autocomplete="off">
                                                 <div id="modeloSuggestions" class="position-absolute w-100 bg-white border rounded-bottom shadow-sm" style="display: none; z-index: 1000; max-height: 200px; overflow-y: auto;">
                                                     <!-- Sugestões aparecem aqui -->
@@ -221,7 +220,7 @@ async def read_root():
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- Marcas Alternativas -->
                                     <div class="card border-light bg-light mb-3" id="marcasAlternativasCard" style="display: none;">
                                         <div class="card-body">
@@ -269,14 +268,14 @@ async def read_root():
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- Toggle para mostrar marcas alternativas -->
                                     <div class="text-center mb-3">
                                         <button type="button" class="btn btn-outline-secondary btn-sm" id="toggleMarcasAlternativas">
                                             <i class="fas fa-plus"></i> Adicionar marcas alternativas
                                         </button>
                                     </div>
-                                    
+
                                     <!-- Feedback de validação -->
                                     <div id="preferenciasFeedback" class="alert alert-info" style="display: none;">
                                         <i class="fas fa-info-circle"></i> <strong>Verificação:</strong>
@@ -346,12 +345,12 @@ async def read_root():
                                                         </label>
                                                     </div>
                                                     <small class="text-muted d-block mt-1">
-                                                        Ideal para: trânsito, estacionamento, economia de combustível. 
+                                                        Ideal para: trânsito, estacionamento, economia de combustível.
                                                         <strong>Priorizamos:</strong> carros compactos, baixo consumo, tecnologia de assistência.
                                                     </small>
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="card mb-3">
                                                 <div class="card-body">
                                                     <div class="form-check">
@@ -361,12 +360,12 @@ async def read_root():
                                                         </label>
                                                     </div>
                                                     <small class="text-muted d-block mt-1">
-                                                        Ideal para: rodovias, conforto, segurança. 
+                                                        Ideal para: rodovias, conforto, segurança.
                                                         <strong>Priorizamos:</strong> espaço interno, porta-malas, potência, sistemas de segurança.
                                                     </small>
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="card mb-3">
                                                 <div class="card-body">
                                                     <div class="form-check">
@@ -376,12 +375,12 @@ async def read_root():
                                                         </label>
                                                     </div>
                                                     <small class="text-muted d-block mt-1">
-                                                        Ideal para: uso profissional, transporte de equipamentos. 
+                                                        Ideal para: uso profissional, transporte de equipamentos.
                                                         <strong>Priorizamos:</strong> durabilidade, capacidade de carga, custo-benefício.
                                                     </small>
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="card mb-3">
                                                 <div class="card-body">
                                                     <div class="form-check">
@@ -391,7 +390,7 @@ async def read_root():
                                                         </label>
                                                     </div>
                                                     <small class="text-muted d-block mt-1">
-                                                        Ideal para: família, crianças, segurança. 
+                                                        Ideal para: família, crianças, segurança.
                                                         <strong>Priorizamos:</strong> espaço para passageiros, segurança avançada, conforto, praticidade.
                                                     </small>
                                                 </div>
@@ -535,7 +534,7 @@ async def read_root():
         <script>
             let currentStepNum = 1;
             const totalSteps = 8;
-            
+
             // Sistema Avançado de Preferências de Marca/Modelo
             class AdvancedBrandSystem {
                 constructor() {
@@ -551,27 +550,27 @@ async def read_root():
                         'FIAT': ['Uno', 'Argo', 'Toro', 'Strada', 'Palio', 'Mobi'],
                         'JEEP': ['Compass', 'Renegade', 'Commander', 'Wrangler']
                     };
-                    
+
                     this.initializeEvents();
                 }
-                
+
                 initializeEvents() {
                     // Auto-complete para modelo
                     const modeloInput = document.getElementById('modeloEspecifico');
                     const marcaSelect = document.getElementById('marcaPrincipal');
                     const suggestionsDiv = document.getElementById('modeloSuggestions');
-                    
+
                     if (modeloInput) {
                         modeloInput.addEventListener('input', (e) => {
                             this.handleModelInput(e.target.value, marcaSelect.value, suggestionsDiv);
                         });
-                        
+
                         modeloInput.addEventListener('focus', (e) => {
                             if (e.target.value.length >= 2) {
                                 this.handleModelInput(e.target.value, marcaSelect.value, suggestionsDiv);
                             }
                         });
-                        
+
                         modeloInput.addEventListener('blur', () => {
                             // Delay para permitir clique nas sugestões
                             setTimeout(() => {
@@ -579,7 +578,7 @@ async def read_root():
                             }, 200);
                         });
                     }
-                    
+
                     // Mudança de marca afeta sugestões de modelo
                     if (marcaSelect) {
                         marcaSelect.addEventListener('change', (e) => {
@@ -587,7 +586,7 @@ async def read_root():
                             this.updateAlternativeOptions(e.target.value);
                         });
                     }
-                    
+
                     // Toggle marcas alternativas
                     const toggleBtn = document.getElementById('toggleMarcasAlternativas');
                     if (toggleBtn) {
@@ -595,25 +594,25 @@ async def read_root():
                             this.toggleAlternativeBrands();
                         });
                     }
-                    
+
                     // Validação em tempo real
                     document.addEventListener('change', () => {
                         this.validatePreferences();
                     });
                 }
-                
+
                 handleModelInput(value, selectedBrand, suggestionsDiv) {
                     const feedback = document.getElementById('modeloFeedback');
-                    
+
                     if (value.length < 2) {
                         suggestionsDiv.style.display = 'none';
                         feedback.innerHTML = '💡 Digite pelo menos 2 letras para ver sugestões';
                         feedback.className = 'form-text text-muted mt-1';
                         return;
                     }
-                    
+
                     const suggestions = this.getModelSuggestions(value, selectedBrand);
-                    
+
                     if (suggestions.length > 0) {
                         this.displaySuggestions(suggestions, suggestionsDiv);
                         feedback.innerHTML = `✨ ${suggestions.length} sugestão(ões) encontrada(s)`;
@@ -624,11 +623,11 @@ async def read_root():
                         feedback.className = 'form-text text-warning mt-1';
                     }
                 }
-                
+
                 getModelSuggestions(input, brand) {
                     const allSuggestions = [];
                     const inputLower = input.toLowerCase();
-                    
+
                     // Buscar na marca selecionada primeiro
                     if (brand && brand !== 'sem_preferencia' && this.modelSuggestions[brand]) {
                         this.modelSuggestions[brand].forEach(model => {
@@ -637,7 +636,7 @@ async def read_root():
                             }
                         });
                     }
-                    
+
                     // Buscar em outras marcas se não houver preferência ou poucas sugestões
                     if (brand === 'sem_preferencia' || allSuggestions.length < 3) {
                         Object.keys(this.modelSuggestions).forEach(brandKey => {
@@ -650,16 +649,16 @@ async def read_root():
                             }
                         });
                     }
-                    
+
                     // Ordenar por prioridade e relevância
                     return allSuggestions
                         .sort((a, b) => a.priority - b.priority)
                         .slice(0, 6); // Top 6 sugestões
                 }
-                
+
                 displaySuggestions(suggestions, container) {
                     container.innerHTML = '';
-                    
+
                     suggestions.forEach(suggestion => {
                         const item = document.createElement('div');
                         item.className = 'p-2 border-bottom suggestion-item';
@@ -670,38 +669,38 @@ async def read_root():
                                 <small class="text-muted">${suggestion.brand}</small>
                             </div>
                         `;
-                        
+
                         item.addEventListener('mouseenter', () => {
                             item.style.backgroundColor = '#f8f9fa';
                         });
-                        
+
                         item.addEventListener('mouseleave', () => {
                             item.style.backgroundColor = 'white';
                         });
-                        
+
                         item.addEventListener('click', () => {
                             document.getElementById('modeloEspecifico').value = suggestion.model;
                             container.style.display = 'none';
-                            
+
                             // Se a marca não foi selecionada, sugerir
                             const marcaSelect = document.getElementById('marcaPrincipal');
                             if (marcaSelect.value === 'sem_preferencia') {
                                 this.suggestBrandChange(suggestion.brand);
                             }
-                            
+
                             this.validatePreferences();
                         });
-                        
+
                         container.appendChild(item);
                     });
-                    
+
                     container.style.display = 'block';
                 }
-                
+
                 suggestBrandChange(suggestedBrand) {
                     const feedback = document.getElementById('preferenciasFeedback');
                     const content = document.getElementById('feedbackContent');
-                    
+
                     content.innerHTML = `
                         <p>💡 Você escolheu um modelo da marca <strong>${suggestedBrand}</strong>.</p>
                         <button type="button" class="btn btn-sm btn-outline-primary me-2" onclick="brandSystem.setBrand('${suggestedBrand}')">
@@ -713,21 +712,21 @@ async def read_root():
                     `;
                     feedback.style.display = 'block';
                 }
-                
+
                 setBrand(brand) {
                     document.getElementById('marcaPrincipal').value = brand;
                     this.updateAlternativeOptions(brand);
                     this.dismissSuggestion();
                 }
-                
+
                 dismissSuggestion() {
                     document.getElementById('preferenciasFeedback').style.display = 'none';
                 }
-                
+
                 toggleAlternativeBrands() {
                     const card = document.getElementById('marcasAlternativasCard');
                     const btn = document.getElementById('toggleMarcasAlternativas');
-                    
+
                     if (card.style.display === 'none') {
                         card.style.display = 'block';
                         btn.innerHTML = '<i class="fas fa-minus"></i> Ocultar marcas alternativas';
@@ -739,7 +738,7 @@ async def read_root():
                         checkboxes.forEach(cb => cb.checked = false);
                     }
                 }
-                
+
                 updateAlternativeOptions(selectedBrand) {
                     const checkboxes = document.querySelectorAll('input[name="marcas_alternativas"]');
                     checkboxes.forEach(checkbox => {
@@ -754,11 +753,11 @@ async def read_root():
                         }
                     });
                 }
-                
+
                 updateModelSuggestions(brand) {
                     const modeloInput = document.getElementById('modeloEspecifico');
                     const feedback = document.getElementById('modeloFeedback');
-                    
+
                     if (brand && brand !== 'sem_preferencia' && this.modelSuggestions[brand]) {
                         feedback.innerHTML = `💡 Digite para ver modelos populares da ${brand}`;
                         feedback.className = 'form-text text-info mt-1';
@@ -767,18 +766,18 @@ async def read_root():
                         feedback.className = 'form-text text-muted mt-1';
                     }
                 }
-                
+
                 validatePreferences() {
                     const marca = document.getElementById('marcaPrincipal').value;
                     const modelo = document.getElementById('modeloEspecifico').value;
                     const alternativas = Array.from(document.querySelectorAll('input[name="marcas_alternativas"]:checked')).map(cb => cb.value);
-                    
+
                     // Validação básica - mais validações serão feitas no backend
                     if (marca !== 'sem_preferencia' && modelo && this.modelSuggestions[marca]) {
-                        const isValidModel = this.modelSuggestions[marca].some(m => 
+                        const isValidModel = this.modelSuggestions[marca].some(m =>
                             m.toLowerCase() === modelo.toLowerCase()
                         );
-                        
+
                         if (!isValidModel && modelo.length > 2) {
                             // Modelo pode não estar na lista - isso é OK, mas vamos avisar
                             const feedback = document.getElementById('modeloFeedback');
@@ -788,7 +787,7 @@ async def read_root():
                     }
                 }
             }
-            
+
             // Inicializar sistema
             let brandSystem;
             document.addEventListener('DOMContentLoaded', () => {
@@ -806,10 +805,10 @@ async def read_root():
                 for (let i = 1; i <= totalSteps; i++) {
                     document.getElementById('step' + i).classList.add('d-none');
                 }
-                
+
                 // Mostra a etapa atual
                 document.getElementById('step' + stepNum).classList.remove('d-none');
-                
+
                 // Controla botões
                 document.getElementById('prevBtn').style.display = stepNum > 1 ? 'block' : 'none';
                 document.getElementById('nextBtn').style.display = stepNum < totalSteps ? 'block' : 'none';
@@ -835,7 +834,7 @@ async def read_root():
             function validateCurrentStep() {
                 const currentStep = document.getElementById('step' + currentStepNum);
                 const requiredFields = currentStep.querySelectorAll('[required]');
-                
+
                 for (let field of requiredFields) {
                     if (field.type === 'radio') {
                         const radioGroup = currentStep.querySelectorAll(`[name="${field.name}"]`);
@@ -861,12 +860,12 @@ async def read_root():
 
             document.getElementById('questionarioForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
-                
+
                 if (!validateCurrentStep()) return;
-                
+
                 const formData = new FormData(this);
                 const data = {};
-                
+
                 // Processa campos simples
                 for (let [key, value] of formData.entries()) {
                     if (key === 'uso_principal') {
@@ -892,30 +891,30 @@ async def read_root():
                         data[key] = value || null;
                     }
                 }
-                
+
                 // Garantir arrays vazios para campos de múltipla seleção
                 if (!data.marcas_alternativas) data.marcas_alternativas = [];
                 if (!data.modelos_alternativos) data.modelos_alternativos = [];
-                
+
                 // Validação de orçamento: se um for preenchido, ambos devem ser
                 if ((data.orcamento_min !== null && data.orcamento_max === null) ||
                     (data.orcamento_min === null && data.orcamento_max !== null)) {
                     alert('Se você preencher o orçamento, deve informar tanto o valor mínimo quanto o máximo.');
                     return;
                 }
-                
+
                 // Validação: valor mínimo deve ser menor que o máximo
-                if (data.orcamento_min !== null && data.orcamento_max !== null && 
+                if (data.orcamento_min !== null && data.orcamento_max !== null &&
                     data.orcamento_min >= data.orcamento_max) {
                     alert('O valor mínimo deve ser menor que o valor máximo.');
                     return;
                 }
-                
+
                 // Define valores padrão para checkboxes não marcados
                 if (!data.criancas) data.criancas = false;
                 if (!data.animais) data.animais = false;
                 if (!data.uso_principal) data.uso_principal = [];
-                
+
                 // Garantir que campos obrigatórios tenham valores válidos
                 if (!data.marca_preferida || data.marca_preferida === 'null') {
                     data.marca_preferida = 'sem_preferencia';
@@ -951,9 +950,9 @@ async def read_root():
                     alert('Por favor, selecione uma prioridade.');
                     return;
                 }
-                
+
                 console.log('📤 Dados a serem enviados:', data);
-                
+
                 try {
                     const response = await fetch('/buscar-carros', {
                         method: 'POST',
@@ -962,18 +961,18 @@ async def read_root():
                         },
                         body: JSON.stringify(data)
                     });
-                    
+
                     if (!response.ok) {
                         throw new Error(`Erro ${response.status}: ${response.statusText}`);
                     }
-                    
+
                     const resultado = await response.json();
-                    
+
                     // Verifica se a resposta tem a estrutura esperada
                     if (!resultado || typeof resultado !== 'object') {
                         throw new Error('Resposta inválida do servidor');
                     }
-                    
+
                     mostrarResultados(resultado);
                 } catch (error) {
                     console.error('Erro completo:', error);
@@ -983,14 +982,14 @@ async def read_root():
 
             function mostrarResultados(resultado) {
                 const content = document.getElementById('resultadosContent');
-                
+
                 let html = `
                     <div class="mb-4 p-3 bg-light rounded">
                         <h6>Seu Perfil:</h6>
                         <p class="mb-0">${resultado.resumo_perfil || 'Perfil não disponível'}</p>
                     </div>
                 `;
-                
+
                 if (!resultado.recomendacoes || resultado.recomendacoes.length === 0) {
                     html += `
                         <div class="alert alert-warning">
@@ -1000,20 +999,20 @@ async def read_root():
                     `;
                 } else {
                     html += '<div class="row">';
-                    
+
                     resultado.recomendacoes.forEach((carro, index) => {
                         const badgeClass = index === 0 ? 'success' : index === 1 ? 'warning' : 'info';
                         const position = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
-                        
+
                         // Processa fotos com sistema de fallback melhorado
                         let fotoHtml = '';
                         if (carro.fotos && carro.fotos.length > 0) {
                             if (carro.fotos.length === 1) {
                                 fotoHtml = `
                                     <div class="car-image">
-                                        <img src="${carro.fotos[0]}" 
-                                             class="card-img-top" 
-                                             style="height: 200px; object-fit: cover;" 
+                                        <img src="${carro.fotos[0]}"
+                                             class="card-img-top"
+                                             style="height: 200px; object-fit: cover;"
                                              alt="${carro.marca} ${carro.modelo}"
                                              data-marca="${carro.marca}"
                                              data-modelo="${carro.modelo}"
@@ -1033,8 +1032,8 @@ async def read_root():
                                                 <div class="carousel-item ${idx === 0 ? 'active' : ''}">
                                                     <div class="car-image position-relative">
                                                         <img src="${foto}"
-                                                             class="d-block w-100" 
-                                                             style="height: 200px; object-fit: cover; border-radius: 10px 10px 0 0;" 
+                                                             class="d-block w-100"
+                                                             style="height: 200px; object-fit: cover; border-radius: 10px 10px 0 0;"
                                                              alt="${carro.marca} ${carro.modelo}"
                                                              data-marca="${carro.marca}"
                                                              data-modelo="${carro.modelo}"
@@ -1062,7 +1061,7 @@ async def read_root():
                                             </button>
                                             <div class="carousel-indicators">
                                                 ${carro.fotos.map((_, idx) => `
-                                                    <button type="button" data-bs-target="#${carouselId}" data-bs-slide-to="${idx}" 
+                                                    <button type="button" data-bs-target="#${carouselId}" data-bs-slide-to="${idx}"
                                                             class="${idx === 0 ? 'active' : ''}" aria-label="Slide ${idx + 1}"></button>
                                                 `).join('')}
                                             </div>
@@ -1084,7 +1083,7 @@ async def read_root():
                                 </div>
                             `;
                         }
-                        
+
                         html += `
                             <div class="col-md-6 mb-4">
                                 <div class="card h-100">
@@ -1104,32 +1103,32 @@ async def read_root():
                                                 ${carro.versao ? `<p class="text-muted small mb-0">${carro.versao}</p>` : ''}
                                             </div>
                                         </div>
-                                        
+
                                         ${carro.cor || carro.km ? `
                                             <div class="row mt-2">
                                                 ${carro.cor ? `<div class="col-6"><small class="text-muted"><i class="fas fa-palette"></i> ${carro.cor}</small></div>` : ''}
                                                 ${carro.km ? `<div class="col-6"><small class="text-muted"><i class="fas fa-tachometer-alt"></i> ${carro.km.toLocaleString('pt-BR')} km</small></div>` : ''}
                                             </div>
                                         ` : ''}
-                                        
+
                                         ${carro.descricao ? `
                                             <p class="text-muted small mt-2">${carro.descricao}</p>
                                         ` : ''}
-                                        
+
                                                                 ${carro.razoes_recomendacao && carro.razoes_recomendacao.length > 0 ? `
                             <h6 class="mt-3">Por que recomendamos:</h6>
                             <ul class="list-unstyled">
                                 ${carro.razoes_recomendacao.map(razao => `<li><i class="fas fa-check text-success"></i> ${razao}</li>`).join('')}
                             </ul>
                         ` : ''}
-                        
+
                         ${carro.pontos_fortes && carro.pontos_fortes.length > 0 ? `
                             <h6 class="mt-3">Pontos fortes:</h6>
                             <ul class="list-unstyled">
                                 ${carro.pontos_fortes.map(ponto => `<li><i class="fas fa-star text-warning"></i> ${ponto}</li>`).join('')}
                             </ul>
                         ` : ''}
-                        
+
                         ${carro.consideracoes && carro.consideracoes.length > 0 ? `
                             <h6 class="mt-3">Considerações:</h6>
                             <ul class="list-unstyled">
@@ -1141,10 +1140,10 @@ async def read_root():
                             </div>
                         `;
                     });
-                    
+
                     html += '</div>';
                 }
-                
+
                 if (resultado.sugestoes_gerais && resultado.sugestoes_gerais.length > 0) {
                     html += `
                         <div class="mt-4 p-3 bg-info bg-opacity-10 rounded">
@@ -1155,9 +1154,9 @@ async def read_root():
                         </div>
                     `;
                 }
-                
+
                 content.innerHTML = html;
-                
+
                 // Processar imagens com sistema de fallback simplificado
                 setTimeout(() => {
                     // Processar imagens com fallback básico
@@ -1166,7 +1165,7 @@ async def read_root():
                         const marca = img.getAttribute('data-marca');
                         const modelo = img.getAttribute('data-modelo');
                         const categoria = img.getAttribute('data-categoria') || 'hatch';
-                        
+
                         // Configurar fallback simples
                         img.onerror = function() {
                             console.warn(`Erro ao carregar: ${this.src}`);
@@ -1181,7 +1180,7 @@ async def read_root():
                                 'crossover': 'https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=1200&h=800&fit=crop&crop=center&auto=format&q=85',
                                 'default': 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=1200&h=800&fit=crop&crop=center&auto=format&q=85'
                             };
-                            
+
                             if (this.src !== fallbacks[categoria] && this.src !== fallbacks['default']) {
                                 this.src = fallbacks[categoria] || fallbacks['default'];
                             } else {
@@ -1193,23 +1192,23 @@ async def read_root():
                                 }
                             }
                         };
-                        
+
                         // Configurar carregamento bem-sucedido
                         img.onload = function() {
                             console.log(`✅ Imagem carregada: ${marca} ${modelo}`);
                             this.classList.add('loaded');
                             this.style.opacity = '1';
                         };
-                        
+
                         // Se a imagem já está carregada (cache)
                         if (img.complete && img.naturalHeight !== 0) {
                             img.onload();
                         }
                     });
-                    
+
                     console.log('✅ Sistema de imagens inicializado');
                 }, 100);
-                
+
                 new bootstrap.Modal(document.getElementById('resultadosModal')).show();
             }
 
@@ -1235,9 +1234,7 @@ async def buscar_carros(questionario: QuestionarioBusca):
             raise HTTPException(status_code=500, detail="Resultado da busca é nulo")
 
         if not hasattr(resultado, "recomendacoes"):
-            raise HTTPException(
-                status_code=500, detail="Resultado da busca não possui recomendações"
-            )
+            raise HTTPException(status_code=500, detail="Resultado da busca não possui recomendações")
 
         return resultado
     except HTTPException:
@@ -1247,9 +1244,7 @@ async def buscar_carros(questionario: QuestionarioBusca):
         import traceback
 
         traceback.print_exc()
-        raise HTTPException(
-            status_code=500, detail=f"Erro ao processar busca: {str(e)}"
-        )
+        raise HTTPException(status_code=500, detail=f"Erro ao processar busca: {str(e)}")
 
 
 @app.get("/carros")
@@ -1275,20 +1270,14 @@ async def pagina_detalhes_carro(carro_id: int):
         raise HTTPException(status_code=404, detail="Carro não encontrado")
 
     # Formatar dados para exibição
-    preco_formatado = (
-        f"R$ {carro['preco']:,.2f}".replace(",", "X")
-        .replace(".", ",")
-        .replace("X", ".")
-    )
+    preco_formatado = f"R$ {carro['preco']:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
     preco_promocional_formatado = ""
     if carro.get("preco_promocional"):
         preco_promocional_formatado = (
-            f"R$ {carro['preco_promocional']:,.2f}".replace(",", "X")
-            .replace(".", ",")
-            .replace("X", ".")
+            f"R$ {carro['preco_promocional']:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
         )
 
-    html_content = f"""
+    html_content = """
     <!DOCTYPE html>
     <html lang="pt-BR">
     <head>
@@ -1300,7 +1289,7 @@ async def pagina_detalhes_carro(carro_id: int):
         <style>
             .gradient-bg {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }}
             .card-custom {{ border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }}
-            
+
             /* Chatbot Styles */
             .chatbot-container {{
                 position: fixed;
@@ -1314,7 +1303,7 @@ async def pagina_detalhes_carro(carro_id: int):
                 background: white;
                 transition: all 0.3s ease;
             }}
-            
+
             .chatbot-minimized {{
                 height: 60px;
                 width: 60px;
@@ -1327,7 +1316,7 @@ async def pagina_detalhes_carro(carro_id: int):
                 color: white;
                 font-size: 24px;
             }}
-            
+
             .chatbot-header {{
                 background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                 color: white;
@@ -1337,21 +1326,21 @@ async def pagina_detalhes_carro(carro_id: int):
                 justify-content: space-between;
                 align-items: center;
             }}
-            
+
             .chatbot-body {{
                 height: 400px;
                 overflow-y: auto;
                 padding: 15px;
                 background: #f8f9fa;
             }}
-            
+
             .chatbot-input {{
                 padding: 15px;
                 border-top: 1px solid #dee2e6;
                 background: white;
                 border-radius: 0 0 15px 15px;
             }}
-            
+
             .message {{
                 margin-bottom: 15px;
                 padding: 10px 15px;
@@ -1359,20 +1348,20 @@ async def pagina_detalhes_carro(carro_id: int):
                 max-width: 80%;
                 word-wrap: break-word;
             }}
-            
+
             .message.user {{
                 background: #007bff;
                 color: white;
                 margin-left: auto;
                 text-align: right;
             }}
-            
+
             .message.bot {{
                 background: white;
                 color: #333;
                 border: 1px solid #dee2e6;
             }}
-            
+
             .agent-badge {{
                 font-size: 0.75rem;
                 padding: 2px 8px;
@@ -1380,20 +1369,20 @@ async def pagina_detalhes_carro(carro_id: int):
                 margin-bottom: 5px;
                 display: inline-block;
             }}
-            
+
             .agent-tecnico {{ background: #e3f2fd; color: #1976d2; }}
             .agent-financeiro {{ background: #e8f5e8; color: #388e3c; }}
             .agent-comparacao {{ background: #fff3e0; color: #f57c00; }}
             .agent-manutencao {{ background: #fce4ec; color: #c2185b; }}
             .agent-avaliacao {{ background: #f3e5f5; color: #7b1fa2; }}
-            
+
             .quick-questions {{
                 display: flex;
                 flex-wrap: wrap;
                 gap: 5px;
                 margin-top: 10px;
             }}
-            
+
             .quick-question {{
                 background: #e9ecef;
                 border: none;
@@ -1403,12 +1392,12 @@ async def pagina_detalhes_carro(carro_id: int):
                 cursor: pointer;
                 transition: all 0.2s;
             }}
-            
+
             .quick-question:hover {{
                 background: #007bff;
                 color: white;
             }}
-            
+
             /* Detalhes do carro */
             .spec-item {{
                 display: flex;
@@ -1417,11 +1406,11 @@ async def pagina_detalhes_carro(carro_id: int):
                 padding: 10px 0;
                 border-bottom: 1px solid #f0f0f0;
             }}
-            
+
             .spec-item:last-child {{
                 border-bottom: none;
             }}
-            
+
             .price-highlight {{
                 background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                 color: white;
@@ -1430,14 +1419,14 @@ async def pagina_detalhes_carro(carro_id: int):
                 text-align: center;
                 margin-bottom: 20px;
             }}
-            
+
             .gallery-image {{
                 border-radius: 10px;
                 object-fit: cover;
                 cursor: pointer;
                 transition: transform 0.2s;
             }}
-            
+
             .gallery-image:hover {{
                 transform: scale(1.05);
             }}
@@ -1475,7 +1464,7 @@ async def pagina_detalhes_carro(carro_id: int):
                             <h5><i class="fas fa-images text-primary"></i> Galeria de Fotos</h5>
                             <div id="carouselFotos" class="carousel slide" data-bs-ride="carousel">
                                 <div class="carousel-inner">
-                                    {"".join([f'''
+                                    {"".join(['''
                                     <div class="carousel-item {"active" if i == 0 else ""}">
                                         <img src="{foto}" class="d-block w-100 gallery-image" alt="Foto {i+1}" style="height: 300px;">
                                     </div>
@@ -1548,7 +1537,7 @@ async def pagina_detalhes_carro(carro_id: int):
                     </div>
 
                     <!-- Descrição -->
-                    {f'''
+                    {'''
                     <div class="card card-custom mb-4">
                         <div class="card-body">
                             <h5><i class="fas fa-info-circle text-primary"></i> Descrição</h5>
@@ -1558,7 +1547,7 @@ async def pagina_detalhes_carro(carro_id: int):
                     ''' if carro.get('descricao') else ''}
 
                     <!-- Opcionais -->
-                    {f'''
+                    {'''
                     <div class="card card-custom mb-4">
                         <div class="card-body">
                             <h5><i class="fas fa-plus-circle text-primary"></i> Opcionais</h5>
@@ -1684,7 +1673,7 @@ async def pagina_detalhes_carro(carro_id: int):
         <script>
             const carroId = {carro['id']};
             const carroData = {str(carro).replace("'", '"')};
-            
+
             // Estado do chatbot com memória persistente
             let chatbotMinimizado = true;
             let conversationId = null;
@@ -1701,7 +1690,7 @@ async def pagina_detalhes_carro(carro_id: int):
                 document.getElementById('chatbotContainer').style.display = 'none';
                 document.getElementById('chatbotExpanded').style.display = 'block';
                 chatbotMinimizado = false;
-                
+
                 // Focar no input
                 setTimeout(() => document.getElementById('chatInput').focus(), 100);
             }}
@@ -1722,13 +1711,13 @@ async def pagina_detalhes_carro(carro_id: int):
             function enviarMensagem() {{
                 const input = document.getElementById('chatInput');
                 const mensagem = input.value.trim();
-                
+
                 if (!mensagem) return;
-                
+
                 // Adicionar mensagem do usuário
                 adicionarMensagem(mensagem, 'user');
                 input.value = '';
-                
+
                 // Enviar para API
                 perguntarChatbot(mensagem);
             }}
@@ -1737,7 +1726,7 @@ async def pagina_detalhes_carro(carro_id: int):
             function generateUserSessionId() {{
                 // Tentar recuperar do localStorage primeiro
                 let sessionId = localStorage.getItem('faciliauto_user_session_id');
-                
+
                 if (!sessionId) {{
                     // Gerar novo ID baseado em timestamp + random
                     sessionId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
@@ -1746,14 +1735,14 @@ async def pagina_detalhes_carro(carro_id: int):
                 }} else {{
                     console.log('🔄 User session ID recuperado:', sessionId);
                 }}
-                
+
                 return sessionId;
             }}
 
             function perguntarChatbot(pergunta) {{
                 // Mostrar loading
                 adicionarMensagem('🤔 Pensando...', 'bot', 'loading');
-                
+
                 // Enviar para API com memória persistente
                 fetch('/api/chatbot/perguntar', {{
                     method: 'POST',
@@ -1772,7 +1761,7 @@ async def pagina_detalhes_carro(carro_id: int):
                     // Remover loading
                     const messages = document.querySelectorAll('.message.loading');
                     messages.forEach(msg => msg.remove());
-                    
+
                     // Adicionar resposta
                     adicionarMensagem(data.resposta, 'bot', data.agente);
                     conversationId = data.conversation_id;
@@ -1789,7 +1778,7 @@ async def pagina_detalhes_carro(carro_id: int):
                 const messagesContainer = document.getElementById('chatbotMessages');
                 const messageDiv = document.createElement('div');
                 messageDiv.className = `message ${{tipo}} ${{agente === 'loading' ? 'loading' : ''}}`;
-                
+
                 let badgeHtml = '';
                 if (agente && agente !== 'loading') {{
                     const agenteBadges = {{
@@ -1801,7 +1790,7 @@ async def pagina_detalhes_carro(carro_id: int):
                     }};
                     badgeHtml = agenteBadges[agente] || '';
                 }}
-                
+
                 messageDiv.innerHTML = badgeHtml + texto;
                 messagesContainer.appendChild(messageDiv);
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -1820,9 +1809,7 @@ async def buscar_carros_enhanced_endpoint(questionario: QuestionarioBusca):
     try:
         return await buscar_carros_enhanced(questionario)
     except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Erro ao processar busca: {str(e)}"
-        )
+        raise HTTPException(status_code=500, detail=f"Erro ao processar busca: {str(e)}")
 
 
 @app.get("/health")

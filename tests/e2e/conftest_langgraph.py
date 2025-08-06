@@ -6,9 +6,7 @@ específicos para testes end-to-end do sistema LangGraph.
 """
 
 import asyncio
-import os
-import tempfile
-from typing import Any, Dict, Generator
+from typing import Any, Dict
 
 import pytest
 from fastapi.testclient import TestClient
@@ -250,7 +248,6 @@ def clean_memory():
 
     # Teardown: Limpeza (se necessário)
     # Em implementação real, limparia registros de teste
-    pass
 
 
 @pytest.fixture
@@ -306,26 +303,20 @@ class LangGraphTestHelper:
         return all(field in response_data for field in required_fields)
 
     @staticmethod
-    def validate_agent_specialization(
-        agent: str, response: str, keywords: list
-    ) -> float:
+    def validate_agent_specialization(agent: str, response: str, keywords: list) -> float:
         """Calcula score de especialização do agente baseado em keywords"""
         response_lower = response.lower()
         found_keywords = [kw for kw in keywords if kw.lower() in response_lower]
         return len(found_keywords) / len(keywords) if keywords else 0.0
 
     @staticmethod
-    def validate_response_quality(
-        response: str, min_length: int = 50
-    ) -> Dict[str, bool]:
+    def validate_response_quality(response: str, min_length: int = 50) -> Dict[str, bool]:
         """Valida qualidade geral da resposta"""
         return {
             "sufficient_length": len(response) >= min_length,
             "has_content": response.strip() != "",
             "not_error_message": "erro" not in response.lower(),
-            "professional_tone": not any(
-                word in response.lower() for word in ["não sei", "não posso"]
-            ),
+            "professional_tone": not any(word in response.lower() for word in ["não sei", "não posso"]),
         }
 
     @staticmethod
@@ -338,11 +329,7 @@ class LangGraphTestHelper:
             appearances = sum(1 for resp in responses if element_lower in resp.lower())
             consistency_scores.append(appearances / len(responses))
 
-        return (
-            sum(consistency_scores) / len(consistency_scores)
-            if consistency_scores
-            else 0.0
-        )
+        return sum(consistency_scores) / len(consistency_scores) if consistency_scores else 0.0
 
 
 @pytest.fixture
@@ -354,24 +341,12 @@ def langgraph_helper():
 # Marcadores personalizados para categorização dos testes
 def pytest_configure(config):
     """Configuração adicional do pytest para testes LangGraph"""
-    config.addinivalue_line(
-        "markers", "langgraph_workflow: marca testes de workflow LangGraph"
-    )
-    config.addinivalue_line(
-        "markers", "langgraph_agents: marca testes de agentes especializados"
-    )
-    config.addinivalue_line(
-        "markers", "langgraph_performance: marca testes de performance"
-    )
-    config.addinivalue_line(
-        "markers", "langgraph_memory: marca testes de memória persistente"
-    )
-    config.addinivalue_line(
-        "markers", "langgraph_integration: marca testes de integração"
-    )
-    config.addinivalue_line(
-        "markers", "slow: marca testes que demoram mais para executar"
-    )
+    config.addinivalue_line("markers", "langgraph_workflow: marca testes de workflow LangGraph")
+    config.addinivalue_line("markers", "langgraph_agents: marca testes de agentes especializados")
+    config.addinivalue_line("markers", "langgraph_performance: marca testes de performance")
+    config.addinivalue_line("markers", "langgraph_memory: marca testes de memória persistente")
+    config.addinivalue_line("markers", "langgraph_integration: marca testes de integração")
+    config.addinivalue_line("markers", "slow: marca testes que demoram mais para executar")
 
 
 # Configurações de timeout para diferentes tipos de teste

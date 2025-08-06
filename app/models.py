@@ -71,9 +71,7 @@ class CarroRecomendacao(BaseModel):
             return []
         return v
 
-    @field_validator(
-        "razoes_recomendacao", "pontos_fortes", "consideracoes", "fotos", mode="before"
-    )
+    @field_validator("razoes_recomendacao", "pontos_fortes", "consideracoes", "fotos", mode="before")
     @classmethod
     def validate_lists(cls, v):
         if v is None:

@@ -4,8 +4,7 @@ Fixtures e configurações globais para testes
 """
 
 import asyncio
-from typing import AsyncGenerator, Generator
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 from fastapi.testclient import TestClient
@@ -29,9 +28,7 @@ def event_loop():
 @pytest.fixture(scope="function")
 def mock_database():
     """Mock database functions for testing."""
-    with patch("app.database.get_carros") as mock_get_carros, patch(
-        "app.database.get_carro_by_id"
-    ) as mock_get_carro_by_id:
+    with patch("app.database.get_carros") as mock_get_carros, patch("app.database.get_carro_by_id") as mock_get_carro_by_id:
         # Mock default return values
         mock_get_carros.return_value = []
         mock_get_carro_by_id.return_value = None

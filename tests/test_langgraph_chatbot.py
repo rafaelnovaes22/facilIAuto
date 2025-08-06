@@ -13,7 +13,6 @@ Data: 2024
 
 import sys
 import traceback
-from typing import Any, Dict
 
 
 def print_header(title: str):
@@ -35,9 +34,6 @@ def test_imports():
 
     try:
         print_step("Importando módulos LangGraph...")
-        from app.chatbot_models import PerguntaChatbot, RespostaChatbot, TipoAgente
-        from app.langgraph_chatbot_graph import get_chatbot_graph, reset_chatbot_graph
-        from app.langgraph_chatbot_state import AgentType, ChatbotState
 
         print_step("Importações realizadas com sucesso", "ok")
         return True
@@ -196,9 +192,7 @@ def test_agent_routing(chatbot_graph, carro_data):
             print_step(f"Teste {i}: {test_case['desc']}")
             print(f"    Pergunta: '{test_case['pergunta']}'")
 
-            resultado = chatbot_graph.processar_pergunta(
-                carro_id=1, carro_data=carro_data, pergunta=test_case["pergunta"]
-            )
+            resultado = chatbot_graph.processar_pergunta(carro_id=1, carro_data=carro_data, pergunta=test_case["pergunta"])
 
             agente_usado = resultado.get("agente", "unknown")
             confianca = resultado.get("confianca", 0.0)
@@ -215,18 +209,16 @@ def test_agent_routing(chatbot_graph, carro_data):
             )
 
             if roteamento_correto:
-                print_step(f"    Roteamento: OK", "ok")
+                print_step("    Roteamento: OK", "ok")
                 success_count += 1
             else:
-                print_step(f"    Roteamento: Inesperado", "error")
+                print_step("    Roteamento: Inesperado", "error")
 
             # Verificar se há resposta
             if resultado.get("resposta"):
-                print_step(
-                    f"    Resposta gerada: {len(resultado['resposta'])} chars", "ok"
-                )
+                print_step(f"    Resposta gerada: {len(resultado['resposta'])} chars", "ok")
             else:
-                print_step(f"    Resposta: Vazia", "error")
+                print_step("    Resposta: Vazia", "error")
 
         except Exception as e:
             print_step(f"    Erro no teste {i}: {e}", "error")
@@ -255,15 +247,11 @@ def test_response_quality(chatbot_graph, carro_data):
         resposta = resultado_tecnico.get("resposta", "")
         print(f"    Tamanho da resposta: {len(resposta)} chars")
         print(f"    Confiança: {resultado_tecnico.get('confianca', 0):.2f}")
-        print(
-            f"    Sugestões follow-up: {len(resultado_tecnico.get('sugestoes_followup', []))}"
-        )
+        print(f"    Sugestões follow-up: {len(resultado_tecnico.get('sugestoes_followup', []))}")
 
         # Verificar elementos esperados na resposta técnica
         elementos_esperados = ["potência", "cv", "consumo", "km/l"]
-        elementos_encontrados = sum(
-            1 for el in elementos_esperados if el.lower() in resposta.lower()
-        )
+        elementos_encontrados = sum(1 for el in elementos_esperados if el.lower() in resposta.lower())
 
         print_step(
             f"    Elementos técnicos encontrados: {elementos_encontrados}/{len(elementos_esperados)}",
@@ -280,9 +268,7 @@ def test_response_quality(chatbot_graph, carro_data):
 
         resposta_fin = resultado_financeiro.get("resposta", "")
         elementos_financeiros = ["financiamento", "prestação", "entrada", "R$"]
-        elementos_fin_encontrados = sum(
-            1 for el in elementos_financeiros if el in resposta_fin
-        )
+        elementos_fin_encontrados = sum(1 for el in elementos_financeiros if el in resposta_fin)
 
         print_step(
             f"    Elementos financeiros encontrados: {elementos_fin_encontrados}/{len(elementos_financeiros)}",
@@ -304,16 +290,12 @@ def test_debug_mode(chatbot_graph, carro_data):
 
     try:
         print_step("Executando debug do LangGraph...")
-        debug_info = chatbot_graph.executar_debug(
-            carro_id=1, carro_data=carro_data, pergunta="Como é o motor deste carro?"
-        )
+        debug_info = chatbot_graph.executar_debug(carro_id=1, carro_data=carro_data, pergunta="Como é o motor deste carro?")
 
         print_step(f"Debug executado: {len(debug_info)} campos", "ok")
 
         if "execution_flow" in debug_info:
-            print_step(
-                f"Fluxo de execução: {len(debug_info['execution_flow'])} etapas", "ok"
-            )
+            print_step(f"Fluxo de execução: {len(debug_info['execution_flow'])} etapas", "ok")
             for etapa in debug_info["execution_flow"]:
                 print(f"    {etapa}")
 
@@ -392,13 +374,13 @@ def print_final_report(test_results):
     passed_tests = sum(test_results.values())
     success_rate = (passed_tests / total_tests) * 100
 
-    print(f"📊 **ESTATÍSTICAS GERAIS:**")
+    print("📊 **ESTATÍSTICAS GERAIS:**")
     print(f"   Total de testes: {total_tests}")
     print(f"   Testes aprovados: {passed_tests}")
     print(f"   Taxa de sucesso: {success_rate:.1f}%")
     print()
 
-    print(f"📋 **RESULTADOS DETALHADOS:**")
+    print("📋 **RESULTADOS DETALHADOS:**")
     for test_name, result in test_results.items():
         status = "✅ PASSOU" if result else "❌ FALHOU"
         print(f"   {test_name.capitalize().replace('_', ' ')}: {status}")

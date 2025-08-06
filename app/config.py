@@ -52,7 +52,7 @@ def test_connection():
         from sqlalchemy import text
 
         with engine.connect() as connection:
-            result = connection.execute(text("SELECT 1"))
+            connection.execute(text("SELECT 1"))
             return True
     except Exception as e:
         print(f"Erro ao conectar com o banco: {e}")

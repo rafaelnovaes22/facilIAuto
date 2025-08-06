@@ -24,7 +24,6 @@ Data: 2024
 """
 
 import argparse
-import importlib
 import sys
 import time
 import traceback
@@ -40,15 +39,7 @@ def print_header(title: str):
 
 def print_step(step: str, status: str = ""):
     """Imprime etapa do teste"""
-    status_emoji = (
-        "✅"
-        if status == "ok"
-        else "❌"
-        if status == "error"
-        else "🔄"
-        if status == "running"
-        else "📋"
-    )
+    status_emoji = "✅" if status == "ok" else "❌" if status == "error" else "🔄" if status == "running" else "📋"
     print(f"{status_emoji} {step}")
 
 
@@ -360,9 +351,7 @@ class LangGraphE2ETestRunner:
         }
 
         if categories:
-            categories_to_run = {
-                k: v for k, v in available_categories.items() if k in categories
-            }
+            categories_to_run = {k: v for k, v in available_categories.items() if k in categories}
         else:
             categories_to_run = available_categories
 
@@ -393,22 +382,18 @@ class LangGraphE2ETestRunner:
         total_tests = sum(r.get("total_tests", 0) for r in self.results.values())
         total_passed = sum(r.get("passed_tests", 0) for r in self.results.values())
         total_time = time.time() - self.total_start_time
-        overall_success_rate = (
-            (total_passed / total_tests * 100) if total_tests > 0 else 0
-        )
+        overall_success_rate = (total_passed / total_tests * 100) if total_tests > 0 else 0
 
-        print(f"🧪 **ESTATÍSTICAS GERAIS:**")
+        print("🧪 **ESTATÍSTICAS GERAIS:**")
         print(f"   Total de Testes: {total_tests}")
         print(f"   Testes Aprovados: {total_passed}")
         print(f"   Taxa de Sucesso: {overall_success_rate:.1f}%")
         print(f"   Tempo Total: {total_time:.1f}s")
         print()
 
-        print(f"📋 **RESULTADOS POR CATEGORIA:**")
+        print("📋 **RESULTADOS POR CATEGORIA:**")
         for category, result in self.results.items():
-            success_rate = (
-                result.get("passed_tests", 0) / result.get("total_tests", 1) * 100
-            )
+            success_rate = result.get("passed_tests", 0) / result.get("total_tests", 1) * 100
             status = "✅ PASSOU" if success_rate >= 80 else "❌ FALHOU"
             print(f"   {category.title()}: {status} ({success_rate:.1f}%)")
 
@@ -433,13 +418,11 @@ class LangGraphE2ETestRunner:
 
         # Recomendações baseadas nos resultados
         failed_categories = [
-            cat
-            for cat, result in self.results.items()
-            if (result.get("passed_tests", 0) / result.get("total_tests", 1)) < 0.8
+            cat for cat, result in self.results.items() if (result.get("passed_tests", 0) / result.get("total_tests", 1)) < 0.8
         ]
 
         if failed_categories:
-            print(f"\n🔧 **PRÓXIMOS PASSOS:**")
+            print("\n🔧 **PRÓXIMOS PASSOS:**")
             for category in failed_categories:
                 if category == "performance":
                     print("   - Otimizar tempo de resposta dos agentes")
@@ -487,9 +470,7 @@ Exemplos de uso:
         help="Executar apenas testes essenciais (workflow + agents)",
     )
 
-    parser.add_argument(
-        "--verbose", action="store_true", help="Output detalhado com traceback de erros"
-    )
+    parser.add_argument("--verbose", action="store_true", help="Output detalhado com traceback de erros")
 
     args = parser.parse_args()
 
@@ -505,7 +486,7 @@ Exemplos de uso:
     runner = LangGraphE2ETestRunner(verbose=args.verbose)
 
     try:
-        results = runner.run_all_tests(categories)
+        runner.run_all_tests(categories)
         success = runner.print_final_report()
 
         # Exit code baseado no resultado

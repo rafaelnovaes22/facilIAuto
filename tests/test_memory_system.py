@@ -12,9 +12,7 @@ Data: 2024
 """
 
 import sys
-import time
 import traceback
-from typing import Any, Dict
 
 
 def print_header(title: str):
@@ -36,18 +34,10 @@ def test_memory_imports():
 
     try:
         print_step("Importando modelos de memória...")
-        from app.memory_models import (
-            Conversation,
-            ConversationContext,
-            ConversationMessage,
-            UserSession,
-        )
 
         print_step("Importando gerenciador de memória...")
-        from app.memory_manager import ConversationMemoryManager, get_memory_manager
 
         print_step("Importando API de memória...")
-        from app.memory_api import router
 
         print_step("Todas as importações realizadas com sucesso", "ok")
         return True
@@ -106,9 +96,7 @@ def test_conversation_creation(memory_manager):
         print_step(f"Conversa criada com ID: {conversation_id}", "ok")
 
         print_step("Verificando conversa criada...")
-        conversation, messages = memory_manager.get_conversation_history(
-            conversation_id
-        )
+        conversation, messages = memory_manager.get_conversation_history(conversation_id)
 
         if conversation:
             print_step(f"Conversa encontrada: carro_id={conversation.carro_id}", "ok")
@@ -173,9 +161,7 @@ def test_message_persistence(memory_manager, conversation_id):
             print_step(f"Mensagem adicionada com ID: {message_id}", "ok")
 
         print_step("Verificando mensagens persistidas...")
-        conversation, messages = memory_manager.get_conversation_history(
-            conversation_id
-        )
+        conversation, messages = memory_manager.get_conversation_history(conversation_id)
 
         print_step(f"Total de mensagens recuperadas: {len(messages)}", "ok")
         print_step(f"Agente primário da conversa: {conversation.primary_agent}", "ok")
@@ -230,15 +216,9 @@ def test_user_context(memory_manager):
 
         user_context = memory_manager.get_user_context("test_user_123")
 
-        print_step(
-            f"Conversas recentes: {user_context.get('recent_conversations', 0)}", "ok"
-        )
-        print_step(
-            f"Agentes preferidos: {user_context.get('preferred_agents', {})}", "ok"
-        )
-        print_step(
-            f"Marcas de interesse: {user_context.get('brand_preferences', [])}", "ok"
-        )
+        print_step(f"Conversas recentes: {user_context.get('recent_conversations', 0)}", "ok")
+        print_step(f"Agentes preferidos: {user_context.get('preferred_agents', {})}", "ok")
+        print_step(f"Marcas de interesse: {user_context.get('brand_preferences', [])}", "ok")
 
         return True
 
@@ -303,9 +283,7 @@ def test_analytics_system(memory_manager):
             f"Total de conversas (7 dias): {analytics.get('total_conversations', 0)}",
             "ok",
         )
-        print_step(
-            f"Total de mensagens (7 dias): {analytics.get('total_messages', 0)}", "ok"
-        )
+        print_step(f"Total de mensagens (7 dias): {analytics.get('total_messages', 0)}", "ok")
         print_step(
             f"Média de mensagens por conversa: {analytics.get('avg_messages_per_conversation', 0)}",
             "ok",
@@ -382,14 +360,10 @@ def run_comprehensive_memory_test():
 
     # 4. Teste de persistência de mensagens
     if conversation_id:
-        test_results["message_persistence"] = test_message_persistence(
-            memory_manager, conversation_id
-        )
+        test_results["message_persistence"] = test_message_persistence(memory_manager, conversation_id)
 
         # 5. Teste de extração de contexto
-        test_results["context_extraction"] = test_context_extraction(
-            memory_manager, conversation_id
-        )
+        test_results["context_extraction"] = test_context_extraction(memory_manager, conversation_id)
 
     # 6. Teste de contexto do usuário
     test_results["user_context"] = test_user_context(memory_manager)
@@ -414,13 +388,13 @@ def print_memory_final_report(test_results):
     passed_tests = sum(test_results.values())
     success_rate = (passed_tests / total_tests) * 100
 
-    print(f"🧠 **ESTATÍSTICAS DE MEMÓRIA:**")
+    print("🧠 **ESTATÍSTICAS DE MEMÓRIA:**")
     print(f"   Total de testes: {total_tests}")
     print(f"   Testes aprovados: {passed_tests}")
     print(f"   Taxa de sucesso: {success_rate:.1f}%")
     print()
 
-    print(f"📋 **RESULTADOS DETALHADOS:**")
+    print("📋 **RESULTADOS DETALHADOS:**")
     for test_name, result in test_results.items():
         status = "✅ PASSOU" if result else "❌ FALHOU"
         print(f"   {test_name.replace('_', ' ').title()}: {status}")
