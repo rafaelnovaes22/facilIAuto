@@ -89,7 +89,7 @@ def router_node(state: ChatbotState) -> ChatbotState:
     # Boost para perguntas específicas sobre adequação de uso
     if any(phrase in pergunta for phrase in ["adequado para", "serve para", "é bom para", "recomendado para"]):
         matches_uso += 2
-    confidencias["uso_principal"] = min(matches_uso / len(ChatbotKeywords.USO_PRINCIPAL) * 3, 1.0)
+    confidencias[AgentType.USO_PRINCIPAL] = min(matches_uso / len(ChatbotKeywords.USO_PRINCIPAL) * 3, 1.0)
     
     # Encontrar o agente com maior confiança
     melhor_agente = max(confidencias.items(), key=lambda x: x[1])

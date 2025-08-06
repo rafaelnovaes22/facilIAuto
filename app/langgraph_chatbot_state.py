@@ -11,6 +11,7 @@ class AgentType(str, Enum):
     COMPARACAO = "comparacao"
     MANUTENCAO = "manutencao"
     AVALIACAO = "avaliacao"
+    USO_PRINCIPAL = "uso_principal"
     FINALIZER = "finalizer"
 
 class ChatbotState(TypedDict):

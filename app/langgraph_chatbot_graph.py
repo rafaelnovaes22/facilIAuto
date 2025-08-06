@@ -103,7 +103,7 @@ class FacilIAutoChatbotGraph:
             return "manutencao"
         elif agente_selecionado == AgentType.AVALIACAO:
             return "avaliacao"
-        elif agente_selecionado == "uso_principal":
+        elif agente_selecionado == AgentType.USO_PRINCIPAL:
             return "uso_principal"
         else:
             # Fallback para finalizer (resposta genérica)
