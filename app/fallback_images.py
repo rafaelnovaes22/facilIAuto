@@ -149,7 +149,7 @@ class FallbackImageService:
         ]
 
     def get_fallback_images(
-        self, marca: str, modelo: str, categoria: str = None
+        self, marca: str, modelo: str, categoria: Optional[str] = None
     ) -> List[str]:
         """
         Obtém imagens de fallback para um veículo específico
@@ -267,8 +267,8 @@ class FallbackImageService:
         self,
         marca: str,
         modelo: str,
-        categoria: str = None,
-        failed_urls: List[str] = None,
+        categoria: Optional[str] = None,
+        failed_urls: Optional[List[str]] = None,
     ) -> str:
         """
         Seleciona a melhor imagem de fallback evitando URLs que já falharam
@@ -298,8 +298,8 @@ class FallbackImageService:
         self,
         marca: str,
         modelo: str,
-        ano: int = None,
-        cor: str = None,
+        ano: Optional[int] = None,
+        cor: Optional[str] = None,
         width: int = 1200,
         height: int = 800,
     ) -> str:
@@ -414,20 +414,20 @@ fallback_service = FallbackImageService()
 
 
 # Funções utilitárias para uso fácil
-def get_fallback_images(marca: str, modelo: str, categoria: str = None) -> List[str]:
+def get_fallback_images(marca: str, modelo: str, categoria: Optional[str] = None) -> List[str]:
     """Função utilitária para obter imagens de fallback"""
     return fallback_service.get_fallback_images(marca, modelo, categoria)
 
 
 def get_best_fallback(
-    marca: str, modelo: str, categoria: str = None, failed_urls: List[str] = None
+    marca: str, modelo: str, categoria: Optional[str] = None, failed_urls: Optional[List[str]] = None
 ) -> str:
     """Função utilitária para obter a melhor imagem de fallback"""
     return fallback_service.select_best_fallback(marca, modelo, categoria, failed_urls)
 
 
 def create_vehicle_placeholder(
-    marca: str, modelo: str, ano: int = None, cor: str = None
+    marca: str, modelo: str, ano: Optional[int] = None, cor: Optional[str] = None
 ) -> str:
     """Função utilitária para criar placeholder personalizado"""
     return fallback_service.get_placeholder_with_info(marca, modelo, ano, cor)

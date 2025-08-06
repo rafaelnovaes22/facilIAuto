@@ -3,7 +3,7 @@ API de Validação de Preferências
 Endpoint dedicado para validar preferências em tempo real
 """
 
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, cast
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
@@ -69,7 +69,7 @@ async def validate_preferences(request: PreferenceValidationRequest):
             and len(
                 [
                     issue
-                    for issue in result.get("validation_issues", [])
+                    for issue in cast(List[Dict], result.get("validation_issues", []))
                     if issue.get("type") in ["conflicting_preferences"]
                 ]
             )

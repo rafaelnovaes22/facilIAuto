@@ -1261,7 +1261,7 @@ async def listar_carros():
 @app.get("/carros/{carro_id}")
 async def obter_carro(carro_id: int):
     """Obtém detalhes de um carro específico"""
-    carro = get_carro_by_id(carro_id)
+    carro = get_carro_by_id(str(carro_id))
     if not carro:
         raise HTTPException(status_code=404, detail="Carro não encontrado")
     return carro
@@ -1270,7 +1270,7 @@ async def obter_carro(carro_id: int):
 @app.get("/carro/{carro_id}", response_class=HTMLResponse)
 async def pagina_detalhes_carro(carro_id: int):
     """Página de detalhes do carro com chatbot integrado"""
-    carro = get_carro_by_id(carro_id)
+    carro = get_carro_by_id(str(carro_id))
     if not carro:
         raise HTTPException(status_code=404, detail="Carro não encontrado")
 

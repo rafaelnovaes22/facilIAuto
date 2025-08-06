@@ -119,8 +119,8 @@ def adicionar_resposta_agente(
     resposta: str,
     agente: AgentType,
     confianca: float,
-    dados_utilizados: List[str] = None,
-    sugestoes: List[str] = None,
+    dados_utilizados: Optional[List[str]] = None,
+    sugestoes: Optional[List[str]] = None,
 ) -> ChatbotState:
     """Adiciona resposta do agente ao estado"""
     state["messages"].append(AIMessage(content=resposta))

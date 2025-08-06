@@ -6,7 +6,7 @@ import asyncio
 import logging
 from datetime import datetime
 from enum import Enum
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, cast
 
 import aiohttp
 from pydantic import BaseModel
@@ -99,6 +99,8 @@ class ImageValidationService:
                 )
 
             # Fazer requisição HEAD primeiro (mais rápido)
+            if self.session is None:
+                raise RuntimeError("ClientSession não inicializada. Use como context manager.")
             async with self.session.head(url) as response:
                 response_time = int(
                     (datetime.now() - start_time).total_seconds() * 1000
@@ -230,13 +232,13 @@ class ImageValidationService:
                     )
                 )
             else:
-                processed_results.append(result)
+                processed_results.append(cast(ImageValidationResult, result))
 
         return processed_results
 
     def get_validation_summary(
         self, results: List[ImageValidationResult]
-    ) -> Dict[str, any]:
+    ) -> Dict[str, Any]:
         """
         Gera um resumo dos resultados de validação
 
@@ -254,7 +256,7 @@ class ImageValidationService:
         invalid = total - valid
 
         # Contar tipos de erro
-        error_breakdown = {}
+        error_breakdown: Dict[str, int] = {}
         for result in results:
             if not result.is_valid and result.error_type:
                 error_type = result.error_type.value

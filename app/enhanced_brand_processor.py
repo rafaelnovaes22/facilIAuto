@@ -20,14 +20,14 @@ class EnhancedBrandProcessor:
 
     def process_and_validate_preferences(
         self, questionario: QuestionarioBusca
-    ) -> Dict[str, any]:
+    ) -> Dict[str, Any]:
         """
         Aplica validação e normalização avançada das preferências
         Baseado na pesquisa de estruturação de coleta de preferências
         """
         try:
             # 1. Validação e Normalização da Marca Principal
-            marca_result = self.matcher.validate_and_normalize_preferences(
+            marca_result: Dict[str, Any] = self.matcher.validate_and_normalize_preferences(
                 questionario.marca_preferida, questionario.modelo_especifico
             )
 

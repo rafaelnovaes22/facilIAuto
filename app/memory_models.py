@@ -13,11 +13,13 @@ from sqlalchemy import (
     String,
     Text,
 )
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import DeclarativeBase, relationship
 from sqlalchemy.sql import func
 
-Base = declarative_base()
+
+class Base(DeclarativeBase):
+    """Base class para modelos SQLAlchemy"""
+    pass
 
 
 class Conversation(Base):

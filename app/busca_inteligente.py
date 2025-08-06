@@ -1,5 +1,5 @@
 import json
-from typing import Any, Dict, List, TypedDict
+from typing import Any, Dict, List, TypedDict, cast
 
 from langgraph.graph import END, StateGraph
 from langgraph.prebuilt import create_react_agent
@@ -225,7 +225,7 @@ def calcular_scores_compatibilidade(state: EstadoBuscaDict) -> EstadoBuscaDict:
         )
 
     # Ordena por score decrescente
-    scores.sort(key=lambda x: x["score"], reverse=True)
+    scores.sort(key=lambda x: cast(float, x["score"]), reverse=True)
     return {**state, "pontuacoes": scores}
 
 
@@ -238,25 +238,25 @@ def gerar_recomendacoes_finais(state: EstadoBuscaDict) -> EstadoBuscaDict:
 
     for item in top_carros:
         carro = item["carro"]
-        recomendacao = {
-            "id": carro["id"],
-            "marca": carro["marca"],
-            "modelo": carro["modelo"],
-            "versao": carro.get("versao"),
-            "ano": carro["ano"],
-            "preco": carro["preco"],
-            "preco_promocional": carro.get("preco_promocional"),
-            "categoria": carro["categoria"],
-            "cor": carro.get("cor"),
-            "km": carro.get("km"),
-            "score_compatibilidade": round(item["score"], 1),
-            "razoes_recomendacao": item.get("razoes", []),
-            "pontos_fortes": item.get("pontos_fortes", []),
-            "consideracoes": item.get("consideracoes", []),
-            "fotos": carro.get("fotos", []),
-            "descricao": carro.get("descricao"),
-            "opcionais": carro.get("opcionais", []),
-        }
+        recomendacao = CarroRecomendacao(
+            id=carro["id"],
+            marca=carro["marca"],
+            modelo=carro["modelo"],
+            versao=carro.get("versao"),
+            ano=carro["ano"],
+            preco=carro["preco"],
+            preco_promocional=carro.get("preco_promocional"),
+            categoria=carro["categoria"],
+            cor=carro.get("cor"),
+            km=carro.get("km"),
+            score_compatibilidade=round(item["score"], 1),
+            razoes_recomendacao=item.get("razoes", []),
+            pontos_fortes=item.get("pontos_fortes", []),
+            consideracoes=item.get("consideracoes", []),
+            fotos=carro.get("fotos", []),
+            descricao=carro.get("descricao"),
+            opcionais=carro.get("opcionais", []),
+        )
         recomendacoes.append(recomendacao)
 
     return {**state, "recomendacoes_finais": recomendacoes}

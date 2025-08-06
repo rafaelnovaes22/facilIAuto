@@ -90,7 +90,7 @@ class ConversationMemoryManager:
             logger.info(
                 f"📝 Nova conversa criada: {conversation.id} para carro {carro_id}"
             )
-            return conversation.id
+            return str(conversation.id)
 
         except Exception as e:
             session.rollback()
@@ -159,7 +159,7 @@ class ConversationMemoryManager:
             session.commit()
 
             logger.debug(f"💬 Mensagem adicionada: {message.id} [{message_type}]")
-            return message.id
+            return str(message.id)
 
         except Exception as e:
             session.rollback()
@@ -231,7 +231,7 @@ class ConversationMemoryManager:
             session.commit()
 
             logger.debug(f"🧠 Contexto adicionado: {context_type}.{context_key}")
-            return context.id
+            return str(context.id)
 
         except Exception as e:
             session.rollback()
@@ -306,7 +306,7 @@ class ConversationMemoryManager:
             )
 
             # Agregar contexto
-            user_context = {
+            user_context: Dict[str, Any] = {
                 "recent_conversations": len(conversations),
                 "preferred_agents": {},
                 "common_interests": [],
@@ -423,8 +423,8 @@ class ConversationMemoryManager:
 
             if similar_convs:
                 # Extrair padrões de perguntas frequentes
-                frequent_questions = []
-                common_agents = {}
+                frequent_questions: List[str] = []
+                common_agents: Dict[str, int] = {}
 
                 for conv, messages in similar_convs:
                     for msg in messages:
@@ -632,7 +632,7 @@ class ConversationMemoryManager:
                 "avg_messages_per_conversation": round(
                     total_messages / max(total_conversations, 1), 2
                 ),
-                "agent_usage": dict(agent_usage),
+                "agent_usage": {row.agent_used: row.count for row in agent_usage},
                 "popular_cars": [
                     {"carro_id": car_id, "conversations": count}
                     for car_id, count in car_popularity

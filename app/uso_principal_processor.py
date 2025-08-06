@@ -14,7 +14,7 @@ Perfis suportados:
 - Família: espaçoso, seguro, confortável, prático
 """
 
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Tuple, cast
 
 from app.models import QuestionarioBusca
 
@@ -423,7 +423,7 @@ class UsoMatcher:
         questionario: QuestionarioBusca,
     ) -> Tuple[float, List[str], List[str]]:
         """Avalia um tipo de uso específico"""
-        criterios = cls.CRITERIOS_USO[uso]
+        criterios = cast(Dict[str, Any], cls.CRITERIOS_USO[uso])
         score = 0.0
         razoes = []
         pontos_fortes = []
@@ -1325,7 +1325,7 @@ class UsoMatcher:
     @classmethod
     def get_criterios_por_uso(cls, uso: str) -> Dict[str, Any]:
         """Retorna os critérios técnicos para um tipo de uso específico"""
-        return cls.CRITERIOS_USO.get(uso, {})
+        return cast(Dict[str, Any], cls.CRITERIOS_USO.get(uso, {}))
 
     @classmethod
     def get_descricao_uso(cls, uso: str) -> str:

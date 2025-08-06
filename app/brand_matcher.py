@@ -6,7 +6,7 @@ Implementa fuzzy matching, auto-complete e validação inteligente
 import re
 from dataclasses import dataclass
 from difflib import SequenceMatcher
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 
 @dataclass
@@ -208,7 +208,7 @@ class AdvancedBrandMatcher:
 
     def validate_and_normalize_preferences(
         self, marca: str, modelo: str
-    ) -> Dict[str, any]:
+    ) -> Dict[str, Any]:
         """Valida e normaliza preferências de marca e modelo"""
         brand_match = self.find_best_brand_match(marca)
         model_match = self.find_best_model_match(modelo, brand_match.matched)

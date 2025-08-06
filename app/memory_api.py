@@ -73,7 +73,7 @@ async def create_conversation(conversation_data: ConversationCreate):
         # Buscar dados do carro (em implementação real, viria do banco)
         from app.database import get_carro_by_id
 
-        carro_data = get_carro_by_id(conversation_data.carro_id)
+        carro_data = get_carro_by_id(str(conversation_data.carro_id))
 
         if not carro_data:
             raise HTTPException(
@@ -96,14 +96,14 @@ async def create_conversation(conversation_data: ConversationCreate):
             raise HTTPException(status_code=500, detail="Erro ao criar conversa")
 
         return ConversationResponse(
-            id=conversation.id,
-            carro_id=conversation.carro_id,
-            user_session_id=conversation.user_session_id,
+            id=str(conversation.id),
+            carro_id=int(conversation.carro_id),
+            user_session_id=str(conversation.user_session_id) if conversation.user_session_id else None,
             started_at=conversation.started_at.isoformat(),
             last_activity=conversation.last_activity.isoformat(),
-            is_active=conversation.is_active,
-            total_messages=conversation.total_messages,
-            primary_agent=conversation.primary_agent,
+            is_active=bool(conversation.is_active),
+            total_messages=int(conversation.total_messages),
+            primary_agent=str(conversation.primary_agent) if conversation.primary_agent else None,
         )
 
     except HTTPException:
@@ -139,27 +139,27 @@ async def get_conversation_history(
 
         message_responses = [
             MessageResponse(
-                id=msg.id,
-                message_type=msg.message_type,
-                content=msg.content,
-                agent_used=msg.agent_used,
-                confidence_score=msg.confidence_score,
+                id=str(msg.id),
+                message_type=str(msg.message_type),
+                content=str(msg.content),
+                agent_used=str(msg.agent_used) if msg.agent_used else None,
+                confidence_score=float(msg.confidence_score) if msg.confidence_score else None,
                 created_at=msg.created_at.isoformat(),
-                user_rating=msg.user_rating,
+                user_rating=int(msg.user_rating) if msg.user_rating else None,
             )
             for msg in messages
         ]
 
         return ConversationHistoryResponse(
             conversation=ConversationResponse(
-                id=conversation.id,
-                carro_id=conversation.carro_id,
-                user_session_id=conversation.user_session_id,
+                id=str(conversation.id),
+                carro_id=int(conversation.carro_id),
+                user_session_id=str(conversation.user_session_id) if conversation.user_session_id else None,
                 started_at=conversation.started_at.isoformat(),
                 last_activity=conversation.last_activity.isoformat(),
-                is_active=conversation.is_active,
-                total_messages=conversation.total_messages,
-                primary_agent=conversation.primary_agent,
+                is_active=bool(conversation.is_active),
+                total_messages=int(conversation.total_messages),
+                primary_agent=str(conversation.primary_agent) if conversation.primary_agent else None,
             ),
             messages=message_responses,
             total_messages=len(message_responses),

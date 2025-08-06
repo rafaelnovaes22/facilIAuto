@@ -1,4 +1,5 @@
 import logging
+from typing import Optional
 
 from fastapi import APIRouter, HTTPException
 
@@ -28,7 +29,7 @@ async def processar_pergunta_chatbot(pergunta: PerguntaChatbot):
         # Validar se o carro existe
         from app.database import get_carro_by_id
 
-        carro = get_carro_by_id(pergunta.carro_id)
+        carro = get_carro_by_id(str(pergunta.carro_id))
         if not carro:
             raise HTTPException(
                 status_code=404,
@@ -163,7 +164,7 @@ async def debug_langgraph(pergunta: PerguntaChatbot):
         # Validar se o carro existe
         from app.database import get_carro_by_id
 
-        carro = get_carro_by_id(pergunta.carro_id)
+        carro = get_carro_by_id(str(pergunta.carro_id))
         if not carro:
             raise HTTPException(
                 status_code=404,
@@ -194,7 +195,7 @@ async def debug_langgraph(pergunta: PerguntaChatbot):
 
 
 @router.post("/chatbot/feedback")
-async def registrar_feedback(conversation_id: str, rating: int, comentario: str = None):
+async def registrar_feedback(conversation_id: str, rating: int, comentario: Optional[str] = None):
     """
     Registra feedback do usuário sobre uma resposta do LangGraph
 

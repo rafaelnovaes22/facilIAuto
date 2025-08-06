@@ -1,6 +1,6 @@
 import logging
 import time
-from typing import Any, Dict, Literal
+from typing import Any, Dict, Literal, Optional
 
 from langgraph.graph import END, StateGraph
 
@@ -209,7 +209,7 @@ class FacilIAutoChatbotGraph:
                 if state["agente_selecionado"]
                 else "unknown",
                 confidence_score=state["confianca_agente"],
-                processing_time_ms=state.get("processing_time_ms", 0),
+                processing_time_ms=state.get("processing_time_ms") or 0,
                 data_sources=state["dados_utilizados"],
                 followup_suggestions=state["sugestoes_followup"],
             )
@@ -227,8 +227,8 @@ class FacilIAutoChatbotGraph:
         carro_id: int,
         carro_data: Dict[str, Any],
         pergunta: str,
-        conversation_id: str = None,
-        user_session_id: str = None,
+        conversation_id: Optional[str] = None,
+        user_session_id: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Método principal para processar uma pergunta do usuário com memória persistente

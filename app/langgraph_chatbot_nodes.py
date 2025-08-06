@@ -955,7 +955,7 @@ def uso_principal_agent_node(state: ChatbotState) -> ChatbotState:
 
     resposta_final = "\n".join(resposta_partes)
 
-    return adicionar_resposta_agente(state, "uso_principal", resposta_final)
+    return adicionar_resposta_agente(state, resposta_final, AgentType.USO_PRINCIPAL, 0.95)
 
 
 def _analisar_adequacao_uso(carro: Dict[str, Any], uso: str) -> str:
