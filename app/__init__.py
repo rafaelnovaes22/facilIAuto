@@ -6,4 +6,4 @@ usando LangGraph para processamento inteligente.
 """
 
 __version__ = "1.0.0"
-__author__ = "FacilIAuto Team" 
+__author__ = "FacilIAuto Team"

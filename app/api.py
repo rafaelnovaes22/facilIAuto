@@ -1,19 +1,20 @@
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
-from app.models import QuestionarioBusca, RespostaBusca
+from fastapi.responses import HTMLResponse
+
 from app.busca_inteligente import processar_busca_inteligente
-from app.database import get_carros, get_carro_by_id
-from app.enhanced_api import buscar_carros_enhanced
-from app.validation_api import router as validation_router
 from app.chatbot_api import router as chatbot_router
-from app.memory_api import router as memory_router
+from app.database import get_carro_by_id, get_carros
+from app.enhanced_api import buscar_carros_enhanced
 from app.enhanced_brand_processor import enhanced_brand_processor
+from app.memory_api import router as memory_router
+from app.models import QuestionarioBusca, RespostaBusca
+from app.validation_api import router as validation_router
 
 app = FastAPI(
     title="FacilIAuto - Busca Inteligente de Carros",
     description="Sistema de recomendação de carros usando LangGraph",
-    version="1.0.0"
+    version="1.0.0",
 )
 
 # Configuração CORS
@@ -27,6 +28,7 @@ app.add_middleware(
 
 # Serve arquivos estáticos (CSS, JS, imagens)
 from fastapi.staticfiles import StaticFiles
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Incluir rotas de validação
@@ -37,6 +39,7 @@ app.include_router(chatbot_router, prefix="/api", tags=["chatbot"])
 
 # Incluir rotas de memória persistente
 app.include_router(memory_router, prefix="/api", tags=["memory"])
+
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root():
@@ -1219,33 +1222,41 @@ async def read_root():
     """
     return html_content
 
+
 @app.post("/buscar-carros", response_model=RespostaBusca)
 async def buscar_carros(questionario: QuestionarioBusca):
     """Endpoint principal para busca inteligente de carros"""
     try:
         print(f"📥 Dados recebidos: {questionario.model_dump()}")
         resultado = processar_busca_inteligente(questionario)
-        
+
         # Verifica se o resultado tem a estrutura esperada
         if not resultado:
             raise HTTPException(status_code=500, detail="Resultado da busca é nulo")
-        
-        if not hasattr(resultado, 'recomendacoes'):
-            raise HTTPException(status_code=500, detail="Resultado da busca não possui recomendações")
-        
+
+        if not hasattr(resultado, "recomendacoes"):
+            raise HTTPException(
+                status_code=500, detail="Resultado da busca não possui recomendações"
+            )
+
         return resultado
     except HTTPException:
         raise
     except Exception as e:
         print(f"💥 Erro detalhado: {e}")
         import traceback
+
         traceback.print_exc()
-        raise HTTPException(status_code=500, detail=f"Erro ao processar busca: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Erro ao processar busca: {str(e)}"
+        )
+
 
 @app.get("/carros")
 async def listar_carros():
     """Lista todos os carros disponíveis"""
     return get_carros()
+
 
 @app.get("/carros/{carro_id}")
 async def obter_carro(carro_id: int):
@@ -1255,19 +1266,28 @@ async def obter_carro(carro_id: int):
         raise HTTPException(status_code=404, detail="Carro não encontrado")
     return carro
 
+
 @app.get("/carro/{carro_id}", response_class=HTMLResponse)
 async def pagina_detalhes_carro(carro_id: int):
     """Página de detalhes do carro com chatbot integrado"""
     carro = get_carro_by_id(carro_id)
     if not carro:
         raise HTTPException(status_code=404, detail="Carro não encontrado")
-    
+
     # Formatar dados para exibição
-    preco_formatado = f"R$ {carro['preco']:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
+    preco_formatado = (
+        f"R$ {carro['preco']:,.2f}".replace(",", "X")
+        .replace(".", ",")
+        .replace("X", ".")
+    )
     preco_promocional_formatado = ""
-    if carro.get('preco_promocional'):
-        preco_promocional_formatado = f"R$ {carro['preco_promocional']:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
-    
+    if carro.get("preco_promocional"):
+        preco_promocional_formatado = (
+            f"R$ {carro['preco_promocional']:,.2f}".replace(",", "X")
+            .replace(".", ",")
+            .replace("X", ".")
+        )
+
     html_content = f"""
     <!DOCTYPE html>
     <html lang="pt-BR">
@@ -1790,8 +1810,9 @@ async def pagina_detalhes_carro(carro_id: int):
     </body>
     </html>
     """
-    
+
     return html_content
+
 
 @app.post("/buscar-carros-enhanced")
 async def buscar_carros_enhanced_endpoint(questionario: QuestionarioBusca):
@@ -1799,13 +1820,18 @@ async def buscar_carros_enhanced_endpoint(questionario: QuestionarioBusca):
     try:
         return await buscar_carros_enhanced(questionario)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erro ao processar busca: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Erro ao processar busca: {str(e)}"
+        )
+
 
 @app.get("/health")
 async def health_check():
     """Endpoint de health check"""
     return {"status": "healthy", "message": "FacilIAuto API está funcionando!"}
 
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000) 
+
+    uvicorn.run(app, host="0.0.0.0", port=8000)

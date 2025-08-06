@@ -3,17 +3,18 @@
 Fixtures e configurações globais para testes
 """
 
-import pytest
 import asyncio
-from typing import Generator, AsyncGenerator
+from typing import AsyncGenerator, Generator
+from unittest.mock import MagicMock, patch
+
+import pytest
 from fastapi.testclient import TestClient
-from unittest.mock import patch, MagicMock
 
 from app.api import app
 from app.models import QuestionarioBusca
 
 # 🔧 Mock Database Configuration
-# Como o projeto usa PostgreSQL direto (não SQLAlchemy ORM), 
+# Como o projeto usa PostgreSQL direto (não SQLAlchemy ORM),
 # vamos mockar as funções de banco de dados
 
 
@@ -28,17 +29,14 @@ def event_loop():
 @pytest.fixture(scope="function")
 def mock_database():
     """Mock database functions for testing."""
-    with patch('app.database.get_carros') as mock_get_carros, \
-         patch('app.database.get_carro_by_id') as mock_get_carro_by_id:
-        
+    with patch("app.database.get_carros") as mock_get_carros, patch(
+        "app.database.get_carro_by_id"
+    ) as mock_get_carro_by_id:
         # Mock default return values
         mock_get_carros.return_value = []
         mock_get_carro_by_id.return_value = None
-        
-        yield {
-            'get_carros': mock_get_carros,
-            'get_carro_by_id': mock_get_carro_by_id
-        }
+
+        yield {"get_carros": mock_get_carros, "get_carro_by_id": mock_get_carro_by_id}
 
 
 @pytest.fixture(scope="function")
@@ -66,7 +64,7 @@ def sample_questionario() -> QuestionarioBusca:
         potencia_desejada="media",
         prioridade="economia",
         orcamento_min=50000,
-        orcamento_max=80000
+        orcamento_max=80000,
     )
 
 
@@ -84,7 +82,7 @@ def minimal_questionario() -> QuestionarioBusca:
         animais=False,
         espaco_carga="medio",
         potencia_desejada="media",
-        prioridade="equilibrio"
+        prioridade="equilibrio",
     )
 
 
@@ -109,10 +107,10 @@ def mock_carros_data():
             "fotos": ["foto1.jpg"],
             "descricao": "Corolla 2022 em excelente estado",
             "opcionais": ["ar_condicionado", "direcao_hidraulica"],
-            "destaque": True
+            "destaque": True,
         },
         {
-            "id": "2", 
+            "id": "2",
             "marca": "Honda",
             "modelo": "Civic",
             "ano": 2021,
@@ -128,16 +126,16 @@ def mock_carros_data():
             "fotos": ["foto2.jpg"],
             "descricao": "Civic 2021 esportivo",
             "opcionais": ["ar_condicionado", "multimidia"],
-            "destaque": False
-        }
+            "destaque": False,
+        },
     ]
 
 
 @pytest.fixture
 def setup_mock_carros_data(mock_database, mock_carros_data):
     """Configure mock database with test data."""
-    mock_database['get_carros'].return_value = mock_carros_data
-    mock_database['get_carro_by_id'].side_effect = lambda car_id: next(
-        (car for car in mock_carros_data if car['id'] == car_id), None
+    mock_database["get_carros"].return_value = mock_carros_data
+    mock_database["get_carro_by_id"].side_effect = lambda car_id: next(
+        (car for car in mock_carros_data if car["id"] == car_id), None
     )
     return mock_database

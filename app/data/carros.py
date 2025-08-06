@@ -19,7 +19,7 @@ carros_database = [
         "economia": 4,
         "performance": 3,
         "disponibilidade": "imediata",
-        "regiao": ["SP", "RJ", "MG", "PR", "SC", "RS"]
+        "regiao": ["SP", "RJ", "MG", "PR", "SC", "RS"],
     },
     {
         "id": 2,
@@ -41,7 +41,7 @@ carros_database = [
         "economia": 3,
         "performance": 4,
         "disponibilidade": "imediata",
-        "regiao": ["SP", "RJ", "MG", "PR", "SC", "RS"]
+        "regiao": ["SP", "RJ", "MG", "PR", "SC", "RS"],
     },
     {
         "id": 3,
@@ -63,7 +63,7 @@ carros_database = [
         "economia": 4,
         "performance": 3,
         "disponibilidade": "imediata",
-        "regiao": ["SP", "RJ", "MG", "PR", "SC", "RS"]
+        "regiao": ["SP", "RJ", "MG", "PR", "SC", "RS"],
     },
     {
         "id": 4,
@@ -85,7 +85,7 @@ carros_database = [
         "economia": 3,
         "performance": 4,
         "disponibilidade": "30_dias",
-        "regiao": ["SP", "RJ", "MG", "PR", "SC"]
+        "regiao": ["SP", "RJ", "MG", "PR", "SC"],
     },
     {
         "id": 5,
@@ -107,7 +107,7 @@ carros_database = [
         "economia": 5,
         "performance": 2,
         "disponibilidade": "imediata",
-        "regiao": ["SP", "RJ", "MG", "PR", "SC", "RS", "BA", "PE"]
+        "regiao": ["SP", "RJ", "MG", "PR", "SC", "RS", "BA", "PE"],
     },
     {
         "id": 6,
@@ -129,7 +129,7 @@ carros_database = [
         "economia": 2,
         "performance": 5,
         "disponibilidade": "45_dias",
-        "regiao": ["SP", "RJ", "MG", "PR", "SC", "RS", "GO", "MT"]
+        "regiao": ["SP", "RJ", "MG", "PR", "SC", "RS", "GO", "MT"],
     },
     {
         "id": 7,
@@ -151,7 +151,7 @@ carros_database = [
         "economia": 4,
         "performance": 3,
         "disponibilidade": "imediata",
-        "regiao": ["SP", "RJ", "MG", "PR", "SC", "RS"]
+        "regiao": ["SP", "RJ", "MG", "PR", "SC", "RS"],
     },
     {
         "id": 8,
@@ -173,7 +173,7 @@ carros_database = [
         "economia": 2,
         "performance": 5,
         "disponibilidade": "60_dias",
-        "regiao": ["SP", "RJ", "MG", "PR", "SC"]
+        "regiao": ["SP", "RJ", "MG", "PR", "SC"],
     },
     {
         "id": 9,
@@ -195,7 +195,7 @@ carros_database = [
         "economia": 5,
         "performance": 2,
         "disponibilidade": "imediata",
-        "regiao": ["SP", "RJ", "MG", "PR", "SC", "RS", "BA", "PE", "CE", "GO"]
+        "regiao": ["SP", "RJ", "MG", "PR", "SC", "RS", "BA", "PE", "CE", "GO"],
     },
     {
         "id": 10,
@@ -217,12 +217,14 @@ carros_database = [
         "economia": 3,
         "performance": 4,
         "disponibilidade": "30_dias",
-        "regiao": ["SP", "RJ", "MG", "PR", "SC", "RS"]
-    }
+        "regiao": ["SP", "RJ", "MG", "PR", "SC", "RS"],
+    },
 ]
+
 
 def get_carros():
     return carros_database
 
+
 def get_carro_by_id(carro_id: int):
-    return next((carro for carro in carros_database if carro["id"] == carro_id), None) 
+    return next((carro for carro in carros_database if carro["id"] == carro_id), None)

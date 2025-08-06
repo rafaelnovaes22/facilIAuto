@@ -5,12 +5,14 @@ Este arquivo contém fixtures, configurações e utilitários
 específicos para testes end-to-end do sistema LangGraph.
 """
 
-import pytest
 import asyncio
-import tempfile
 import os
-from typing import Dict, Any, Generator
+import tempfile
+from typing import Any, Dict, Generator
+
+import pytest
 from fastapi.testclient import TestClient
+
 from app.api import app
 from app.memory_manager import get_memory_manager
 
@@ -27,7 +29,7 @@ def event_loop():
 def test_client() -> TestClient:
     """
     Cliente de teste FastAPI para testes E2E
-    
+
     Utiliza uma instância isolada da aplicação para evitar
     interferência entre testes.
     """
@@ -38,7 +40,7 @@ def test_client() -> TestClient:
 def memory_manager():
     """
     Instância do gerenciador de memória para testes
-    
+
     Utiliza banco SQLite em memória para isolamento
     """
     return get_memory_manager()
@@ -48,7 +50,7 @@ def memory_manager():
 def sample_cars() -> Dict[str, Dict[str, Any]]:
     """
     Conjunto de carros de exemplo para testes E2E
-    
+
     Inclui diferentes categorias e faixas de preço para
     testar diversos cenários de resposta dos agentes.
     """
@@ -64,7 +66,7 @@ def sample_cars() -> Dict[str, Dict[str, Any]]:
             "potencia": 82,
             "cambio": "Manual",
             "combustivel": "Flex",
-            "quilometragem": 12000
+            "quilometragem": 12000,
         },
         "medio": {
             "id": 1002,
@@ -77,7 +79,7 @@ def sample_cars() -> Dict[str, Dict[str, Any]]:
             "potencia": 144,
             "cambio": "CVT",
             "combustivel": "Flex",
-            "quilometragem": 8500
+            "quilometragem": 8500,
         },
         "premium": {
             "id": 1003,
@@ -90,7 +92,7 @@ def sample_cars() -> Dict[str, Dict[str, Any]]:
             "potencia": 184,
             "cambio": "Automático",
             "combustivel": "Gasolina",
-            "quilometragem": 15000
+            "quilometragem": 15000,
         },
         "suv": {
             "id": 1004,
@@ -103,8 +105,8 @@ def sample_cars() -> Dict[str, Dict[str, Any]]:
             "potencia": 116,
             "cambio": "CVT",
             "combustivel": "Flex",
-            "quilometragem": 5000
-        }
+            "quilometragem": 5000,
+        },
     }
 
 
@@ -112,7 +114,7 @@ def sample_cars() -> Dict[str, Dict[str, Any]]:
 def agent_test_scenarios():
     """
     Cenários de teste específicos para cada agente
-    
+
     Define perguntas típicas e expectativas para validar
     a especialização de cada agente do LangGraph.
     """
@@ -121,72 +123,77 @@ def agent_test_scenarios():
             {
                 "pergunta": "Qual a potência e consumo deste carro?",
                 "expected_keywords": ["potência", "consumo", "motor", "km/l"],
-                "category": "Especificações"
+                "category": "Especificações",
             },
             {
                 "pergunta": "Como é o câmbio automático?",
                 "expected_keywords": ["câmbio", "automático", "cvt", "manual"],
-                "category": "Transmissão"
+                "category": "Transmissão",
             },
             {
                 "pergunta": "Quais os itens de segurança?",
                 "expected_keywords": ["segurança", "airbag", "abs", "freios"],
-                "category": "Segurança"
-            }
+                "category": "Segurança",
+            },
         ],
         "financeiro": [
             {
                 "pergunta": "Como funciona o financiamento?",
                 "expected_keywords": ["financiamento", "parcela", "entrada", "juros"],
-                "category": "Financiamento"
+                "category": "Financiamento",
             },
             {
                 "pergunta": "Qual o valor da entrada mínima?",
                 "expected_keywords": ["entrada", "mínima", "valor", "parcela"],
-                "category": "Entrada"
+                "category": "Entrada",
             },
             {
                 "pergunta": "Aceita carro usado na troca?",
                 "expected_keywords": ["troca", "usado", "avaliação", "entrada"],
-                "category": "Troca"
-            }
+                "category": "Troca",
+            },
         ],
         "comparacao": [
             {
                 "pergunta": "Compare com o Honda Civic",
                 "expected_keywords": ["honda", "civic", "compare", "diferença"],
-                "category": "Comparação Direta"
+                "category": "Comparação Direta",
             },
             {
                 "pergunta": "É melhor que concorrentes?",
                 "expected_keywords": ["melhor", "concorrente", "vantagem", "superior"],
-                "category": "Avaliação Comparativa"
-            }
+                "category": "Avaliação Comparativa",
+            },
         ],
         "manutencao": [
             {
                 "pergunta": "Qual o custo de manutenção?",
                 "expected_keywords": ["manutenção", "custo", "revisão", "peças"],
-                "category": "Custos"
+                "category": "Custos",
             },
             {
                 "pergunta": "Quando fazer a primeira revisão?",
                 "expected_keywords": ["revisão", "primeira", "km", "prazo"],
-                "category": "Cronograma"
-            }
+                "category": "Cronograma",
+            },
         ],
         "avaliacao": [
             {
                 "pergunta": "Este preço está justo?",
                 "expected_keywords": ["preço", "justo", "valor", "mercado"],
-                "category": "Precificação"
+                "category": "Precificação",
             },
             {
                 "pergunta": "Como está a desvalorização?",
-                "expected_keywords": ["desvalorização", "depreciação", "valor", "tempo"],
-                "category": "Depreciação"
-            }
-        ]
+                "expected_keywords": [
+                    "desvalorização",
+                    "depreciação",
+                    "valor",
+                    "tempo",
+                ],
+                "category": "Depreciação",
+            },
+        ],
     }
 
 
@@ -194,7 +201,7 @@ def agent_test_scenarios():
 def performance_thresholds():
     """
     Limites de performance para validação nos testes
-    
+
     Define os thresholds aceitáveis para diferentes
     métricas de performance do sistema.
     """
@@ -202,26 +209,22 @@ def performance_thresholds():
         "response_time": {
             "baseline_max": 2500,  # ms
             "under_load_max": 4000,  # ms
-            "stress_max": 6000  # ms
+            "stress_max": 6000,  # ms
         },
         "success_rate": {
             "baseline_min": 0.95,  # 95%
             "under_load_min": 0.90,  # 90%
-            "stress_min": 0.70  # 70%
+            "stress_min": 0.70,  # 70%
         },
         "throughput": {
             "min_requests_per_second": 2.0,
-            "target_requests_per_second": 5.0
+            "target_requests_per_second": 5.0,
         },
         "memory_overhead": {
             "max_percent": 50,  # 50% overhead máximo da memória
-            "max_absolute_ms": 1000  # 1s máximo adicional
+            "max_absolute_ms": 1000,  # 1s máximo adicional
         },
-        "concurrent_users": {
-            "light_load": 5,
-            "medium_load": 15,
-            "heavy_load": 25
-        }
+        "concurrent_users": {"light_load": 5, "medium_load": 15, "heavy_load": 25},
     }
 
 
@@ -229,7 +232,7 @@ def performance_thresholds():
 def test_database_url():
     """
     URL do banco de dados para testes
-    
+
     Utiliza SQLite em memória para isolamento completo
     """
     return "sqlite:///:memory:"
@@ -239,12 +242,12 @@ def test_database_url():
 def clean_memory():
     """
     Limpa memória entre testes para evitar interferência
-    
+
     Garante que cada teste comece com estado limpo
     """
     # Setup: Estado limpo
     yield
-    
+
     # Teardown: Limpeza (se necessário)
     # Em implementação real, limparia registros de teste
     pass
@@ -255,6 +258,7 @@ def mock_car_data():
     """
     Dados mock de carros para testes que não requerem dados reais
     """
+
     def _mock_car(car_id: int = 999, **overrides) -> Dict[str, Any]:
         base_car = {
             "id": car_id,
@@ -267,11 +271,11 @@ def mock_car_data():
             "potencia": 100,
             "cambio": "Test",
             "combustivel": "Test",
-            "quilometragem": 10000
+            "quilometragem": 10000,
         }
         base_car.update(overrides)
         return base_car
-    
+
     return _mock_car
 
 
@@ -279,14 +283,14 @@ def mock_car_data():
 def user_session_generator():
     """
     Gerador de IDs de sessão únicos para testes
-    
+
     Garante que cada teste tenha sessões isoladas
     """
     import uuid
-    
+
     def _generate_session(prefix: str = "test") -> str:
         return f"{prefix}_{uuid.uuid4()}"
-    
+
     return _generate_session
 
 
@@ -294,41 +298,51 @@ class LangGraphTestHelper:
     """
     Classe auxiliar com utilitários para testes LangGraph
     """
-    
+
     @staticmethod
     def validate_response_structure(response_data: Dict[str, Any]) -> bool:
         """Valida estrutura básica de resposta do chatbot"""
         required_fields = ["resposta", "agente", "conversation_id", "confianca"]
         return all(field in response_data for field in required_fields)
-    
+
     @staticmethod
-    def validate_agent_specialization(agent: str, response: str, keywords: list) -> float:
+    def validate_agent_specialization(
+        agent: str, response: str, keywords: list
+    ) -> float:
         """Calcula score de especialização do agente baseado em keywords"""
         response_lower = response.lower()
         found_keywords = [kw for kw in keywords if kw.lower() in response_lower]
         return len(found_keywords) / len(keywords) if keywords else 0.0
-    
+
     @staticmethod
-    def validate_response_quality(response: str, min_length: int = 50) -> Dict[str, bool]:
+    def validate_response_quality(
+        response: str, min_length: int = 50
+    ) -> Dict[str, bool]:
         """Valida qualidade geral da resposta"""
         return {
             "sufficient_length": len(response) >= min_length,
             "has_content": response.strip() != "",
             "not_error_message": "erro" not in response.lower(),
-            "professional_tone": not any(word in response.lower() for word in ["não sei", "não posso"])
+            "professional_tone": not any(
+                word in response.lower() for word in ["não sei", "não posso"]
+            ),
         }
-    
+
     @staticmethod
     def measure_consistency(responses: list, common_elements: list) -> float:
         """Mede consistência entre múltiplas respostas"""
         consistency_scores = []
-        
+
         for element in common_elements:
             element_lower = element.lower()
             appearances = sum(1 for resp in responses if element_lower in resp.lower())
             consistency_scores.append(appearances / len(responses))
-        
-        return sum(consistency_scores) / len(consistency_scores) if consistency_scores else 0.0
+
+        return (
+            sum(consistency_scores) / len(consistency_scores)
+            if consistency_scores
+            else 0.0
+        )
 
 
 @pytest.fixture
@@ -367,6 +381,6 @@ def set_test_timeout(request):
     if request.node.get_closest_marker("langgraph_performance"):
         request.node.add_marker(pytest.mark.timeout(120))  # 2 minutos para performance
     elif request.node.get_closest_marker("slow"):
-        request.node.add_marker(pytest.mark.timeout(60))   # 1 minuto para testes lentos
+        request.node.add_marker(pytest.mark.timeout(60))  # 1 minuto para testes lentos
     else:
-        request.node.add_marker(pytest.mark.timeout(30))   # 30s para testes normais
+        request.node.add_marker(pytest.mark.timeout(30))  # 30s para testes normais
