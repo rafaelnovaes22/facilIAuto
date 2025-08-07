@@ -140,8 +140,9 @@ class IntegratedMLCollector:
                 potencia_desejada="media",
                 prioridade="equilibrio",
             )
-            score = matcher.calcular_score_uso_principal(carro, questionario)
-            return score
+            score_result = matcher.calcular_score_uso_principal(questionario, carro)
+            score_valor, _, _ = score_result  # Extrair apenas o score da tupla (score, razões, pontos_fortes)
+            return score_valor
         except Exception:
             return 0.0
 
