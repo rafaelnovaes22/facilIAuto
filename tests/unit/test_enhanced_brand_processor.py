@@ -39,7 +39,9 @@ class TestEnhancedBrandProcessor:
         )
 
     @patch("app.enhanced_brand_processor.brand_matcher")
-    def test_process_and_validate_preferences_success(self, mock_matcher, processor, sample_questionario):
+    def test_process_and_validate_preferences_success(
+        self, mock_matcher, processor, sample_questionario
+    ):
         """Testa processamento bem-sucedido de preferências"""
         # Arrange
         mock_matcher.validate_and_normalize_preferences.return_value = {
@@ -51,9 +53,13 @@ class TestEnhancedBrandProcessor:
             "modelo_sugestoes": [],
         }
 
-        mock_matcher.find_best_brand_match.return_value = Mock(matched="HONDA", confidence=0.99, suggestions=[])
+        mock_matcher.find_best_brand_match.return_value = Mock(
+            matched="HONDA", confidence=0.99, suggestions=[]
+        )
 
-        mock_matcher.find_best_model_match.return_value = Mock(matched="Civic", confidence=0.97, suggestions=[])
+        mock_matcher.find_best_model_match.return_value = Mock(
+            matched="Civic", confidence=0.97, suggestions=[]
+        )
 
         # Act
         result = processor.process_and_validate_preferences(sample_questionario)
@@ -72,7 +78,9 @@ class TestEnhancedBrandProcessor:
         assert len(result["modelos_alternativos"]) == 1
 
     @patch("app.enhanced_brand_processor.brand_matcher")
-    def test_process_low_confidence_brand(self, mock_matcher, processor, sample_questionario):
+    def test_process_low_confidence_brand(
+        self, mock_matcher, processor, sample_questionario
+    ):
         """Testa processamento com baixa confiança na marca"""
         # Arrange
         mock_matcher.validate_and_normalize_preferences.return_value = {
@@ -84,18 +92,25 @@ class TestEnhancedBrandProcessor:
             "modelo_sugestoes": [],
         }
 
-        mock_matcher.find_best_brand_match.return_value = Mock(matched="HONDA", confidence=0.99, suggestions=[])
+        mock_matcher.find_best_brand_match.return_value = Mock(
+            matched="HONDA", confidence=0.99, suggestions=[]
+        )
 
         # Act
         result = processor.process_and_validate_preferences(sample_questionario)
 
         # Assert
         assert len(result["validation_issues"]) > 0
-        assert any(issue["type"] == "low_confidence_brand" for issue in result["validation_issues"])
+        assert any(
+            issue["type"] == "low_confidence_brand"
+            for issue in result["validation_issues"]
+        )
         assert result["needs_user_confirmation"] is True
 
     @patch("app.enhanced_brand_processor.brand_matcher")
-    def test_process_low_confidence_model(self, mock_matcher, processor, sample_questionario):
+    def test_process_low_confidence_model(
+        self, mock_matcher, processor, sample_questionario
+    ):
         """Testa processamento com baixa confiança no modelo"""
         # Arrange
         mock_matcher.validate_and_normalize_preferences.return_value = {
@@ -107,14 +122,19 @@ class TestEnhancedBrandProcessor:
             "modelo_sugestoes": ["Civic", "Accord"],
         }
 
-        mock_matcher.find_best_brand_match.return_value = Mock(matched="HONDA", confidence=0.99, suggestions=[])
+        mock_matcher.find_best_brand_match.return_value = Mock(
+            matched="HONDA", confidence=0.99, suggestions=[]
+        )
 
         # Act
         result = processor.process_and_validate_preferences(sample_questionario)
 
         # Assert
         assert len(result["validation_issues"]) > 0
-        assert any(issue["type"] == "low_confidence_model" for issue in result["validation_issues"])
+        assert any(
+            issue["type"] == "low_confidence_model"
+            for issue in result["validation_issues"]
+        )
 
     def test_assess_processing_quality(self, processor):
         """Testa avaliação da qualidade do processamento"""
@@ -197,10 +217,14 @@ class TestEnhancedBrandProcessor:
 
     @patch("app.enhanced_brand_processor.brand_matcher")
     @patch("app.enhanced_brand_processor.logger")
-    def test_process_with_exception(self, mock_logger, mock_matcher, processor, sample_questionario):
+    def test_process_with_exception(
+        self, mock_logger, mock_matcher, processor, sample_questionario
+    ):
         """Testa processamento com exceção"""
         # Arrange
-        mock_matcher.validate_and_normalize_preferences.side_effect = Exception("Erro de teste")
+        mock_matcher.validate_and_normalize_preferences.side_effect = Exception(
+            "Erro de teste"
+        )
 
         # Act
         result = processor.process_and_validate_preferences(sample_questionario)
@@ -240,10 +264,15 @@ class TestEnhancedBrandProcessor:
                 "modelo_sugestoes": [],
             }
 
-            mock_matcher.find_best_brand_match.return_value = Mock(matched="TOYOTA", confidence=0.99, suggestions=[])
+            mock_matcher.find_best_brand_match.return_value = Mock(
+                matched="TOYOTA", confidence=0.99, suggestions=[]
+            )
 
             # Act
             result = processor.process_and_validate_preferences(questionario)
 
             # Assert
-            assert any(issue["type"] == "conflicting_preferences" for issue in result["validation_issues"])
+            assert any(
+                issue["type"] == "conflicting_preferences"
+                for issue in result["validation_issues"]
+            )

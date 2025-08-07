@@ -39,7 +39,9 @@ class TestResponsiveCarousel:
         wait.until(EC.presence_of_element_located((By.TAG_NAME, "script")))
 
         # Verificar se a classe ResponsiveCarousel está disponível
-        carousel_class_exists = driver.execute_script("return typeof ResponsiveCarousel !== 'undefined'")
+        carousel_class_exists = driver.execute_script(
+            "return typeof ResponsiveCarousel !== 'undefined'"
+        )
         assert carousel_class_exists, "ResponsiveCarousel class não foi carregada"
 
     def test_carousel_responsive_behavior(self, driver):
@@ -111,7 +113,9 @@ class TestResponsiveCarousel:
             time.sleep(0.5)
 
             # Verificar se o slide mudou
-            active_slide = carousel.find_element(By.CSS_SELECTOR, ".carousel-item.active")
+            active_slide = carousel.find_element(
+                By.CSS_SELECTOR, ".carousel-item.active"
+            )
             assert active_slide, "Slide ativo não encontrado após navegação"
 
     def test_carousel_touch_support(self, driver):
@@ -161,11 +165,17 @@ class TestResponsiveCarousel:
 
         if lazy_images:
             # Verificar se a primeira imagem não tem data-src (carregamento imediato)
-            first_images = driver.find_elements(By.CSS_SELECTOR, ".carousel-item:first-child img")
+            first_images = driver.find_elements(
+                By.CSS_SELECTOR, ".carousel-item:first-child img"
+            )
             if first_images:
                 first_img = first_images[0]
-                assert not first_img.get_attribute("data-src"), "Primeira imagem deveria carregar imediatamente"
-                assert first_img.get_attribute("src"), "Primeira imagem deveria ter src definido"
+                assert not first_img.get_attribute(
+                    "data-src"
+                ), "Primeira imagem deveria carregar imediatamente"
+                assert first_img.get_attribute(
+                    "src"
+                ), "Primeira imagem deveria ter src definido"
 
     def test_carousel_accessibility(self, driver):
         """Testa a acessibilidade do carrossel"""
@@ -184,9 +194,15 @@ class TestResponsiveCarousel:
             carousel = carousels[0]
 
             # Verificar atributos de acessibilidade
-            assert carousel.get_attribute("tabindex") == "0", "Carrossel deveria ser focável"
-            assert carousel.get_attribute("role") == "region", "Carrossel deveria ter role='region'"
-            assert carousel.get_attribute("aria-label"), "Carrossel deveria ter aria-label"
+            assert (
+                carousel.get_attribute("tabindex") == "0"
+            ), "Carrossel deveria ser focável"
+            assert (
+                carousel.get_attribute("role") == "region"
+            ), "Carrossel deveria ter role='region'"
+            assert carousel.get_attribute(
+                "aria-label"
+            ), "Carrossel deveria ter aria-label"
 
             # Verificar controles
             controls = carousel.find_elements(By.CSS_SELECTOR, ".carousel-control")
@@ -216,7 +232,9 @@ class TestResponsiveCarousel:
         initialization_time = end_time - start_time
 
         # Verificar se a inicialização foi rápida (menos de 5 segundos)
-        assert initialization_time < 5, f"Inicialização muito lenta: {initialization_time}s"
+        assert (
+            initialization_time < 5
+        ), f"Inicialização muito lenta: {initialization_time}s"
 
         # Verificar se não há erros de JavaScript
         logs = driver.get_log("browser")

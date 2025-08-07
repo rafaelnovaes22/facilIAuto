@@ -38,14 +38,22 @@ def test_pydantic_fix():
         print(f"   Marca: {carro.marca}")
         print(f"   Modelo: {carro.modelo}")
         print(f"   Opcionais: {carro.opcionais} (type: {type(carro.opcionais)})")
-        print(f"   Razões: {carro.razoes_recomendacao} (type: {type(carro.razoes_recomendacao)})")
+        print(
+            f"   Razões: {carro.razoes_recomendacao} (type: {type(carro.razoes_recomendacao)})"
+        )
         print(f"   Fotos: {carro.fotos} (type: {type(carro.fotos)})")
 
         # Verify all None values were converted to empty lists
         assert carro.opcionais == [], f"Expected empty list, got {carro.opcionais}"
-        assert carro.razoes_recomendacao == [], f"Expected empty list, got {carro.razoes_recomendacao}"
-        assert carro.pontos_fortes == [], f"Expected empty list, got {carro.pontos_fortes}"
-        assert carro.consideracoes == [], f"Expected empty list, got {carro.consideracoes}"
+        assert (
+            carro.razoes_recomendacao == []
+        ), f"Expected empty list, got {carro.razoes_recomendacao}"
+        assert (
+            carro.pontos_fortes == []
+        ), f"Expected empty list, got {carro.pontos_fortes}"
+        assert (
+            carro.consideracoes == []
+        ), f"Expected empty list, got {carro.consideracoes}"
         assert carro.fotos == [], f"Expected empty list, got {carro.fotos}"
 
         print("✅ All None values correctly converted to empty lists!")

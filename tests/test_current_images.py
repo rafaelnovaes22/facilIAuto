@@ -68,7 +68,9 @@ async def test_image_validation_service():
             status = "✅ VÁLIDA" if result.is_valid else "❌ INVÁLIDA"
             print(f"{status} - {result.url}")
             if not result.is_valid:
-                print(f"   Erro: {result.error_type.value if result.error_type else 'N/A'}")
+                print(
+                    f"   Erro: {result.error_type.value if result.error_type else 'N/A'}"
+                )
                 print(f"   Mensagem: {result.error_message}")
             else:
                 print(f"   Tipo: {result.content_type}")

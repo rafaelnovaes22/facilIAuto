@@ -87,7 +87,9 @@ async def create_conversation(conversation_data: ConversationCreate):
         )
 
         # Buscar conversa criada para retornar dados completos
-        conversation, _ = memory_manager.get_conversation_history(conversation_id, limit=0)
+        conversation, _ = memory_manager.get_conversation_history(
+            conversation_id, limit=0
+        )
 
         if not conversation:
             raise HTTPException(status_code=500, detail="Erro ao criar conversa")
@@ -95,12 +97,16 @@ async def create_conversation(conversation_data: ConversationCreate):
         return ConversationResponse(
             id=str(conversation.id),
             carro_id=int(conversation.carro_id),
-            user_session_id=str(conversation.user_session_id) if conversation.user_session_id else None,
+            user_session_id=str(conversation.user_session_id)
+            if conversation.user_session_id
+            else None,
             started_at=conversation.started_at.isoformat(),
             last_activity=conversation.last_activity.isoformat(),
             is_active=bool(conversation.is_active),
             total_messages=int(conversation.total_messages),
-            primary_agent=str(conversation.primary_agent) if conversation.primary_agent else None,
+            primary_agent=str(conversation.primary_agent)
+            if conversation.primary_agent
+            else None,
         )
 
     except HTTPException:
@@ -127,7 +133,9 @@ async def get_conversation_history(
     try:
         memory_manager = get_memory_manager()
 
-        conversation, messages = memory_manager.get_conversation_history(conversation_id, limit=limit)
+        conversation, messages = memory_manager.get_conversation_history(
+            conversation_id, limit=limit
+        )
 
         if not conversation:
             raise HTTPException(status_code=404, detail="Conversa não encontrada")
@@ -138,7 +146,9 @@ async def get_conversation_history(
                 message_type=str(msg.message_type),
                 content=str(msg.content),
                 agent_used=str(msg.agent_used) if msg.agent_used else None,
-                confidence_score=float(msg.confidence_score) if msg.confidence_score else None,
+                confidence_score=float(msg.confidence_score)
+                if msg.confidence_score
+                else None,
                 created_at=msg.created_at.isoformat(),
                 user_rating=int(msg.user_rating) if msg.user_rating else None,
             )
@@ -149,12 +159,16 @@ async def get_conversation_history(
             conversation=ConversationResponse(
                 id=str(conversation.id),
                 carro_id=int(conversation.carro_id),
-                user_session_id=str(conversation.user_session_id) if conversation.user_session_id else None,
+                user_session_id=str(conversation.user_session_id)
+                if conversation.user_session_id
+                else None,
                 started_at=conversation.started_at.isoformat(),
                 last_activity=conversation.last_activity.isoformat(),
                 is_active=bool(conversation.is_active),
                 total_messages=int(conversation.total_messages),
-                primary_agent=str(conversation.primary_agent) if conversation.primary_agent else None,
+                primary_agent=str(conversation.primary_agent)
+                if conversation.primary_agent
+                else None,
             ),
             messages=message_responses,
             total_messages=len(message_responses),
@@ -167,10 +181,14 @@ async def get_conversation_history(
         raise HTTPException(status_code=500, detail="Erro interno do servidor")
 
 
-@router.get("/memory/users/{user_session_id}/context", response_model=UserContextResponse)
+@router.get(
+    "/memory/users/{user_session_id}/context", response_model=UserContextResponse
+)
 async def get_user_context(
     user_session_id: str,
-    carro_id: Optional[int] = Query(None, description="ID do carro para contexto específico"),
+    carro_id: Optional[int] = Query(
+        None, description="ID do carro para contexto específico"
+    ),
 ):
     """
     Recupera contexto acumulado de um usuário
@@ -181,7 +199,9 @@ async def get_user_context(
     try:
         memory_manager = get_memory_manager()
 
-        user_context = memory_manager.get_user_context(user_session_id=user_session_id, carro_id=carro_id)
+        user_context = memory_manager.get_user_context(
+            user_session_id=user_session_id, carro_id=carro_id
+        )
 
         return UserContextResponse(
             user_session_id=user_session_id,
@@ -210,7 +230,9 @@ async def get_similar_conversations(
     try:
         memory_manager = get_memory_manager()
 
-        similar_conversations = memory_manager.get_similar_conversations(carro_id=carro_id, limit=limit)
+        similar_conversations = memory_manager.get_similar_conversations(
+            carro_id=carro_id, limit=limit
+        )
 
         result = []
         for conversation, messages in similar_conversations:
@@ -222,7 +244,9 @@ async def get_similar_conversations(
                 "recent_messages": [
                     {
                         "type": msg.message_type,
-                        "content": msg.content[:100] + "..." if len(msg.content) > 100 else msg.content,
+                        "content": msg.content[:100] + "..."
+                        if len(msg.content) > 100
+                        else msg.content,
                         "agent": msg.agent_used,
                     }
                     for msg in messages[-3:]  # Últimas 3 mensagens
@@ -257,7 +281,9 @@ async def add_message_feedback(message_id: str, feedback: FeedbackRequest):
 
         # Atualizar feedback na mensagem (implementação simplificada)
         # Em uma implementação real, seria uma atualização no banco
-        logger.info(f"[Memory] Feedback recebido para mensagem {message_id}: {feedback.rating}/5")
+        logger.info(
+            f"[Memory] Feedback recebido para mensagem {message_id}: {feedback.rating}/5"
+        )
 
         return {
             "message": "Feedback registrado com sucesso",
@@ -274,7 +300,9 @@ async def add_message_feedback(message_id: str, feedback: FeedbackRequest):
 
 
 @router.get("/memory/analytics")
-async def get_memory_analytics(days: int = Query(30, ge=1, le=365, description="Período em dias para análise")):
+async def get_memory_analytics(
+    days: int = Query(30, ge=1, le=365, description="Período em dias para análise")
+):
     """
     Retorna analytics detalhadas do sistema de memória
 
@@ -321,7 +349,9 @@ async def delete_conversation(conversation_id: str):
         memory_manager = get_memory_manager()
 
         # Verificar se conversa existe
-        conversation, _ = memory_manager.get_conversation_history(conversation_id, limit=1)
+        conversation, _ = memory_manager.get_conversation_history(
+            conversation_id, limit=1
+        )
 
         if not conversation:
             raise HTTPException(status_code=404, detail="Conversa não encontrada")

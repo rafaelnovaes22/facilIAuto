@@ -67,7 +67,9 @@ def test_fallback_service():
         "https://via.placeholder.com/400x300/CC0000/FFFFFF?text=Toyota+Corolla",
     ]
 
-    best_fallback = service.select_best_fallback("Toyota", "Corolla", "sedan", failed_urls)
+    best_fallback = service.select_best_fallback(
+        "Toyota", "Corolla", "sedan", failed_urls
+    )
     print("🥇 Melhor fallback (evitando URLs quebradas):")
     print(f"   {best_fallback}")
     print()

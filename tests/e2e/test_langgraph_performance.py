@@ -48,7 +48,9 @@ class TestLangGraphPerformanceE2E:
             "combustivel": "Flex",
         }
 
-    def measure_request_performance(self, client, pergunta_data: Dict[str, Any]) -> Dict[str, Any]:
+    def measure_request_performance(
+        self, client, pergunta_data: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """
         Mede performance de uma requisição individual
         """
@@ -121,12 +123,16 @@ class TestLangGraphPerformanceE2E:
             for run in range(3):
                 result = self.measure_request_performance(client, pergunta_data)
                 test_results.append(result)
-                print(f"  Run {run+1}: {result['response_time']:.0f}ms - {'✅' if result['success'] else '❌'}")
+                print(
+                    f"  Run {run+1}: {result['response_time']:.0f}ms - {'✅' if result['success'] else '❌'}"
+                )
 
             # Calcular métricas
             successful_results = [r for r in test_results if r["success"]]
             if successful_results:
-                avg_response_time = statistics.mean(r["response_time"] for r in successful_results)
+                avg_response_time = statistics.mean(
+                    r["response_time"] for r in successful_results
+                )
                 min_response_time = min(r["response_time"] for r in successful_results)
                 max_response_time = max(r["response_time"] for r in successful_results)
 
@@ -155,8 +161,12 @@ class TestLangGraphPerformanceE2E:
         print(f"   Testes Executados: {len(results)}")
 
         # Validações baseline
-        assert overall_avg <= 2500, f"Tempo médio baseline muito alto: {overall_avg:.0f}ms"
-        assert overall_success_rate >= 0.95, f"Taxa de sucesso baseline muito baixa: {overall_success_rate:.1%}"
+        assert (
+            overall_avg <= 2500
+        ), f"Tempo médio baseline muito alto: {overall_avg:.0f}ms"
+        assert (
+            overall_success_rate >= 0.95
+        ), f"Taxa de sucesso baseline muito baixa: {overall_success_rate:.1%}"
 
         return results
 
@@ -211,7 +221,9 @@ class TestLangGraphPerformanceE2E:
         for user_id in range(1, concurrent_users + 1):
             user_results = simulate_user_session(user_id)
             all_results.extend(user_results)
-            print(f"  Usuário {user_id}: {len([r for r in user_results if r['success']])}/{len(user_results)} sucessos")
+            print(
+                f"  Usuário {user_id}: {len([r for r in user_results if r['success']])}/{len(user_results)} sucessos"
+            )
 
         end_time = time.time()
         total_duration = end_time - start_time
@@ -221,9 +233,15 @@ class TestLangGraphPerformanceE2E:
         success_rate = len(successful_requests) / len(all_results)
 
         if successful_requests:
-            avg_response_time = statistics.mean(r["response_time"] for r in successful_requests)
-            median_response_time = statistics.median(r["response_time"] for r in successful_requests)
-            p95_response_time = sorted(r["response_time"] for r in successful_requests)[int(0.95 * len(successful_requests))]
+            avg_response_time = statistics.mean(
+                r["response_time"] for r in successful_requests
+            )
+            median_response_time = statistics.median(
+                r["response_time"] for r in successful_requests
+            )
+            p95_response_time = sorted(r["response_time"] for r in successful_requests)[
+                int(0.95 * len(successful_requests))
+            ]
             throughput = len(successful_requests) / total_duration
 
             print("\n📊 MÉTRICAS CARGA:")
@@ -235,9 +253,15 @@ class TestLangGraphPerformanceE2E:
             print(f"   Duração Total: {total_duration:.1f}s")
 
             # Validações carga
-            assert success_rate >= 0.9, f"Taxa de sucesso sob carga muito baixa: {success_rate:.1%}"
-            assert avg_response_time <= 4000, f"Tempo médio sob carga muito alto: {avg_response_time:.0f}ms"
-            assert p95_response_time <= 6000, f"P95 sob carga muito alto: {p95_response_time:.0f}ms"
+            assert (
+                success_rate >= 0.9
+            ), f"Taxa de sucesso sob carga muito baixa: {success_rate:.1%}"
+            assert (
+                avg_response_time <= 4000
+            ), f"Tempo médio sob carga muito alto: {avg_response_time:.0f}ms"
+            assert (
+                p95_response_time <= 6000
+            ), f"P95 sob carga muito alto: {p95_response_time:.0f}ms"
 
             return {
                 "success_rate": success_rate,
@@ -266,7 +290,9 @@ class TestLangGraphPerformanceE2E:
         stress_results = []
 
         for level in stress_levels:
-            print(f"\n🔥 Nível {level['name']}: {level['users']} usuários por {level['duration']}s")
+            print(
+                f"\n🔥 Nível {level['name']}: {level['users']} usuários por {level['duration']}s"
+            )
 
             level_results = []
 
@@ -291,8 +317,14 @@ class TestLangGraphPerformanceE2E:
 
             # Analisar nível
             successful = [r for r in level_results if r["success"]]
-            level_success_rate = len(successful) / len(level_results) if level_results else 0
-            level_avg_time = statistics.mean(r["response_time"] for r in successful) if successful else 0
+            level_success_rate = (
+                len(successful) / len(level_results) if level_results else 0
+            )
+            level_avg_time = (
+                statistics.mean(r["response_time"] for r in successful)
+                if successful
+                else 0
+            )
 
             stress_result = {
                 "level": level["name"],
@@ -315,11 +347,15 @@ class TestLangGraphPerformanceE2E:
 
         print("\n📊 RESUMO STRESS TEST:")
         for result in stress_results:
-            print(f"   {result['level']}: {result['success_rate']:.1%} sucesso, {result['avg_response_time']:.0f}ms")
+            print(
+                f"   {result['level']}: {result['success_rate']:.1%} sucesso, {result['avg_response_time']:.0f}ms"
+            )
 
         # Validar que sistema se mantém funcional mesmo sob stress
         high_stress = next(r for r in stress_results if r["level"] == "Alto")
-        assert high_stress["success_rate"] >= 0.7, f"Sistema falhou sob stress alto: {high_stress['success_rate']:.1%}"
+        assert (
+            high_stress["success_rate"] >= 0.7
+        ), f"Sistema falhou sob stress alto: {high_stress['success_rate']:.1%}"
 
         return stress_results
 
@@ -386,7 +422,9 @@ class TestLangGraphPerformanceE2E:
 
         if len(successful_results) >= 2:
             first_time = successful_results[0]["response_time"]
-            last_times = [r["response_time"] for r in successful_results[-3:]]  # Últimas 3
+            last_times = [
+                r["response_time"] for r in successful_results[-3:]
+            ]  # Últimas 3
             avg_last_time = statistics.mean(last_times)
 
             memory_overhead = ((avg_last_time - first_time) / first_time) * 100
@@ -398,8 +436,12 @@ class TestLangGraphPerformanceE2E:
             print(f"   Total de Interações: {len(successful_results)}")
 
             # Validar que overhead da memória é aceitável
-            assert memory_overhead <= 50, f"Overhead da memória muito alto: {memory_overhead:.1f}%"
-            assert avg_last_time <= 4000, f"Tempo com memória muito alto: {avg_last_time:.0f}ms"
+            assert (
+                memory_overhead <= 50
+            ), f"Overhead da memória muito alto: {memory_overhead:.1f}%"
+            assert (
+                avg_last_time <= 4000
+            ), f"Tempo com memória muito alto: {avg_last_time:.0f}ms"
 
             return {
                 "first_response_time": first_time,
@@ -408,7 +450,9 @@ class TestLangGraphPerformanceE2E:
                 "total_interactions": len(successful_results),
             }
         else:
-            pytest.fail("Poucas interações bem-sucedidas para analisar impacto da memória")
+            pytest.fail(
+                "Poucas interações bem-sucedidas para analisar impacto da memória"
+            )
 
 
 def run_all_performance_tests():

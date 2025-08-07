@@ -1234,7 +1234,9 @@ async def buscar_carros(questionario: QuestionarioBusca):
             raise HTTPException(status_code=500, detail="Resultado da busca é nulo")
 
         if not hasattr(resultado, "recomendacoes"):
-            raise HTTPException(status_code=500, detail="Resultado da busca não possui recomendações")
+            raise HTTPException(
+                status_code=500, detail="Resultado da busca não possui recomendações"
+            )
 
         return resultado
     except HTTPException:
@@ -1244,7 +1246,9 @@ async def buscar_carros(questionario: QuestionarioBusca):
         import traceback
 
         traceback.print_exc()
-        raise HTTPException(status_code=500, detail=f"Erro ao processar busca: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Erro ao processar busca: {str(e)}"
+        )
 
 
 @app.get("/carros")
@@ -1270,11 +1274,17 @@ async def pagina_detalhes_carro(carro_id: int):
         raise HTTPException(status_code=404, detail="Carro não encontrado")
 
     # Formatar dados para exibição
-    preco_formatado = f"R$ {carro['preco']:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    preco_formatado = (
+        f"R$ {carro['preco']:,.2f}".replace(",", "X")
+        .replace(".", ",")
+        .replace("X", ".")
+    )
     preco_promocional_formatado = ""
     if carro.get("preco_promocional"):
         preco_promocional_formatado = (
-            f"R$ {carro['preco_promocional']:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+            f"R$ {carro['preco_promocional']:,.2f}".replace(",", "X")
+            .replace(".", ",")
+            .replace("X", ".")
         )
 
     html_content = """
@@ -1809,7 +1819,9 @@ async def buscar_carros_enhanced_endpoint(questionario: QuestionarioBusca):
     try:
         return await buscar_carros_enhanced(questionario)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erro ao processar busca: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Erro ao processar busca: {str(e)}"
+        )
 
 
 @app.get("/health")

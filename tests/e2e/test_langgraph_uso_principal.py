@@ -101,7 +101,8 @@ class TestLangGraphUsoPrincipalE2E:
             # Resposta deve conter análise de uso
             resposta = resultado["resposta"]
             assert any(
-                termo in resposta.lower() for termo in ["uso", "adequado", "ideal", "recomend"]
+                termo in resposta.lower()
+                for termo in ["uso", "adequado", "ideal", "recomend"]
             ), f"Resposta deve conter análise de uso para: {pergunta}"
 
         print("✅ Roteamento automático para uso principal validado")
@@ -144,11 +145,15 @@ class TestLangGraphUsoPrincipalE2E:
 
         # Deve ter avaliação visual
         avaliacoes = ["🌟", "👍", "⚖️", "✅", "⚠️"]
-        assert any(emoji in resposta for emoji in avaliacoes), "Resposta deve conter avaliação visual"
+        assert any(
+            emoji in resposta for emoji in avaliacoes
+        ), "Resposta deve conter avaliação visual"
 
         # Para Hatch, deve ser positivo para uso urbano
         assert (
-            "excelente" in resposta.lower() or "adequado" in resposta.lower() or "ideal" in resposta.lower()
+            "excelente" in resposta.lower()
+            or "adequado" in resposta.lower()
+            or "ideal" in resposta.lower()
         ), "Hatch deve ter avaliação positiva para uso urbano"
 
         print("✅ Análise detalhada de uso urbano validada")
@@ -183,10 +188,14 @@ class TestLangGraphUsoPrincipalE2E:
         if "viagem" in resposta.lower():
             usos_mencionados.append("viagem")
 
-        assert len(usos_mencionados) >= 2, f"Deve analisar pelo menos 2 usos. Encontrados: {usos_mencionados}"
+        assert (
+            len(usos_mencionados) >= 2
+        ), f"Deve analisar pelo menos 2 usos. Encontrados: {usos_mencionados}"
 
         # Deve ter recomendação geral
-        assert "recomend" in resposta.lower(), "Deve conter recomendação geral para múltiplos usos"
+        assert (
+            "recomend" in resposta.lower()
+        ), "Deve conter recomendação geral para múltiplos usos"
 
         print("✅ Análise de múltiplos usos validada")
 
@@ -214,7 +223,9 @@ class TestLangGraphUsoPrincipalE2E:
         processing_time = end_time - start_time
 
         # Then: Deve processar em tempo razoável
-        assert processing_time < 10.0, f"Agente de uso principal muito lento: {processing_time:.2f}s"
+        assert (
+            processing_time < 10.0
+        ), f"Agente de uso principal muito lento: {processing_time:.2f}s"
 
         # Deve gerar resposta válida
         assert "resposta" in resultado
@@ -245,7 +256,9 @@ class TestLangGraphUsoPrincipalE2E:
         )
 
         # When: Calcula score de uso principal
-        score, razoes, pontos_fortes = UsoMatcher.calcular_score_uso_principal(questionario, carro_teste)
+        score, razoes, pontos_fortes = UsoMatcher.calcular_score_uso_principal(
+            questionario, carro_teste
+        )
 
         # Then: Deve gerar score e análise válidos
         assert score > 0, "Score deve ser positivo para uso familiar"
@@ -254,7 +267,9 @@ class TestLangGraphUsoPrincipalE2E:
 
         # Para uso familiar com criança, deve mencionar segurança
         razoes_texto = " ".join(razoes + pontos_fortes).lower()
-        assert "família" in razoes_texto or "segur" in razoes_texto, "Deve mencionar aspectos familiares ou de segurança"
+        assert (
+            "família" in razoes_texto or "segur" in razoes_texto
+        ), "Deve mencionar aspectos familiares ou de segurança"
 
         print(f"✅ UsoMatcher integrado - Score: {score:.2f}")
 
@@ -328,10 +343,14 @@ class TestLangGraphUsoPrincipalE2E:
                 )
 
                 # Then: Deve tratar erro graciosamente
-                assert "resposta" in resultado, "Deve gerar resposta mesmo com dados inválidos"
+                assert (
+                    "resposta" in resultado
+                ), "Deve gerar resposta mesmo com dados inválidos"
 
                 # Resposta não deve estar vazia
-                assert len(resultado["resposta"]) > 0, "Resposta de erro não deve estar vazia"
+                assert (
+                    len(resultado["resposta"]) > 0
+                ), "Resposta de erro não deve estar vazia"
 
             except Exception as e:
                 # Erros são aceitáveis, mas não devem quebrar o sistema
@@ -365,9 +384,13 @@ class TestLangGraphUsoPrincipalE2E:
             )
 
             # Then: Deve funcionar normalmente
-            assert "resposta" in resultado, f"Agente {agente_esperado} deve continuar funcionando"
+            assert (
+                "resposta" in resultado
+            ), f"Agente {agente_esperado} deve continuar funcionando"
 
-            assert len(resultado["resposta"]) > 10, f"Resposta do agente {agente_esperado} deve ter conteúdo"
+            assert (
+                len(resultado["resposta"]) > 10
+            ), f"Resposta do agente {agente_esperado} deve ter conteúdo"
 
             # Agente selecionado deve ser apropriado (não necessariamente exato)
             resultado.get("agente_selecionado", "")

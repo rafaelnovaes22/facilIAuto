@@ -62,25 +62,44 @@ class TestFamiliaCriteriosE2E:
             "km": 35000,
         }
 
-    async def test_seguranca_avancada_familia_e2e(self, questionario_familia_completo, carro_ideal_familia):
+    async def test_seguranca_avancada_familia_e2e(
+        self, questionario_familia_completo, carro_ideal_familia
+    ):
         """Testa E2E critério seguranca_avancada_familia (20%)"""
-        score, razoes, pontos = UsoMatcher.calcular_score_uso_principal(questionario_familia_completo, carro_ideal_familia)
+        score, razoes, pontos = UsoMatcher.calcular_score_uso_principal(
+            questionario_familia_completo, carro_ideal_familia
+        )
 
         # Verifica se segurança é avaliada corretamente
-        seguranca_razoes = [r for r in razoes if "segurança" in r.lower() or "família" in r.lower()]
-        assert len(seguranca_razoes) >= 1, "Deve ter pelo menos 1 razão de segurança família"
+        seguranca_razoes = [
+            r for r in razoes if "segurança" in r.lower() or "família" in r.lower()
+        ]
+        assert (
+            len(seguranca_razoes) >= 1
+        ), "Deve ter pelo menos 1 razão de segurança família"
 
         # Verifica elementos específicos da segurança
         razoes_str = " ".join(razoes).lower()
-        assert any(palavra in razoes_str for palavra in ["airbags", "estrelas", "sistemas"])
+        assert any(
+            palavra in razoes_str for palavra in ["airbags", "estrelas", "sistemas"]
+        )
 
-    async def test_espaco_passageiros_conforto_e2e(self, questionario_familia_completo, carro_ideal_familia):
+    async def test_espaco_passageiros_conforto_e2e(
+        self, questionario_familia_completo, carro_ideal_familia
+    ):
         """Testa E2E critério espaco_passageiros_conforto (20%)"""
-        score, razoes, pontos = UsoMatcher.calcular_score_uso_principal(questionario_familia_completo, carro_ideal_familia)
+        score, razoes, pontos = UsoMatcher.calcular_score_uso_principal(
+            questionario_familia_completo, carro_ideal_familia
+        )
 
         # Verifica avaliação de espaço/conforto
         espaco_razoes = [
-            r for r in razoes if any(palavra in r.lower() for palavra in ["espaço", "família", "pessoas", "conforto"])
+            r
+            for r in razoes
+            if any(
+                palavra in r.lower()
+                for palavra in ["espaço", "família", "pessoas", "conforto"]
+            )
         ]
         assert len(espaco_razoes) >= 1, "Deve ter pelo menos 1 razão de espaço família"
 
@@ -88,44 +107,74 @@ class TestFamiliaCriteriosE2E:
         assert carro_ideal_familia["categoria"] == "SUV"
         assert carro_ideal_familia["pessoas_transportar"] >= 5
 
-    async def test_praticidade_uso_familiar_e2e(self, questionario_familia_completo, carro_ideal_familia):
+    async def test_praticidade_uso_familiar_e2e(
+        self, questionario_familia_completo, carro_ideal_familia
+    ):
         """Testa E2E critério praticidade_uso_familiar (15%)"""
-        score, razoes, pontos = UsoMatcher.calcular_score_uso_principal(questionario_familia_completo, carro_ideal_familia)
+        score, razoes, pontos = UsoMatcher.calcular_score_uso_principal(
+            questionario_familia_completo, carro_ideal_familia
+        )
 
         # Verifica praticidade específica para família
         praticidade_razoes = [
-            r for r in razoes if any(palavra in r.lower() for palavra in ["praticidade", "facilidades", "porta-malas"])
+            r
+            for r in razoes
+            if any(
+                palavra in r.lower()
+                for palavra in ["praticidade", "facilidades", "porta-malas"]
+            )
         ]
-        assert len(praticidade_razoes) >= 1, "Deve ter pelo menos 1 razão de praticidade"
+        assert (
+            len(praticidade_razoes) >= 1
+        ), "Deve ter pelo menos 1 razão de praticidade"
 
         # Deve ter facilidades essenciais
         opcionais = carro_ideal_familia["opcionais"]
         facilidades = ["vidros_eletricos", "travas_eletricas"]
         assert any(item in opcionais for item in facilidades)
 
-    async def test_custo_beneficio_familia_e2e(self, questionario_familia_completo, carro_ideal_familia):
+    async def test_custo_beneficio_familia_e2e(
+        self, questionario_familia_completo, carro_ideal_familia
+    ):
         """Testa E2E critério custo_beneficio_familia (15%)"""
-        score, razoes, pontos = UsoMatcher.calcular_score_uso_principal(questionario_familia_completo, carro_ideal_familia)
+        score, razoes, pontos = UsoMatcher.calcular_score_uso_principal(
+            questionario_familia_completo, carro_ideal_familia
+        )
 
         # Verifica custo-benefício para família
-        custo_razoes = [r for r in razoes if any(palavra in r.lower() for palavra in ["custo", "preço", "benefício", "marca"])]
+        custo_razoes = [
+            r
+            for r in razoes
+            if any(
+                palavra in r.lower()
+                for palavra in ["custo", "preço", "benefício", "marca"]
+            )
+        ]
         assert len(custo_razoes) >= 1, "Deve ter pelo menos 1 razão de custo-benefício"
 
         # Preço deve estar na faixa adequada para família
         assert 30000 <= carro_ideal_familia["preco"] <= 80000
 
-    async def test_tecnologia_seguranca_infantil_e2e(self, questionario_familia_completo, carro_ideal_familia):
+    async def test_tecnologia_seguranca_infantil_e2e(
+        self, questionario_familia_completo, carro_ideal_familia
+    ):
         """Testa E2E critério tecnologia_seguranca_infantil (8%)"""
-        score, razoes, pontos = UsoMatcher.calcular_score_uso_principal(questionario_familia_completo, carro_ideal_familia)
+        score, razoes, pontos = UsoMatcher.calcular_score_uso_principal(
+            questionario_familia_completo, carro_ideal_familia
+        )
 
         # Verifica tecnologia específica para segurança infantil
         opcionais = carro_ideal_familia["opcionais"]
         tech_infantil = ["isofix", "travas_eletricas", "camera_re"]
         assert any(item in opcionais for item in tech_infantil)
 
-    async def test_score_total_familia_meta_e2e(self, questionario_familia_completo, carro_ideal_familia):
+    async def test_score_total_familia_meta_e2e(
+        self, questionario_familia_completo, carro_ideal_familia
+    ):
         """Testa E2E que score total atinge meta de 75%"""
-        score, razoes, pontos = UsoMatcher.calcular_score_uso_principal(questionario_familia_completo, carro_ideal_familia)
+        score, razoes, pontos = UsoMatcher.calcular_score_uso_principal(
+            questionario_familia_completo, carro_ideal_familia
+        )
 
         # Meta: ≥75% (18.75/25)
         assert score >= 18.75, f"Score {score:.2f} deve ser ≥18.75 (75%)"
@@ -134,7 +183,9 @@ class TestFamiliaCriteriosE2E:
         assert len(razoes) >= 6, f"Deve ter ≥6 razões, tem {len(razoes)}"
         assert len(pontos) >= 6, f"Deve ter ≥6 pontos fortes, tem {len(pontos)}"
 
-    async def test_sugestoes_especificas_familia_e2e(self, questionario_familia_completo):
+    async def test_sugestoes_especificas_familia_e2e(
+        self, questionario_familia_completo
+    ):
         """Testa E2E sugestões específicas para família"""
         sugestoes = UsoMatcher.gerar_sugestoes_uso(questionario_familia_completo)
 
@@ -157,7 +208,9 @@ class TestFamiliaCriteriosE2E:
             )
         ]
 
-        assert len(familia_sugs) >= 6, f"Deve ter ≥6 sugestões família, tem {len(familia_sugs)}"
+        assert (
+            len(familia_sugs) >= 6
+        ), f"Deve ter ≥6 sugestões família, tem {len(familia_sugs)}"
 
         # Verificar subsegmentos específicos
         subsegmentos = ["crianças pequenas", "família grande", "esportivas"]
@@ -188,7 +241,9 @@ class TestFamiliaCriteriosE2E:
         total_peso = sum(c["peso"] for c in criterios.values())
         assert total_peso == 100, f"Peso total deve ser 100%, é {total_peso}%"
 
-    async def test_subsegmentos_boost_familia_e2e(self, questionario_familia_completo, carro_ideal_familia):
+    async def test_subsegmentos_boost_familia_e2e(
+        self, questionario_familia_completo, carro_ideal_familia
+    ):
         """Testa E2E aplicação de boost por subsegmentos"""
         # Testa diferentes subsegmentos implícitos
 
@@ -197,17 +252,25 @@ class TestFamiliaCriteriosE2E:
         q_criancas.criancas = True
         q_criancas.prioridade = "seguranca"
 
-        score_criancas, _, _ = UsoMatcher.calcular_score_uso_principal(q_criancas, carro_ideal_familia)
+        score_criancas, _, _ = UsoMatcher.calcular_score_uso_principal(
+            q_criancas, carro_ideal_familia
+        )
 
         # Família grande (espaço prioritário)
         q_grande = questionario_familia_completo.model_copy()
         q_grande.pessoas_transportar = 7
 
-        score_grande, _, _ = UsoMatcher.calcular_score_uso_principal(q_grande, carro_ideal_familia)
+        score_grande, _, _ = UsoMatcher.calcular_score_uso_principal(
+            q_grande, carro_ideal_familia
+        )
 
         # Ambos devem ter scores altos
-        assert score_criancas >= 18.0, f"Score crianças deve ser alto: {score_criancas:.2f}"
-        assert score_grande >= 18.0, f"Score família grande deve ser alto: {score_grande:.2f}"
+        assert (
+            score_criancas >= 18.0
+        ), f"Score crianças deve ser alto: {score_criancas:.2f}"
+        assert (
+            score_grande >= 18.0
+        ), f"Score família grande deve ser alto: {score_grande:.2f}"
 
     async def test_descricao_familia_atualizada_e2e(self):
         """Testa E2E que descrição do perfil família foi atualizada"""
@@ -217,39 +280,67 @@ class TestFamiliaCriteriosE2E:
         elementos = ["segurança", "espaço", "praticidade", "custo", "airbags", "isofix"]
 
         for elemento in elementos:
-            assert elemento.lower() in descricao.lower(), f"Elemento '{elemento}' não encontrado na descrição"
+            assert (
+                elemento.lower() in descricao.lower()
+            ), f"Elemento '{elemento}' não encontrado na descrição"
 
         # Deve mencionar valores específicos
         assert "350L" in descricao or "≥350L" in descricao
         assert "30-80k" in descricao or "R$ 30-80k" in descricao
         assert "8 km/l" in descricao or "≥8 km/l" in descricao
 
-    async def test_confiabilidade_transporte_e2e(self, questionario_familia_completo, carro_ideal_familia):
+    async def test_confiabilidade_transporte_e2e(
+        self, questionario_familia_completo, carro_ideal_familia
+    ):
         """Testa E2E critério confiabilidade_transporte (10%)"""
-        score, razoes, pontos = UsoMatcher.calcular_score_uso_principal(questionario_familia_completo, carro_ideal_familia)
+        score, razoes, pontos = UsoMatcher.calcular_score_uso_principal(
+            questionario_familia_completo, carro_ideal_familia
+        )
 
         # Verifica confiabilidade específica para transporte familiar
-        conf_razoes = [r for r in razoes if any(palavra in r.lower() for palavra in ["confiabilidade", "honda", "confiável"])]
+        conf_razoes = [
+            r
+            for r in razoes
+            if any(
+                palavra in r.lower()
+                for palavra in ["confiabilidade", "honda", "confiável"]
+            )
+        ]
         assert len(conf_razoes) >= 1, "Deve ter pelo menos 1 razão de confiabilidade"
 
         # Honda deve ser marca confiável para família
         assert carro_ideal_familia["marca"] == "Honda"
         assert carro_ideal_familia["km"] <= 80000
 
-    async def test_eficiencia_combustivel_familia_e2e(self, questionario_familia_completo, carro_ideal_familia):
+    async def test_eficiencia_combustivel_familia_e2e(
+        self, questionario_familia_completo, carro_ideal_familia
+    ):
         """Testa E2E critério eficiencia_combustivel_familia (7%)"""
-        score, razoes, pontos = UsoMatcher.calcular_score_uso_principal(questionario_familia_completo, carro_ideal_familia)
+        score, razoes, pontos = UsoMatcher.calcular_score_uso_principal(
+            questionario_familia_completo, carro_ideal_familia
+        )
 
         # Verifica eficiência específica para uso familiar
-        efic_razoes = [r for r in razoes if any(palavra in r.lower() for palavra in ["eficiência", "consumo", "econômico"])]
+        efic_razoes = [
+            r
+            for r in razoes
+            if any(
+                palavra in r.lower()
+                for palavra in ["eficiência", "consumo", "econômico"]
+            )
+        ]
         assert len(efic_razoes) >= 1, "Deve ter pelo menos 1 razão de eficiência"
 
         # Consumo deve ser adequado para família
         assert carro_ideal_familia["consumo"] >= 8
 
-    async def test_versatilidade_configuracao_e2e(self, questionario_familia_completo, carro_ideal_familia):
+    async def test_versatilidade_configuracao_e2e(
+        self, questionario_familia_completo, carro_ideal_familia
+    ):
         """Testa E2E critério versatilidade_configuracao (5%)"""
-        score, razoes, pontos = UsoMatcher.calcular_score_uso_principal(questionario_familia_completo, carro_ideal_familia)
+        score, razoes, pontos = UsoMatcher.calcular_score_uso_principal(
+            questionario_familia_completo, carro_ideal_familia
+        )
 
         # Verifica versatilidade para diferentes necessidades familiares
         opcionais = carro_ideal_familia["opcionais"]

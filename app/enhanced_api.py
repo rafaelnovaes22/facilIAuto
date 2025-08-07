@@ -13,7 +13,9 @@ def enhance_car_with_fallbacks(carro: CarroRecomendacao) -> CarroRecomendacao:
 
     # Se não tem fotos, gerar fallbacks
     if not carro.fotos or len(carro.fotos) == 0:
-        fallback_images = get_fallback_images(carro.marca, carro.modelo, carro.categoria)
+        fallback_images = get_fallback_images(
+            carro.marca, carro.modelo, carro.categoria
+        )
         carro.fotos = fallback_images[:2]  # Máximo 2 imagens
 
     # Garantir que sempre temos pelo menos uma imagem

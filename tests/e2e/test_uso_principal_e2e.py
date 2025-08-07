@@ -52,10 +52,14 @@ class TestUsoMrincipalE2E:
         urbano_card = page.locator("text=🏙️ Uso Urbano (Cidade)")
         await expect(urbano_card).to_be_visible()
 
-        urbano_desc = page.locator("text=Ideal para: trânsito, estacionamento, economia de combustível")
+        urbano_desc = page.locator(
+            "text=Ideal para: trânsito, estacionamento, economia de combustível"
+        )
         await expect(urbano_desc).to_be_visible()
 
-        urbano_prioriza = page.locator("text=Priorizamos: carros compactos, baixo consumo, tecnologia de assistência")
+        urbano_prioriza = page.locator(
+            "text=Priorizamos: carros compactos, baixo consumo, tecnologia de assistência"
+        )
         await expect(urbano_prioriza).to_be_visible()
 
         # Card Viagem
@@ -69,7 +73,9 @@ class TestUsoMrincipalE2E:
         trabalho_card = page.locator("text=💼 Trabalho/Negócios")
         await expect(trabalho_card).to_be_visible()
 
-        trabalho_desc = page.locator("text=Ideal para: uso profissional, transporte de equipamentos")
+        trabalho_desc = page.locator(
+            "text=Ideal para: uso profissional, transporte de equipamentos"
+        )
         await expect(trabalho_desc).to_be_visible()
 
         # Card Família
@@ -169,7 +175,8 @@ class TestUsoMrincipalE2E:
 
         # Deve mencionar uso urbano ou familiar
         assert any(
-            termo in results_content.lower() for termo in ["urbano", "familiar", "família"]
+            termo in results_content.lower()
+            for termo in ["urbano", "familiar", "família"]
         ), "Resultados devem incluir referências ao uso principal"
 
         print("✅ Fluxo completo com uso principal validado")
@@ -257,7 +264,9 @@ class TestUsoMrincipalE2E:
         # Verificar se sugestões são específicas para uso urbano
         sugestoes = " ".join(resultado["sugestoes_personalizadas"]).lower()
         urbano_keywords = ["urbano", "cidade", "compacto", "economia", "estacionamento"]
-        assert any(keyword in sugestoes for keyword in urbano_keywords), "Sugestões devem ser específicas para uso urbano"
+        assert any(
+            keyword in sugestoes for keyword in urbano_keywords
+        ), "Sugestões devem ser específicas para uso urbano"
 
         print("✅ Sistema de scoring avançado validado")
 
@@ -314,8 +323,14 @@ class TestUsoMrincipalE2E:
         await asyncio.sleep(5)
 
         # Não deve haver erros críticos
-        critical_errors = [error for error in errors if "error" in error.lower() and "warning" not in error.lower()]
-        assert len(critical_errors) == 0, f"Não deve haver erros JavaScript críticos: {critical_errors}"
+        critical_errors = [
+            error
+            for error in errors
+            if "error" in error.lower() and "warning" not in error.lower()
+        ]
+        assert (
+            len(critical_errors) == 0
+        ), f"Não deve haver erros JavaScript críticos: {critical_errors}"
 
         print("✅ Teste de regressão passou - funcionalidades anteriores mantidas")
 
@@ -376,7 +391,9 @@ class TestUsoMrincipalE2E:
         except Exception as e:
             # Se timeout, ainda é informativo
             search_time = time.time() - search_start
-            print(f"⚠️ Timeout após {search_time:.2f}s - pode indicar problema de performance")
+            print(
+                f"⚠️ Timeout após {search_time:.2f}s - pode indicar problema de performance"
+            )
             # Não falha o teste, apenas reporta
 
         total_time = time.time() - start_time

@@ -89,7 +89,9 @@ class TestLangGraphWorkflowE2E:
         response_time = (end_time - start_time) * 1000  # ms
 
         # Validações básicas
-        assert response.status_code == 200, f"Status esperado 200, recebido {response.status_code}"
+        assert (
+            response.status_code == 200
+        ), f"Status esperado 200, recebido {response.status_code}"
         response_data = response.json()
 
         # Validar estrutura da resposta
@@ -101,7 +103,9 @@ class TestLangGraphWorkflowE2E:
             "sugestoes_followup",
         ]
         for field in required_fields:
-            assert field in response_data, f"Campo obrigatório '{field}' ausente na resposta"
+            assert (
+                field in response_data
+            ), f"Campo obrigatório '{field}' ausente na resposta"
 
         # Validar agente selecionado (pergunta técnica deve ir para agente técnico)
         expected_agent = "tecnico"
@@ -118,15 +122,25 @@ class TestLangGraphWorkflowE2E:
         ), "Resposta deve incluir unidades/termos técnicos"
 
         # Validar confiança do roteamento
-        assert 0.0 <= response_data["confianca"] <= 1.0, f"Confiança fora do range [0,1]: {response_data['confianca']}"
-        assert response_data["confianca"] > 0.5, "Confiança muito baixa para pergunta técnica clara"
+        assert (
+            0.0 <= response_data["confianca"] <= 1.0
+        ), f"Confiança fora do range [0,1]: {response_data['confianca']}"
+        assert (
+            response_data["confianca"] > 0.5
+        ), "Confiança muito baixa para pergunta técnica clara"
 
         # Validar sugestões de follow-up
-        assert isinstance(response_data["sugestoes_followup"], list), "Sugestões devem ser uma lista"
-        assert len(response_data["sugestoes_followup"]) > 0, "Deve haver pelo menos uma sugestão de follow-up"
+        assert isinstance(
+            response_data["sugestoes_followup"], list
+        ), "Sugestões devem ser uma lista"
+        assert (
+            len(response_data["sugestoes_followup"]) > 0
+        ), "Deve haver pelo menos uma sugestão de follow-up"
 
         # Validar performance
-        assert response_time < 3000, f"Tempo de resposta muito alto: {response_time:.2f}ms (limite: 3000ms)"
+        assert (
+            response_time < 3000
+        ), f"Tempo de resposta muito alto: {response_time:.2f}ms (limite: 3000ms)"
 
         print(f"✅ API Response Time: {response_time:.2f}ms")
         print(f"✅ Agente Selecionado: {response_data['agente']}")
@@ -218,7 +232,9 @@ class TestLangGraphWorkflowE2E:
         routing_accuracy = correct_routings / len(results) * 100
 
         # Validar taxa de acerto mínima
-        assert routing_accuracy >= 80, f"Taxa de acerto do roteamento muito baixa: {routing_accuracy:.1f}% (mínimo: 80%)"
+        assert (
+            routing_accuracy >= 80
+        ), f"Taxa de acerto do roteamento muito baixa: {routing_accuracy:.1f}% (mínimo: 80%)"
 
         print("\n📊 MÉTRICAS FINAIS:")
         print(f"   Taxa de Acerto: {routing_accuracy:.1f}%")
@@ -228,7 +244,9 @@ class TestLangGraphWorkflowE2E:
         return results
 
     @pytest.mark.asyncio
-    async def test_memory_persistence_across_sessions(self, client, memory_manager, sample_car_data):
+    async def test_memory_persistence_across_sessions(
+        self, client, memory_manager, sample_car_data
+    ):
         """
         Teste de persistência da memória entre sessões diferentes
         """
@@ -271,7 +289,9 @@ class TestLangGraphWorkflowE2E:
         conversation_id_2 = response2_data["conversation_id"]
 
         # Deve manter o mesmo conversation_id
-        assert conversation_id_2 == conversation_id_1, "Conversation ID deve ser mantido na mesma sessão"
+        assert (
+            conversation_id_2 == conversation_id_1
+        ), "Conversation ID deve ser mantido na mesma sessão"
 
         print(f"  ✅ Conversa 2 ID: {conversation_id_2} (mantido)")
         print(f"  ✅ Agente: {response2_data['agente']}")
@@ -292,7 +312,9 @@ class TestLangGraphWorkflowE2E:
         conversation_id_3 = response3_data["conversation_id"]
 
         # Nova conversa deve ter ID diferente
-        assert conversation_id_3 != conversation_id_1, "Nova conversa deve ter ID diferente"
+        assert (
+            conversation_id_3 != conversation_id_1
+        ), "Nova conversa deve ter ID diferente"
 
         print(f"  ✅ Conversa 3 ID: {conversation_id_3} (novo)")
         print(f"  ✅ Agente: {response3_data['agente']}")
@@ -308,20 +330,32 @@ class TestLangGraphWorkflowE2E:
         print(f"  🏷️ Marcas de Interesse: {user_context.get('brand_preferences', [])}")
 
         # Validações
-        assert user_context.get("recent_conversations", 0) >= 2, "Deve haver pelo menos 2 conversas registradas"
+        assert (
+            user_context.get("recent_conversations", 0) >= 2
+        ), "Deve haver pelo menos 2 conversas registradas"
 
         # Verificar se Toyota foi registrado como preferência
         brand_preferences = user_context.get("brand_preferences", [])
-        assert "Toyota" in brand_preferences, "Toyota deve estar nas preferências (mencionado na primeira pergunta)"
+        assert (
+            "Toyota" in brand_preferences
+        ), "Toyota deve estar nas preferências (mencionado na primeira pergunta)"
 
         # Verificar histórico de conversas
-        conversation_1, messages_1 = memory_manager.get_conversation_history(conversation_id_1)
+        conversation_1, messages_1 = memory_manager.get_conversation_history(
+            conversation_id_1
+        )
         assert conversation_1 is not None, "Conversa 1 deve estar persistida"
-        assert len(messages_1) >= 4, "Deve haver pelo menos 4 mensagens (2 perguntas + 2 respostas)"
+        assert (
+            len(messages_1) >= 4
+        ), "Deve haver pelo menos 4 mensagens (2 perguntas + 2 respostas)"
 
-        conversation_3, messages_3 = memory_manager.get_conversation_history(conversation_id_3)
+        conversation_3, messages_3 = memory_manager.get_conversation_history(
+            conversation_id_3
+        )
         assert conversation_3 is not None, "Conversa 3 deve estar persistida"
-        assert len(messages_3) >= 2, "Deve haver pelo menos 2 mensagens (1 pergunta + 1 resposta)"
+        assert (
+            len(messages_3) >= 2
+        ), "Deve haver pelo menos 2 mensagens (1 pergunta + 1 resposta)"
 
         print("  ✅ Todas as validações de memória passaram!")
 
@@ -365,7 +399,9 @@ class TestLangGraphWorkflowE2E:
             if response.status_code == 200:
                 success_count += 1
 
-            print(f"  Request {i+1}: {response_time:.0f}ms - {'✅' if response.status_code == 200 else '❌'}")
+            print(
+                f"  Request {i+1}: {response_time:.0f}ms - {'✅' if response.status_code == 200 else '❌'}"
+            )
 
         # Calcular métricas
         avg_response_time = sum(response_times) / len(response_times)
@@ -380,7 +416,9 @@ class TestLangGraphWorkflowE2E:
         print(f"   Tempo Máximo: {max_response_time_actual:.0f}ms")
 
         # Validações
-        assert success_rate >= 90, f"Taxa de sucesso muito baixa: {success_rate:.1f}% (mínimo: 90%)"
+        assert (
+            success_rate >= 90
+        ), f"Taxa de sucesso muito baixa: {success_rate:.1f}% (mínimo: 90%)"
         assert (
             avg_response_time <= max_avg_response_time
         ), f"Tempo médio muito alto: {avg_response_time:.0f}ms (máximo: {max_avg_response_time}ms)"
@@ -423,7 +461,9 @@ class TestLangGraphWorkflowE2E:
         }
         error_scenarios.append(scenario1_result)
 
-        print(f"  Status: {response1.status_code} ({'✅' if scenario1_result['handled_correctly'] else '❌'})")
+        print(
+            f"  Status: {response1.status_code} ({'✅' if scenario1_result['handled_correctly'] else '❌'})"
+        )
 
         # === CENÁRIO 2: Pergunta vazia ===
         print("\n❌ CENÁRIO 2: Pergunta Vazia")
@@ -445,7 +485,9 @@ class TestLangGraphWorkflowE2E:
         }
         error_scenarios.append(scenario2_result)
 
-        print(f"  Status: {response2.status_code} ({'✅' if scenario2_result['handled_correctly'] else '❌'})")
+        print(
+            f"  Status: {response2.status_code} ({'✅' if scenario2_result['handled_correctly'] else '❌'})"
+        )
 
         # === CENÁRIO 3: Dados malformados ===
         print("\n❌ CENÁRIO 3: Dados Malformados")
@@ -467,7 +509,9 @@ class TestLangGraphWorkflowE2E:
         }
         error_scenarios.append(scenario3_result)
 
-        print(f"  Status: {response3.status_code} ({'✅' if scenario3_result['handled_correctly'] else '❌'})")
+        print(
+            f"  Status: {response3.status_code} ({'✅' if scenario3_result['handled_correctly'] else '❌'})"
+        )
 
         # === VALIDAÇÃO GERAL ===
         correctly_handled = sum(1 for s in error_scenarios if s["handled_correctly"])
@@ -479,7 +523,9 @@ class TestLangGraphWorkflowE2E:
         print(f"   Tratados Corretamente: {correctly_handled}")
 
         # Validação
-        assert error_handling_rate >= 100, f"Tratamento de erro inadequado: {error_handling_rate:.1f}%"
+        assert (
+            error_handling_rate >= 100
+        ), f"Tratamento de erro inadequado: {error_handling_rate:.1f}%"
 
         return error_scenarios
 
@@ -520,7 +566,9 @@ class TestLangGraphWorkflowE2E:
         for i in range(concurrent_requests):
             result = await make_request(i + 1)
             results.append(result)
-            print(f"  Request {result['request_id']}: {result['response_time']:.0f}ms - {'✅' if result['success'] else '❌'}")
+            print(
+                f"  Request {result['request_id']}: {result['response_time']:.0f}ms - {'✅' if result['success'] else '❌'}"
+            )
 
         total_time = (time.time() - start_time) * 1000
 
@@ -537,8 +585,12 @@ class TestLangGraphWorkflowE2E:
         print(f"   Throughput: {throughput:.2f} req/s")
 
         # Validações
-        assert success_rate >= 90, f"Taxa de sucesso muito baixa sob stress: {success_rate:.1f}%"
-        assert avg_response_time <= 5000, f"Tempo médio muito alto sob stress: {avg_response_time:.0f}ms"
+        assert (
+            success_rate >= 90
+        ), f"Taxa de sucesso muito baixa sob stress: {success_rate:.1f}%"
+        assert (
+            avg_response_time <= 5000
+        ), f"Tempo médio muito alto sob stress: {avg_response_time:.0f}ms"
 
         return {
             "success_rate": success_rate,

@@ -232,44 +232,59 @@ def router_node(state: ChatbotState) -> ChatbotState:
     confidencias = {}
 
     # Agente Técnico
-    matches_tecnico = sum(1 for keyword in ChatbotKeywords.TECNICO if keyword in pergunta)
+    matches_tecnico = sum(
+        1 for keyword in ChatbotKeywords.TECNICO if keyword in pergunta
+    )
     if matches_tecnico > 0:
         confidencias[AgentType.TECNICO] = min(0.3 + (matches_tecnico * 0.35), 1.0)
     else:
         confidencias[AgentType.TECNICO] = 0.0
 
     # Agente Financeiro
-    matches_financeiro = sum(1 for keyword in ChatbotKeywords.FINANCEIRO if keyword in pergunta)
+    matches_financeiro = sum(
+        1 for keyword in ChatbotKeywords.FINANCEIRO if keyword in pergunta
+    )
     if matches_financeiro > 0:
         confidencias[AgentType.FINANCEIRO] = min(0.3 + (matches_financeiro * 0.35), 1.0)
     else:
         confidencias[AgentType.FINANCEIRO] = 0.0
 
     # Agente Comparação
-    matches_comparacao = sum(1 for keyword in ChatbotKeywords.COMPARACAO if keyword in pergunta)
+    matches_comparacao = sum(
+        1 for keyword in ChatbotKeywords.COMPARACAO if keyword in pergunta
+    )
     if matches_comparacao > 0:
         confidencias[AgentType.COMPARACAO] = min(0.3 + (matches_comparacao * 0.35), 1.0)
     else:
         confidencias[AgentType.COMPARACAO] = 0.0
 
     # Agente Manutenção
-    matches_manutencao = sum(1 for keyword in ChatbotKeywords.MANUTENCAO if keyword in pergunta)
+    matches_manutencao = sum(
+        1 for keyword in ChatbotKeywords.MANUTENCAO if keyword in pergunta
+    )
     if matches_manutencao > 0:
         confidencias[AgentType.MANUTENCAO] = min(0.3 + (matches_manutencao * 0.35), 1.0)
     else:
         confidencias[AgentType.MANUTENCAO] = 0.0
 
     # Agente Avaliação
-    matches_avaliacao = sum(1 for keyword in ChatbotKeywords.AVALIACAO if keyword in pergunta)
+    matches_avaliacao = sum(
+        1 for keyword in ChatbotKeywords.AVALIACAO if keyword in pergunta
+    )
     if matches_avaliacao > 0:
         confidencias[AgentType.AVALIACAO] = min(0.3 + (matches_avaliacao * 0.35), 1.0)
     else:
         confidencias[AgentType.AVALIACAO] = 0.0
 
     # Agente Uso Principal - novo agente especializado
-    matches_uso = sum(1 for keyword in ChatbotKeywords.USO_PRINCIPAL if keyword in pergunta)
+    matches_uso = sum(
+        1 for keyword in ChatbotKeywords.USO_PRINCIPAL if keyword in pergunta
+    )
     # Boost para perguntas específicas sobre adequação de uso
-    if any(phrase in pergunta for phrase in ["adequado para", "serve para", "é bom para", "recomendado para"]):
+    if any(
+        phrase in pergunta
+        for phrase in ["adequado para", "serve para", "é bom para", "recomendado para"]
+    ):
         matches_uso += 2
     if matches_uso > 0:
         confidencias[AgentType.USO_PRINCIPAL] = min(0.3 + (matches_uso * 0.3), 1.0)
@@ -335,9 +350,13 @@ def financeiro_agent_node(state: ChatbotState) -> ChatbotState:
     carro = state["carro_data"]
     pergunta = state["pergunta_atual"].lower()
 
-    if any(word in pergunta for word in ["simulação", "simulacao", "parcela", "prestação"]):
+    if any(
+        word in pergunta for word in ["simulação", "simulacao", "parcela", "prestação"]
+    ):
         resposta = _simular_financiamento(carro)
-    elif any(word in pergunta for word in ["documentação", "documentacao", "documento"]):
+    elif any(
+        word in pergunta for word in ["documentação", "documentacao", "documento"]
+    ):
         resposta = _documentacao_necessaria()
     elif any(word in pergunta for word in ["consórcio", "consorcio"]):
         resposta = _explicar_consorcio(carro)
@@ -444,9 +463,9 @@ def finalizer_node(state: ChatbotState) -> ChatbotState:
 
     if not state["resposta_final"]:
         # Gerar resposta genérica
-        marca = carro.get('marca', 'Marca')
-        modelo = carro.get('modelo', 'Modelo')
-        
+        marca = carro.get("marca", "Marca")
+        modelo = carro.get("modelo", "Modelo")
+
         resposta = f"""🤖 **Assistente Geral**
 
 Oi! Sou especialista em informações sobre o **{marca} {modelo}**.
@@ -731,8 +750,8 @@ def _opcoes_financiamento_geral(carro: Dict[str, Any]) -> str:
     preco = carro.get("preco_promocional", carro.get("preco", 0))
     if preco is None:
         preco = 0
-    marca = carro.get('marca', '')
-    modelo = carro.get('modelo', '')
+    marca = carro.get("marca", "")
+    modelo = carro.get("modelo", "")
 
     return f"""💰 **Opções de Financiamento - {marca} {modelo}**
 
@@ -967,7 +986,9 @@ def uso_principal_agent_node(state: ChatbotState) -> ChatbotState:
         tipos_uso_mencionados = ["urbano", "viagem", "trabalho", "familia"]
 
     resposta_partes = []
-    resposta_partes.append(f"🎯 **Adequação do {carro['marca']} {carro['modelo']} para diferentes usos:**\n")
+    resposta_partes.append(
+        f"🎯 **Adequação do {carro['marca']} {carro['modelo']} para diferentes usos:**\n"
+    )
 
     for uso in tipos_uso_mencionados:
         analise = _analisar_adequacao_uso(carro, uso)
@@ -979,7 +1000,9 @@ def uso_principal_agent_node(state: ChatbotState) -> ChatbotState:
 
     resposta_final = "\n".join(resposta_partes)
 
-    return adicionar_resposta_agente(state, resposta_final, AgentType.USO_PRINCIPAL, 0.95)
+    return adicionar_resposta_agente(
+        state, resposta_final, AgentType.USO_PRINCIPAL, 0.95
+    )
 
 
 def _analisar_adequacao_uso(carro: Dict[str, Any], uso: str) -> str:
@@ -1001,7 +1024,11 @@ def _analisar_adequacao_uso(carro: Dict[str, Any], uso: str) -> str:
 
         opcoes_urbanas = ["conectividade", "sensor", "camera"]
         opcionais = carro.get("opcionais", [])
-        tech_count = sum(1 for tech in opcoes_urbanas if any(tech in opcional.lower() for opcional in opcionais))
+        tech_count = sum(
+            1
+            for tech in opcoes_urbanas
+            if any(tech in opcional.lower() for opcional in opcionais)
+        )
         if tech_count > 0:
             pontos_positivos.append("Tecnologias que auxiliam no trânsito")
 
@@ -1113,7 +1140,11 @@ def _analisar_adequacao_uso(carro: Dict[str, Any], uso: str) -> str:
         # Verificar itens de conforto
         opcionais = carro.get("opcionais", [])
         conforto_familia = ["ar_condicionado", "vidros_eletricos", "direcao_assistida"]
-        conforto_count = sum(1 for item in conforto_familia if any(item in opcional.lower() for opcional in opcionais))
+        conforto_count = sum(
+            1
+            for item in conforto_familia
+            if any(item in opcional.lower() for opcional in opcionais)
+        )
         if conforto_count > 1:
             pontos_positivos.append("Bons itens de conforto familiar")
 
@@ -1137,7 +1168,9 @@ def _analisar_adequacao_uso(carro: Dict[str, Any], uso: str) -> str:
     return resultado + "\n"
 
 
-def _gerar_recomendacao_uso_geral(carro: Dict[str, Any], usos_analisados: List[str]) -> str:
+def _gerar_recomendacao_uso_geral(
+    carro: Dict[str, Any], usos_analisados: List[str]
+) -> str:
     """Gera uma recomendação geral baseada nos usos analisados"""
     categoria = carro.get("categoria", "")
 

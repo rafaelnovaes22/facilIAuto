@@ -110,15 +110,15 @@ class UsoMatcherRefactored:
     ) -> Tuple[float, str, str]:
         """
         Avalia um critério específico - VERSÃO REFATORADA
-        
+
         Complexidade reduzida através de dispatch para handlers específicos
         """
         # Busca o handler para o critério
         handler = self._criterio_handlers.get(criterio)
-        
+
         if handler:
             return handler(configs, carro, questionario)
-        
+
         # Fallback para critério não reconhecido
         return 0.0, "", ""
 
@@ -156,7 +156,7 @@ class UsoMatcherRefactored:
             return (
                 score_parcial,
                 f"Economia urbana: {' e '.join(fatores)}",
-                "Baixo custo operacional na cidade"
+                "Baixo custo operacional na cidade",
             )
         return 0.0, "", ""
 
@@ -186,7 +186,8 @@ class UsoMatcherRefactored:
         opcionais = carro.get("opcionais", [])
         sistemas = configs.get("sistemas_assistencia", [])
         tem_sistemas = sum(
-            1 for sistema in sistemas 
+            1
+            for sistema in sistemas
             if any(sistema in opcional.lower() for opcional in opcionais)
         )
         if tem_sistemas > 0:
@@ -197,7 +198,7 @@ class UsoMatcherRefactored:
             return (
                 score_parcial,
                 f"Manobra: {' e '.join(fatores)}",
-                "Fácil de manobrar e estacionar"
+                "Fácil de manobrar e estacionar",
             )
         return 0.0, "", ""
 
@@ -214,12 +215,14 @@ class UsoMatcherRefactored:
 
         # Conta itens essenciais
         tem_essenciais = sum(
-            1 for item in essenciais 
+            1
+            for item in essenciais
             if any(item in opcional.lower() for opcional in opcionais)
         )
         # Conta itens desejados
         tem_desejados = sum(
-            1 for item in desejados 
+            1
+            for item in desejados
             if any(item in opcional.lower() for opcional in opcionais)
         )
 
@@ -230,7 +233,7 @@ class UsoMatcherRefactored:
             return (
                 score,
                 f"Tecnologia: {tem_essenciais} essenciais + {tem_desejados} desejados",
-                "Conectividade moderna"
+                "Conectividade moderna",
             )
         return 0.0, "", ""
 
@@ -248,7 +251,8 @@ class UsoMatcherRefactored:
         opcionais = carro.get("opcionais", [])
         basicos = configs.get("basicos_obrigatorios", [])
         tem_basicos = sum(
-            1 for item in basicos 
+            1
+            for item in basicos
             if any(item in opcional.lower() for opcional in opcionais)
         )
 
@@ -266,7 +270,7 @@ class UsoMatcherRefactored:
             return (
                 score_parcial,
                 f"Segurança urbana: {' e '.join(fatores)}",
-                "Proteção adequada no trânsito"
+                "Proteção adequada no trânsito",
             )
         return 0.0, "", ""
 
@@ -295,7 +299,7 @@ class UsoMatcherRefactored:
             return (
                 score_parcial,
                 f"Manutenção: {' e '.join(fatores)}",
-                "Baixo custo de manutenção"
+                "Baixo custo de manutenção",
             )
         return 0.0, "", ""
 
@@ -326,7 +330,8 @@ class UsoMatcherRefactored:
         opcionais = carro.get("opcionais", [])
         facilidades = configs.get("facilidades", [])
         tem_facilidades = sum(
-            1 for item in facilidades 
+            1
+            for item in facilidades
             if any(item in opcional.lower() for opcional in opcionais)
         )
         if tem_facilidades > 0:
@@ -337,7 +342,7 @@ class UsoMatcherRefactored:
             return (
                 score_parcial,
                 f"Praticidade: {' e '.join(fatores)}",
-                "Prático para uso diário"
+                "Prático para uso diário",
             )
         return 0.0, "", ""
 
@@ -353,11 +358,13 @@ class UsoMatcherRefactored:
         ergonomia = configs.get("ergonomia", [])
 
         tem_clima = sum(
-            1 for item in clima 
+            1
+            for item in clima
             if any(item in opcional.lower() for opcional in opcionais)
         )
         tem_ergonomia = sum(
-            1 for item in ergonomia 
+            1
+            for item in ergonomia
             if any(item in opcional.lower() for opcional in opcionais)
         )
 
@@ -366,7 +373,7 @@ class UsoMatcherRefactored:
             return (
                 score,
                 f"Conforto: {tem_clima + tem_ergonomia} itens",
-                "Confortável para cidade"
+                "Confortável para cidade",
             )
         return 0.0, "", ""
 
@@ -382,7 +389,7 @@ class UsoMatcherRefactored:
             return (
                 1.0,
                 f"Motor {tipo_motor} sustentável",
-                "Opção ecológica para cidade"
+                "Opção ecológica para cidade",
             )
         return 0.0, "", ""
 
@@ -402,7 +409,8 @@ class UsoMatcherRefactored:
         opcionais = carro.get("opcionais", [])
         bancos_essenciais = configs.get("bancos_essenciais", [])
         tem_bancos = sum(
-            1 for item in bancos_essenciais 
+            1
+            for item in bancos_essenciais
             if any(item in opcional.lower() for opcional in opcionais)
         )
         if tem_bancos > 0:
@@ -412,7 +420,8 @@ class UsoMatcherRefactored:
         # Verifica climatização
         climatizacao = configs.get("climatizacao", [])
         tem_clima = sum(
-            1 for item in climatizacao 
+            1
+            for item in climatizacao
             if any(item in opcional.lower() for opcional in opcionais)
         )
         if tem_clima > 0:
@@ -422,7 +431,8 @@ class UsoMatcherRefactored:
         # Verifica ergonomia
         ergonomia = configs.get("ergonomia", [])
         tem_ergonomia = sum(
-            1 for item in ergonomia 
+            1
+            for item in ergonomia
             if any(item in opcional.lower() for opcional in opcionais)
         )
         if tem_ergonomia > 0:
@@ -433,7 +443,7 @@ class UsoMatcherRefactored:
             return (
                 score_parcial,
                 f"Conforto viagem: {' e '.join(fatores)}",
-                "Confortável para viagens longas"
+                "Confortável para viagens longas",
             )
         return 0.0, "", ""
 
@@ -457,7 +467,8 @@ class UsoMatcherRefactored:
         opcionais = carro.get("opcionais", [])
         estabilidade = configs.get("estabilidade", [])
         tem_estabilidade = sum(
-            1 for item in estabilidade 
+            1
+            for item in estabilidade
             if any(item in opcional.lower() for opcional in opcionais)
         )
         if tem_estabilidade > 0:
@@ -474,7 +485,7 @@ class UsoMatcherRefactored:
             return (
                 score_parcial,
                 f"Desempenho estrada: {' e '.join(fatores)}",
-                "Segurança e potência para estradas"
+                "Segurança e potência para estradas",
             )
         return 0.0, "", ""
 
@@ -513,7 +524,7 @@ class UsoMatcherRefactored:
             return (
                 score_parcial,
                 f"Economia: {' e '.join(fatores)}",
-                "Baixo custo de combustível"
+                "Baixo custo de combustível",
             )
         return 0.0, "", ""
 
@@ -548,7 +559,7 @@ class UsoMatcherRefactored:
             return (
                 score_parcial,
                 f"Confiabilidade: {' e '.join(fatores)}",
-                "Veículo confiável para trabalho"
+                "Veículo confiável para trabalho",
             )
         return 0.0, "", ""
 
@@ -571,7 +582,8 @@ class UsoMatcherRefactored:
         # Verifica airbags múltiplos
         airbags_essenciais = configs.get("airbags_essenciais", [])
         tem_airbags = sum(
-            1 for item in airbags_essenciais 
+            1
+            for item in airbags_essenciais
             if any(item in opcional.lower() for opcional in opcionais)
         )
         if tem_airbags >= len(airbags_essenciais) * 0.8:
@@ -581,7 +593,8 @@ class UsoMatcherRefactored:
         # Verifica sistemas ativos
         sistemas_ativos = configs.get("sistemas_ativos", [])
         tem_sistemas = sum(
-            1 for item in sistemas_ativos 
+            1
+            for item in sistemas_ativos
             if any(item in opcional.lower() for opcional in opcionais)
         )
         if tem_sistemas > 0:
@@ -591,7 +604,8 @@ class UsoMatcherRefactored:
         # Verifica proteção infantil
         protecao_infantil = configs.get("protecao_infantil", [])
         tem_protecao = sum(
-            1 for item in protecao_infantil 
+            1
+            for item in protecao_infantil
             if any(item in opcional.lower() for opcional in opcionais)
         )
         if tem_protecao > 0:
@@ -602,7 +616,7 @@ class UsoMatcherRefactored:
             return (
                 score_parcial,
                 f"Segurança família: {' e '.join(fatores)}",
-                "Máxima proteção para família"
+                "Máxima proteção para família",
             )
         return 0.0, "", ""
 
@@ -611,60 +625,60 @@ class UsoMatcherRefactored:
     # Implementações stub para handlers não detalhados
     def _avaliar_espaco_carga(self, configs, carro, questionario):
         return 0.0, "", ""
-    
+
     def _avaliar_economia_estrada(self, configs, carro, questionario):
         return 0.0, "", ""
-    
+
     def _avaliar_entretenimento(self, configs, carro, questionario):
         return 0.0, "", ""
-    
+
     def _avaliar_confiabilidade_viagem(self, configs, carro, questionario):
         return 0.0, "", ""
-    
+
     def _avaliar_dirigibilidade(self, configs, carro, questionario):
         return 0.0, "", ""
-    
+
     def _avaliar_sustentabilidade_viagem(self, configs, carro, questionario):
         return 0.0, "", ""
-    
+
     def _avaliar_baixo_custo(self, configs, carro, questionario):
         return 0.0, "", ""
-    
+
     def _avaliar_espaco_geral(self, configs, carro, questionario):
         return 0.0, "", ""
-    
+
     def _avaliar_conforto_tech(self, configs, carro, questionario):
         return 0.0, "", ""
-    
+
     def _avaliar_aceitacao_plataformas(self, configs, carro, questionario):
         return 0.0, "", ""
-    
+
     def _avaliar_garantia(self, configs, carro, questionario):
         return 0.0, "", ""
-    
+
     def _avaliar_financiamento(self, configs, carro, questionario):
         return 0.0, "", ""
-    
+
     def _avaliar_sustentabilidade_geral(self, configs, carro, questionario):
         return 0.0, "", ""
-    
+
     def _avaliar_espaco_passageiros(self, configs, carro, questionario):
         return 0.0, "", ""
-    
+
     def _avaliar_praticidade_familiar(self, configs, carro, questionario):
         return 0.0, "", ""
-    
+
     def _avaliar_custo_beneficio_familia(self, configs, carro, questionario):
         return 0.0, "", ""
-    
+
     def _avaliar_confiabilidade_transporte(self, configs, carro, questionario):
         return 0.0, "", ""
-    
+
     def _avaliar_seguranca_infantil(self, configs, carro, questionario):
         return 0.0, "", ""
-    
+
     def _avaliar_eficiencia_familia(self, configs, carro, questionario):
         return 0.0, "", ""
-    
+
     def _avaliar_versatilidade(self, configs, carro, questionario):
         return 0.0, "", ""

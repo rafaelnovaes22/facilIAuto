@@ -28,7 +28,9 @@ class ConversationMemoryManager:
     - Otimizar respostas baseadas no histórico
     """
 
-    def __init__(self, database_url: str = "postgresql://user:pass@localhost/faciliauto"):
+    def __init__(
+        self, database_url: str = "postgresql://user:pass@localhost/faciliauto"
+    ):
         """
         Inicializa o gerenciador de memória
 
@@ -82,7 +84,9 @@ class ConversationMemoryManager:
             session.add(conversation)
             session.commit()
 
-            logger.info(f"📝 Nova conversa criada: {conversation.id} para carro {carro_id}")
+            logger.info(
+                f"📝 Nova conversa criada: {conversation.id} para carro {carro_id}"
+            )
             return str(conversation.id)
 
         except Exception as e:
@@ -135,7 +139,11 @@ class ConversationMemoryManager:
             session.add(message)
 
             # Atualizar contadores da conversa
-            conversation = session.query(Conversation).filter(Conversation.id == conversation_id).first()
+            conversation = (
+                session.query(Conversation)
+                .filter(Conversation.id == conversation_id)
+                .first()
+            )
 
             if conversation:
                 conversation.total_messages += 1
@@ -157,7 +165,9 @@ class ConversationMemoryManager:
         finally:
             session.close()
 
-    def _update_primary_agent(self, session: Session, conversation: Conversation, agent_used: str):
+    def _update_primary_agent(
+        self, session: Session, conversation: Conversation, agent_used: str
+    ):
         """Atualiza o agente primário da conversa baseado no uso"""
         # Contar mensagens por agente nesta conversa usando func.count
         from sqlalchemy import func
@@ -242,7 +252,11 @@ class ConversationMemoryManager:
         """
         session = self._get_session()
         try:
-            conversation = session.query(Conversation).filter(Conversation.id == conversation_id).first()
+            conversation = (
+                session.query(Conversation)
+                .filter(Conversation.id == conversation_id)
+                .first()
+            )
 
             if not conversation:
                 return None, []
@@ -260,7 +274,9 @@ class ConversationMemoryManager:
         finally:
             session.close()
 
-    def get_user_context(self, user_session_id: str, carro_id: Optional[int] = None) -> Dict[str, Any]:
+    def get_user_context(
+        self, user_session_id: str, carro_id: Optional[int] = None
+    ) -> Dict[str, Any]:
         """
         Recupera contexto acumulado do usuário
 
@@ -282,7 +298,9 @@ class ConversationMemoryManager:
             if carro_id:
                 query = query.filter(Conversation.carro_id == carro_id)
 
-            conversations = query.order_by(desc(Conversation.last_activity)).limit(10).all()
+            conversations = (
+                query.order_by(desc(Conversation.last_activity)).limit(10).all()
+            )
 
             # Agregar contexto
             user_context: Dict[str, Any] = {
@@ -316,7 +334,9 @@ class ConversationMemoryManager:
                         )
 
             # Limpar duplicatas e ordenar por frequência
-            user_context["brand_preferences"] = list(set(user_context["brand_preferences"]))
+            user_context["brand_preferences"] = list(
+                set(user_context["brand_preferences"])
+            )
 
             return user_context
 
@@ -334,7 +354,9 @@ class ConversationMemoryManager:
         else:
             return "luxury"
 
-    def get_similar_conversations(self, carro_id: int, limit: int = 5) -> List[Tuple[Conversation, List[ConversationMessage]]]:
+    def get_similar_conversations(
+        self, carro_id: int, limit: int = 5
+    ) -> List[Tuple[Conversation, List[ConversationMessage]]]:
         """
         Busca conversas similares sobre o mesmo carro
 
@@ -374,7 +396,9 @@ class ConversationMemoryManager:
         finally:
             session.close()
 
-    def enhance_state_with_memory(self, state: ChatbotState, user_session_id: Optional[str] = None) -> ChatbotState:
+    def enhance_state_with_memory(
+        self, state: ChatbotState, user_session_id: Optional[str] = None
+    ) -> ChatbotState:
         """
         Enriquece o estado do LangGraph com informações da memória
 
@@ -404,18 +428,27 @@ class ConversationMemoryManager:
                         if msg.message_type == "user":
                             frequent_questions.append(msg.content)
                         elif msg.agent_used:
-                            common_agents[msg.agent_used] = common_agents.get(msg.agent_used, 0) + 1
+                            common_agents[msg.agent_used] = (
+                                common_agents.get(msg.agent_used, 0) + 1
+                            )
 
                 # Adicionar insights ao estado
-                state["dados_utilizados"].extend(["historico_conversas", "padroes_usuario", "contexto_similar"])
+                state["dados_utilizados"].extend(
+                    ["historico_conversas", "padroes_usuario", "contexto_similar"]
+                )
 
                 # Se há padrão claro de agente preferido, ajustar confiança
                 if common_agents:
                     most_used_agent = max(common_agents.items(), key=lambda x: x[1])
                     if most_used_agent[1] >= 3:  # Usado pelo menos 3 vezes
                         # Se o agente atual é o mais usado, aumentar confiança
-                        if state["agente_selecionado"] and state["agente_selecionado"].value == most_used_agent[0]:
-                            state["confianca_agente"] = min(state["confianca_agente"] + 0.1, 1.0)
+                        if (
+                            state["agente_selecionado"]
+                            and state["agente_selecionado"].value == most_used_agent[0]
+                        ):
+                            state["confianca_agente"] = min(
+                                state["confianca_agente"] + 0.1, 1.0
+                            )
 
             return state
 
@@ -473,7 +506,9 @@ class ConversationMemoryManager:
         except Exception as e:
             logger.error(f"❌ Erro ao persistir resultado da conversa: {e}")
 
-    def _extract_and_persist_context(self, conversation_id: str, user_message: str, agent_used: str):
+    def _extract_and_persist_context(
+        self, conversation_id: str, user_message: str, agent_used: str
+    ):
         """
         Extrai contexto da mensagem do usuário e persiste
         """
@@ -547,9 +582,17 @@ class ConversationMemoryManager:
             since_date = datetime.now() - timedelta(days=days)
 
             # Contadores básicos
-            total_conversations = session.query(Conversation).filter(Conversation.started_at >= since_date).count()
+            total_conversations = (
+                session.query(Conversation)
+                .filter(Conversation.started_at >= since_date)
+                .count()
+            )
 
-            total_messages = session.query(ConversationMessage).filter(ConversationMessage.created_at >= since_date).count()
+            total_messages = (
+                session.query(ConversationMessage)
+                .filter(ConversationMessage.created_at >= since_date)
+                .count()
+            )
 
             # Agentes mais utilizados
             from sqlalchemy import func
@@ -569,7 +612,9 @@ class ConversationMemoryManager:
 
             # Carros mais consultados
             car_popularity = (
-                session.query(Conversation.carro_id, func.count(Conversation.id).label("count"))
+                session.query(
+                    Conversation.carro_id, func.count(Conversation.id).label("count")
+                )
                 .filter(Conversation.started_at >= since_date)
                 .group_by(Conversation.carro_id)
                 .order_by(desc("count"))
@@ -581,9 +626,14 @@ class ConversationMemoryManager:
                 "period_days": days,
                 "total_conversations": total_conversations,
                 "total_messages": total_messages,
-                "avg_messages_per_conversation": round(total_messages / max(total_conversations, 1), 2),
+                "avg_messages_per_conversation": round(
+                    total_messages / max(total_conversations, 1), 2
+                ),
                 "agent_usage": {row.agent_used: row.count for row in agent_usage},
-                "popular_cars": [{"carro_id": car_id, "conversations": count} for car_id, count in car_popularity],
+                "popular_cars": [
+                    {"carro_id": car_id, "conversations": count}
+                    for car_id, count in car_popularity
+                ],
                 "generated_at": datetime.now().isoformat(),
             }
 

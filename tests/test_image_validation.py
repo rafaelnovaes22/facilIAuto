@@ -67,7 +67,9 @@ class TestImageValidationService:
             mock_head.return_value.__aenter__.return_value = mock_response
             service.session = AsyncMock()
 
-            result = await service.validate_image_url("https://example.com/notfound.jpg")
+            result = await service.validate_image_url(
+                "https://example.com/notfound.jpg"
+            )
 
             assert result.is_valid is False
             assert result.error_type == ImageValidationError.NOT_FOUND
@@ -101,7 +103,9 @@ class TestImageValidationService:
             mock_head.side_effect = asyncio.TimeoutError()
             service.session = AsyncMock()
 
-            result = await service.validate_image_url("https://slow-server.com/image.jpg")
+            result = await service.validate_image_url(
+                "https://slow-server.com/image.jpg"
+            )
 
             assert result.is_valid is False
             assert result.error_type == ImageValidationError.TIMEOUT
@@ -147,8 +151,12 @@ class TestImageValidationService:
 
         results = [
             ImageValidationResult(url="url1", is_valid=True),
-            ImageValidationResult(url="url2", is_valid=False, error_type=ImageValidationError.NOT_FOUND),
-            ImageValidationResult(url="url3", is_valid=False, error_type=ImageValidationError.TIMEOUT),
+            ImageValidationResult(
+                url="url2", is_valid=False, error_type=ImageValidationError.NOT_FOUND
+            ),
+            ImageValidationResult(
+                url="url3", is_valid=False, error_type=ImageValidationError.TIMEOUT
+            ),
             ImageValidationResult(url="url4", is_valid=True, response_time_ms=100),
         ]
 
@@ -172,7 +180,9 @@ class TestUtilityFunctions:
 
         with patch("app.image_validation.ImageValidationService") as mock_service_class:
             mock_service = AsyncMock()
-            mock_service.validate_multiple_urls.return_value = [ImageValidationResult(url=urls[0], is_valid=True)]
+            mock_service.validate_multiple_urls.return_value = [
+                ImageValidationResult(url=urls[0], is_valid=True)
+            ]
             mock_service_class.return_value.__aenter__.return_value = mock_service
 
             results = await validate_image_urls(urls)
@@ -243,7 +253,11 @@ def mock_validation_results():
     """Resultados de validação de exemplo"""
     return [
         ImageValidationResult(url="url1", is_valid=True, response_time_ms=100),
-        ImageValidationResult(url="url2", is_valid=False, error_type=ImageValidationError.NOT_FOUND),
+        ImageValidationResult(
+            url="url2", is_valid=False, error_type=ImageValidationError.NOT_FOUND
+        ),
         ImageValidationResult(url="url3", is_valid=True, response_time_ms=200),
-        ImageValidationResult(url="url4", is_valid=False, error_type=ImageValidationError.TIMEOUT),
+        ImageValidationResult(
+            url="url4", is_valid=False, error_type=ImageValidationError.TIMEOUT
+        ),
     ]

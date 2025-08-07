@@ -92,7 +92,15 @@ class FacilIAutoChatbotGraph:
 
     def _decide_next_agent(
         self, state: ChatbotState
-    ) -> Literal["tecnico", "financeiro", "comparacao", "manutencao", "avaliacao", "uso_principal", "finalizer",]:
+    ) -> Literal[
+        "tecnico",
+        "financeiro",
+        "comparacao",
+        "manutencao",
+        "avaliacao",
+        "uso_principal",
+        "finalizer",
+    ]:
         """
         Função de decisão que determina qual agente usar baseado no estado
         """
@@ -123,7 +131,9 @@ class FacilIAutoChatbotGraph:
 
             # Verificar se a conversa já existe no banco
             if state["conversation_id"]:
-                conversation, messages = memory_manager.get_conversation_history(state["conversation_id"], limit=20)
+                conversation, messages = memory_manager.get_conversation_history(
+                    state["conversation_id"], limit=20
+                )
 
                 if conversation:
                     state["conversation_exists_in_db"] = True
@@ -154,13 +164,19 @@ class FacilIAutoChatbotGraph:
 
             # Enriquecer estado com contexto do usuário se disponível
             if state["user_session_id"]:
-                state = memory_manager.enhance_state_with_memory(state, state["user_session_id"])
+                state = memory_manager.enhance_state_with_memory(
+                    state, state["user_session_id"]
+                )
 
             # Buscar conversas similares para contexto adicional
-            similar_convs = memory_manager.get_similar_conversations(state["carro_id"], limit=3)
+            similar_convs = memory_manager.get_similar_conversations(
+                state["carro_id"], limit=3
+            )
             state["similar_conversations_count"] = len(similar_convs)
 
-            logger.debug(f"🧠 Memória carregada: {len(similar_convs)} conversas similares")
+            logger.debug(
+                f"🧠 Memória carregada: {len(similar_convs)} conversas similares"
+            )
 
         except Exception as e:
             logger.error(f"❌ Erro ao carregar memória: {e}")
@@ -179,7 +195,9 @@ class FacilIAutoChatbotGraph:
 
             # Calcular tempo de processamento
             if state["processing_start_time"]:
-                processing_time_ms = int((time.time() - state["processing_start_time"]) * 1000)
+                processing_time_ms = int(
+                    (time.time() - state["processing_start_time"]) * 1000
+                )
                 state["processing_time_ms"] = processing_time_ms
 
             # Persistir resultado da conversa
@@ -187,7 +205,9 @@ class FacilIAutoChatbotGraph:
                 conversation_id=state["conversation_id"],
                 user_message=state["pergunta_atual"],
                 assistant_response=state["resposta_final"],
-                agent_used=state["agente_selecionado"].value if state["agente_selecionado"] else "unknown",
+                agent_used=state["agente_selecionado"].value
+                if state["agente_selecionado"]
+                else "unknown",
                 confidence_score=state["confianca_agente"],
                 processing_time_ms=state.get("processing_time_ms") or 0,
                 data_sources=state["dados_utilizados"],
@@ -239,7 +259,9 @@ class FacilIAutoChatbotGraph:
             # Extrair resposta e metadados
             return {
                 "resposta": result["resposta_final"],
-                "agente": result["agente_selecionado"].value if result["agente_selecionado"] else "geral",
+                "agente": result["agente_selecionado"].value
+                if result["agente_selecionado"]
+                else "geral",
                 "conversation_id": result["conversation_id"],
                 "confianca": result["confianca_agente"],
                 "sugestoes_followup": result["sugestoes_followup"],
@@ -376,13 +398,17 @@ class FacilIAutoChatbotGraph:
         except Exception as e:
             return {"error": f"Erro ao obter estatísticas: {str(e)}", "status": "error"}
 
-    def executar_debug(self, carro_id: int, carro_data: Dict[str, Any], pergunta: str) -> Dict[str, Any]:
+    def executar_debug(
+        self, carro_id: int, carro_data: Dict[str, Any], pergunta: str
+    ) -> Dict[str, Any]:
         """
         Executa o grafo em modo debug para análise de fluxo
         """
         try:
             # Criar estado inicial
-            initial_state = criar_estado_inicial(carro_id=carro_id, carro_data=carro_data, pergunta=pergunta)
+            initial_state = criar_estado_inicial(
+                carro_id=carro_id, carro_data=carro_data, pergunta=pergunta
+            )
 
             # Executar com streaming para capturar cada etapa
             debug_info = {

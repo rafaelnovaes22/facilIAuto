@@ -96,7 +96,9 @@ def test_conversation_creation(memory_manager):
         print_step(f"Conversa criada com ID: {conversation_id}", "ok")
 
         print_step("Verificando conversa criada...")
-        conversation, messages = memory_manager.get_conversation_history(conversation_id)
+        conversation, messages = memory_manager.get_conversation_history(
+            conversation_id
+        )
 
         if conversation:
             print_step(f"Conversa encontrada: carro_id={conversation.carro_id}", "ok")
@@ -161,7 +163,9 @@ def test_message_persistence(memory_manager, conversation_id):
             print_step(f"Mensagem adicionada com ID: {message_id}", "ok")
 
         print_step("Verificando mensagens persistidas...")
-        conversation, messages = memory_manager.get_conversation_history(conversation_id)
+        conversation, messages = memory_manager.get_conversation_history(
+            conversation_id
+        )
 
         print_step(f"Total de mensagens recuperadas: {len(messages)}", "ok")
         print_step(f"Agente primário da conversa: {conversation.primary_agent}", "ok")
@@ -216,9 +220,15 @@ def test_user_context(memory_manager):
 
         user_context = memory_manager.get_user_context("test_user_123")
 
-        print_step(f"Conversas recentes: {user_context.get('recent_conversations', 0)}", "ok")
-        print_step(f"Agentes preferidos: {user_context.get('preferred_agents', {})}", "ok")
-        print_step(f"Marcas de interesse: {user_context.get('brand_preferences', [])}", "ok")
+        print_step(
+            f"Conversas recentes: {user_context.get('recent_conversations', 0)}", "ok"
+        )
+        print_step(
+            f"Agentes preferidos: {user_context.get('preferred_agents', {})}", "ok"
+        )
+        print_step(
+            f"Marcas de interesse: {user_context.get('brand_preferences', [])}", "ok"
+        )
 
         return True
 
@@ -283,7 +293,9 @@ def test_analytics_system(memory_manager):
             f"Total de conversas (7 dias): {analytics.get('total_conversations', 0)}",
             "ok",
         )
-        print_step(f"Total de mensagens (7 dias): {analytics.get('total_messages', 0)}", "ok")
+        print_step(
+            f"Total de mensagens (7 dias): {analytics.get('total_messages', 0)}", "ok"
+        )
         print_step(
             f"Média de mensagens por conversa: {analytics.get('avg_messages_per_conversation', 0)}",
             "ok",
@@ -360,10 +372,14 @@ def run_comprehensive_memory_test():
 
     # 4. Teste de persistência de mensagens
     if conversation_id:
-        test_results["message_persistence"] = test_message_persistence(memory_manager, conversation_id)
+        test_results["message_persistence"] = test_message_persistence(
+            memory_manager, conversation_id
+        )
 
         # 5. Teste de extração de contexto
-        test_results["context_extraction"] = test_context_extraction(memory_manager, conversation_id)
+        test_results["context_extraction"] = test_context_extraction(
+            memory_manager, conversation_id
+        )
 
     # 6. Teste de contexto do usuário
     test_results["user_context"] = test_user_context(memory_manager)

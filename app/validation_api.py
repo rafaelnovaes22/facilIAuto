@@ -56,7 +56,9 @@ async def validate_preferences(request: PreferenceValidationRequest):
         )
 
         # Processar com sistema avançado
-        result = enhanced_brand_processor.process_and_validate_preferences(temp_questionario)
+        result = enhanced_brand_processor.process_and_validate_preferences(
+            temp_questionario
+        )
 
         # Gerar sugestões de melhoria
         suggestions = enhanced_brand_processor.generate_improvement_suggestions(result)
@@ -108,7 +110,9 @@ async def get_model_autocomplete(brand: str, query: str = ""):
         # Filtrar por marca se fornecida
         if brand and brand != "sem_preferencia":
             brand_models = brand_matcher.popular_models.get(brand.upper(), [])
-            filtered_suggestions = [s for s in suggestions if s.lower() in [m.lower() for m in brand_models]]
+            filtered_suggestions = [
+                s for s in suggestions if s.lower() in [m.lower() for m in brand_models]
+            ]
             return {"suggestions": filtered_suggestions}
 
         return {"suggestions": suggestions}
