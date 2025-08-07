@@ -102,7 +102,9 @@ class EnhancedBrandProcessor:
                 confidence_score += 0.3
 
             # Verificar conflitos entre marca principal e alternativas
-            marca_principal: str = str(marca_result.get("marca_normalizada", "")).upper()
+            marca_principal: str = str(
+                marca_result.get("marca_normalizada", "")
+            ).upper()
             for marca_alt_dict in marcas_alternativas_processadas:
                 if marca_alt_dict["normalizada"].upper() == marca_principal:
                     validation_issues.append(
