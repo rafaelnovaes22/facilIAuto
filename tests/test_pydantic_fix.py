@@ -57,11 +57,11 @@ def test_pydantic_fix():
         assert carro.fotos == [], f"Expected empty list, got {carro.fotos}"
 
         print("✅ All None values correctly converted to empty lists!")
-        return True
+        assert True
 
     except Exception as e:
         print(f"❌ Error creating CarroRecomendacao: {e}")
-        return False
+        assert False, f"Error creating CarroRecomendacao: {e}"
 
 
 def test_normal_data():
@@ -98,11 +98,11 @@ def test_normal_data():
         assert len(carro.fotos) == 2
 
         print("✅ Normal data preserved correctly!")
-        return True
+        assert True
 
     except Exception as e:
         print(f"❌ Error with normal data: {e}")
-        return False
+        assert False, f"Error with normal data: {e}"
 
 
 if __name__ == "__main__":

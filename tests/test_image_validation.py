@@ -32,9 +32,9 @@ class TestImageValidationService:
             "content-length": "12345",
         }
 
-        with patch("aiohttp.ClientSession.head") as mock_head:
-            mock_head.return_value.__aenter__.return_value = mock_response
-            service.session = AsyncMock()
+        with patch.object(service, 'session') as mock_session:
+            mock_session.head.return_value.__aenter__.return_value = mock_response
+            mock_session.head.return_value.__aexit__.return_value = None
 
             result = await service.validate_image_url("https://example.com/image.jpg")
 
@@ -63,9 +63,9 @@ class TestImageValidationService:
         mock_response = AsyncMock()
         mock_response.status = 404
 
-        with patch("aiohttp.ClientSession.head") as mock_head:
-            mock_head.return_value.__aenter__.return_value = mock_response
-            service.session = AsyncMock()
+        with patch.object(service, 'session') as mock_session:
+            mock_session.head.return_value.__aenter__.return_value = mock_response
+            mock_session.head.return_value.__aexit__.return_value = None
 
             result = await service.validate_image_url(
                 "https://example.com/notfound.jpg"
@@ -84,9 +84,9 @@ class TestImageValidationService:
         mock_response.status = 200
         mock_response.headers = {"content-type": "text/html", "content-length": "1000"}
 
-        with patch("aiohttp.ClientSession.head") as mock_head:
-            mock_head.return_value.__aenter__.return_value = mock_response
-            service.session = AsyncMock()
+        with patch.object(service, 'session') as mock_session:
+            mock_session.head.return_value.__aenter__.return_value = mock_response
+            mock_session.head.return_value.__aexit__.return_value = None
 
             result = await service.validate_image_url("https://example.com/page.html")
 
@@ -99,9 +99,8 @@ class TestImageValidationService:
         """Testa tratamento de timeout"""
         service = ImageValidationService(timeout=1)
 
-        with patch("aiohttp.ClientSession.head") as mock_head:
-            mock_head.side_effect = asyncio.TimeoutError()
-            service.session = AsyncMock()
+        with patch.object(service, 'session') as mock_session:
+            mock_session.head.side_effect = asyncio.TimeoutError()
 
             result = await service.validate_image_url(
                 "https://slow-server.com/image.jpg"

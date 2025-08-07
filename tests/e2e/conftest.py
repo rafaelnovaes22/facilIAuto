@@ -12,12 +12,7 @@ import requests
 from playwright.async_api import async_playwright
 
 
-@pytest.fixture(scope="session")
-def event_loop():
-    """Event loop para testes async"""
-    loop = asyncio.get_event_loop_policy().new_event_loop()
-    yield loop
-    loop.close()
+# Event loop fixture removido - usando o do conftest.py principal
 
 
 @pytest.fixture(scope="session")
@@ -93,16 +88,10 @@ def app_server():
 
 
 @pytest.fixture(autouse=True)
-async def setup_test_environment(page):
+def setup_test_environment():
     """Setup automático para cada teste"""
-    # Configurações globais para todos os testes
-    await page.set_extra_http_headers({"Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8"})
-
-    # Interceptar console logs para debugging
-    page.on("console", lambda msg: print(f"🖥️ Console: {msg.text}"))
-
-    # Interceptar erros de página
-    page.on("pageerror", lambda error: print(f"❌ Page Error: {error}"))
+    # Configurações globais para todos os testes - versão não-async
+    pass
 
 
 @pytest.fixture

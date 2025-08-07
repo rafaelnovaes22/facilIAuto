@@ -24,7 +24,7 @@ def test_carousel_functionality():
     for js_file in js_files:
         if not os.path.exists(js_file):
             print(f"❌ Arquivo não encontrado: {js_file}")
-            return False
+            assert False, f"Arquivo não encontrado: {js_file}"
         else:
             print(f"✅ Arquivo encontrado: {js_file}")
 
@@ -63,10 +63,10 @@ def test_carousel_functionality():
 
     except KeyboardInterrupt:
         print("\n🛑 Servidor parado pelo usuário")
-        return True
+        assert True
     except Exception as e:
         print(f"❌ Erro ao iniciar servidor: {e}")
-        return False
+        assert False, f"Erro ao iniciar servidor: {e}"
 
 
 def check_carousel_files():

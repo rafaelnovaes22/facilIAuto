@@ -15,12 +15,7 @@ from app.api import app
 from app.memory_manager import get_memory_manager
 
 
-@pytest.fixture(scope="session")
-def event_loop():
-    """Cria loop de eventos para testes assíncronos"""
-    loop = asyncio.get_event_loop_policy().new_event_loop()
-    yield loop
-    loop.close()
+# Event loop fixture removido - usando o do conftest.py principal
 
 
 @pytest.fixture(scope="session")

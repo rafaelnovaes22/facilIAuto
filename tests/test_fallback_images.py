@@ -22,7 +22,7 @@ class TestFallbackImageService:
 
         fallbacks = service.get_fallback_images("Toyota", "Corolla", "sedan")
 
-        assert len(fallbacks) == 3
+        assert len(fallbacks) == 5
         assert all(isinstance(url, str) for url in fallbacks)
         assert all(url.startswith("http") for url in fallbacks)
 
@@ -32,7 +32,7 @@ class TestFallbackImageService:
 
         fallbacks = service.get_fallback_images("Honda", "Civic")
 
-        assert len(fallbacks) == 3
+        assert len(fallbacks) == 5
         assert all(isinstance(url, str) for url in fallbacks)
 
     def test_get_category_fallback_images(self):
@@ -188,7 +188,7 @@ class TestUtilityFunctions:
         """Testa função utilitária get_fallback_images"""
         fallbacks = get_fallback_images("Toyota", "Corolla", "sedan")
 
-        assert len(fallbacks) == 3
+        assert len(fallbacks) == 5
         assert all(isinstance(url, str) for url in fallbacks)
 
     def test_get_best_fallback_function(self):

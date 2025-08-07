@@ -40,11 +40,11 @@ def test_memory_imports():
         print_step("Importando API de memória...")
 
         print_step("Todas as importações realizadas com sucesso", "ok")
-        return True
+        assert True
     except Exception as e:
         print_step(f"Erro nas importações: {e}", "error")
         traceback.print_exc()
-        return False
+        assert False, f"Erro nas importações: {e}"
 
 
 def test_memory_manager_initialization():

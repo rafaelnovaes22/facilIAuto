@@ -36,11 +36,11 @@ def test_imports():
         print_step("Importando módulos LangGraph...")
 
         print_step("Importações realizadas com sucesso", "ok")
-        return True
+        assert True
     except Exception as e:
         print_step(f"Erro nas importações: {e}", "error")
         traceback.print_exc()
-        return False
+        assert False, f"Erro nas importações: {e}"
 
 
 def test_graph_initialization():
