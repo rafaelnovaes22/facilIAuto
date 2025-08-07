@@ -140,7 +140,7 @@ class IntegratedMLCollector:
                 potencia_desejada="media",
                 prioridade="equilibrio",
             )
-            score = matcher.calcular_score_uso(carro, questionario)
+            score = matcher.calcular_score_uso_principal(carro, questionario)
             return score
         except Exception:
             return 0.0
@@ -303,15 +303,13 @@ class SmartMVPModel:
         features.append(
             questionario.orcamento_max / 200000 if questionario.orcamento_max else 0.5
         )
-        features.append(1 if questionario.primeiro_veiculo else 0)
+        features.append(0)  # primeiro_veiculo não existe mais - usando valor padrão
         features.append(
             questionario.pessoas_transportar / 7
             if questionario.pessoas_transportar
             else 0.5
         )
-        features.append(
-            questionario.km_mensal / 3000 if questionario.km_mensal else 0.5
-        )
+        features.append(0.5)  # km_mensal não existe mais - usando valor padrão
 
         # 8. Opcionais importantes (aproveitar análise existente)
         opcionais_text = " ".join(carro.get("opcionais", [])).lower()
@@ -346,9 +344,9 @@ class SmartMVPModel:
             return False
 
         # Preparar dados
-        X: List[Any] = []
-        y: List[Any] = []
-        weights: List[float] = []  # Pesos baseados em confiança
+        X_list: List[Any] = []
+        y_list: List[Any] = []
+        weights_list: List[float] = []  # Pesos baseados em confiança
 
         for data in all_data:
             try:
@@ -360,7 +358,7 @@ class SmartMVPModel:
                     data["carro_features"], questionario, data.get("conversation_id")
                 )
 
-                X.append(features)
+                X_list.append(features)
 
                 # Target: combinação inteligente
                 rule_score = data.get("calculated_score", 0.5)
@@ -374,20 +372,20 @@ class SmartMVPModel:
                 # Score final ponderado
                 final_score = 0.4 * rule_score + 0.6 * feedback_score
 
-                y.append(final_score)
-                weights.append(weight)
+                y_list.append(final_score)
+                weights_list.append(weight)
 
             except Exception as e:
                 logger.error(f"Erro ao processar amostra: {e}")
                 continue
 
-        if len(X) < min_samples:
+        if len(X_list) < min_samples:
             return False
 
         # Converter para arrays
-        X = np.array(X)
-        y = np.array(y)
-        weights = np.array(weights)
+        X = np.array(X_list)
+        y = np.array(y_list)
+        weights = np.array(weights_list)
 
         # Normalizar features
         X = self.scaler.fit_transform(X)

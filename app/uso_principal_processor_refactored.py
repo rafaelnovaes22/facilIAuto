@@ -3,7 +3,7 @@ Processador de Uso Principal - Versão Refatorada
 Avalia compatibilidade de veículos com diferentes perfis de uso
 """
 
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from app.models import CarroRecomendacao, QuestionarioBusca
 
@@ -63,7 +63,7 @@ class UsoMatcherRefactored:
         """Inicializa o matcher com mapeamento de handlers"""
         self._criterio_handlers = self._build_criterio_handlers()
 
-    def _build_criterio_handlers(self) -> Dict[str, callable]:
+    def _build_criterio_handlers(self) -> Dict[str, Callable[..., Any]]:
         """Constrói o mapeamento de critério para função handler"""
         return {
             "economia_combustivel_urbana": self._avaliar_economia_urbana,

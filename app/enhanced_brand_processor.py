@@ -102,13 +102,13 @@ class EnhancedBrandProcessor:
                 confidence_score += 0.3
 
             # Verificar conflitos entre marca principal e alternativas
-            marca_principal = str(marca_result.get("marca_normalizada", "")).upper()
-            for marca_alt in marcas_alternativas_processadas:
-                if marca_alt["normalizada"].upper() == marca_principal:
+            marca_principal: str = str(marca_result.get("marca_normalizada", "")).upper()
+            for marca_alt_dict in marcas_alternativas_processadas:
+                if marca_alt_dict["normalizada"].upper() == marca_principal:
                     validation_issues.append(
                         {
                             "type": "conflicting_preferences",
-                            "message": f"Marca '{marca_alt['original']}' está duplicada entre principal e alternativas",
+                            "message": f"Marca '{marca_alt_dict['original']}' está duplicada entre principal e alternativas",
                         }
                     )
 
