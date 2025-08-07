@@ -267,10 +267,12 @@ async def health_check():
         }
 
 
+from typing import Any, Dict
+
+from pydantic import BaseModel
+
 # ==================== NOVOS ENDPOINTS ML ====================
 from app.ml_mvp_processor import get_hybrid_processor
-from pydantic import BaseModel
-from typing import Dict, Any
 
 
 class MLFeedbackRequest(BaseModel):

@@ -3,13 +3,14 @@
 Script para testar a validação das imagens atuais no banco de dados
 """
 
-from app.image_validation import ImageValidationService, validate_image_urls_sync
-from app.database import get_carros
-from app.config import test_connection
 import asyncio
 import os
 import sys
 from typing import Dict, List
+
+from app.config import test_connection
+from app.database import get_carros
+from app.image_validation import ImageValidationService, validate_image_urls_sync
 
 # Adicionar o diretório do projeto ao path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))

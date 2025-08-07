@@ -4,23 +4,25 @@ Aproveita: Memory Manager, LangGraph, Uso Principal, Busca Inteligente
 """
 
 import json
+import logging
 import pickle
-import numpy as np
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
+
+import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import StandardScaler
-import logging
 
-# Aproveitar TUDO que já temos
-from app.uso_principal_processor import UsoMatcher
+from app.brand_matcher import AdvancedBrandMatcher
+from app.busca_inteligente import calcular_scores_compatibilidade
+from app.enhanced_brand_processor import EnhancedBrandProcessor
 from app.memory_manager import ConversationMemoryManager
 from app.memory_ml_integration import get_memory_ml_extension
 from app.models import CarroRecomendacao, QuestionarioBusca
-from app.busca_inteligente import calcular_scores_compatibilidade
-from app.enhanced_brand_processor import EnhancedBrandProcessor
-from app.brand_matcher import AdvancedBrandMatcher
+
+# Aproveitar TUDO que já temos
+from app.uso_principal_processor import UsoMatcher
 
 logger = logging.getLogger(__name__)
 

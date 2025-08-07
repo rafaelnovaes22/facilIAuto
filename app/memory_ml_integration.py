@@ -5,11 +5,12 @@ Extensão do Memory Manager para integração com ML
 import json
 import logging
 from datetime import datetime, timedelta
-from typing import Dict, Any, List, Optional
+from typing import Any, Dict, List, Optional
+
 import numpy as np
 
-from app.memory_models import ConversationContext
 from app.memory_manager import get_memory_manager
+from app.memory_models import ConversationContext
 
 logger = logging.getLogger(__name__)
 

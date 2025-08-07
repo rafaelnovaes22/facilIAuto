@@ -3,13 +3,12 @@
 Script para testar o sistema de fallback de imagens
 """
 
-from app.image_validation import validate_image_urls_sync
-from app.fallback_images import (
-    FallbackImageService,
-)
-from app.database import get_carros
 import os
 import sys
+
+from app.database import get_carros
+from app.fallback_images import FallbackImageService
+from app.image_validation import validate_image_urls_sync
 
 # Adicionar o diretório do projeto ao path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))

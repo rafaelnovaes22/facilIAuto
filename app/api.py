@@ -1,7 +1,7 @@
-from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 
 from app.busca_inteligente import processar_busca_inteligente
 from app.chatbot_api import router as chatbot_router
