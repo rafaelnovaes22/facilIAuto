@@ -1251,6 +1251,12 @@ async def buscar_carros(questionario: QuestionarioBusca):
         )
 
 
+@app.post("/buscar", response_model=RespostaBusca)
+async def buscar_carros_alias(questionario: QuestionarioBusca):
+    """Alias compatível com testes para o endpoint principal de busca."""
+    return await buscar_carros(questionario)
+
+
 @app.get("/carros")
 async def listar_carros():
     """Lista todos os carros disponíveis"""
@@ -1824,10 +1830,26 @@ async def buscar_carros_enhanced_endpoint(questionario: QuestionarioBusca):
         )
 
 
+@app.post("/buscar-enhanced")
+async def buscar_carros_enhanced_alias(questionario: QuestionarioBusca):
+    """Alias compatível com testes para o endpoint enhanced."""
+    try:
+        return await buscar_carros_enhanced(questionario)
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Erro ao processar busca: {str(e)}"
+        )
+
+
 @app.get("/health")
 async def health_check():
     """Endpoint de health check"""
-    return {"status": "healthy", "message": "FacilIAuto API está funcionando!"}
+    from datetime import datetime
+    return {
+        "status": "healthy", 
+        "message": "FacilIAuto API está funcionando!",
+        "timestamp": datetime.now().isoformat()
+    }
 
 
 if __name__ == "__main__":
