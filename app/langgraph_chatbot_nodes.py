@@ -78,6 +78,8 @@ class ChatbotKeywords:
         "fiador",
         "score",
         "serasa",
+        "como financiar",
+        "como comprar",
         "spc",
         "prestação",
         "prestacao",
@@ -113,6 +115,18 @@ class ChatbotKeywords:
         "opcao",
         "duvida",
         "dúvida",
+        "onix",
+        "civic",
+        "corolla",
+        "cruze",
+        "golf",
+        "polo",
+        "argo",
+        "hb20",
+        "kwid",
+        "mobi",
+        "que o",
+        "do que",
     ]
 
     MANUTENCAO = [
@@ -141,6 +155,11 @@ class ChatbotKeywords:
         "pneu",
         "freio",
         "embreagem",
+        "quanto custa",
+        "gastos",
+        "despesa",
+        "manter",
+        "cuidados",
     ]
 
     AVALIACAO = [
@@ -159,6 +178,15 @@ class ChatbotKeywords:
         "fipe",
         "tabela",
         "depreciação",
+        "vale",
+        "valer",
+        "pena",
+        "vale a pena",
+        "bom negócio",
+        "negócio",
+        "negocio",
+        "caro",
+        "barato",
         "depreciacao",
         "investimento",
         "custo",
@@ -205,30 +233,48 @@ def router_node(state: ChatbotState) -> ChatbotState:
 
     # Agente Técnico
     matches_tecnico = sum(1 for keyword in ChatbotKeywords.TECNICO if keyword in pergunta)
-    confidencias[AgentType.TECNICO] = min(matches_tecnico / len(ChatbotKeywords.TECNICO) * 3, 1.0)
+    if matches_tecnico > 0:
+        confidencias[AgentType.TECNICO] = min(0.3 + (matches_tecnico * 0.35), 1.0)
+    else:
+        confidencias[AgentType.TECNICO] = 0.0
 
     # Agente Financeiro
     matches_financeiro = sum(1 for keyword in ChatbotKeywords.FINANCEIRO if keyword in pergunta)
-    confidencias[AgentType.FINANCEIRO] = min(matches_financeiro / len(ChatbotKeywords.FINANCEIRO) * 3, 1.0)
+    if matches_financeiro > 0:
+        confidencias[AgentType.FINANCEIRO] = min(0.3 + (matches_financeiro * 0.35), 1.0)
+    else:
+        confidencias[AgentType.FINANCEIRO] = 0.0
 
     # Agente Comparação
     matches_comparacao = sum(1 for keyword in ChatbotKeywords.COMPARACAO if keyword in pergunta)
-    confidencias[AgentType.COMPARACAO] = min(matches_comparacao / len(ChatbotKeywords.COMPARACAO) * 3, 1.0)
+    if matches_comparacao > 0:
+        confidencias[AgentType.COMPARACAO] = min(0.3 + (matches_comparacao * 0.35), 1.0)
+    else:
+        confidencias[AgentType.COMPARACAO] = 0.0
 
     # Agente Manutenção
     matches_manutencao = sum(1 for keyword in ChatbotKeywords.MANUTENCAO if keyword in pergunta)
-    confidencias[AgentType.MANUTENCAO] = min(matches_manutencao / len(ChatbotKeywords.MANUTENCAO) * 3, 1.0)
+    if matches_manutencao > 0:
+        confidencias[AgentType.MANUTENCAO] = min(0.3 + (matches_manutencao * 0.35), 1.0)
+    else:
+        confidencias[AgentType.MANUTENCAO] = 0.0
 
     # Agente Avaliação
     matches_avaliacao = sum(1 for keyword in ChatbotKeywords.AVALIACAO if keyword in pergunta)
-    confidencias[AgentType.AVALIACAO] = min(matches_avaliacao / len(ChatbotKeywords.AVALIACAO) * 3, 1.0)
+    if matches_avaliacao > 0:
+        confidencias[AgentType.AVALIACAO] = min(0.3 + (matches_avaliacao * 0.35), 1.0)
+    else:
+        confidencias[AgentType.AVALIACAO] = 0.0
 
     # Agente Uso Principal - novo agente especializado
     matches_uso = sum(1 for keyword in ChatbotKeywords.USO_PRINCIPAL if keyword in pergunta)
     # Boost para perguntas específicas sobre adequação de uso
     if any(phrase in pergunta for phrase in ["adequado para", "serve para", "é bom para", "recomendado para"]):
         matches_uso += 2
-    confidencias[AgentType.USO_PRINCIPAL] = min(matches_uso / len(ChatbotKeywords.USO_PRINCIPAL) * 3, 1.0)
+    if matches_uso > 0:
+        confidencias[AgentType.USO_PRINCIPAL] = min(0.3 + (matches_uso * 0.3), 1.0)
+    else:
+        confidencias[AgentType.USO_PRINCIPAL] = 0.0
 
     # Encontrar o agente com maior confiança
     melhor_agente = max(confidencias.items(), key=lambda x: x[1])
@@ -394,13 +440,16 @@ def finalizer_node(state: ChatbotState) -> ChatbotState:
     """
     Nó finalizador para respostas genéricas e formatação final
     """
-    state["carro_data"]
+    carro = state["carro_data"]
 
     if not state["resposta_final"]:
         # Gerar resposta genérica
-        resposta = """🤖 **Assistente Geral**
+        marca = carro.get('marca', 'Marca')
+        modelo = carro.get('modelo', 'Modelo')
+        
+        resposta = f"""🤖 **Assistente Geral**
 
-Oi! Sou especialista em informações sobre o **{carro.get('marca')} {carro.get('modelo')}**.
+Oi! Sou especialista em informações sobre o **{marca} {modelo}**.
 
 Posso te ajudar com:
 
@@ -539,14 +588,17 @@ def _responder_geral_tecnico(carro: Dict[str, Any]) -> str:
 
 def _simular_financiamento(carro: Dict[str, Any]) -> str:
     preco = carro.get("preco_promocional", carro.get("preco", 0))
+    if preco is None:
+        preco = 0
 
     # Simulações com diferentes entradas e prazos
     sim_0_48_prestacao = preco * 0.024  # 2.4% estimado para 48x sem entrada
     sim_30_48_valor_financiado = preco * 0.7
     sim_30_48_prestacao = sim_30_48_valor_financiado * 0.0215  # 2.15% para 48x com 30%
     sim_30_36_prestacao = sim_30_48_valor_financiado * 0.0275  # 2.75% para 36x com 30%
+    entrada_30 = preco * 0.3
 
-    return """💰 **Simulação de Financiamento**
+    return f"""💰 **Simulação de Financiamento**
 
 **Valor do veículo:** R$ {preco:,.2f}
 
@@ -557,11 +609,11 @@ def _simular_financiamento(carro: Dict[str, Any]) -> str:
 • 48x de R$ {sim_0_48_prestacao:,.0f}
 
 **2️⃣ Entrada 30% (48 meses)**
-• Entrada: R$ {preco * 0.3:,.0f}
+• Entrada: R$ {entrada_30:,.0f}
 • 48x de R$ {sim_30_48_prestacao:,.0f}
 
 **3️⃣ Entrada 30% (36 meses)**
-• Entrada: R$ {preco * 0.3:,.0f}
+• Entrada: R$ {entrada_30:,.0f}
 • 36x de R$ {sim_30_36_prestacao:,.0f}
 
 ⚠️ **Importante:**
@@ -571,7 +623,7 @@ def _simular_financiamento(carro: Dict[str, Any]) -> str:
 
 
 def _documentacao_necessaria() -> str:
-    return """📋 **Documentação para Financiamento**
+    return """📋 **Documentação Necessária para Financiamento**
 
 **👤 Documentos Pessoais:**
 • RG e CPF (originais + cópias)
@@ -594,9 +646,11 @@ def _documentacao_necessaria() -> str:
 
 def _explicar_consorcio(carro: Dict[str, Any]) -> str:
     preco = carro.get("preco_promocional", carro.get("preco", 0))
-    prestacao_consorcio = preco / 100  # 100 meses típico
+    if preco is None:
+        preco = 0
+    prestacao_consorcio = preco / 100 if preco > 0 else 0  # 100 meses típico
 
-    return """🎯 **Consórcio de Veículos**
+    return f"""🎯 **Consórcio de Veículos**
 
 **Como funciona:**
 • Grupo de pessoas compra o mesmo bem
@@ -620,9 +674,12 @@ def _explicar_consorcio(carro: Dict[str, Any]) -> str:
 
 
 def _explicar_leasing(carro: Dict[str, Any]) -> str:
-    carro.get("preco_promocional", carro.get("preco", 0))
+    preco = carro.get("preco_promocional", carro.get("preco", 0))
+    if preco is None:
+        preco = 0
+    prestacao_leasing = preco * 0.03 if preco > 0 else 0
 
-    return """🏢 **Leasing Operacional**
+    return f"""🏢 **Leasing Operacional**
 
 **O que é:**
 • Aluguel de longo prazo (2-5 anos)
@@ -631,7 +688,7 @@ def _explicar_leasing(carro: Dict[str, Any]) -> str:
 
 **Características:**
 • Valor do veículo: R$ {preco:,.2f}
-• Prestação estimada: R$ {preco * 0.03:,.0f}/mês*
+• Prestação estimada: R$ {prestacao_leasing:,.0f}/mês*
 • Incluso: seguro, manutenção, documentação
 
 **✅ Vantagens:**
@@ -672,8 +729,12 @@ def _orientacoes_credito() -> str:
 
 def _opcoes_financiamento_geral(carro: Dict[str, Any]) -> str:
     preco = carro.get("preco_promocional", carro.get("preco", 0))
+    if preco is None:
+        preco = 0
+    marca = carro.get('marca', '')
+    modelo = carro.get('modelo', '')
 
-    return f"""💰 **Opções de Financiamento - {carro.get('marca')} {carro.get('modelo')}**
+    return f"""💰 **Opções de Financiamento - {marca} {modelo}**
 
 **Valor:** R$ {preco:,.2f}
 

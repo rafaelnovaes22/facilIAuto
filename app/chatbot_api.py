@@ -249,3 +249,158 @@ async def health_check():
             "timestamp": "2024-01-01T00:00:00",
             "action": "Verificar logs do servidor",
         }
+
+
+# ==================== NOVOS ENDPOINTS ML ====================
+from app.ml_mvp_processor import get_hybrid_processor
+from pydantic import BaseModel
+from typing import Dict, Any
+
+
+class MLFeedbackRequest(BaseModel):
+    """Modelo para feedback do usuário"""
+    carro_id: str
+    action: str  # 'view', 'like', 'contact', 'ignore'
+    conversation_id: Optional[str] = None
+    session_id: Optional[str] = None
+
+
+class MLRecommendRequest(BaseModel):
+    """Modelo para requisição de recomendação com ML"""
+    carro: Dict[str, Any]
+    questionario: Dict[str, Any]
+    conversation_id: Optional[str] = None
+    session_id: Optional[str] = None
+
+
+@router.post("/ml/recommend")
+async def recommend_with_ml(request: MLRecommendRequest):
+    """
+    Endpoint de recomendação com ML híbrido integrado
+    Aproveita toda infraestrutura existente
+    """
+    try:
+        processor = get_hybrid_processor()
+        
+        # Converter questionário para modelo
+        from app.models import QuestionarioBusca
+        questionario = QuestionarioBusca(**request.questionario)
+        
+        # Processar com sistema híbrido
+        resultado = processor.processar_recomendacao_completa(
+            carro=request.carro,
+            questionario=questionario,
+            conversation_id=request.conversation_id,
+            user_session_id=request.session_id,
+            collect_data=True
+        )
+        
+        logger.info(f"[ML] Recomendação processada - Score: {resultado['score']:.2f}, Method: {resultado['method']}")
+        
+        return resultado
+        
+    except Exception as e:
+        logger.error(f"[ML] Erro na recomendação: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/ml/feedback")
+async def register_ml_feedback(feedback: MLFeedbackRequest):
+    """
+    Registra feedback do usuário para treinamento ML
+    """
+    try:
+        processor = get_hybrid_processor()
+        
+        # Buscar dados do carro
+        from app.database import get_carro_by_id
+        carro = get_carro_by_id(feedback.carro_id)
+        
+        if not carro:
+            raise HTTPException(status_code=404, detail="Carro não encontrado")
+        
+        # Coletar feedback
+        processor.collector.collect_from_conversation(
+            conversation_id=feedback.conversation_id or f"feedback_{feedback.carro_id}",
+            carro=carro,
+            score=0,  # Será calculado
+            user_action=feedback.action
+        )
+        
+        logger.info(f"[ML] Feedback registrado - Carro: {feedback.carro_id}, Action: {feedback.action}")
+        
+        return {
+            "status": "success",
+            "message": "Feedback registrado com sucesso",
+            "action": feedback.action
+        }
+        
+    except Exception as e:
+        logger.error(f"[ML] Erro ao registrar feedback: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/ml/stats")
+async def get_ml_statistics():
+    """
+    Retorna estatísticas completas do sistema ML
+    """
+    try:
+        processor = get_hybrid_processor()
+        stats = processor.get_comprehensive_stats()
+        
+        return {
+            "status": "success",
+            "statistics": stats,
+            "recommendation": {
+                "train_now": stats["system_status"]["ready_to_train"],
+                "samples_needed": stats["next_training"]["samples_needed"]
+            }
+        }
+        
+    except Exception as e:
+        logger.error(f"[ML] Erro ao obter estatísticas: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/ml/train")
+async def trigger_ml_training(api_key: str = None):
+    """
+    Trigger manual para treinar modelo ML
+    """
+    # Validação básica de segurança
+    if api_key != "faciliauto-ml-2024":
+        raise HTTPException(status_code=403, detail="API key inválida")
+    
+    try:
+        processor = get_hybrid_processor()
+        
+        # Verificar se há dados suficientes
+        stats = processor.get_comprehensive_stats()
+        if not stats["system_status"]["ready_to_train"]:
+            return {
+                "status": "insufficient_data",
+                "message": f"Precisa de mais {stats['next_training']['samples_needed']} amostras",
+                "current_samples": stats["system_status"]["total_training_samples"]
+            }
+        
+        # Treinar modelo
+        success = processor.treinar_modelo_com_feedback()
+        
+        if success:
+            logger.info("[ML] ✅ Modelo treinado com sucesso!")
+            return {
+                "status": "success",
+                "message": "Modelo treinado com sucesso",
+                "new_stats": processor.get_comprehensive_stats()
+            }
+        else:
+            return {
+                "status": "failed",
+                "message": "Falha no treinamento",
+                "stats": stats
+            }
+            
+    except Exception as e:
+        logger.error(f"[ML] Erro ao treinar modelo: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
