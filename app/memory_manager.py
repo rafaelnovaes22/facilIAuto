@@ -146,8 +146,8 @@ class ConversationMemoryManager:
             )
 
             if conversation:
-                conversation.total_messages += 1
-                conversation.last_activity = datetime.now()
+                conversation.total_messages += 1  # type: ignore
+                conversation.last_activity = datetime.now()  # type: ignore
 
                 # Atualizar agente primário se for mensagem do assistente
                 if message_type == "assistant" and agent_used:
@@ -426,10 +426,11 @@ class ConversationMemoryManager:
                 for conv, messages in similar_convs:
                     for msg in messages:
                         if msg.message_type == "user":
-                            frequent_questions.append(msg.content)
+                            frequent_questions.append(str(msg.content))
                         elif msg.agent_used:
-                            common_agents[msg.agent_used] = (
-                                common_agents.get(msg.agent_used, 0) + 1
+                            agent_name = str(msg.agent_used)
+                            common_agents[agent_name] = (
+                                common_agents.get(agent_name, 0) + 1
                             )
 
                 # Adicionar insights ao estado

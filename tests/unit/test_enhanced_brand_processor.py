@@ -103,7 +103,10 @@ class TestEnhancedBrandProcessor:
         assert "validation_issues" in result
         assert "needs_user_confirmation" in result
         # Com confiança 0.5, deve gerar alguma forma de alerta ou baixa confidence final
-        assert result["confidence_score"] < 0.9 or result["needs_user_confirmation"] is True
+        assert (
+            result["confidence_score"] < 0.9
+            or result["needs_user_confirmation"] is True
+        )
 
     @patch("app.enhanced_brand_processor.brand_matcher")
     def test_process_low_confidence_model(
@@ -131,7 +134,10 @@ class TestEnhancedBrandProcessor:
         assert "validation_issues" in result
         assert "needs_user_confirmation" in result
         # Com confiança 0.4 no modelo, deve gerar alguma forma de alerta
-        assert result["confidence_score"] < 0.9 or result["needs_user_confirmation"] is True
+        assert (
+            result["confidence_score"] < 0.9
+            or result["needs_user_confirmation"] is True
+        )
 
     def test_assess_processing_quality(self, processor):
         """Testa avaliação da qualidade do processamento"""

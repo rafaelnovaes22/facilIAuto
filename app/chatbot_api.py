@@ -390,7 +390,7 @@ async def get_ml_statistics():
 
 
 @router.post("/ml/train")
-async def trigger_ml_training(api_key: str = None):
+async def trigger_ml_training(api_key: Optional[str] = None):
     """
     Trigger manual para treinar modelo ML
     """

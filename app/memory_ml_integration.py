@@ -77,7 +77,7 @@ class MemoryMLExtension:
                         ConversationContext.context_type.in_(
                             ["ml_feedback", "ml_training"]
                         ),
-                        ConversationContext.created_at >= since_date,
+                        ConversationContext.created_at >= since_date,  # type: ignore
                     )
                     .all()
                 )

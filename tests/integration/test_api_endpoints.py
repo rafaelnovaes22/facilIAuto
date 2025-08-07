@@ -79,7 +79,7 @@ class TestMainAPIEndpoints:
         assert data["id"] == "123"
         assert data["marca"] == "Toyota"
 
-    @patch("app.api.get_carro_by_id") 
+    @patch("app.api.get_carro_by_id")
     def test_carro_by_id_endpoint_not_found(
         self, mock_get_carro, test_client: TestClient
     ):
@@ -181,6 +181,7 @@ class TestSearchAPIEndpoints:
         """Testa endpoint de busca enhanced"""
         # Arrange
         from app.models import RespostaBusca
+
         mock_buscar_enhanced.return_value = RespostaBusca(
             recomendacoes=[],
             resumo_perfil="Teste",
@@ -254,12 +255,12 @@ class TestValidationAPIEndpoints:
         # Arrange
         mock_matcher.get_autocomplete_suggestions.return_value = [
             "Corolla",
-            "Camry", 
+            "Camry",
             "Civic",
         ]
         mock_matcher.popular_models = {
             "TOYOTA": ["Corolla", "Camry", "Prius"],
-            "HONDA": ["Civic", "Fit", "HR-V"]
+            "HONDA": ["Civic", "Fit", "HR-V"],
         }
 
         # Act

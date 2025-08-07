@@ -15,7 +15,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import StandardScaler
 
 from app.brand_matcher import AdvancedBrandMatcher
-from app.busca_inteligente import calcular_scores_compatibilidade
+from app.busca_inteligente import EstadoBuscaDict, calcular_scores_compatibilidade
 from app.enhanced_brand_processor import EnhancedBrandProcessor
 from app.memory_manager import ConversationMemoryManager
 from app.memory_ml_integration import get_memory_ml_extension
@@ -108,7 +108,7 @@ class IntegratedMLCollector:
             "km": carro.get("km", 0),
             "consumo": carro.get("consumo", 0),
             # Usar Brand Matcher para normalizar marca
-            "marca_normalizada": AdvancedBrandMatcher().normalize_brand(
+            "marca_normalizada": AdvancedBrandMatcher().normalize_text(
                 carro.get("marca", "")
             ),
             # Número de imagens disponíveis
@@ -128,10 +128,21 @@ class IntegratedMLCollector:
         """
         try:
             matcher = UsoMatcher()
-            questionario = QuestionarioBusca(uso_principal=[uso])
-            score, _, _ = matcher.calcular_score_detalhado(carro, questionario)
+            # Criar QuestionarioBusca mínimo com valores padrão
+            questionario = QuestionarioBusca(
+                marca_preferida="sem_preferencia",
+                modelo_especifico="aberto_opcoes",
+                urgencia="sem_pressa",
+                regiao="SP",
+                uso_principal=[uso],
+                pessoas_transportar=2,
+                espaco_carga="medio",
+                potencia_desejada="media",
+                prioridade="equilibrio",
+            )
+            score = matcher.calcular_score_uso(carro, questionario)
             return score
-        except:
+        except Exception:
             return 0.0
 
     def _calculate_feedback_score(
@@ -203,7 +214,7 @@ class SmartMVPModel:
         features = []
 
         # 1. Features do sistema de busca inteligente
-        estado_busca = {
+        estado_busca: EstadoBuscaDict = {
             "questionario": questionario,
             "carros_disponiveis": [carro],
             "carros_filtrados": [carro],
@@ -290,16 +301,16 @@ class SmartMVPModel:
 
         # 7. Features do questionário
         features.append(
-            questionario.orcamento_maximo / 200000
-            if questionario.orcamento_maximo
+            questionario.orcamento_max / 200000 if questionario.orcamento_max else 0.5
+        )
+        features.append(1 if questionario.primeiro_veiculo else 0)
+        features.append(
+            questionario.pessoas_transportar / 7
+            if questionario.pessoas_transportar
             else 0.5
         )
-        features.append(1 if questionario.primeiro_carro else 0)
         features.append(
-            questionario.pessoas_familia / 7 if questionario.pessoas_familia else 0.5
-        )
-        features.append(
-            questionario.km_por_mes / 3000 if questionario.km_por_mes else 0.5
+            questionario.km_mensal / 3000 if questionario.km_mensal else 0.5
         )
 
         # 8. Opcionais importantes (aproveitar análise existente)
@@ -335,9 +346,9 @@ class SmartMVPModel:
             return False
 
         # Preparar dados
-        X = []
-        y = []
-        weights = []  # Pesos baseados em confiança
+        X: List[Any] = []
+        y: List[Any] = []
+        weights: List[float] = []  # Pesos baseados em confiança
 
         for data in all_data:
             try:
@@ -629,7 +640,7 @@ class SuperHybridProcessor:
         start_time = datetime.now()
 
         # 1. Busca Inteligente (sistema existente)
-        estado_busca = {
+        estado_busca: EstadoBuscaDict = {
             "questionario": questionario,
             "carros_disponiveis": [carro],
             "carros_filtrados": [carro],

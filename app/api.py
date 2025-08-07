@@ -1845,10 +1845,11 @@ async def buscar_carros_enhanced_alias(questionario: QuestionarioBusca):
 async def health_check():
     """Endpoint de health check"""
     from datetime import datetime
+
     return {
-        "status": "healthy", 
+        "status": "healthy",
         "message": "FacilIAuto API está funcionando!",
-        "timestamp": datetime.now().isoformat()
+        "timestamp": datetime.now().isoformat(),
     }
 
 

@@ -34,7 +34,7 @@ class EnhancedBrandProcessor:
             )
 
             # 2. Processamento de Marcas Alternativas
-            marcas_alternativas_processadas = []
+            marcas_alternativas_processadas: List[Dict[str, Any]] = []
             if (
                 hasattr(questionario, "marcas_alternativas")
                 and questionario.marcas_alternativas
@@ -102,7 +102,7 @@ class EnhancedBrandProcessor:
                 confidence_score += 0.3
 
             # Verificar conflitos entre marca principal e alternativas
-            marca_principal = marca_result.get("marca_normalizada", "").upper()
+            marca_principal = str(marca_result.get("marca_normalizada", "")).upper()
             for marca_alt in marcas_alternativas_processadas:
                 if marca_alt["normalizada"].upper() == marca_principal:
                     validation_issues.append(
