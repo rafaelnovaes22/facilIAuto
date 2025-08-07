@@ -38,6 +38,13 @@ def memory_manager():
     """
     return get_memory_manager()
 
+# Estado de memória simulado para testes mockados (usado pelos mocks)
+TEST_MEMORY_STATE: Dict[str, Any] = {
+    "user_sessions": {},          # session_id -> count
+    "brand_preferences": {},      # session_id -> [brands]
+    "conversations": {},          # conversation_id -> list[message]
+}
+
 
 @pytest.fixture
 def sample_cars() -> Dict[str, Dict[str, Any]]:

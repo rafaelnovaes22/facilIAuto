@@ -1,5 +1,15 @@
 # 🚗 **FacilIAuto** - Sistema de Recomendação de Carros com IA
 
+## Execução dos testes no CI (sem browser/performance)
+
+Para executar a suíte de testes estável no CI, gerando o relatório JUnit consumido pelo test-reporter:
+
+```
+python -m pytest -m "not requires_browser and not performance" -q -s --junitxml=test-results/results.xml
+```
+
+Isso evita testes que requerem browser real (Selenium/Playwright) e cenários de performance, garantindo estabilidade no pipeline.
+
 ![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)
 ![Python](https://img.shields.io/badge/Python-3.11+-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Latest-green)
