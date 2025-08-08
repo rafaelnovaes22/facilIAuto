@@ -3,6 +3,7 @@
 # Testing Framework
 pytest==7.4.4
 pytest-asyncio==0.23.2
+pytest-html==4.1.1
 pytest-cov==4.1.0
 pytest-mock==3.12.0
 pytest-xdist==3.5.0
@@ -14,6 +15,8 @@ requests-mock==1.11.0
 # Database Testing
 pytest-postgresql==5.0.0
 sqlalchemy-utils==0.41.1
+# Fix for deprecated pkg_resources
+setuptools<81
 
 # E2E Testing
 playwright==1.40.0
