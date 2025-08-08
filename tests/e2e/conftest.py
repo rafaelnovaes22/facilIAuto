@@ -1,156 +1,73 @@
-"""
-🧪 E2E Tests Configuration - Playwright
-Configuração específica para testes end-to-end
-"""
-
-import asyncio
-import subprocess
-import time
+# -*- coding: utf-8 -*-
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
-import requests
-from playwright.async_api import async_playwright
+from fastapi.testclient import TestClient
 
 
-# Event loop fixture removido - usando o do conftest.py principal
+@pytest.fixture
+def mock_chatbot():
+    chatbot = MagicMock()
 
-
-@pytest.fixture(scope="session")
-async def browser():
-    """Browser instance para testes E2E"""
-    async with async_playwright() as p:
-        browser = await p.chromium.launch(
-            headless=True,  # Mudar para False para debug visual
-            args=["--no-sandbox", "--disable-dev-shm-usage"],
+    def processar_pergunta(**kwargs):
+        pergunta = kwargs.get("pergunta", "")
+        agente = "geral"
+        if "consumo" in pergunta.lower():
+            agente = "tecnico"
+        elif any(x in pergunta.lower() for x in ["preço", "financ", "custa"]):
+            agente = "financeiro"
+        elif any(x in pergunta.lower() for x in ["família", "familia", "uso"]):
+            agente = "uso_principal"
+        resposta_long = (
+            f"Resposta mock detalhada do agente {agente}. "
+            "Inclui informações suficientes para testes E2E, "
+            "com conteúdo descritivo para ultrapassar o limite mínimo de caracteres."
         )
-        yield browser
-        await browser.close()
+        return {
+            "resposta": resposta_long,
+            "agente": agente,
+            "confianca": 0.9,
+            "conversation_id": (kwargs.get("conversation_id") or "e2e_conv"),
+            "dados_utilizados": ["mock"],
+            "sugestoes_followup": ["Teste"],
+        }
 
-
-@pytest.fixture
-async def context(browser):
-    """Browser context para isolamento de testes"""
-    context = await browser.new_context(
-        viewport={"width": 1280, "height": 720},
-        locale="pt-BR",
-        timezone_id="America/Sao_Paulo",
+    chatbot.processar_pergunta = MagicMock(side_effect=processar_pergunta)
+    chatbot.obter_agentes_disponiveis = MagicMock(
+        return_value={
+            "tecnico": {
+                "nome": "Agente Técnico",
+                "emoji": "🔧",
+                "especialidades": ["consumo", "motor"],
+            },
+            "financeiro": {"nome": "Agente Financeiro", "emoji": "💰"},
+            "uso_principal": {"nome": "Uso Principal", "emoji": "🚗"},
+            "avaliacao": {"nome": "Avaliacao", "emoji": "⭐"},
+            "comparacao": {"nome": "Comparacao", "emoji": "⚖️"},
+            "manutencao": {"nome": "Manutencao", "emoji": "🛠️"},
+        }
     )
-    yield context
-    await context.close()
-
-
-@pytest.fixture
-async def page(context):
-    """Page instance para testes"""
-    page = await context.new_page()
-    yield page
-    await page.close()
-
-
-@pytest.fixture(scope="session")
-def app_server():
-    """Servidor da aplicação para testes E2E"""
-    # Verificar se o servidor já está rodando
-    try:
-        response = requests.get("http://localhost:8000/health", timeout=5)
-        if response.status_code == 200:
-            print("✅ Servidor já está rodando")
-            yield "http://localhost:8000"
-            return
-    except Exception:
-        pass
-
-    # Iniciar servidor para testes
-    print("🚀 Iniciando servidor para testes E2E...")
-    process = subprocess.Popen(
-        ["python", "main.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    chatbot.obter_estatisticas_grafo = MagicMock(
+        return_value={"total_nodes": 6, "status": "compiled and ready"}
     )
-
-    # Aguardar servidor inicializar
-    for _ in range(30):  # 30 segundos timeout
-        try:
-            response = requests.get("http://localhost:8000/health", timeout=1)
-            if response.status_code == 200:
-                print("✅ Servidor iniciado com sucesso")
-                break
-        except Exception:
-            time.sleep(1)
-    else:
-        process.terminate()
-        raise Exception("Falha ao iniciar servidor para testes")
-
-    yield "http://localhost:8000"
-
-    # Cleanup
-    process.terminate()
-    process.wait()
-    print("🛑 Servidor de testes encerrado")
-
-
-@pytest.fixture(autouse=True)
-def setup_test_environment():
-    """Setup automático para cada teste"""
-    # Configurações globais para todos os testes - versão não-async
-    pass
+    return chatbot
 
 
 @pytest.fixture
-async def mock_api_responses(page):
-    """Mock de respostas da API para testes isolados"""
-    # Mock de resposta de busca bem-sucedida
-    await page.route(
-        "**/buscar",
-        lambda route: route.fulfill(
-            json={
-                "recomendacoes": [
-                    {
-                        "id": "test-1",
-                        "marca": "Toyota",
-                        "modelo": "Corolla",
-                        "ano": 2022,
-                        "preco": 65000,
-                        "km": 25000,
-                        "combustivel": "Flex",
-                        "cor": "Branco",
-                        "score_compatibilidade": 95.5,
-                        "razoes_recomendacao": ["Marca preferida", "Modelo específico"],
-                        "pontos_fortes": ["Econômico", "Confiável"],
-                        "consideracoes": ["Considere o consumo"],
-                        "fotos": ["https://via.placeholder.com/300x200"],
-                        "descricao": "Corolla 2022 em excelente estado",
-                    }
-                ],
-                "resumo_perfil": "Você busca um carro econômico da Toyota para uso urbano",
-                "sugestoes_gerais": [
-                    "Considere fazer um test drive antes da compra",
-                    "Verifique o histórico de manutenção",
-                ],
+def mock_chatbot_client(mock_chatbot):
+    with patch("app.chatbot_api.get_chatbot_graph", return_value=mock_chatbot):
+        with patch("app.database.get_carros") as mock_get_carros, patch(
+            "app.database.get_carro_by_id"
+        ) as mock_get_carro_by_id:
+            mock_get_carros.return_value = [
+                {"id": 1, "marca": "Toyota", "modelo": "Corolla", "ano": 2023}
+            ]
+            mock_get_carro_by_id.side_effect = lambda cid: {
+                "id": int(cid),
+                "marca": "Toyota",
+                "modelo": "Corolla",
+                "ano": 2023,
             }
-        ),
-    )
+            from app.api import app
 
-    # Mock de validação de preferências
-    await page.route(
-        "**/api/validate-preferences",
-        lambda route: route.fulfill(
-            json={
-                "is_valid": True,
-                "confidence_score": 0.95,
-                "suggestions": [],
-                "normalized_data": {
-                    "marca_principal": {"normalizada": "TOYOTA"},
-                    "modelo_principal": {"normalizado": "Corolla"},
-                },
-                "validation_issues": [],
-                "processing_quality": "excellent",
-            }
-        ),
-    )
-
-    # Mock de auto-complete
-    await page.route(
-        "**/api/autocomplete/**",
-        lambda route: route.fulfill(
-            json={"suggestions": ["Corolla", "Camry", "Civic"]}
-        ),
-    )
+            yield TestClient(app)

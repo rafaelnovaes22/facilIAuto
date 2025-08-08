@@ -32,7 +32,7 @@ class TestImageValidationService:
             "content-length": "12345",
         }
 
-        with patch.object(service, 'session') as mock_session:
+        with patch.object(service, "session") as mock_session:
             mock_session.head.return_value.__aenter__.return_value = mock_response
             mock_session.head.return_value.__aexit__.return_value = None
 
@@ -63,7 +63,7 @@ class TestImageValidationService:
         mock_response = AsyncMock()
         mock_response.status = 404
 
-        with patch.object(service, 'session') as mock_session:
+        with patch.object(service, "session") as mock_session:
             mock_session.head.return_value.__aenter__.return_value = mock_response
             mock_session.head.return_value.__aexit__.return_value = None
 
@@ -84,7 +84,7 @@ class TestImageValidationService:
         mock_response.status = 200
         mock_response.headers = {"content-type": "text/html", "content-length": "1000"}
 
-        with patch.object(service, 'session') as mock_session:
+        with patch.object(service, "session") as mock_session:
             mock_session.head.return_value.__aenter__.return_value = mock_response
             mock_session.head.return_value.__aexit__.return_value = None
 
@@ -99,7 +99,7 @@ class TestImageValidationService:
         """Testa tratamento de timeout"""
         service = ImageValidationService(timeout=1)
 
-        with patch.object(service, 'session') as mock_session:
+        with patch.object(service, "session") as mock_session:
             mock_session.head.side_effect = asyncio.TimeoutError()
 
             result = await service.validate_image_url(
@@ -130,12 +130,24 @@ class TestImageValidationService:
         mock_response_2.status = 200
         mock_response_2.headers = {"content-type": "image/png"}
 
-        with patch("aiohttp.ClientSession.head") as mock_head:
-            mock_head.return_value.__aenter__.side_effect = [
-                mock_response_1,
-                mock_response_2,
-            ]
-            service.session = AsyncMock()
+        # Mockar a session interna do service como nos demais testes
+        with patch.object(service, "session") as mock_session:
+            # Cada chamada head retorna um CM com __aenter__ apropriado
+            def head_side_effect(url, *args, **kwargs):
+                cm = AsyncMock()
+                if url.endswith("image1.jpg"):
+                    cm.__aenter__.return_value = mock_response_1
+                elif url.endswith("image2.png"):
+                    cm.__aenter__.return_value = mock_response_2
+                else:
+                    bad = AsyncMock()
+                    bad.status = 400
+                    bad.headers = {}
+                    cm.__aenter__.return_value = bad
+                cm.__aexit__.return_value = None
+                return cm
+
+            mock_session.head.side_effect = head_side_effect
 
             results = await service.validate_multiple_urls(urls)
 
