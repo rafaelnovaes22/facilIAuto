@@ -66,14 +66,11 @@ def processar_busca_simples_fallback(questionario: QuestionarioBusca) -> Respost
                         f"Adequado para uso {questionario.uso_principal[0] if questionario.uso_principal else 'geral'}",
                         "Boa opção de custo-benefício",
                     ],
-                    pontos_fortes=[
-                        "Preço competitivo",
-                        "Disponível para compra"
-                    ],
+                    pontos_fortes=["Preço competitivo", "Disponível para compra"],
                     consideracoes=[
                         "Verifique disponibilidade de cores",
-                        "Considere test drive antes da compra"
-                    ]
+                        "Considere test drive antes da compra",
+                    ],
                 )
                 recomendacoes.append(recomendacao)
             except Exception as e:
