@@ -25,7 +25,7 @@ from fastapi.testclient import TestClient
 class TestLangGraphPerformanceE2E:
     """Testes de performance E2E para o sistema LangGraph"""
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture
     def client(self, mock_chatbot_client):
         """Cliente HTTP para testes de API com mocks (estável em CI)"""
         return mock_chatbot_client
