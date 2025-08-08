@@ -420,6 +420,7 @@ def get_carros() -> List[Dict]:
         print(f"⚠️ Falha ao conectar PostgreSQL, usando dados estáticos: {e}")
         # Fallback para dados estáticos
         from app.data.carros import get_carros as get_static_carros
+
         return get_static_carros()
 
 
@@ -433,4 +434,5 @@ def get_carro_by_id(carro_id: str) -> Optional[Dict]:
         print(f"⚠️ Falha ao conectar PostgreSQL, usando dados estáticos: {e}")
         # Fallback para dados estáticos
         from app.data.carros import get_carro_by_id as get_static_carro_by_id
+
         return get_static_carro_by_id(int(carro_id))
