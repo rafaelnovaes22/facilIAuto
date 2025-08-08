@@ -402,6 +402,7 @@ class CarroRepository:
 
 
 # Instância global do repository com tratamento de erro
+carro_repo: Optional[CarroRepository]
 try:
     carro_repo = CarroRepository()
 except Exception as e:
