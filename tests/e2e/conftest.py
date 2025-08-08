@@ -19,26 +19,32 @@ def mock_chatbot():
             agente = "comparacao"
         elif any(x in pergunta_lower for x in ["manuten", "revis", "garantia"]):
             agente = "manutencao"
-        elif any(x in pergunta_lower for x in ["preço", "preco", "financ", "parcela", "juros", "ipva", "seguro"]):
+        elif any(
+            x in pergunta_lower
+            for x in ["preço", "preco", "financ", "parcela", "juros", "ipva", "seguro"]
+        ):
             agente = "financeiro"
-        elif any(x in pergunta_lower for x in [
-            "consumo",
-            "motor",
-            "potência",
-            "potencia",
-            "torque",
-            "cvt",
-            "câmbio",
-            "cambio",
-            "porta-malas",
-            "lugares",
-            "dimens",
-            "segurança",
-            "seguranca",
-            "airbag",
-            "abs",
-            "estabilidade",
-        ]):
+        elif any(
+            x in pergunta_lower
+            for x in [
+                "consumo",
+                "motor",
+                "potência",
+                "potencia",
+                "torque",
+                "cvt",
+                "câmbio",
+                "cambio",
+                "porta-malas",
+                "lugares",
+                "dimens",
+                "segurança",
+                "seguranca",
+                "airbag",
+                "abs",
+                "estabilidade",
+            ]
+        ):
             agente = "tecnico"
         elif any(x in pergunta_lower for x in ["família", "familia", "uso"]):
             agente = "uso_principal"
