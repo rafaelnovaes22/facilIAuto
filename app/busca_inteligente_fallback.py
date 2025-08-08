@@ -50,23 +50,30 @@ def processar_busca_simples_fallback(questionario: QuestionarioBusca) -> Respost
                     id=str(carro.get("id", i + 1)),
                     marca=carro.get("marca", "Marca"),
                     modelo=carro.get("modelo", "Modelo"),
+                    versao=carro.get("versao"),
                     ano=carro.get("ano", 2020),
                     preco=carro.get("preco", 50000),
-                    combustivel=carro.get("combustivel", "Flex"),
-                    cambio=carro.get("cambio", "Manual"),
+                    preco_promocional=carro.get("preco_promocional"),
+                    categoria=carro.get("categoria", "hatch"),
                     cor=carro.get("cor", "Branco"),
                     km=carro.get("km", 50000),
                     fotos=carro.get("fotos", []),
+                    descricao=carro.get("descricao"),
+                    opcionais=carro.get("opcionais", []),
                     score_compatibilidade=90.0 - (i * 10),  # Score decrescente
                     razoes_recomendacao=[
                         f"Dentro do orçamento de R$ {questionario.orcamento_min}-{questionario.orcamento_max}",
                         f"Adequado para uso {questionario.uso_principal[0] if questionario.uso_principal else 'geral'}",
                         "Boa opção de custo-benefício",
                     ],
-                    categoria=carro.get("categoria", "hatch"),
-                    uso_recomendado=questionario.uso_principal
-                    if questionario.uso_principal
-                    else ["urbano"],
+                    pontos_fortes=[
+                        "Preço competitivo",
+                        "Disponível para compra"
+                    ],
+                    consideracoes=[
+                        "Verifique disponibilidade de cores",
+                        "Considere test drive antes da compra"
+                    ]
                 )
                 recomendacoes.append(recomendacao)
             except Exception as e:
