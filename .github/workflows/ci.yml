@@ -116,7 +116,8 @@ jobs:
         pip install -r requirements-test.txt
     
     - name: 🎭 Setup Playwright
-      uses: microsoft/playwright-github-action@v1
+      run: |
+        npx playwright install --with-deps chromium
     
     - name: 🚀 Start Application
       run: |
@@ -130,13 +131,14 @@ jobs:
     
     - name: 📸 Upload E2E Artifacts
       uses: actions/upload-artifact@v4
-      if: failure()
+      if: always()
       with:
         name: e2e-results
         path: |
           e2e-report.html
           test-results/
         retention-days: 7
+        if-no-files-found: ignore
   
   # 🚀 Deploy (apenas em main)
   deploy:
