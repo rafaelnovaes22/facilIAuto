@@ -3,7 +3,7 @@ API melhorada com sistema de fallback de imagens integrado
 """
 
 
-from app.busca_inteligente import processar_busca_inteligente
+from app.busca_inteligente_fallback import processar_busca_inteligente_robusta
 from app.fallback_images import get_best_fallback, get_fallback_images
 from app.models import CarroRecomendacao, QuestionarioBusca, RespostaBusca
 
@@ -31,7 +31,7 @@ async def buscar_carros_enhanced(questionario: QuestionarioBusca) -> RespostaBus
     """Endpoint melhorado com sistema de fallback integrado"""
 
     # Processar busca normal
-    resultado = processar_busca_inteligente(questionario)
+    resultado = processar_busca_inteligente_robusta(questionario)
 
     # Melhorar cada recomendação com fallbacks
     recomendacoes_melhoradas = []

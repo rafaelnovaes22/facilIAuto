@@ -237,7 +237,7 @@ def gerar_recomendacoes_finais(state: EstadoBuscaDict) -> EstadoBuscaDict:
     for item in top_carros:
         carro = item["carro"]
         recomendacao = CarroRecomendacao(
-            id=carro["id"],
+            id=str(carro["id"]),
             marca=carro["marca"],
             modelo=carro["modelo"],
             versao=carro.get("versao"),

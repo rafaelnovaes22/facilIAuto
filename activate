@@ -1,0 +1,53 @@
+[33mcommit 339029b8be97347dda5ccef0785aeeb885c83303[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: rafaelnovaes22 <rafaeldenovaes@gmail.com>
+Date:   Fri Aug 8 19:09:05 2025 -0300
+
+    Fix: Sistema de fallback database para CI/CD - PostgreSQL para dados estáticos
+
+[1mdiff --git a/app/database.py b/app/database.py[m
+[1mindex e53a61d..791ac87 100644[m
+[1m--- a/app/database.py[m
+[1m+++ b/app/database.py[m
+[36m@@ -401,16 +401,36 @@[m [mclass CarroRepository:[m
+         return uso_map.get(categoria, ["urbano"])[m
+ [m
+ [m
+[31m-# Instância global do repository[m
+[31m-carro_repo = CarroRepository()[m
+[32m+[m[32m# Instância global do repository com tratamento de erro[m
+[32m+[m[32mtry:[m
+[32m+[m[32m    carro_repo = CarroRepository()[m
+[32m+[m[32mexcept Exception as e:[m
+[32m+[m[32m    print(f"⚠️ Erro ao inicializar CarroRepository: {e}")[m
+[32m+[m[32m    carro_repo = None[m
+ [m
+ [m
+ # Funções de compatibilidade com o sistema existente[m
+ def get_carros() -> List[Dict]:[m
+[31m-    """Função compatível que retorna carros do PostgreSQL"""[m
+[31m-    return carro_repo.get_all_carros()[m
+[32m+[m[32m    """Função compatível que retorna carros do PostgreSQL com fallback para dados estáticos"""[m
+[32m+[m[32m    try:[m
+[32m+[m[32m        if carro_repo is None:[m
+[32m+[m[32m            raise Exception("CarroRepository não inicializado")[m
+[32m+[m[32m        return carro_repo.get_all_carros()[m
+[32m+[m[32m    except Exception as e:[m
+[32m+[m[32m        print(f"⚠️ Falha ao conectar PostgreSQL, usando dados estáticos: {e}")[m
+[32m+[m[32m        # Fallback para dados estáticos[m
+[32m+[m[32m        from app.data.carros import get_carros as get_static_carros[m
+[32m+[m[32m        return get_static_carros()[m
+ [m
+ [m
+ def get_carro_by_id(carro_id: str) -> Optional[Dict]:[m
+[31m-    """Função compatível que retorna carro por ID do PostgreSQL"""[m
+[31m-    return carro_repo.get_carro_by_id(carro_id)[m
+[32m+[m[32m    """Função compatível que retorna carro por ID do PostgreSQL com fallback para dados estáticos"""[m
+[32m+[m[32m    try:[m
+[32m+[m[32m        if carro_repo is None:[m
+[32m+[m[32m            raise Exception("CarroRepository não inicializado")[m
+[32m+[m[32m        return carro_repo.get_carro_by_id(carro_id)[m
+[32m+[m[32m    except Exception as e:[m
+[32m+[m[32m        print(f"⚠️ Falha ao conectar PostgreSQL, usando dados estáticos: {e}")[m
+[32m+[m[32m        # Fallback para dados estáticos[m
+[32m+[m[32m        from app.data.carros import get_carro_by_id as get_static_carro_by_id[m
+[32m+[m[32m        return get_static_carro_by_id(int(carro_id))[m

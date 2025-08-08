@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
-from app.busca_inteligente import processar_busca_inteligente
+from app.busca_inteligente_fallback import processar_busca_inteligente_robusta
 from app.chatbot_api import router as chatbot_router
 from app.database import get_carro_by_id, get_carros
 from app.enhanced_api import buscar_carros_enhanced
@@ -1244,7 +1244,7 @@ async def buscar_carros(questionario: QuestionarioBusca):
     """Endpoint principal para busca inteligente de carros"""
     try:
         print(f"📥 Dados recebidos: {questionario.model_dump()}")
-        resultado = processar_busca_inteligente(questionario)
+        resultado = processar_busca_inteligente_robusta(questionario)
 
         # Verifica se o resultado tem a estrutura esperada
         if not resultado:
