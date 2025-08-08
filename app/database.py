@@ -401,16 +401,36 @@ class CarroRepository:
         return uso_map.get(categoria, ["urbano"])
 
 
-# Instância global do repository
-carro_repo = CarroRepository()
+# Instância global do repository com tratamento de erro
+try:
+    carro_repo = CarroRepository()
+except Exception as e:
+    print(f"⚠️ Erro ao inicializar CarroRepository: {e}")
+    carro_repo = None
 
 
 # Funções de compatibilidade com o sistema existente
 def get_carros() -> List[Dict]:
-    """Função compatível que retorna carros do PostgreSQL"""
-    return carro_repo.get_all_carros()
+    """Função compatível que retorna carros do PostgreSQL com fallback para dados estáticos"""
+    try:
+        if carro_repo is None:
+            raise Exception("CarroRepository não inicializado")
+        return carro_repo.get_all_carros()
+    except Exception as e:
+        print(f"⚠️ Falha ao conectar PostgreSQL, usando dados estáticos: {e}")
+        # Fallback para dados estáticos
+        from app.data.carros import get_carros as get_static_carros
+        return get_static_carros()
 
 
 def get_carro_by_id(carro_id: str) -> Optional[Dict]:
-    """Função compatível que retorna carro por ID do PostgreSQL"""
-    return carro_repo.get_carro_by_id(carro_id)
+    """Função compatível que retorna carro por ID do PostgreSQL com fallback para dados estáticos"""
+    try:
+        if carro_repo is None:
+            raise Exception("CarroRepository não inicializado")
+        return carro_repo.get_carro_by_id(carro_id)
+    except Exception as e:
+        print(f"⚠️ Falha ao conectar PostgreSQL, usando dados estáticos: {e}")
+        # Fallback para dados estáticos
+        from app.data.carros import get_carro_by_id as get_static_carro_by_id
+        return get_static_carro_by_id(int(carro_id))
