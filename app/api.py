@@ -10,7 +10,11 @@ from app.enhanced_api import buscar_carros_enhanced
 from app.health_check import health_service
 from app.logging_config import get_logger, metrics_collector, setup_logging
 from app.memory_api import router as memory_router
-from app.middleware import LoggingMiddleware, SecurityHeadersMiddleware, RateLimitMiddleware
+from app.middleware import (
+    LoggingMiddleware,
+    RateLimitMiddleware,
+    SecurityHeadersMiddleware,
+)
 from app.models import QuestionarioBusca, RespostaBusca
 from app.validation_api import router as validation_router
 
@@ -1862,14 +1866,11 @@ async def health_check():
     """
     logger.info("Health check requested")
     health_data = await health_service.get_simple_health_check()
-    
+
     # Retorna 503 se unhealthy para que load balancers removam da rotação
     status_code = 200 if health_data["status"] != "unhealthy" else 503
-    
-    return JSONResponse(
-        status_code=status_code,
-        content=health_data
-    )
+
+    return JSONResponse(status_code=status_code, content=health_data)
 
 
 @app.get("/health/detailed")
@@ -1880,14 +1881,11 @@ async def health_check_detailed():
     """
     logger.info("Detailed health check requested")
     health_data = await health_service.get_full_health_report()
-    
+
     # Retorna 503 se unhealthy
     status_code = 200 if health_data["status"] != "unhealthy" else 503
-    
-    return JSONResponse(
-        status_code=status_code,
-        content=health_data
-    )
+
+    return JSONResponse(status_code=status_code, content=health_data)
 
 
 @app.get("/metrics")
