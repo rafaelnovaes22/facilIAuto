@@ -2,20 +2,20 @@
 Configurações do banco de dados PostgreSQL
 """
 
-import os
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy.pool import StaticPool
 
+from app.core.settings import settings
+
 # Configurações do banco PostgreSQL
 DATABASE_CONFIG = {
-    "host": os.getenv("DB_HOST", "localhost"),
-    "port": os.getenv("DB_PORT", "5432"),
-    "database": os.getenv("DB_NAME", "carencia_db"),
-    "user": os.getenv("DB_USER", "postgres"),
-    "password": os.getenv("DB_PASSWORD", "postgres"),
-    "schema": os.getenv("DB_SCHEMA", "public"),
+    "host": settings.DB_HOST,
+    "port": settings.DB_PORT,
+    "database": settings.DB_NAME,
+    "user": settings.DB_USER,
+    "password": settings.DB_PASSWORD,
+    "schema": settings.DB_SCHEMA,
 }
 
 # URL de conexão PostgreSQL
