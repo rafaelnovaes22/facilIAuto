@@ -4,6 +4,10 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.busca_inteligente_fallback import processar_busca_inteligente_robusta
+
+# Compat: expor nome esperado pelos testes de integração
+# Alias para a função robusta (mantém compatibilidade com mocks existentes)
+processar_busca_inteligente = processar_busca_inteligente_robusta
 from app.chatbot_api import router as chatbot_router
 from app.database import get_carro_by_id, get_carros
 from app.enhanced_api import buscar_carros_enhanced
