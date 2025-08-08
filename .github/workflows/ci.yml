@@ -118,7 +118,8 @@ jobs:
     
     - name: 🎭 Setup Playwright
       run: |
-        npx playwright install --with-deps chromium
+        python -m pip install playwright==1.40.0 pytest-playwright==0.4.3
+        python -m playwright install --with-deps chromium
     
     - name: 🚀 Start Application
       run: |

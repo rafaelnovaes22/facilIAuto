@@ -21,16 +21,14 @@ from typing import Any, Dict, List
 import pytest
 from fastapi.testclient import TestClient
 
-from app.api import app
-
 
 class TestLangGraphPerformanceE2E:
     """Testes de performance E2E para o sistema LangGraph"""
 
     @pytest.fixture(scope="class")
-    def client(self):
-        """Cliente HTTP para testes de API"""
-        return TestClient(app)
+    def client(self, mock_chatbot_client):
+        """Cliente HTTP para testes de API com mocks (estável em CI)"""
+        return mock_chatbot_client
 
     @pytest.fixture
     def performance_car_data(self):
