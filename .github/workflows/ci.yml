@@ -130,7 +130,7 @@ jobs:
         pytest tests/e2e -v --html=e2e-report.html --self-contained-html
     
     - name: 📸 Upload E2E Artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: failure()
       with:
         name: e2e-results
