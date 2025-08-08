@@ -15,9 +15,14 @@ def mock_chatbot():
 
         # Roteamento por intenção ampliado
         agente = "geral"
-        if any(x in pergunta_lower for x in ["compare", "compar", " vs ", "versus"]):
+        if any(
+            x in pergunta_lower
+            for x in ["compare", "compar", " vs ", "versus", "diferença", "diferenca"]
+        ):
             agente = "comparacao"
-        elif any(x in pergunta_lower for x in ["manuten", "revis", "garantia"]):
+        elif any(
+            x in pergunta_lower for x in ["manuten", "revis", "garantia", "peças", "pecas"]
+        ):
             agente = "manutencao"
         elif any(
             x in pergunta_lower
@@ -48,7 +53,22 @@ def mock_chatbot():
             agente = "tecnico"
         elif any(x in pergunta_lower for x in ["família", "familia", "uso"]):
             agente = "uso_principal"
-        elif any(x in pergunta_lower for x in ["preço justo", "mercado", "avalia"]):
+        elif (
+            any(
+                x in pergunta_lower
+                for x in [
+                    "preço justo",
+                    "preco justo",
+                    "mercado",
+                    "avalia",
+                    "desvaloriz",
+                    "deprecia",
+                    "vale a pena",
+                    "usado",
+                ]
+            )
+            or ("preço" in pergunta_lower and "justo" in pergunta_lower)
+        ):
             agente = "avaliacao"
 
         # Construção de respostas específicas com cobertura de keywords e qualidade
@@ -65,8 +85,9 @@ def mock_chatbot():
             )
         elif agente == "comparacao":
             resposta_long = (
-                "Comparação direta: Honda Civic vs Toyota Corolla. O Civic destaca-se em potência (180 cv) e dirigibilidade, "
-                "enquanto o Corolla oferece consumo competitivo (km/l) e manutenção previsível. Avalie necessidades: conforto, economia e performance."
+                f"Comparação direta (com base no pedido): {pergunta}. "
+                "O Honda Civic destaca-se em potência (180 cv) e dirigibilidade, enquanto o concorrente oferece consumo competitivo (km/l) e manutenção previsível. "
+                "Avalie necessidades: conforto, economia e performance."
             )
         elif agente == "manutencao":
             resposta_long = (
