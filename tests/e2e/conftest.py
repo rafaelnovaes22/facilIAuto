@@ -1,163 +1,91 @@
-# -*- coding: utf-8 -*-
-from unittest.mock import AsyncMock, MagicMock, patch
+"""
+🧪 Configuração E2E - Smoke Test Minimalista
+Configuração leve apenas para validação crítica
+"""
+import asyncio
+import logging
+import subprocess
+import sys
+import time
+from typing import Generator
 
 import pytest
-from fastapi.testclient import TestClient
+import requests
+from playwright.sync_api import Page
+
+
+@pytest.fixture(scope="session")
+def live_server() -> str:
+    """
+    URL do servidor para testes E2E
+    Assume que o servidor está rodando em localhost:8000
+    """
+    return "http://localhost:8000"
+
+
+@pytest.fixture(scope="session", autouse=True)
+def ensure_server_running(live_server: str) -> Generator[None, None, None]:
+    """
+    Garante que o servidor está rodando antes dos testes
+    """
+    print(f"\n🚀 [E2E] Verificando servidor em {live_server}")
+    
+    max_retries = 30
+    retry_count = 0
+    
+    while retry_count < max_retries:
+        try:
+            response = requests.get(f"{live_server}/health", timeout=5)
+            if response.status_code == 200:
+                print(f"✅ [E2E] Servidor está rodando e saudável")
+                break
+        except Exception as e:
+            retry_count += 1
+            if retry_count == 1:
+                print(f"⏳ [E2E] Servidor não disponível, tentando iniciar...")
+                # Tentar iniciar o servidor em background
+                try:
+                    subprocess.Popen([
+                        sys.executable, "main.py"
+                    ], cwd=".", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    print(f"🚀 [E2E] Servidor iniciado em background")
+                except Exception as start_error:
+                    print(f"⚠️ [E2E] Erro ao iniciar servidor: {start_error}")
+            
+            print(f"⏳ [E2E] Tentativa {retry_count}/{max_retries} - Aguardando servidor...")
+            time.sleep(2)
+    
+    if retry_count >= max_retries:
+        pytest.fail(f"❌ [E2E] Servidor não está disponível em {live_server} após {max_retries} tentativas")
+    
+    yield
+    
+    print(f"🏁 [E2E] Testes E2E finalizados")
 
 
 @pytest.fixture
-def mock_chatbot():
-    chatbot = MagicMock()
-
-    def processar_pergunta(**kwargs):
-        pergunta = kwargs.get("pergunta", "")
-        pergunta_lower = pergunta.lower()
-
-        # Roteamento por intenção ampliado
-        agente = "geral"
-        if any(
-            x in pergunta_lower
-            for x in ["compare", "compar", " vs ", "versus", "diferença", "diferenca"]
-        ):
-            agente = "comparacao"
-        elif any(
-            x in pergunta_lower for x in ["manuten", "revis", "garantia", "peças", "pecas"]
-        ):
-            agente = "manutencao"
-        elif any(
-            x in pergunta_lower
-            for x in ["preço", "preco", "financ", "parcela", "juros", "ipva", "seguro"]
-        ):
-            agente = "financeiro"
-        elif any(
-            x in pergunta_lower
-            for x in [
-                "consumo",
-                "motor",
-                "potência",
-                "potencia",
-                "torque",
-                "cvt",
-                "câmbio",
-                "cambio",
-                "porta-malas",
-                "lugares",
-                "dimens",
-                "segurança",
-                "seguranca",
-                "airbag",
-                "abs",
-                "estabilidade",
-            ]
-        ):
-            agente = "tecnico"
-        elif any(x in pergunta_lower for x in ["família", "familia", "uso"]):
-            agente = "uso_principal"
-        elif (
-            any(
-                x in pergunta_lower
-                for x in [
-                    "preço justo",
-                    "preco justo",
-                    "mercado",
-                    "avalia",
-                    "desvaloriz",
-                    "deprecia",
-                    "vale a pena",
-                    "usado",
-                ]
-            )
-            or ("preço" in pergunta_lower and "justo" in pergunta_lower)
-        ):
-            agente = "avaliacao"
-
-        # Construção de respostas específicas com cobertura de keywords e qualidade
-        if agente == "tecnico":
-            resposta_long = (
-                "Analisando o aspecto técnico: Sobre o Honda Civic, o motor 1.5 turbo entrega 180 cv e torque robusto. "
-                "O consumo médio é de 10.8 km/l na cidade e melhor em estrada. O câmbio CVT é confiável e suave. "
-                "Porta-malas com 519 litros e capacidade para 5 lugares. Itens de segurança incluem airbag, ABS e controle de estabilidade."
-            )
-        elif agente == "financeiro":
-            resposta_long = (
-                "Opções financeiras: preço de referência em torno de 165000. Financiamento com entrada de 30000 e parcelas acessíveis, "
-                "juros a partir de 1.99% a.m., análise de crédito rápida. Documentos (RG, CPF, comprovante de renda) e IPVA/seguro podem ser incluídos."
-            )
-        elif agente == "comparacao":
-            resposta_long = (
-                f"Comparação direta (com base no pedido): {pergunta}. "
-                "O Honda Civic destaca-se em potência (180 cv) e dirigibilidade, enquanto o concorrente oferece consumo competitivo (km/l) e manutenção previsível. "
-                "Avalie necessidades: conforto, economia e performance."
-            )
-        elif agente == "manutencao":
-            resposta_long = (
-                "Manutenção programada: revisões a cada 10.000 km, troca de óleo e filtros, inspeção de pastilhas. "
-                "Custo de manutenção é competitivo e há garantia estendida disponível conforme condições do fabricante."
-            )
-        elif agente == "avaliacao":
-            resposta_long = (
-                "Avaliação de mercado: preço justo considerando tabela FIPE, depreciação e quilometragem. "
-                "Análise sugere bom custo-benefício no cenário atual, com liquidez adequada."
-            )
-        elif agente == "uso_principal":
-            resposta_long = (
-                "Para uso familiar/rotina, priorize conforto, segurança (airbag, ABS), espaço interno e economia (km/l). "
-                "Recomenda-se focar em porta-malas amplo e conectividade."
-            )
-        else:
-            resposta_long = (
-                "Resposta geral: analisamos consumo (km/l), desempenho (cv), segurança (airbag/ABS) e custo total. "
-                "Forneça mais detalhes para direcionarmos ao especialista ideal."
-            )
-
-        return {
-            "resposta": resposta_long,
-            "agente": agente,
-            "confianca": 0.9,
-            "conversation_id": (kwargs.get("conversation_id") or "e2e_conv"),
-            "dados_utilizados": ["mock"],
-            "sugestoes_followup": [
-                "Deseja comparar com outro modelo?",
-                "Quer simular financiamento?",
-            ],
-        }
-
-    chatbot.processar_pergunta = MagicMock(side_effect=processar_pergunta)
-    chatbot.obter_agentes_disponiveis = MagicMock(
-        return_value={
-            "tecnico": {
-                "nome": "Agente Técnico",
-                "emoji": "🔧",
-                "especialidades": ["consumo", "motor"],
-            },
-            "financeiro": {"nome": "Agente Financeiro", "emoji": "💰"},
-            "uso_principal": {"nome": "Uso Principal", "emoji": "🚗"},
-            "avaliacao": {"nome": "Avaliacao", "emoji": "⭐"},
-            "comparacao": {"nome": "Comparacao", "emoji": "⚖️"},
-            "manutencao": {"nome": "Manutencao", "emoji": "🛠️"},
-        }
-    )
-    chatbot.obter_estatisticas_grafo = MagicMock(
-        return_value={"total_nodes": 6, "status": "compiled and ready"}
-    )
-    return chatbot
+def enhanced_page(page: Page) -> Page:
+    """
+    Página com configurações otimizadas para estabilidade
+    """
+    # Configurações para estabilidade
+    page.set_default_timeout(30000)  # 30s timeout padrão
+    page.set_default_navigation_timeout(30000)  # 30s para navegação
+    
+    # Log de console para debug
+    page.on("console", lambda msg: print(f"🖥️ [CONSOLE] {msg.type}: {msg.text}"))
+    
+    # Log de erros de página
+    page.on("pageerror", lambda error: print(f"❌ [PAGE ERROR] {error}"))
+    
+    # Log de requests falhados
+    page.on("requestfailed", lambda request: print(f"🌐 [REQUEST FAILED] {request.url}"))
+    
+    return page
 
 
-@pytest.fixture
-def mock_chatbot_client(mock_chatbot):
-    with patch("app.chatbot_api.get_chatbot_graph", return_value=mock_chatbot):
-        with patch("app.database.get_carros") as mock_get_carros, patch(
-            "app.database.get_carro_by_id"
-        ) as mock_get_carro_by_id:
-            mock_get_carros.return_value = [
-                {"id": 1, "marca": "Toyota", "modelo": "Corolla", "ano": 2023}
-            ]
-            mock_get_carro_by_id.side_effect = lambda cid: {
-                "id": int(cid),
-                "marca": "Toyota",
-                "modelo": "Corolla",
-                "ano": 2023,
-            }
-            from app.api import app
-
-            yield TestClient(app)
+# Configuração de logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)

@@ -389,11 +389,8 @@ def processar_busca_inteligente(questionario: QuestionarioBusca) -> RespostaBusc
     # Executa o grafo
     resultado = grafo.invoke(estado)
 
-    # Converte as recomendações de dict para CarroRecomendacao
-    recomendacoes = []
-    for rec_dict in resultado["recomendacoes_finais"]:
-        rec = CarroRecomendacao(**rec_dict)
-        recomendacoes.append(rec)
+    # As recomendações já são objetos CarroRecomendacao
+    recomendacoes = resultado["recomendacoes_finais"]
 
     # Retorna a resposta estruturada
     return RespostaBusca(

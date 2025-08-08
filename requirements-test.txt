@@ -18,7 +18,7 @@ sqlalchemy-utils==0.41.1
 # Fix for deprecated pkg_resources
 setuptools<81
 
-# E2E Testing
+# E2E Testing - Apenas Smoke Test
 playwright==1.40.0
 pytest-playwright==0.4.3
 

@@ -1,21 +1,33 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.busca_inteligente import processar_busca_inteligente
 from app.chatbot_api import router as chatbot_router
 from app.database import get_carro_by_id, get_carros
 from app.enhanced_api import buscar_carros_enhanced
+from app.health_check import health_service
+from app.logging_config import get_logger, metrics_collector, setup_logging
 from app.memory_api import router as memory_router
+from app.middleware import LoggingMiddleware, SecurityHeadersMiddleware, RateLimitMiddleware
 from app.models import QuestionarioBusca, RespostaBusca
 from app.validation_api import router as validation_router
+
+# Configurar logging estruturado
+setup_logging(level="INFO", enable_structured=True)
+logger = get_logger(__name__)
 
 app = FastAPI(
     title="FacilIAuto - Busca Inteligente de Carros",
     description="Sistema de recomendação de carros usando LangGraph",
     version="1.0.0",
 )
+
+# Adicionar middlewares de observabilidade e segurança
+app.add_middleware(SecurityHeadersMiddleware)
+app.add_middleware(LoggingMiddleware)
+app.add_middleware(RateLimitMiddleware, requests_per_minute=120)  # 120 req/min por IP
 
 # Configuração CORS
 app.add_middleware(
@@ -952,6 +964,7 @@ async def read_root():
                 }
 
                 console.log('📤 Dados a serem enviados:', data);
+                console.log('📝 Detalhamento dos dados:', JSON.stringify(data, null, 2));
 
                 try {
                     const response = await fetch('/buscar-carros', {
@@ -1843,14 +1856,67 @@ async def buscar_carros_enhanced_alias(questionario: QuestionarioBusca):
 
 @app.get("/health")
 async def health_check():
-    """Endpoint de health check"""
-    from datetime import datetime
+    """
+    Health check básico para load balancers
+    Retorna status simples e rápido
+    """
+    logger.info("Health check requested")
+    health_data = await health_service.get_simple_health_check()
+    
+    # Retorna 503 se unhealthy para que load balancers removam da rotação
+    status_code = 200 if health_data["status"] != "unhealthy" else 503
+    
+    return JSONResponse(
+        status_code=status_code,
+        content=health_data
+    )
 
-    return {
-        "status": "healthy",
-        "message": "FacilIAuto API está funcionando!",
-        "timestamp": datetime.now().isoformat(),
-    }
+
+@app.get("/health/detailed")
+async def health_check_detailed():
+    """
+    Health check detalhado para monitoring
+    Inclui métricas, dependências e diagnósticos
+    """
+    logger.info("Detailed health check requested")
+    health_data = await health_service.get_full_health_report()
+    
+    # Retorna 503 se unhealthy
+    status_code = 200 if health_data["status"] != "unhealthy" else 503
+    
+    return JSONResponse(
+        status_code=status_code,
+        content=health_data
+    )
+
+
+@app.get("/metrics")
+async def get_metrics():
+    """
+    Endpoint de métricas para monitoramento
+    Retorna estatísticas de performance e uso
+    """
+    logger.info("Metrics requested")
+    try:
+        metrics = metrics_collector.get_metrics()
+        return JSONResponse(content=metrics)
+    except Exception as exc:
+        logger.error(f"Failed to get metrics: {str(exc)}")
+        raise HTTPException(status_code=500, detail="Failed to retrieve metrics")
+
+
+@app.post("/metrics/reset")
+async def reset_metrics():
+    """
+    Reset das métricas (útil para testes)
+    """
+    logger.info("Metrics reset requested")
+    try:
+        metrics_collector.reset()
+        return {"message": "Metrics reset successfully"}
+    except Exception as exc:
+        logger.error(f"Failed to reset metrics: {str(exc)}")
+        raise HTTPException(status_code=500, detail="Failed to reset metrics")
 
 
 if __name__ == "__main__":

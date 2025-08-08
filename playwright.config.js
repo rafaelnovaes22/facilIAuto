@@ -1,94 +1,44 @@
-/**
- * 🧪 Playwright Configuration - FacilIAuto E2E Tests
- * Configuração para testes end-to-end
- */
+// 🎭 Configuração Playwright - Smoke Test Apenas
+// Configuração minimalista para 1 teste crítico
 
-const { defineConfig, devices } = require('@playwright/test');
-
-module.exports = defineConfig({
-  // Diretório de testes E2E
+module.exports = {
   testDir: './tests/e2e',
-  
-  // Timeout global
-  timeout: 30000,
-  
-  // Timeout para expect
+  timeout: 60000, // 60s timeout total
   expect: {
-    timeout: 5000
+    timeout: 30000 // 30s timeout para expects
   },
-  
-  // Configurações globais
-  fullyParallel: true,
-  forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-  
-  // Reporter
+  fullyParallel: false, // Apenas 1 teste, não precisa de paralelismo
+  forbidOnly: !!process.env.CI, // Não permitir .only em CI
+  retries: process.env.CI ? 2 : 1, // Retry em CI
+  workers: 1, // Apenas 1 worker para smoke test
   reporter: [
-    ['html'],
-    ['json', { outputFile: 'test-results/results.json' }],
-    ['junit', { outputFile: 'test-results/results.xml' }]
+    ['list'],
+    ['html', { outputFolder: 'smoke-test-results' }]
   ],
   
-  // Configurações de uso
+  // Configuração global
   use: {
-    // URL base da aplicação
     baseURL: 'http://localhost:8000',
-    
-    // Trace em caso de falha
     trace: 'on-first-retry',
-    
-    // Screenshot em falhas
     screenshot: 'only-on-failure',
-    
-    // Video em falhas
     video: 'retain-on-failure',
-    
-    // Locale brasileiro
-    locale: 'pt-BR',
-    timezoneId: 'America/Sao_Paulo'
+    actionTimeout: 30000,
+    navigationTimeout: 30000,
   },
-  
-  // Projetos para diferentes navegadores
+
+  // Configuração de browsers - apenas Chromium para smoke test
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-    
-    // Testes mobile
-    {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
-    
-    {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 12'] },
-    },
-    
-    // Tablet
-    {
-      name: 'Tablet',
-      use: { ...devices['iPad Pro'] },
+      use: { ...require('@playwright/test').devices['Desktop Chrome'] },
     }
   ],
-  
-  // Servidor local para testes
+
+  // Servidor local (opcional)
   webServer: {
     command: 'python main.py',
     port: 8000,
     reuseExistingServer: !process.env.CI,
-    timeout: 120000
-  }
-});
+    timeout: 120000, // 2 minutos para iniciar
+  },
+};
