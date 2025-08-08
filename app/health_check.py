@@ -251,7 +251,7 @@ class HealthCheckService:
                 "status": HealthStatus.HEALTHY,
                 "initialization_time_ms": initialization_time,
                 "agents_available": 6,  # Número de agentes configurados
-                "graph_ready": app_graph is not None,
+                "graph_ready": graph is not None and stats.get("status") == "compiled and ready",
                 "last_checked": datetime.utcnow().isoformat() + "Z"
             }
             
