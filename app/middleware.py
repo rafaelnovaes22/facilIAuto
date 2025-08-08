@@ -3,7 +3,7 @@
 Intercepta requisições para adicionar logging estruturado e coleta de métricas
 """
 import time
-from typing import Callable
+from typing import Callable, Dict, List
 
 from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -205,7 +205,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
     def __init__(self, app, requests_per_minute: int = 60):
         super().__init__(app)
         self.requests_per_minute = requests_per_minute
-        self.client_requests = {}  # {client_ip: [timestamps]}
+        self.client_requests: Dict[str, List[float]] = {}  # {client_ip: [timestamps]}
 
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
         """

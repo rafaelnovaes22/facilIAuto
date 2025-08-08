@@ -8,7 +8,7 @@ import time
 import uuid
 from contextvars import ContextVar
 from datetime import datetime
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Union
 
 # Context variables para rastreamento de requisições
 correlation_id_var: ContextVar[Optional[str]] = ContextVar(
@@ -128,7 +128,7 @@ def setup_logging(level: str = "INFO", enable_structured: bool = True) -> None:
 
     if enable_structured:
         # Usa formatter estruturado
-        formatter = StructuredFormatter()
+        formatter: Union[StructuredFormatter, logging.Formatter] = StructuredFormatter()
     else:
         # Usa formatter padrão para desenvolvimento
         formatter = logging.Formatter(

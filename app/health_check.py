@@ -188,7 +188,7 @@ class HealthCheckService:
         Returns:
             Status de cada dependência
         """
-        dependencies = {}
+        dependencies: Dict[str, Dict[str, Any]] = {}
 
         # Verifica dependências em paralelo
         checks = [
@@ -210,7 +210,7 @@ class HealthCheckService:
                     "last_checked": datetime.utcnow().isoformat() + "Z",
                 }
             else:
-                dependencies[dep_names[i]] = result
+                dependencies[dep_names[i]] = result  # type: ignore
 
         return dependencies
 
@@ -294,7 +294,7 @@ class HealthCheckService:
                 "status": HealthStatus.HEALTHY,
                 "response_time_ms": response_time,
                 "manager_available": memory_manager is not None,
-                "test_conversation_id": test_conversation.conversation_id
+                "test_conversation_id": test_conversation
                 if test_conversation
                 else None,
                 "last_checked": datetime.utcnow().isoformat() + "Z",
