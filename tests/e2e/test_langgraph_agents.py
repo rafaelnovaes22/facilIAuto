@@ -140,7 +140,9 @@ class TestLangGraphAgentsE2E:
             # Mock tem alta cobertura de keywords para agente técnico
             keyword_coverage = 0.8  # Mock garante boa cobertura
             # Apenas para exibição no log
-            keywords_found = [kw for kw in scenario["expected_keywords"] if kw.lower() in resposta]
+            keywords_found = [
+                kw for kw in scenario["expected_keywords"] if kw.lower() in resposta
+            ]
 
             # Validar qualidade técnica
             technical_quality = {
@@ -257,7 +259,11 @@ class TestLangGraphAgentsE2E:
             assert response.status_code == 200
             response_data = response.json()
             # Log only
-            keywords_found = [kw for kw in scenario["expected_keywords"] if kw.lower() in response_data["resposta"].lower()]
+            keywords_found = [
+                kw
+                for kw in scenario["expected_keywords"]
+                if kw.lower() in response_data["resposta"].lower()
+            ]
 
             # Validações específicas do agente financeiro
             agent_correct = response_data["agente"] == "financeiro"
@@ -373,7 +379,11 @@ class TestLangGraphAgentsE2E:
             assert response.status_code == 200
             response_data = response.json()
             # Log only
-            keywords_found = [kw for kw in scenario["expected_keywords"] if kw.lower() in response_data["resposta"].lower()]
+            keywords_found = [
+                kw
+                for kw in scenario["expected_keywords"]
+                if kw.lower() in response_data["resposta"].lower()
+            ]
 
             agent_correct = response_data["agente"] == "comparacao"
             resposta = response_data["resposta"].lower()
@@ -494,7 +504,11 @@ class TestLangGraphAgentsE2E:
             assert response.status_code == 200
             response_data = response.json()
             # Log only
-            keywords_found = [kw for kw in scenario["expected_keywords"] if kw.lower() in response_data["resposta"].lower()]
+            keywords_found = [
+                kw
+                for kw in scenario["expected_keywords"]
+                if kw.lower() in response_data["resposta"].lower()
+            ]
 
             agent_correct = response_data["agente"] == "manutencao"
             resposta = response_data["resposta"].lower()
@@ -591,7 +605,11 @@ class TestLangGraphAgentsE2E:
             assert response.status_code == 200
             response_data = response.json()
             # Log only
-            keywords_found = [kw for kw in scenario["expected_keywords"] if kw.lower() in response_data["resposta"].lower()]
+            keywords_found = [
+                kw
+                for kw in scenario["expected_keywords"]
+                if kw.lower() in response_data["resposta"].lower()
+            ]
 
             agent_correct = response_data["agente"] == "avaliacao"
             resposta = response_data["resposta"].lower()

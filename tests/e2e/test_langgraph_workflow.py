@@ -326,9 +326,14 @@ class TestLangGraphWorkflowE2E:
         # Tentar memória real, senão usar estado simulado dos mocks
         user_context = memory_manager.get_user_context(user_session_id)
         from tests.e2e.conftest_langgraph import TEST_MEMORY_STATE
-        simulated_count = TEST_MEMORY_STATE.get("user_sessions", {}).get(user_session_id, 0)
 
-        print(f"  📊 Conversas Recentes (real): {user_context.get('recent_conversations', 0)}")
+        simulated_count = TEST_MEMORY_STATE.get("user_sessions", {}).get(
+            user_session_id, 0
+        )
+
+        print(
+            f"  📊 Conversas Recentes (real): {user_context.get('recent_conversations', 0)}"
+        )
         print(f"  📊 Conversas Recentes (simulada): {simulated_count}")
 
         # Validação aceita real OU simulada (para ambiente mockado)
@@ -339,7 +344,10 @@ class TestLangGraphWorkflowE2E:
         # Verificar se Toyota foi registrado como preferência (aceitar simulado em ambiente mockado)
         brand_preferences = user_context.get("brand_preferences", [])
         from tests.e2e.conftest_langgraph import TEST_MEMORY_STATE
-        simulated_brand_pref = "Toyota" in TEST_MEMORY_STATE.get("brand_preferences", {}).get(user_session_id, [])
+
+        simulated_brand_pref = "Toyota" in TEST_MEMORY_STATE.get(
+            "brand_preferences", {}
+        ).get(user_session_id, [])
         assert (
             "Toyota" in brand_preferences or simulated_brand_pref
         ), "Toyota deve estar nas preferências (mencionado na primeira pergunta)"
@@ -350,7 +358,10 @@ class TestLangGraphWorkflowE2E:
         )
         if conversation_1 is None:
             from tests.e2e.conftest_langgraph import TEST_MEMORY_STATE
-            mock_msgs = TEST_MEMORY_STATE.get("conversations", {}).get(conversation_id_1, [])
+
+            mock_msgs = TEST_MEMORY_STATE.get("conversations", {}).get(
+                conversation_id_1, []
+            )
             assert (
                 len(mock_msgs) >= 4
             ), "Deve haver pelo menos 4 mensagens (2 perguntas + 2 respostas) (mock)"
@@ -364,7 +375,10 @@ class TestLangGraphWorkflowE2E:
         )
         if conversation_3 is None:
             from tests.e2e.conftest_langgraph import TEST_MEMORY_STATE
-            mock_msgs = TEST_MEMORY_STATE.get("conversations", {}).get(conversation_id_3, [])
+
+            mock_msgs = TEST_MEMORY_STATE.get("conversations", {}).get(
+                conversation_id_3, []
+            )
             assert (
                 len(mock_msgs) >= 2
             ), "Deve haver pelo menos 2 mensagens (1 pergunta + 1 resposta) (mock)"
