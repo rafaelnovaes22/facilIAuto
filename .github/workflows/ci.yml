@@ -116,8 +116,7 @@ jobs:
         pip install -r requirements-test.txt
     
     - name: 🎭 Setup Playwright
-      run: |
-        playwright install --with-deps chromium
+      uses: microsoft/playwright-github-action@v1
     
     - name: 🚀 Start Application
       run: |
