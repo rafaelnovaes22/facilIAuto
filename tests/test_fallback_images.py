@@ -102,8 +102,8 @@ class TestFallbackImageService:
 
         placeholder = service.get_placeholder_with_info("Toyota", "Corolla")
 
-        assert "Toyota" in placeholder.upper()
-        assert "Corolla" in placeholder.upper()
+        assert "TOYOTA" in placeholder.upper()
+        assert "COROLLA" in placeholder.upper()
         assert "via.placeholder.com" in placeholder
         assert "400x300" in placeholder
 

@@ -19,10 +19,13 @@ class TestResponsiveCarousel:
     def driver(self):
         """Fixture para o driver do Selenium"""
         options = webdriver.ChromeOptions()
-        options.add_argument("--headless")
+        options.add_argument("--headless=new")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
-        driver = webdriver.Chrome(options=options)
+        try:
+            driver = webdriver.Chrome(options=options)
+        except Exception as e:
+            pytest.skip(f"ChromeDriver não disponível no ambiente: {e}")
         driver.set_window_size(1200, 800)
         yield driver
         driver.quit()

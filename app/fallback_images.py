@@ -297,8 +297,8 @@ class FallbackImageService:
         modelo: str,
         ano: Optional[int] = None,
         cor: Optional[str] = None,
-        width: int = 1200,
-        height: int = 800,
+        width: int = 400,
+        height: int = 300,
     ) -> str:
         """
         Gera placeholder personalizado com informações do veículo
@@ -327,7 +327,8 @@ class FallbackImageService:
             text_color = "FFFFFF" if self._is_dark_color(brand_color) else "000000"
 
         # Construir texto
-        text_parts = [marca.upper(), modelo.upper()]
+        # Preservar capitalização da marca/modelo no texto
+        text_parts = [marca, modelo]
         if ano:
             text_parts.append(str(ano))
 

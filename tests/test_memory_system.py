@@ -66,7 +66,7 @@ def test_memory_manager_initialization():
             "ok" if is_singleton else "error",
         )
 
-        return memory_manager
+        assert memory_manager is not None
     except Exception as e:
         print_step(f"Erro na inicialização: {e}", "error")
         traceback.print_exc()
@@ -103,7 +103,7 @@ def test_conversation_creation(memory_manager):
         if conversation:
             print_step(f"Conversa encontrada: carro_id={conversation.carro_id}", "ok")
             print_step(f"Total de mensagens: {len(messages)}", "ok")
-            return conversation_id
+            assert conversation_id
         else:
             print_step("Conversa não encontrada", "error")
             return None
@@ -170,7 +170,7 @@ def test_message_persistence(memory_manager, conversation_id):
         print_step(f"Total de mensagens recuperadas: {len(messages)}", "ok")
         print_step(f"Agente primário da conversa: {conversation.primary_agent}", "ok")
 
-        return len(messages) == len(test_messages)
+        assert len(messages) == len(test_messages)
 
     except Exception as e:
         print_step(f"Erro ao persistir mensagens: {e}", "error")
@@ -203,7 +203,7 @@ def test_context_extraction(memory_manager, conversation_id):
         )
 
         print_step("Contexto extraído automaticamente", "ok")
-        return True
+        assert True
 
     except Exception as e:
         print_step(f"Erro ao extrair contexto: {e}", "error")
@@ -230,7 +230,7 @@ def test_user_context(memory_manager):
             f"Marcas de interesse: {user_context.get('brand_preferences', [])}", "ok"
         )
 
-        return True
+        assert user_context is not None
 
     except Exception as e:
         print_step(f"Erro ao recuperar contexto: {e}", "error")
@@ -272,7 +272,7 @@ def test_langgraph_memory_integration():
         print_step(f"Agente usado: {resultado.get('agente', 'N/A')}", "ok")
         print_step(f"Conversation ID: {resultado.get('conversation_id', 'N/A')}", "ok")
 
-        return True
+        assert resultado is not None
 
     except Exception as e:
         print_step(f"Erro na integração: {e}", "error")
@@ -302,7 +302,7 @@ def test_analytics_system(memory_manager):
         )
         print_step(f"Uso por agente: {analytics.get('agent_usage', {})}", "ok")
 
-        return True
+        assert analytics is not None
 
     except Exception as e:
         print_step(f"Erro ao gerar analytics: {e}", "error")
@@ -327,7 +327,7 @@ def test_similar_conversations(memory_manager):
                 "ok",
             )
 
-        return True
+        assert similar_convs is not None
 
     except Exception as e:
         print_step(f"Erro ao buscar conversas similares: {e}", "error")

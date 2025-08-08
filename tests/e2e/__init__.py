@@ -1,1 +1,1 @@
-# 🧪 E2E Tests - FacilIAuto XP
+# 🧪 E2E Tests - Smoke Test Only
