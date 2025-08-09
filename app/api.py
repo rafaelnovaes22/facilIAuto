@@ -64,7 +64,22 @@ app.include_router(memory_router, prefix="/api", tags=["memory"])
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root():
-    """Página inicial com o questionário"""
+    """Página inicial com o questionário
+
+    Preferencialmente serve o arquivo `app/templates/index.html` se existir.
+    Mantém fallback para o HTML embutido enquanto a migração é concluída.
+    """
+    # Tenta servir a partir de template externo
+    try:
+        base_dir = os.path.dirname(__file__)
+        template_path = os.path.join(base_dir, "templates", "index.html")
+        if os.path.exists(template_path):
+            with open(template_path, "r", encoding="utf-8") as f:
+                return HTMLResponse(f.read())
+    except Exception:
+        # Em caso de qualquer erro, usa fallback embutido
+        pass
+
     html_content = """
     <!DOCTYPE html>
     <html lang="pt-BR">
