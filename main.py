@@ -23,7 +23,7 @@ import logging
 from datetime import datetime
 import json
 
-from recommendations import CarRecommender
+from app.recommendations import CarRecommender
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
