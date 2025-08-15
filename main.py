@@ -1,5 +1,5 @@
 """
-🚗 CarFinder - Sistema de Recomendação Prático de Carros
+🚗 FacilIAuto - Sistema de Recomendação Prático de Carros
 
 Sistema focado nos critérios reais de escolha:
 - Orçamento (filtro principal)
@@ -30,7 +30,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = FastAPI(
-    title="CarFinder API",
+    title="FacilIAuto API",
     description="Sistema prático de recomendação de carros baseado em necessidades reais",
     version="2.0.0"
 )
@@ -97,7 +97,7 @@ recommender = CarRecommender()
 
 def init_db():
     """Inicializar banco SQLite com esquema atualizado"""
-    conn = sqlite3.connect('carfinder.db')
+    conn = sqlite3.connect('faciliauto.db')
     cursor = conn.cursor()
     
     # Tabela de carros com campos adicionais
@@ -304,7 +304,7 @@ def seed_cars(cursor):
 
 def get_cars_from_db() -> List[Dict]:
     """Buscar carros do banco de dados"""
-    conn = sqlite3.connect('carfinder.db')
+    conn = sqlite3.connect('faciliauto.db')
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     
@@ -410,7 +410,7 @@ async def get_recommendations(request: QuestionnaireRequest):
 async def get_car_details(car_id: int):
     """Buscar detalhes de um carro específico"""
     try:
-        conn = sqlite3.connect('carfinder.db')
+        conn = sqlite3.connect('faciliauto.db')
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
         
@@ -431,7 +431,7 @@ async def get_car_details(car_id: int):
 async def create_lead(lead: LeadRequest):
     """Criar novo lead de interesse"""
     try:
-        conn = sqlite3.connect('carfinder.db')
+        conn = sqlite3.connect('faciliauto.db')
         cursor = conn.cursor()
         
         # Verificar se o carro existe
@@ -461,7 +461,7 @@ async def create_lead(lead: LeadRequest):
 async def get_admin_stats():
     """Estatísticas para dashboard administrativo"""
     try:
-        conn = sqlite3.connect('carfinder.db')
+        conn = sqlite3.connect('faciliauto.db')
         cursor = conn.cursor()
         
         # Total de carros
@@ -515,7 +515,7 @@ async def get_admin_stats():
 async def get_admin_leads():
     """Lista de leads para administração"""
     try:
-        conn = sqlite3.connect('carfinder.db')
+        conn = sqlite3.connect('faciliauto.db')
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
         
@@ -543,7 +543,7 @@ async def health_check():
     """Health check do sistema"""
     try:
         # Testar conexão com banco
-        conn = sqlite3.connect('carfinder.db')
+        conn = sqlite3.connect('faciliauto.db')
         cursor = conn.cursor()
         cursor.execute('SELECT COUNT(*) FROM cars')
         car_count = cursor.fetchone()[0]
@@ -551,7 +551,7 @@ async def health_check():
         
         return {
             "status": "ok",
-            "service": "CarFinder",
+            "service": "FacilIAuto",
             "version": "2.0.0",
             "database": "connected",
             "cars_available": car_count,
@@ -574,7 +574,7 @@ if __name__ == "__main__":
     init_db()
     
     # Executar servidor
-    logger.info("🚗 Iniciando CarFinder v2.0 - Sistema Prático de Recomendação")
+    logger.info("🚗 Iniciando FacilIAuto v2.0 - Sistema Prático de Recomendação")
     logger.info("📊 Novos recursos: Confiabilidade, Revenda, Manutenção")
     logger.info("🎯 Critérios práticos: Motivo, Frequência, Espaço, Economia")
     

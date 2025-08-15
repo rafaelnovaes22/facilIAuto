@@ -1,4 +1,4 @@
-# 🚗 CarFinder v2.0 - Sistema Prático de Recomendação de Carros
+# 🚗 FacilIAuto v2.0 - Sistema Prático de Recomendação de Carros
 
 [![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)](https://fastapi.tiangolo.com)
@@ -11,7 +11,7 @@
 
 ## 🎯 **Sobre o Projeto**
 
-O CarFinder v2.0 é um sistema de recomendação de carros revolucionário que entende as **necessidades práticas** dos brasileiros. Diferente de sistemas genéricos, nosso algoritmo considera critérios reais como:
+O FacilIAuto v2.0 é um sistema de recomendação de carros revolucionário que entende as **necessidades práticas** dos brasileiros. Diferente de sistemas genéricos, nosso algoritmo considera critérios reais como:
 
 - 💰 **Orçamento rigoroso** - Não perde tempo com carros fora da faixa
 - 🎯 **Motivo de compra** - Trabalho vs Família vs Investimento 
@@ -33,8 +33,8 @@ Python 3.11+
 ### **Instalação Rápida**
 ```bash
 # 1. Clone o repositório
-git clone <repository-url>
-cd carfinder
+git clone https://github.com/usuario/faciliauto.git
+cd faciliauto
 
 # 2. Instale dependências
 pip install -r requirements.txt
@@ -51,7 +51,7 @@ python main.py
 ## 📁 **Estrutura do Projeto**
 
 ```
-carfinder/
+faciliauto/
 ├── 🐍 main.py                      # FastAPI app principal
 ├── 🧠 recommendations.py           # Engine de recomendação prática
 ├── 📦 requirements.txt             # Dependências core
@@ -275,7 +275,7 @@ python main.py
 ### **Deploy Railway/Render**
 ```bash
 # Configurar variáveis de ambiente
-DATABASE_URL=sqlite:///carfinder.db
+DATABASE_URL=sqlite:///faciliauto.db
 PORT=8000
 
 # Deploy automático via Git
@@ -387,4 +387,4 @@ Desenvolvido com ❤️ seguindo metodologia XP e princípios de Clean Code.
 
 ---
 
-**🚗 CarFinder v2.0 - Recomendações inteligentes baseadas no que realmente importa! 🇧🇷**
+**🚗 FacilIAuto v2.0 - Recomendações inteligentes baseadas no que realmente importa! 🇧🇷**

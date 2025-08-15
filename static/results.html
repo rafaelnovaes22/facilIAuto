@@ -3,118 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suas Recomendações - CarFinder</title>
+    <title>FacilIAuto - Suas Recomendações</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .car-card {
+            transition: all 0.3s ease;
         }
-        .card-hover {
-            transition: transform 0.2s, box-shadow 0.2s;
+        .car-card:hover {
+            transform: translateY(-5px);
         }
-        .card-hover:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        .score-circle {
+            background: conic-gradient(from 0deg, #10b981 0%, #10b981 var(--score, 0%), #e5e7eb var(--score, 0%), #e5e7eb 100%);
         }
     </style>
 </head>
-<body class="bg-gray-50">
-    <div class="min-h-screen py-8">
-        <div class="max-w-7xl mx-auto px-4">
-            <!-- Header -->
-            <div class="text-center mb-8">
-                <h1 class="text-4xl font-bold text-gray-800 mb-2">🎯 Suas Recomendações</h1>
-                <p class="text-gray-600 text-lg">Encontramos os carros perfeitos para você</p>
-            </div>
-            
-            <!-- Loading State -->
-            <div id="loading" class="text-center py-16">
-                <div class="animate-spin w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-                <p class="text-gray-600 text-lg">Carregando suas recomendações...</p>
-            </div>
-            
-            <!-- Results -->
-            <div id="results" class="hidden">
-                <div id="cars-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                    <!-- Car cards will be injected here -->
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">🚗 FacilIAuto</h1>
+            <h2 class="text-2xl text-blue-600 mb-4">🎯 Suas Recomendações Personalizadas</h2>
+            <p class="text-gray-600">Baseado nas suas necessidades específicas</p>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading" class="text-center py-12">
+            <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mx-auto"></div>
+            <p class="mt-4 text-gray-600">Analisando seus critérios...</p>
+        </div>
+
+        <!-- Results Container -->
+        <div id="results-container" class="hidden">
+            <!-- Stats Header -->
+            <div id="stats-header" class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                    <div>
+                        <span class="text-3xl font-bold text-blue-600" id="total-found">0</span>
+                        <p class="text-gray-600">Carros Analisados</p>
+                    </div>
+                    <div>
+                        <span class="text-3xl font-bold text-green-600" id="best-score">0</span>
+                        <p class="text-gray-600">Melhor Compatibilidade</p>
+                    </div>
+                    <div>
+                        <span class="text-3xl font-bold text-purple-600" id="criteria-count">8</span>
+                        <p class="text-gray-600">Critérios Avaliados</p>
+                    </div>
                 </div>
-                
-                <!-- Actions -->
-                <div class="text-center space-x-4">
-                    <button onclick="window.location.href='/'" 
-                        class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-                        🔄 Nova Busca
-                    </button>
-                    <button onclick="window.location.href='/admin.html'" 
-                        class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
-                        📊 Admin
-                    </button>
-                </div>
             </div>
-            
-            <!-- No Results -->
-            <div id="no-results" class="hidden text-center py-16">
-                <div class="text-8xl mb-4">😔</div>
-                <h3 class="text-2xl font-semibold mb-2">Nenhum carro encontrado</h3>
-                <p class="text-gray-600 mb-6 text-lg">Tente ajustar seus critérios de busca</p>
-                <button onclick="window.location.href='/'" 
-                    class="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+
+            <!-- Recommendations Grid -->
+            <div id="recommendations-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Recommendations will be inserted here -->
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="text-center mt-8 space-x-4">
+                <button onclick="window.location.href='/'" class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
                     🔄 Nova Busca
+                </button>
+                <button onclick="window.print()" class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
+                    🖨️ Imprimir
+                </button>
+            </div>
+        </div>
+
+        <!-- No Results -->
+        <div id="no-results" class="hidden text-center py-12">
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">😔 Nenhum carro encontrado</h3>
+                <p class="text-gray-600 mb-6">Não encontramos carros que atendam exatamente seus critérios.</p>
+                <div class="space-y-2 text-left max-w-md mx-auto">
+                    <p class="text-sm text-gray-600">💡 <strong>Dicas:</strong></p>
+                    <p class="text-sm text-gray-600">• Considere aumentar sua faixa de preço</p>
+                    <p class="text-sm text-gray-600">• Seja mais flexível com as marcas</p>
+                    <p class="text-sm text-gray-600">• Revise suas prioridades</p>
+                </div>
+                <button onclick="window.location.href='/'" class="mt-6 px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                    🔄 Tentar Novamente
                 </button>
             </div>
         </div>
     </div>
-    
-    <!-- Contact Modal -->
-    <div id="contact-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-lg p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-semibold">💬 Demonstrar Interesse</h3>
-                <button onclick="closeContactModal()" class="text-gray-400 hover:text-gray-600 text-2xl">×</button>
-            </div>
+
+    <!-- Interest Modal -->
+    <div id="interest-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl shadow-xl p-8 max-w-md w-full mx-4">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">💝 Demonstrar Interesse</h3>
+            <p class="text-gray-600 mb-6">Preencha seus dados para que um consultor entre em contato:</p>
             
-            <div id="selected-car-info" class="mb-4 p-3 bg-gray-50 rounded-lg">
-                <!-- Selected car info will be inserted here -->
-            </div>
-            
-            <form id="contact-form">
+            <form id="interest-form">
                 <input type="hidden" id="selected-car-id">
                 
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-2">Nome Completo *</label>
-                    <input type="text" id="contact-name" required 
-                        class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Nome completo *</label>
+                    <input type="text" id="lead-name" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
                 
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-2">WhatsApp *</label>
-                    <input type="tel" id="contact-phone" required 
-                        placeholder="(11) 99999-9999"
-                        class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">WhatsApp *</label>
+                    <input type="tel" id="lead-phone" required placeholder="(11) 99999-9999" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
                 
                 <div class="mb-4">
-                    <label class="block text-sm font-medium mb-2">Email (opcional)</label>
-                    <input type="email" id="contact-email" 
-                        class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">E-mail (opcional)</label>
+                    <input type="email" id="lead-email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
                 
                 <div class="mb-6">
-                    <label class="block text-sm font-medium mb-2">Mensagem (opcional)</label>
-                    <textarea id="contact-message" rows="3" 
-                        placeholder="Gostaria de mais informações sobre este carro..."
-                        class="w-full p-3 border border-gray-300 rounded-lg resize-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors"></textarea>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Mensagem (opcional)</label>
+                    <textarea id="lead-message" rows="3" placeholder="Ex: Gostaria de agendar um test drive..." class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
                 </div>
                 
-                <div class="flex gap-3">
-                    <button type="button" onclick="closeContactModal()" 
-                        class="flex-1 px-4 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                <div class="flex space-x-3">
+                    <button type="button" onclick="closeInterestModal()" class="flex-1 px-4 py-3 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors">
                         Cancelar
                     </button>
-                    <button type="submit" 
-                        class="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
-                        <span id="submit-btn-text">📞 Enviar Contato</span>
-                        <div id="submit-loading" class="hidden animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></div>
+                    <button type="submit" class="flex-1 px-4 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+                        💚 Enviar Interesse
                     </button>
                 </div>
             </form>
@@ -122,200 +128,222 @@
     </div>
 
     <script>
-        // Load and display recommendations
+        let recommendations = [];
+        let questionnaire = {};
+
+        // Load data from localStorage
         document.addEventListener('DOMContentLoaded', function() {
             loadRecommendations();
-            
-            // Contact form handler
-            document.getElementById('contact-form').addEventListener('submit', handleContactSubmit);
         });
-        
+
         function loadRecommendations() {
-            // Get from localStorage
-            const recommendations = localStorage.getItem('recommendations');
-            
-            if (recommendations) {
-                displayRecommendations(JSON.parse(recommendations));
-            } else {
-                showNoResults();
-            }
-        }
-        
-        function displayRecommendations(data) {
-            document.getElementById('loading').classList.add('hidden');
-            
-            if (!data.recommendations || data.recommendations.length === 0) {
-                showNoResults();
-                return;
-            }
-            
-            const grid = document.getElementById('cars-grid');
-            grid.innerHTML = data.recommendations.map(car => createCarCard(car)).join('');
-            
-            document.getElementById('results').classList.remove('hidden');
-        }
-        
-        function createCarCard(car) {
-            return `
-                <div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm card-hover">
-                    ${car.score >= 85 ? '<div class="gradient-bg text-white px-4 py-2 text-sm font-semibold flex items-center gap-2"><span>⭐</span><span>TOP Recomendação</span></div>' : ''}
-                    
-                    <div class="h-48 bg-gray-100 relative">
-                        ${car.photo_url ? 
-                            `<img src="${car.photo_url}" alt="${car.brand} ${car.model}" class="w-full h-full object-cover">` :
-                            '<div class="flex items-center justify-center h-full text-gray-400 text-lg">🚗<br><span class="text-sm mt-2">Sem foto disponível</span></div>'
-                        }
-                        <div class="absolute top-3 right-3 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
-                            ${car.score}% compatível
-                        </div>
-                    </div>
-                    
-                    <div class="p-6">
-                        <div class="mb-3">
-                            <h3 class="font-bold text-xl text-gray-800">${car.brand} ${car.model}</h3>
-                            <p class="text-gray-600">${car.year} • ${formatCategory(car.category)}</p>
-                        </div>
-                        
-                        <div class="mb-4 space-y-2 text-sm text-gray-600">
-                            <div class="flex items-center gap-2">
-                                <span>⚙️</span>
-                                <span>Câmbio ${car.transmission === 'manual' ? 'Manual' : 'Automático'}</span>
-                            </div>
-                            ${car.consumption ? `
-                                <div class="flex items-center gap-2">
-                                    <span>⛽</span>
-                                    <span>${car.consumption} km/l na cidade</span>
-                                </div>
-                            ` : ''}
-                        </div>
-                        
-                        <div class="mb-6">
-                            <h4 class="font-semibold text-sm mb-3 text-gray-800">Por que recomendamos:</h4>
-                            <ul class="text-sm text-gray-600 space-y-2">
-                                ${car.reasons.map(reason => `
-                                    <li class="flex items-start gap-2">
-                                        <span class="text-green-500 mt-0.5">✓</span>
-                                        <span>${reason}</span>
-                                    </li>
-                                `).join('')}
-                            </ul>
-                        </div>
-                        
-                        <div class="border-t pt-4">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <div class="text-2xl font-bold text-green-600">
-                                        R$ ${car.price.toLocaleString()}
-                                    </div>
-                                    <div class="text-xs text-gray-500">À vista</div>
-                                </div>
-                                
-                                <button onclick="showContactModal(${car.id}, '${car.brand}', '${car.model}', ${car.price})" 
-                                    class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
-                                    💬 Tenho Interesse
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-        
-        function formatCategory(category) {
-            const categories = {
-                'hatch': 'Hatchback',
-                'sedan': 'Sedan',
-                'suv': 'SUV',
-                'pickup': 'Pickup',
-                'wagon': 'Station Wagon'
-            };
-            return categories[category] || category;
-        }
-        
-        function showContactModal(carId, brand, model, price) {
-            document.getElementById('selected-car-id').value = carId;
-            
-            // Update selected car info
-            document.getElementById('selected-car-info').innerHTML = `
-                <div class="font-semibold text-gray-800">${brand} ${model}</div>
-                <div class="text-green-600 font-bold">R$ ${price.toLocaleString()}</div>
-            `;
-            
-            document.getElementById('contact-modal').classList.remove('hidden');
-            
-            // Focus on first input
-            setTimeout(() => {
-                document.getElementById('contact-name').focus();
-            }, 100);
-        }
-        
-        function closeContactModal() {
-            document.getElementById('contact-modal').classList.add('hidden');
-            document.getElementById('contact-form').reset();
-        }
-        
-        async function handleContactSubmit(e) {
-            e.preventDefault();
-            
-            const submitBtn = document.querySelector('#contact-form button[type="submit"]');
-            const submitBtnText = document.getElementById('submit-btn-text');
-            const submitLoading = document.getElementById('submit-loading');
-            
-            // Show loading
-            submitBtnText.textContent = 'Enviando...';
-            submitLoading.classList.remove('hidden');
-            submitBtn.disabled = true;
-            
-            const formData = {
-                car_id: parseInt(document.getElementById('selected-car-id').value),
-                name: document.getElementById('contact-name').value,
-                phone: document.getElementById('contact-phone').value,
-                email: document.getElementById('contact-email').value,
-                message: document.getElementById('contact-message').value
-            };
-            
             try {
-                const response = await fetch('/api/leads', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
+                const storedRecommendations = localStorage.getItem('recommendations');
+                const storedQuestionnaire = localStorage.getItem('questionnaire');
                 
-                if (!response.ok) throw new Error('Failed to submit');
-                
-                // Success
-                alert('✅ Obrigado! Entraremos em contato em breve pelo WhatsApp informado.');
-                closeContactModal();
-                
+                if (!storedRecommendations) {
+                    showNoResults();
+                    return;
+                }
+
+                recommendations = JSON.parse(storedRecommendations);
+                questionnaire = storedQuestionnaire ? JSON.parse(storedQuestionnaire) : {};
+
+                setTimeout(() => {
+                    hideLoading();
+                    displayRecommendations();
+                }, 1500); // Simulate processing time
+
             } catch (error) {
-                console.error('Error submitting contact:', error);
-                alert('❌ Erro ao enviar. Verifique sua conexão e tente novamente.');
-            } finally {
-                // Reset loading state
-                submitBtnText.textContent = '📞 Enviar Contato';
-                submitLoading.classList.add('hidden');
-                submitBtn.disabled = false;
+                console.error('Error loading recommendations:', error);
+                showNoResults();
             }
         }
-        
+
+        function hideLoading() {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('results-container').classList.remove('hidden');
+        }
+
         function showNoResults() {
             document.getElementById('loading').classList.add('hidden');
             document.getElementById('no-results').classList.remove('hidden');
         }
-        
-        // Close modal on escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeContactModal();
+
+        function displayRecommendations() {
+            if (!recommendations.recommendations || recommendations.recommendations.length === 0) {
+                showNoResults();
+                return;
             }
+
+            // Update stats
+            document.getElementById('total-found').textContent = recommendations.total_found || recommendations.recommendations.length;
+            document.getElementById('best-score').textContent = Math.round(recommendations.recommendations[0]?.score || 0) + '%';
+
+            // Display recommendations
+            const grid = document.getElementById('recommendations-grid');
+            grid.innerHTML = '';
+
+            recommendations.recommendations.forEach((car, index) => {
+                const carCard = createCarCard(car, index);
+                grid.appendChild(carCard);
+            });
+        }
+
+        function createCarCard(car, index) {
+            const card = document.createElement('div');
+            card.className = 'car-card bg-white rounded-xl shadow-lg overflow-hidden';
+            
+            const rankBadge = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}º`;
+            const scorePercentage = Math.round(car.score);
+            
+            card.innerHTML = `
+                <div class="p-6">
+                    <!-- Header with rank and score -->
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="text-2xl font-bold">${rankBadge}</div>
+                        <div class="text-right">
+                            <div class="score-circle w-16 h-16 rounded-full flex items-center justify-center" style="--score: ${scorePercentage}%">
+                                <span class="text-sm font-bold text-gray-800">${scorePercentage}%</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">Compatibilidade</p>
+                        </div>
+                    </div>
+
+                    <!-- Car Info -->
+                    <div class="mb-4">
+                        <h3 class="text-xl font-bold text-gray-800">${car.brand} ${car.model}</h3>
+                        <p class="text-gray-600">${car.year} • ${car.category} • ${car.transmission}</p>
+                        <p class="text-2xl font-bold text-green-600 mt-2">R$ ${car.price.toLocaleString()}</p>
+                    </div>
+
+                    <!-- Technical Info -->
+                    <div class="grid grid-cols-2 gap-4 mb-4 text-sm">
+                        <div>
+                            <span class="text-gray-500">Consumo:</span>
+                            <span class="font-medium">${car.consumption} km/l</span>
+                        </div>
+                        ${car.reliability_score ? `
+                        <div>
+                            <span class="text-gray-500">Confiabilidade:</span>
+                            <span class="font-medium">${car.reliability_score}/100</span>
+                        </div>
+                        ` : ''}
+                        ${car.resale_score ? `
+                        <div>
+                            <span class="text-gray-500">Revenda:</span>
+                            <span class="font-medium">${car.resale_score}/100</span>
+                        </div>
+                        ` : ''}
+                        ${car.maintenance_cost ? `
+                        <div>
+                            <span class="text-gray-500">Manutenção:</span>
+                            <span class="font-medium">${car.maintenance_cost}</span>
+                        </div>
+                        ` : ''}
+                    </div>
+
+                    <!-- Reasons -->
+                    <div class="mb-6">
+                        <h4 class="font-semibold text-gray-800 mb-2">Por que recomendamos:</h4>
+                        <ul class="space-y-1">
+                            ${car.reasons.map(reason => `
+                                <li class="text-sm text-gray-600 flex items-start">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    ${reason}
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="space-y-2">
+                        <button onclick="showInterestModal(${car.id}, '${car.brand} ${car.model}')" 
+                                class="w-full px-4 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors font-medium">
+                            💚 Tenho Interesse
+                        </button>
+                        <button onclick="getCarDetails(${car.id})" 
+                                class="w-full px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                            📋 Ver Detalhes
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        function showInterestModal(carId, carName) {
+            document.getElementById('selected-car-id').value = carId;
+            document.getElementById('interest-modal').classList.remove('hidden');
+            document.getElementById('interest-modal').classList.add('flex');
+            
+            // Add car name to modal title
+            document.querySelector('#interest-modal h3').innerHTML = `💝 Interesse: ${carName}`;
+        }
+
+        function closeInterestModal() {
+            document.getElementById('interest-modal').classList.add('hidden');
+            document.getElementById('interest-modal').classList.remove('flex');
+            document.getElementById('interest-form').reset();
+        }
+
+        function getCarDetails(carId) {
+            fetch(`/api/cars/${carId}`)
+                .then(response => response.json())
+                .then(car => {
+                    alert(`Detalhes do ${car.brand} ${car.model}:\n\n` +
+                          `Ano: ${car.year}\n` +
+                          `Preço: R$ ${car.price.toLocaleString()}\n` +
+                          `Consumo: ${car.consumption} km/l\n` +
+                          `Transmissão: ${car.transmission}\n` +
+                          `Assentos: ${car.seats}\n` +
+                          `Segurança: ${car.safety_rating}/5 estrelas`);
+                })
+                .catch(error => {
+                    console.error('Error fetching car details:', error);
+                    alert('Erro ao buscar detalhes do carro.');
+                });
+        }
+
+        // Handle interest form submission
+        document.getElementById('interest-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const leadData = {
+                car_id: parseInt(document.getElementById('selected-car-id').value),
+                name: document.getElementById('lead-name').value,
+                phone: document.getElementById('lead-phone').value,
+                email: document.getElementById('lead-email').value,
+                message: document.getElementById('lead-message').value
+            };
+
+            fetch('/api/leads', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(leadData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('✅ Interesse registrado com sucesso!\n\nUm consultor entrará em contato em breve.');
+                    closeInterestModal();
+                } else {
+                    alert('❌ Erro ao registrar interesse. Tente novamente.');
+                }
+            })
+            .catch(error => {
+                console.error('Error creating lead:', error);
+                alert('❌ Erro ao registrar interesse. Verifique sua conexão.');
+            });
         });
-        
-        // Close modal on backdrop click
-        document.getElementById('contact-modal').addEventListener('click', function(e) {
+
+        // Close modal when clicking outside
+        document.getElementById('interest-modal').addEventListener('click', function(e) {
             if (e.target === this) {
-                closeContactModal();
+                closeInterestModal();
             }
         });
     </script>
