@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suas Recomendações - CarFinder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen py-8">
+        <div class="max-w-7xl mx-auto px-4">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">🎯 Suas Recomendações</h1>
+                <p class="text-gray-600 text-lg">Encontramos os carros perfeitos para você</p>
+            </div>
+            
+            <!-- Loading State -->
+            <div id="loading" class="text-center py-16">
+                <div class="animate-spin w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                <p class="text-gray-600 text-lg">Carregando suas recomendações...</p>
+            </div>
+            
+            <!-- Results -->
+            <div id="results" class="hidden">
+                <div id="cars-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Car cards will be injected here -->
+                </div>
+                
+                <!-- Actions -->
+                <div class="text-center space-x-4">
+                    <button onclick="window.location.href='/'" 
+                        class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                        🔄 Nova Busca
+                    </button>
+                    <button onclick="window.location.href='/admin.html'" 
+                        class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                        📊 Admin
+                    </button>
+                </div>
+            </div>
+            
+            <!-- No Results -->
+            <div id="no-results" class="hidden text-center py-16">
+                <div class="text-8xl mb-4">😔</div>
+                <h3 class="text-2xl font-semibold mb-2">Nenhum carro encontrado</h3>
+                <p class="text-gray-600 mb-6 text-lg">Tente ajustar seus critérios de busca</p>
+                <button onclick="window.location.href='/'" 
+                    class="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    🔄 Nova Busca
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold">💬 Demonstrar Interesse</h3>
+                <button onclick="closeContactModal()" class="text-gray-400 hover:text-gray-600 text-2xl">×</button>
+            </div>
+            
+            <div id="selected-car-info" class="mb-4 p-3 bg-gray-50 rounded-lg">
+                <!-- Selected car info will be inserted here -->
+            </div>
+            
+            <form id="contact-form">
+                <input type="hidden" id="selected-car-id">
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2">Nome Completo *</label>
+                    <input type="text" id="contact-name" required 
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2">WhatsApp *</label>
+                    <input type="tel" id="contact-phone" required 
+                        placeholder="(11) 99999-9999"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2">Email (opcional)</label>
+                    <input type="email" id="contact-email" 
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors">
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-2">Mensagem (opcional)</label>
+                    <textarea id="contact-message" rows="3" 
+                        placeholder="Gostaria de mais informações sobre este carro..."
+                        class="w-full p-3 border border-gray-300 rounded-lg resize-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors"></textarea>
+                </div>
+                
+                <div class="flex gap-3">
+                    <button type="button" onclick="closeContactModal()" 
+                        class="flex-1 px-4 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                        Cancelar
+                    </button>
+                    <button type="submit" 
+                        class="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
+                        <span id="submit-btn-text">📞 Enviar Contato</span>
+                        <div id="submit-loading" class="hidden animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Load and display recommendations
+        document.addEventListener('DOMContentLoaded', function() {
+            loadRecommendations();
+            
+            // Contact form handler
+            document.getElementById('contact-form').addEventListener('submit', handleContactSubmit);
+        });
+        
+        function loadRecommendations() {
+            // Get from localStorage
+            const recommendations = localStorage.getItem('recommendations');
+            
+            if (recommendations) {
+                displayRecommendations(JSON.parse(recommendations));
+            } else {
+                showNoResults();
+            }
+        }
+        
+        function displayRecommendations(data) {
+            document.getElementById('loading').classList.add('hidden');
+            
+            if (!data.recommendations || data.recommendations.length === 0) {
+                showNoResults();
+                return;
+            }
+            
+            const grid = document.getElementById('cars-grid');
+            grid.innerHTML = data.recommendations.map(car => createCarCard(car)).join('');
+            
+            document.getElementById('results').classList.remove('hidden');
+        }
+        
+        function createCarCard(car) {
+            return `
+                <div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm card-hover">
+                    ${car.score >= 85 ? '<div class="gradient-bg text-white px-4 py-2 text-sm font-semibold flex items-center gap-2"><span>⭐</span><span>TOP Recomendação</span></div>' : ''}
+                    
+                    <div class="h-48 bg-gray-100 relative">
+                        ${car.photo_url ? 
+                            `<img src="${car.photo_url}" alt="${car.brand} ${car.model}" class="w-full h-full object-cover">` :
+                            '<div class="flex items-center justify-center h-full text-gray-400 text-lg">🚗<br><span class="text-sm mt-2">Sem foto disponível</span></div>'
+                        }
+                        <div class="absolute top-3 right-3 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+                            ${car.score}% compatível
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="mb-3">
+                            <h3 class="font-bold text-xl text-gray-800">${car.brand} ${car.model}</h3>
+                            <p class="text-gray-600">${car.year} • ${formatCategory(car.category)}</p>
+                        </div>
+                        
+                        <div class="mb-4 space-y-2 text-sm text-gray-600">
+                            <div class="flex items-center gap-2">
+                                <span>⚙️</span>
+                                <span>Câmbio ${car.transmission === 'manual' ? 'Manual' : 'Automático'}</span>
+                            </div>
+                            ${car.consumption ? `
+                                <div class="flex items-center gap-2">
+                                    <span>⛽</span>
+                                    <span>${car.consumption} km/l na cidade</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h4 class="font-semibold text-sm mb-3 text-gray-800">Por que recomendamos:</h4>
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                ${car.reasons.map(reason => `
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-green-500 mt-0.5">✓</span>
+                                        <span>${reason}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div class="border-t pt-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <div class="text-2xl font-bold text-green-600">
+                                        R$ ${car.price.toLocaleString()}
+                                    </div>
+                                    <div class="text-xs text-gray-500">À vista</div>
+                                </div>
+                                
+                                <button onclick="showContactModal(${car.id}, '${car.brand}', '${car.model}', ${car.price})" 
+                                    class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                                    💬 Tenho Interesse
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function formatCategory(category) {
+            const categories = {
+                'hatch': 'Hatchback',
+                'sedan': 'Sedan',
+                'suv': 'SUV',
+                'pickup': 'Pickup',
+                'wagon': 'Station Wagon'
+            };
+            return categories[category] || category;
+        }
+        
+        function showContactModal(carId, brand, model, price) {
+            document.getElementById('selected-car-id').value = carId;
+            
+            // Update selected car info
+            document.getElementById('selected-car-info').innerHTML = `
+                <div class="font-semibold text-gray-800">${brand} ${model}</div>
+                <div class="text-green-600 font-bold">R$ ${price.toLocaleString()}</div>
+            `;
+            
+            document.getElementById('contact-modal').classList.remove('hidden');
+            
+            // Focus on first input
+            setTimeout(() => {
+                document.getElementById('contact-name').focus();
+            }, 100);
+        }
+        
+        function closeContactModal() {
+            document.getElementById('contact-modal').classList.add('hidden');
+            document.getElementById('contact-form').reset();
+        }
+        
+        async function handleContactSubmit(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.querySelector('#contact-form button[type="submit"]');
+            const submitBtnText = document.getElementById('submit-btn-text');
+            const submitLoading = document.getElementById('submit-loading');
+            
+            // Show loading
+            submitBtnText.textContent = 'Enviando...';
+            submitLoading.classList.remove('hidden');
+            submitBtn.disabled = true;
+            
+            const formData = {
+                car_id: parseInt(document.getElementById('selected-car-id').value),
+                name: document.getElementById('contact-name').value,
+                phone: document.getElementById('contact-phone').value,
+                email: document.getElementById('contact-email').value,
+                message: document.getElementById('contact-message').value
+            };
+            
+            try {
+                const response = await fetch('/api/leads', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (!response.ok) throw new Error('Failed to submit');
+                
+                // Success
+                alert('✅ Obrigado! Entraremos em contato em breve pelo WhatsApp informado.');
+                closeContactModal();
+                
+            } catch (error) {
+                console.error('Error submitting contact:', error);
+                alert('❌ Erro ao enviar. Verifique sua conexão e tente novamente.');
+            } finally {
+                // Reset loading state
+                submitBtnText.textContent = '📞 Enviar Contato';
+                submitLoading.classList.add('hidden');
+                submitBtn.disabled = false;
+            }
+        }
+        
+        function showNoResults() {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('no-results').classList.remove('hidden');
+        }
+        
+        // Close modal on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeContactModal();
+            }
+        });
+        
+        // Close modal on backdrop click
+        document.getElementById('contact-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeContactModal();
+            }
+        });
+    </script>
+</body>
+</html>

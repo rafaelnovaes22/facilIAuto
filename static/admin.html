@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - CarFinder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <div class="gradient-bg text-white py-6">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h1 class="text-3xl font-bold">📊 CarFinder Admin</h1>
+                        <p class="text-blue-100">Dashboard de administração</p>
+                    </div>
+                    <button onclick="window.location.href='/'" 
+                        class="px-4 py-2 bg-white bg-opacity-20 rounded-lg hover:bg-opacity-30 transition-colors">
+                        ← Voltar ao Site
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-6xl mx-auto px-4 py-8">
+            <!-- Stats Cards -->
+            <div class="grid md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-lg p-6 shadow-sm border">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-600 text-sm">Total de Carros</p>
+                            <p id="total-cars" class="text-2xl font-bold text-gray-800">-</p>
+                        </div>
+                        <div class="text-3xl">🚗</div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg p-6 shadow-sm border">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-600 text-sm">Total de Leads</p>
+                            <p id="total-leads" class="text-2xl font-bold text-gray-800">-</p>
+                        </div>
+                        <div class="text-3xl">👥</div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg p-6 shadow-sm border">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-600 text-sm">Leads Hoje</p>
+                            <p id="leads-today" class="text-2xl font-bold text-green-600">-</p>
+                        </div>
+                        <div class="text-3xl">📈</div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg p-6 shadow-sm border">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-600 text-sm">Taxa Conversão</p>
+                            <p id="conversion-rate" class="text-2xl font-bold text-blue-600">-</p>
+                        </div>
+                        <div class="text-3xl">🎯</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading" class="text-center py-8">
+                <div class="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                <p class="text-gray-600">Carregando dados...</p>
+            </div>
+
+            <!-- Content -->
+            <div id="content" class="hidden">
+                <!-- Leads Table -->
+                <div class="bg-white rounded-lg shadow-sm border overflow-hidden mb-8">
+                    <div class="px-6 py-4 border-b bg-gray-50">
+                        <div class="flex justify-between items-center">
+                            <h2 class="text-xl font-semibold text-gray-800">💬 Leads Recentes</h2>
+                            <button onclick="refreshData()" 
+                                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
+                                🔄 Atualizar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase">Data</th>
+                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase">Nome</th>
+                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase">WhatsApp</th>
+                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase">Carro Interesse</th>
+                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase">Preço</th>
+                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leads-table" class="divide-y divide-gray-200">
+                                <!-- Leads will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="no-leads" class="hidden text-center py-8 text-gray-500">
+                        📭 Nenhum lead encontrado
+                    </div>
+                </div>
+
+                <!-- Popular Cars -->
+                <div class="bg-white rounded-lg shadow-sm border overflow-hidden">
+                    <div class="px-6 py-4 border-b bg-gray-50">
+                        <h2 class="text-xl font-semibold text-gray-800">🏆 Carros Mais Procurados</h2>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div id="popular-cars" class="space-y-3">
+                            <!-- Popular cars will be inserted here -->
+                        </div>
+                        
+                        <div id="no-popular" class="hidden text-center py-4 text-gray-500">
+                            📊 Ainda não há dados suficientes
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+        });
+
+        async function loadData() {
+            try {
+                const [statsResponse, leadsResponse] = await Promise.all([
+                    fetch('/api/admin/stats'),
+                    fetch('/api/admin/leads')
+                ]);
+
+                if (!statsResponse.ok || !leadsResponse.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+
+                const stats = await statsResponse.json();
+                const leadsData = await leadsResponse.json();
+
+                displayStats(stats);
+                displayLeads(leadsData.leads);
+                
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('content').classList.remove('hidden');
+
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('loading').innerHTML = `
+                    <div class="text-red-500">
+                        <div class="text-4xl mb-4">❌</div>
+                        <p>Erro ao carregar dados</p>
+                        <button onclick="loadData()" 
+                            class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                            Tentar Novamente
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function displayStats(stats) {
+            document.getElementById('total-cars').textContent = stats.total_cars || '0';
+            document.getElementById('total-leads').textContent = stats.total_leads || '0';
+            document.getElementById('leads-today').textContent = stats.leads_today || '0';
+            
+            // Calculate conversion rate (assuming 100 unique visitors for demo)
+            const conversionRate = stats.total_leads > 0 
+                ? ((stats.total_leads / 100) * 100).toFixed(1) + '%' 
+                : '0%';
+            document.getElementById('conversion-rate').textContent = conversionRate;
+
+            // Display popular cars
+            const popularContainer = document.getElementById('popular-cars');
+            if (stats.popular_cars && stats.popular_cars.length > 0) {
+                popularContainer.innerHTML = stats.popular_cars.map((car, index) => `
+                    <div class="flex items-center justify-between p-3 rounded-lg ${index % 2 === 0 ? 'bg-gray-50' : ''}">
+                        <div class="flex items-center gap-3">
+                            <span class="text-lg font-bold text-gray-400">#${index + 1}</span>
+                            <div>
+                                <div class="font-semibold">${car[0]} ${car[1]}</div>
+                                <div class="text-sm text-gray-500">${car[2]} interessados</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-blue-600">${car[2]}</div>
+                            <div class="text-xs text-gray-500">leads</div>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('no-popular').classList.remove('hidden');
+            }
+        }
+
+        function displayLeads(leads) {
+            const tableBody = document.getElementById('leads-table');
+            
+            if (leads && leads.length > 0) {
+                tableBody.innerHTML = leads.map(lead => `
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 text-sm text-gray-600">
+                            ${formatDate(lead.created_at)}
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="font-medium text-gray-800">${lead.name}</div>
+                            ${lead.email ? `<div class="text-sm text-gray-500">${lead.email}</div>` : ''}
+                        </td>
+                        <td class="px-6 py-4">
+                            <a href="https://wa.me/55${lead.phone.replace(/\D/g, '')}" 
+                               target="_blank"
+                               class="text-green-600 hover:text-green-700 font-medium">
+                                ${lead.phone}
+                            </a>
+                        </td>
+                        <td class="px-6 py-4">
+                            ${lead.brand && lead.model ? `
+                                <div class="font-medium">${lead.brand} ${lead.model}</div>
+                                <div class="text-sm text-gray-500">${lead.year}</div>
+                            ` : 'N/A'}
+                        </td>
+                        <td class="px-6 py-4">
+                            ${lead.price ? `
+                                <div class="font-medium text-green-600">R$ ${lead.price.toLocaleString()}</div>
+                            ` : 'N/A'}
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex gap-2">
+                                <a href="https://wa.me/55${lead.phone.replace(/\D/g, '')}" 
+                                   target="_blank"
+                                   class="px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700 transition-colors">
+                                    💬 WhatsApp
+                                </a>
+                                ${lead.message ? `
+                                    <button onclick="showMessage('${lead.message.replace(/'/g, "\\'")}', '${lead.name}')" 
+                                        class="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition-colors">
+                                        📝 Ver Msg
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+                document.getElementById('no-leads').classList.remove('hidden');
+            }
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function showMessage(message, name) {
+            alert(`Mensagem de ${name}:\n\n"${message}"`);
+        }
+
+        async function refreshData() {
+            const refreshBtn = event.target;
+            const originalText = refreshBtn.innerHTML;
+            
+            refreshBtn.innerHTML = '⏳ Atualizando...';
+            refreshBtn.disabled = true;
+            
+            try {
+                await loadData();
+            } finally {
+                refreshBtn.innerHTML = originalText;
+                refreshBtn.disabled = false;
+            }
+        }
+
+        // Auto-refresh every 30 seconds
+        setInterval(loadData, 30000);
+    </script>
+</body>
+</html>

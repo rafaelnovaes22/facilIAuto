@@ -1,0 +1,534 @@
+name: 🚀 CarFinder XP CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop, feature/* ]
+  pull_request:
+    branches: [ main, develop ]
+    
+  # Permite execução manual para debugging
+  workflow_dispatch:
+    inputs:
+      test_suite:
+        description: 'Test suite to run'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+        - all
+        - unit
+        - integration
+        - e2e
+        - performance
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+  actions: read
+
+# XP Principle: Fast feedback loop
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: "3.11"
+  NODE_VERSION: "18"
+
+jobs:
+  # ===== JOB 1: FAST FEEDBACK =====
+  lint-and-format:
+    name: 🔍 Code Quality (XP: Continuous Integration)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+      
+    - name: 🐍 Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+        
+    - name: 📦 Install Quality Tools
+      run: |
+        pip install flake8 black isort mypy
+        
+    - name: 🎨 Check Code Formatting (Black)
+      run: |
+        echo "::group::Black Formatting Check"
+        black --check --diff .
+        echo "::endgroup::"
+        
+    - name: 📝 Check Import Sorting (isort)
+      run: |
+        echo "::group::Import Sorting Check"
+        isort --check-only --diff .
+        echo "::endgroup::"
+        
+    - name: 🔍 Lint Code (Flake8)
+      run: |
+        echo "::group::Flake8 Linting"
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+        echo "::endgroup::"
+        
+    - name: 🏷️ Type Check (MyPy)
+      run: |
+        echo "::group::Type Checking"
+        mypy . --ignore-missing-imports --no-strict-optional
+        echo "::endgroup::"
+
+  # ===== JOB 2: UNIT TESTS (TDD Core) =====
+  unit-tests:
+    name: 🧪 Unit Tests (TDD Red-Green-Refactor)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: lint-and-format
+    
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+        
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+      
+    - name: 🐍 Setup Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+        
+    - name: 📦 Install Dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install -r requirements-test.txt
+        
+    - name: 🧪 Run Unit Tests
+      run: |
+        echo "::group::Unit Tests Execution"
+        pytest tests/unit/ -v \
+          --cov=. \
+          --cov-report=term-missing \
+          --cov-report=xml \
+          --cov-report=html \
+          --junitxml=test-results/unit-results.xml \
+          --tb=short \
+          --durations=10 \
+          -m "unit"
+        echo "::endgroup::"
+        
+    - name: 📊 Upload Coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unit-tests
+        name: unit-tests-${{ matrix.python-version }}
+        fail_ci_if_error: false
+        
+    - name: 📋 Publish Unit Test Results
+      uses: dorny/test-reporter@v1
+      if: success() || failure()
+      with:
+        name: Unit Tests (Python ${{ matrix.python-version }})
+        path: test-results/unit-results.xml
+        reporter: java-junit
+        fail-on-empty: true
+
+  # ===== JOB 3: INTEGRATION TESTS =====
+  integration-tests:
+    name: 🔗 Integration Tests (API & Database)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: lint-and-format
+    
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+      
+    - name: 🐍 Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+        
+    - name: 📦 Install Dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install -r requirements-test.txt
+        
+    - name: 🔗 Run Integration Tests
+      run: |
+        echo "::group::Integration Tests Execution"
+        pytest tests/integration/ -v \
+          --cov=. \
+          --cov-append \
+          --cov-report=xml \
+          --junitxml=test-results/integration-results.xml \
+          --tb=short \
+          -m "integration"
+        echo "::endgroup::"
+        
+    - name: 📋 Publish Integration Test Results
+      uses: dorny/test-reporter@v1
+      if: success() || failure()
+      with:
+        name: Integration Tests
+        path: test-results/integration-results.xml
+        reporter: java-junit
+
+  # ===== JOB 4: E2E TESTS =====
+  e2e-tests:
+    name: 🌐 E2E Tests (User Journeys)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [unit-tests, integration-tests]
+    if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'run-e2e')
+    
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+      
+    - name: 🐍 Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+        
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: 📦 Install Dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install -r requirements-test.txt
+        
+    - name: 🎭 Install Playwright
+      run: |
+        pip install playwright pytest-playwright
+        playwright install chromium
+        
+    - name: 🚀 Start Application
+      run: |
+        echo "::group::Starting CarFinder Application"
+        python main.py &
+        APP_PID=$!
+        echo "APP_PID=$APP_PID" >> $GITHUB_ENV
+        
+        # Wait for application to be ready
+        timeout 30 bash -c 'until curl -f http://localhost:8000/api/health; do sleep 1; done'
+        echo "::endgroup::"
+        
+    - name: 🌐 Run E2E Tests
+      run: |
+        echo "::group::E2E Tests Execution"
+        pytest tests/e2e/ -v \
+          --browser chromium \
+          --headed=false \
+          --junitxml=test-results/e2e-results.xml \
+          --html=test-results/e2e-report.html \
+          --self-contained-html \
+          -m "e2e and not slow"
+        echo "::endgroup::"
+        
+    - name: 🛑 Stop Application
+      if: always()
+      run: |
+        if [ ! -z "$APP_PID" ]; then
+          kill $APP_PID || true
+        fi
+        
+    - name: 📸 Upload E2E Artifacts
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: e2e-results
+        path: |
+          test-results/e2e-report.html
+          test-results/e2e-results.xml
+          test-results/screenshots/
+          test-results/videos/
+        retention-days: 7
+        
+    - name: 📋 Publish E2E Test Results
+      uses: dorny/test-reporter@v1
+      if: success() || failure()
+      with:
+        name: E2E Tests
+        path: test-results/e2e-results.xml
+        reporter: java-junit
+
+  # ===== JOB 5: PERFORMANCE TESTS =====
+  performance-tests:
+    name: ⚡ Performance Tests (Load & Stress)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: integration-tests
+    if: github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'run-performance')
+    
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+      
+    - name: 🐍 Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+        
+    - name: 📦 Install Dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install -r requirements-test.txt
+        
+    - name: 🚀 Start Application
+      run: |
+        python main.py &
+        APP_PID=$!
+        echo "APP_PID=$APP_PID" >> $GITHUB_ENV
+        timeout 30 bash -c 'until curl -f http://localhost:8000/api/health; do sleep 1; done'
+        
+    - name: ⚡ Run Performance Tests
+      run: |
+        echo "::group::Performance Tests"
+        pytest tests/ -v \
+          --benchmark-only \
+          --benchmark-json=test-results/benchmark.json \
+          -m "performance"
+        echo "::endgroup::"
+        
+    - name: 🛑 Stop Application
+      if: always()
+      run: |
+        if [ ! -z "$APP_PID" ]; then
+          kill $APP_PID || true
+        fi
+        
+    - name: 📊 Upload Performance Results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: performance-results
+        path: test-results/benchmark.json
+        retention-days: 30
+
+  # ===== JOB 6: SECURITY SCAN =====
+  security-scan:
+    name: 🔒 Security Scan (XP: Secure by Design)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: lint-and-format
+    
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+      
+    - name: 🐍 Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+        
+    - name: 📦 Install Security Tools
+      run: |
+        pip install bandit safety
+        
+    - name: 🔒 Run Bandit Security Scan
+      run: |
+        echo "::group::Bandit Security Scan"
+        bandit -r . -f json -o bandit-report.json || true
+        bandit -r . -f txt
+        echo "::endgroup::"
+        
+    - name: 🛡️ Check Dependencies for Vulnerabilities
+      run: |
+        echo "::group::Safety Check"
+        safety check --json --output safety-report.json || true
+        safety check
+        echo "::endgroup::"
+        
+    - name: 📊 Upload Security Reports
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: security-reports
+        path: |
+          bandit-report.json
+          safety-report.json
+        retention-days: 30
+
+  # ===== JOB 7: SMOKE TESTS (PRODUCTION-LIKE) =====
+  smoke-tests:
+    name: 💨 Smoke Tests (Production Readiness)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [unit-tests, integration-tests]
+    
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+      
+    - name: 🐍 Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+        
+    - name: 📦 Install Dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install requests
+        
+    - name: 🚀 Start Application (Production Mode)
+      run: |
+        export ENVIRONMENT=production
+        python main.py &
+        APP_PID=$!
+        echo "APP_PID=$APP_PID" >> $GITHUB_ENV
+        timeout 30 bash -c 'until curl -f http://localhost:8000/api/health; do sleep 1; done'
+        
+    - name: 💨 Run Smoke Tests
+      run: |
+        echo "::group::Smoke Tests"
+        pytest tests/ -v \
+          --junitxml=test-results/smoke-results.xml \
+          -m "smoke" \
+          --tb=short
+        echo "::endgroup::"
+        
+    - name: 🔧 Test Critical Endpoints
+      run: |
+        echo "::group::Critical Endpoints Test"
+        # Health check
+        curl -f http://localhost:8000/api/health
+        
+        # Static pages
+        curl -f http://localhost:8000/ -o /dev/null
+        curl -f http://localhost:8000/admin.html -o /dev/null
+        
+        # API endpoints
+        curl -f -X POST http://localhost:8000/api/recommendations \
+          -H "Content-Type: application/json" \
+          -d '{"answers":{"budget":"30k_50k"},"session_id":"smoke_test"}' \
+          -o /dev/null
+        echo "::endgroup::"
+        
+    - name: 🛑 Stop Application
+      if: always()
+      run: |
+        if [ ! -z "$APP_PID" ]; then
+          kill $APP_PID || true
+        fi
+
+  # ===== JOB 8: DEPLOYMENT READINESS =====
+  deployment-check:
+    name: 🚀 Deployment Readiness (XP: Continuous Deployment)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: [unit-tests, integration-tests, smoke-tests, security-scan]
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+      
+    - name: ✅ Validate Deployment Requirements
+      run: |
+        echo "::group::Deployment Validation"
+        
+        # Check required files exist
+        test -f requirements.txt
+        test -f main.py
+        test -f README.md
+        
+        # Check version consistency (if applicable)
+        echo "All deployment requirements satisfied ✅"
+        echo "::endgroup::"
+        
+    - name: 📊 Generate Deployment Summary
+      run: |
+        echo "::group::Deployment Summary"
+        echo "🎯 **Deployment Ready** - All checks passed!"
+        echo ""
+        echo "📊 **Test Results:**"
+        echo "- ✅ Code Quality: Passed"
+        echo "- ✅ Unit Tests: Passed"
+        echo "- ✅ Integration Tests: Passed"
+        echo "- ✅ Smoke Tests: Passed"
+        echo "- ✅ Security Scan: Passed"
+        echo ""
+        echo "🚀 **Ready for production deployment!**"
+        echo "::endgroup::"
+
+  # ===== JOB 9: QUALITY GATE =====
+  quality-gate:
+    name: 🏆 Quality Gate (XP: Definition of Done)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: [unit-tests, integration-tests, smoke-tests, security-scan]
+    if: always()
+    
+    steps:
+    - name: 🎯 Evaluate Quality Gate
+      run: |
+        echo "::group::Quality Gate Evaluation"
+        
+        # Check job statuses
+        UNIT_TESTS="${{ needs.unit-tests.result }}"
+        INTEGRATION_TESTS="${{ needs.integration-tests.result }}"
+        SMOKE_TESTS="${{ needs.smoke-tests.result }}"
+        SECURITY_SCAN="${{ needs.security-scan.result }}"
+        
+        echo "📊 Test Results Summary:"
+        echo "- Unit Tests: $UNIT_TESTS"
+        echo "- Integration Tests: $INTEGRATION_TESTS"
+        echo "- Smoke Tests: $SMOKE_TESTS"
+        echo "- Security Scan: $SECURITY_SCAN"
+        
+        # Determine overall status
+        if [[ "$UNIT_TESTS" == "success" && "$INTEGRATION_TESTS" == "success" && "$SMOKE_TESTS" == "success" && "$SECURITY_SCAN" == "success" ]]; then
+          echo "🏆 QUALITY GATE: PASSED ✅"
+          echo "All critical tests passed. Code is ready for deployment."
+        else
+          echo "❌ QUALITY GATE: FAILED ❌"
+          echo "Some critical tests failed. Please fix before merging."
+          exit 1
+        fi
+        echo "::endgroup::"
+
+# ===== WORKFLOW SUMMARY =====
+  summary:
+    name: 📋 Pipeline Summary
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    needs: [quality-gate]
+    if: always()
+    
+    steps:
+    - name: 📋 Generate Pipeline Summary
+      run: |
+        echo "::group::Pipeline Summary"
+        echo "# 🚀 CarFinder XP CI/CD Pipeline Summary"
+        echo ""
+        echo "**Branch:** ${{ github.ref_name }}"
+        echo "**Commit:** ${{ github.sha }}"
+        echo "**Triggered by:** ${{ github.event_name }}"
+        echo ""
+        echo "## 📊 Test Results:"
+        echo "- 🔍 Code Quality: ${{ needs.lint-and-format.result || 'skipped' }}"
+        echo "- 🧪 Unit Tests: ${{ needs.unit-tests.result || 'skipped' }}"
+        echo "- 🔗 Integration Tests: ${{ needs.integration-tests.result || 'skipped' }}"
+        echo "- 🌐 E2E Tests: ${{ needs.e2e-tests.result || 'skipped' }}"
+        echo "- ⚡ Performance Tests: ${{ needs.performance-tests.result || 'skipped' }}"
+        echo "- 🔒 Security Scan: ${{ needs.security-scan.result || 'skipped' }}"
+        echo "- 💨 Smoke Tests: ${{ needs.smoke-tests.result || 'skipped' }}"
+        echo ""
+        echo "**Overall Status:** ${{ needs.quality-gate.result }}"
+        echo "::endgroup::"

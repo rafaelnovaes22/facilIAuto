@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarFinder - Encontre seu carro ideal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .option-card {
+            transition: all 0.2s ease;
+        }
+        .option-card:hover {
+            transform: translateY(-2px);
+        }
+        .selected {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        .priority-indicator {
+            background: linear-gradient(45deg, #ef4444, #f97316, #eab308);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">🚗 CarFinder</h1>
+            <p class="text-xl text-gray-600">Encontre o carro perfeito para suas necessidades reais</p>
+            <div class="mt-4">
+                <div class="bg-white rounded-full px-6 py-2 inline-block shadow-sm">
+                    <span class="text-sm font-medium text-gray-700" id="progress-text">Pergunta 1 de 8</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="max-w-md mx-auto mb-8">
+            <div class="bg-gray-200 rounded-full h-2">
+                <div id="progress-bar" class="bg-blue-500 h-2 rounded-full transition-all duration-300" style="width: 12.5%"></div>
+            </div>
+        </div>
+
+        <!-- Question Container -->
+        <div class="max-w-2xl mx-auto">
+            <div id="question-container" class="bg-white rounded-xl shadow-lg p-8">
+                <!-- Questions will be dynamically inserted here -->
+            </div>
+            
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between items-center mt-6">
+                <button id="prev-btn" class="px-6 py-3 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    ← Anterior
+                </button>
+                
+                <div class="flex space-x-3">
+                    <button id="next-btn" class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        Próxima →
+                    </button>
+                    <button id="submit-btn" class="px-8 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors hidden">
+                        🎯 Encontrar Meu Carro!
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Details Section (appears after question 6) -->
+        <div id="details-section" class="max-w-2xl mx-auto mt-8 hidden">
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">💬 Conte-nos mais (opcional)</h3>
+                <p class="text-gray-600 mb-4">Descreva sua situação específica para recomendações ainda mais precisas:</p>
+                <textarea 
+                    id="details-text" 
+                    class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                    rows="4" 
+                    placeholder="Ex: Vou trabalhar como motorista de app e preciso de máxima economia, ou vou viajar muito com a família e preciso de espaço..."
+                ></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Questionário redesenhado com critérios práticos
+        const questions = [
+            {
+                id: 1,
+                question: "💰 Qual sua faixa de preço?",
+                subtitle: "Seja realista com seu orçamento disponível",
+                type: "single",
+                key: "budget",
+                options: [
+                    { value: "up_30k", label: "Até R$ 30.000", icon: "💵" },
+                    { value: "30k_50k", label: "R$ 30.000 - R$ 50.000", icon: "💰" },
+                    { value: "50k_80k", label: "R$ 50.000 - R$ 80.000", icon: "💎" },
+                    { value: "80k_120k", label: "R$ 80.000 - R$ 120.000", icon: "🏆" },
+                    { value: "120k_plus", label: "Acima de R$ 120.000", icon: "👑" }
+                ]
+            },
+            {
+                id: 2,
+                question: "🎯 Qual o PRINCIPAL motivo para comprar?",
+                subtitle: "Sua prioridade número 1",
+                type: "single",
+                key: "main_purpose",
+                options: [
+                    { value: "work_app", label: "Trabalhar (Uber/99/Delivery)", icon: "🚖", desc: "Máxima economia e durabilidade" },
+                    { value: "family_daily", label: "Uso familiar diário", icon: "👨‍👩‍👧‍👦", desc: "Conforto e segurança" },
+                    { value: "first_car", label: "Primeiro carro", icon: "🔰", desc: "Confiável e econômico" },
+                    { value: "upgrade", label: "Trocar por algo melhor", icon: "⬆️", desc: "Mais conforto/status" },
+                    { value: "investment", label: "Investimento/Revenda", icon: "📈", desc: "Boa valorização" }
+                ]
+            },
+            {
+                id: 3,
+                question: "🚗 Com que frequência vai usar?",
+                subtitle: "Isso impacta na escolha do tipo de carro",
+                type: "single",
+                key: "frequency",
+                options: [
+                    { value: "daily_work", label: "Todo dia para trabalhar", icon: "🔄", desc: "Alta durabilidade necessária" },
+                    { value: "daily_personal", label: "Todo dia uso pessoal", icon: "🏠", desc: "Conforto importante" },
+                    { value: "weekends", label: "Finais de semana", icon: "🎉", desc: "Pode priorizar outros fatores" },
+                    { value: "occasional", label: "Esporadicamente", icon: "⭐", desc: "Confiabilidade é chave" }
+                ]
+            },
+            {
+                id: 4,
+                question: "👥 Quantas pessoas + bagagem?",
+                subtitle: "Tamanho e espaço necessário",
+                type: "single",
+                key: "space_needs",
+                options: [
+                    { value: "solo", label: "Só eu + bagagem pequena", icon: "👤", desc: "Hatch compacto serve" },
+                    { value: "couple", label: "Casal + bagagens", icon: "👫", desc: "Hatch médio ou sedan" },
+                    { value: "small_family", label: "Família pequena (até 3)", icon: "👨‍👩‍👧", desc: "Sedan ou SUV compacto" },
+                    { value: "large_family", label: "Família grande (4+)", icon: "👨‍👩‍👧‍👦", desc: "SUV ou minivan" },
+                    { value: "cargo", label: "Muito espaço para carga", icon: "📦", desc: "SUV grande ou pickup" }
+                ]
+            },
+            {
+                id: 5,
+                question: "⛽ Quanto te preocupa o consumo?",
+                subtitle: "Economia de combustível vs performance",
+                type: "single",
+                key: "fuel_priority",
+                options: [
+                    { value: "maximum_economy", label: "Máxima economia possível", icon: "🟢", desc: "Cada litro conta muito" },
+                    { value: "good_economy", label: "Boa economia", icon: "🟡", desc: "Equilibro com performance" },
+                    { value: "performance_first", label: "Performance primeiro", icon: "🔴", desc: "Potência é prioridade" },
+                    { value: "not_important", label: "Não é prioridade", icon: "⚪", desc: "Outros fatores importam mais" }
+                ]
+            },
+            {
+                id: 6,
+                question: "🔧 Sua experiência com carros?",
+                subtitle: "Isso influencia na escolha da marca/modelo",
+                type: "single",
+                key: "experience_level",
+                options: [
+                    { value: "beginner", label: "Primeira vez comprando", icon: "🔰", desc: "Precisa de algo simples e confiável" },
+                    { value: "some_experience", label: "Já tive alguns carros", icon: "🚗", desc: "Sei o que funciona pra mim" },
+                    { value: "experienced", label: "Entendo bem de carros", icon: "🔧", desc: "Posso avaliar modelos específicos" },
+                    { value: "enthusiast", label: "Sou entusiasta", icon: "🏁", desc: "Performance e especificações importam" }
+                ]
+            },
+            {
+                id: 7,
+                question: "⭐ O que é MAIS importante pra você?",
+                subtitle: "Sua prioridade máxima (escolha 1)",
+                type: "single",
+                key: "top_priority",
+                options: [
+                    { value: "reliability", label: "Não dar problema", icon: "🛡️", desc: "Marcas conhecidas por durabilidade" },
+                    { value: "resale_value", label: "Boa revenda", icon: "💹", desc: "Modelos que valorizam" },
+                    { value: "economy", label: "Economia total", icon: "💰", desc: "Baixo custo de manutenção" },
+                    { value: "comfort", label: "Conforto", icon: "🛋️", desc: "Direção suave, espaço" },
+                    { value: "performance", label: "Potência", icon: "⚡", desc: "Motor forte, agilidade" }
+                ]
+            },
+            {
+                id: 8,
+                question: "❤️ Tem preferência de marca/modelo?",
+                subtitle: "Marcas que você confia ou quer evitar",
+                type: "multiple",
+                key: "brand_preference",
+                options: [
+                    { value: "toyota", label: "Toyota", icon: "🎌", desc: "Confiabilidade japonesa" },
+                    { value: "honda", label: "Honda", icon: "🎌", desc: "Durabilidade comprovada" },
+                    { value: "chevrolet", label: "Chevrolet", icon: "🇺🇸", desc: "Popular no Brasil" },
+                    { value: "volkswagen", label: "Volkswagen", icon: "🇩🇪", desc: "Tecnologia alemã" },
+                    { value: "ford", label: "Ford", icon: "🇺🇸", desc: "Tradição americana" },
+                    { value: "hyundai", label: "Hyundai/Kia", icon: "🇰🇷", desc: "Boa relação custo-benefício" },
+                    { value: "renault", label: "Renault", icon: "🇫🇷", desc: "Design francês" },
+                    { value: "no_preference", label: "Sem preferência", icon: "🤷", desc: "Aberto a qualquer marca" }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = {};
+        let selectedOptions = new Set();
+
+        function showQuestion(index) {
+            const question = questions[index];
+            const container = document.getElementById('question-container');
+            
+            // Update progress
+            document.getElementById('progress-text').textContent = `Pergunta ${index + 1} de ${questions.length}`;
+            document.getElementById('progress-bar').style.width = `${((index + 1) / questions.length) * 100}%`;
+            
+            // Render question
+            container.innerHTML = `
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">${question.question}</h2>
+                    <p class="text-gray-600">${question.subtitle}</p>
+                </div>
+                
+                <div class="grid ${question.type === 'multiple' ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'} gap-4">
+                    ${question.options.map(option => `
+                        <div class="option-card border-2 border-gray-200 rounded-lg p-4 cursor-pointer hover:border-blue-300 ${answers[question.key]?.includes?.(option.value) || answers[question.key] === option.value ? 'selected' : ''}"
+                             data-value="${option.value}"
+                             data-question="${question.key}"
+                             data-type="${question.type}">
+                            <div class="flex items-start space-x-3">
+                                <span class="text-2xl">${option.icon}</span>
+                                <div class="flex-1">
+                                    <h3 class="font-semibold text-gray-800">${option.label}</h3>
+                                    ${option.desc ? `<p class="text-sm text-gray-600 mt-1">${option.desc}</p>` : ''}
+                                </div>
+                                ${question.type === 'multiple' ? '<div class="text-blue-500 font-bold">✓</div>' : ''}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            // Add click handlers
+            container.querySelectorAll('.option-card').forEach(card => {
+                card.addEventListener('click', () => handleOptionClick(card));
+            });
+            
+            // Update navigation buttons
+            updateNavigation();
+            
+            // Show details section after question 6
+            if (index >= 6) {
+                document.getElementById('details-section').classList.remove('hidden');
+            } else {
+                document.getElementById('details-section').classList.add('hidden');
+            }
+        }
+
+        function handleOptionClick(card) {
+            const value = card.dataset.value;
+            const questionKey = card.dataset.question;
+            const type = card.dataset.type;
+            
+            if (type === 'single') {
+                // Remove previous selection
+                document.querySelectorAll(`[data-question="${questionKey}"]`).forEach(c => {
+                    c.classList.remove('selected');
+                });
+                
+                // Add new selection
+                card.classList.add('selected');
+                answers[questionKey] = value;
+                
+            } else if (type === 'multiple') {
+                // Toggle selection
+                if (card.classList.contains('selected')) {
+                    card.classList.remove('selected');
+                    if (answers[questionKey]) {
+                        answers[questionKey] = answers[questionKey].filter(v => v !== value);
+                    }
+                } else {
+                    card.classList.add('selected');
+                    if (!answers[questionKey]) {
+                        answers[questionKey] = [];
+                    }
+                    answers[questionKey].push(value);
+                }
+            }
+            
+            updateNavigation();
+        }
+
+        function updateNavigation() {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            
+            // Previous button
+            prevBtn.disabled = currentQuestion === 0;
+            
+            // Check if current question is answered
+            const currentQ = questions[currentQuestion];
+            const isAnswered = answers[currentQ.key] && 
+                (Array.isArray(answers[currentQ.key]) ? answers[currentQ.key].length > 0 : true);
+            
+            if (currentQuestion === questions.length - 1) {
+                // Last question
+                nextBtn.classList.add('hidden');
+                submitBtn.classList.remove('hidden');
+                submitBtn.disabled = !isAnswered;
+            } else {
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+                nextBtn.disabled = !isAnswered;
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        function submitQuestionnaire() {
+            const details = document.getElementById('details-text').value;
+            const sessionId = 'session_' + Math.random().toString(36).substr(2, 9);
+            
+            const questionnaire = {
+                answers: answers,
+                details: details,
+                session_id: sessionId,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Store in localStorage for results page
+            localStorage.setItem('questionnaire', JSON.stringify(questionnaire));
+            
+            // Show loading state
+            document.getElementById('submit-btn').innerHTML = '🔍 Analisando suas necessidades...';
+            document.getElementById('submit-btn').disabled = true;
+            
+            // Submit to API
+            fetch('/api/recommendations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(questionnaire)
+            })
+            .then(response => response.json())
+            .then(data => {
+                localStorage.setItem('recommendations', JSON.stringify(data));
+                window.location.href = '/results.html';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Ocorreu um erro. Tente novamente.');
+                document.getElementById('submit-btn').innerHTML = '🎯 Encontrar Meu Carro!';
+                document.getElementById('submit-btn').disabled = false;
+            });
+        }
+
+        // Event listeners
+        document.getElementById('next-btn').addEventListener('click', nextQuestion);
+        document.getElementById('prev-btn').addEventListener('click', prevQuestion);
+        document.getElementById('submit-btn').addEventListener('click', submitQuestionnaire);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' && !document.getElementById('next-btn').disabled) {
+                nextQuestion();
+            } else if (e.key === 'ArrowLeft' && !document.getElementById('prev-btn').disabled) {
+                prevQuestion();
+            } else if (e.key === 'Enter' && currentQuestion === questions.length - 1 && !document.getElementById('submit-btn').disabled) {
+                submitQuestionnaire();
+            }
+        });
+
+        // Initialize
+        showQuestion(0);
+    </script>
+</body>
+</html>
