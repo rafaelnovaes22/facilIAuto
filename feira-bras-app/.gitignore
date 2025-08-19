@@ -1,0 +1,78 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+.nyc_output
+e2e/reports/
+e2e/artifacts/
+
+# Production
+build/
+dist/
+*.log
+
+# Expo
+.expo/
+.expo-shared/
+web-build/
+dist/
+
+# React Native
+*.jsbundle
+ios/Pods/
+ios/build/
+android/.gradle/
+android/build/
+android/app/build/
+android/app/release/
+*.apk
+*.aab
+*.ipa
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Misc
+.cache/
+.parcel-cache/
+.turbo/
+.vercel
+.netlify
+
+# TypeScript
+*.tsbuildinfo
+dist/
+
+# Temporary files
+tmp/
+temp/
+
+# Detox
+.detoxrc.local.js
+artifacts/
+
+# Local databases
+*.sqlite
+*.sqlite3
+*.db
