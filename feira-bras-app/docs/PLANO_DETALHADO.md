@@ -15,6 +15,9 @@
 3. **Inadimplência:** Sem controle de fiado
 4. **Impostos:** Dificuldade para formalização
 5. **Relacionamento:** Perda de contato com clientes
+6. **Fornecedores:** Sem controle de pedidos, pagamentos e prazos
+7. **Compras:** Dificuldade em saber o que repor e quando
+8. **Negociação:** Não consegue comparar preços entre fornecedores
 
 ### 1.3 Oportunidades
 - Digitalização de processos
@@ -38,6 +41,8 @@ Dores:
 - Gasta 2h/dia fazendo contas
 - R$ 2.000/mês em inadimplência
 - Não sabe lucro real
+- Esquece de pagar fornecedores no prazo
+- Compra produtos que não vendem bem
 ```
 
 ### Persona Secundária: João Santos
@@ -53,6 +58,8 @@ Dores:
 - Compra errado por falta de dados
 - Perde clientes fiéis
 - Medo de tecnologia
+- Tem 5 fornecedores diferentes sem controle
+- Perde desconto por não comprar em volume
 ```
 
 ## 3. FUNCIONALIDADES MVP - PRIORIZAÇÃO MoSCoW
@@ -76,6 +83,12 @@ Dores:
    - Sangrias e reforços
    - Conferência simples
 
+4. **Gestão de Fornecedores**
+   - Cadastro com WhatsApp
+   - Controle de pedidos
+   - Histórico de compras
+   - Alertas de pagamento
+
 ### SHOULD HAVE (Importante)
 1. **Cliente Básico**
    - Nome + WhatsApp
@@ -90,6 +103,11 @@ Dores:
 3. **Comprovante WhatsApp**
    - Envio automático
    - Template personalizado
+
+4. **Análise de Reposição**
+   - Sugestão de compra baseada em vendas
+   - Comparação de preços entre fornecedores
+   - Histórico de margem por produto
 
 ### COULD HAVE (Desejável)
 1. **Código de Barras**
