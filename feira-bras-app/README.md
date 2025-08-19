@@ -158,7 +158,7 @@ Sistema de gestão desenvolvido especificamente para empreendedores informais qu
 
 ## 🗓️ Cronograma de Desenvolvimento
 
-### Sprint 0 (Semana 1) - Setup ✅
+### Sprint 0 (Semana 1) - Setup
 - Configuração do ambiente
 - Setup de CI/CD
 - Arquitetura base
@@ -200,6 +200,28 @@ Sistema de gestão desenvolvido especificamente para empreendedores informais qu
 - Backup automático
 - Autenticação 2FA opcional
 - Logs de auditoria
+
+## 🚀 Quick Start
+
+```bash
+# Clone o repositório
+git clone https://github.com/seu-usuario/feira-bras-app.git
+
+# Entre no diretório
+cd feira-bras-app
+
+# Instale as dependências
+npm install
+
+# Configure as variáveis de ambiente
+cp .env.example .env
+
+# Rode os testes
+npm test
+
+# Inicie o desenvolvimento
+npm run dev
+```
 
 ## 📚 Documentação Adicional
 
