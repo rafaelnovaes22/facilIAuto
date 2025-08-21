@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description"
+        content="FacilIAuto - Sistema inteligente de recomendação de carros baseado em suas necessidades reais">
+    <meta name="theme-color" content="#3b82f6">
+
+    <title>FacilIAuto - Encontre seu carro ideal com IA</title>
+
+    <!-- Preconnect para performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Modern Font Stack -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Alpine.js para interatividade -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- AOS for scroll animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                        'display': ['Space Grotesk', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd',
+                            400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8',
+                            800: '#1e40af', 900: '#1e3a8a', 950: '#172554'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'pulse-slow': 'pulse 3s infinite',
+                        'gradient': 'gradient 8s ease infinite',
+                        'morph': 'morph 8s ease-in-out infinite'
+                    },
+                    keyframes: {
+                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-20px)' } },
+                        slideUp: { '0%': { transform: 'translateY(100px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+                        gradient: { '0%, 100%': { backgroundPosition: '0% 50%' }, '50%': { backgroundPosition: '100% 50%' } },
+                        morph: { '0%': { borderRadius: '60% 40% 30% 70% / 60% 30% 70% 40%' }, '50%': { borderRadius: '30% 60% 70% 40% / 50% 60% 30% 60%' }, '100%': { borderRadius: '60% 40% 30% 70% / 60% 30% 70% 40%' } }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Modern CSS -->
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        .dark {
+            --glass-bg: rgba(0, 0, 0, 0.3);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--glass-border);
+        }
+
+        .text-gradient-animated {
+            background: linear-gradient(270deg, #667eea, #764ba2, #f093fb, #667eea);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient 8s ease infinite;
+        }
+
+        .btn-modern {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .btn-modern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-modern:hover::before {
+            left: 100%;
+        }
+
+        .btn-modern:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .notification {
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .animate-slide-up {
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body
+    class="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-gray-950 dark:via-blue-950 dark:to-purple-950 transition-all duration-500"
+    x-data="faciliautoApp()">
+
+    <!-- Animated Background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div
+            class="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-morph">
+        </div>
+        <div class="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-pink-400/20 to-indigo-600/20 rounded-full blur-3xl animate-morph"
+            style="animation-delay: 4s;"></div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/10" data-aos="slide-down">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center animate-float">
+                        <i class="fas fa-car text-white"></i>
+                    </div>
+                    <h1 class="text-2xl font-display font-bold text-gradient-animated">FacilIAuto</h1>
+                </div>
+
+                <!-- Navigation Items -->
+                <div class="hidden md:flex items-center space-x-6">
+                    <button data-action="go-home"
+                        class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                        <i class="fas fa-home mr-2"></i>Início
+                    </button>
+                    <button data-action="show-catalog"
+                        class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                        <i class="fas fa-car mr-2"></i>Catálogo
+                    </button>
+                    <button data-action="show-favorites"
+                        class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                        <i class="fas fa-star mr-2"></i>Favoritos
+                    </button>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center space-x-4">
+                    <button data-action="toggle-theme"
+                        class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                        title="Alternar tema">
+                        <i class="fas fa-moon dark:hidden text-gray-700"></i>
+                        <i class="fas fa-sun hidden dark:block text-gray-300"></i>
+                    </button>
+                    <button data-action="show-profile"
+                        class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+                        U
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Main Content -->
+    <main class="relative z-10 container mx-auto px-4 pt-24 pb-12">
+
+        <!-- Hero Section -->
+        <section class="text-center mb-16" data-aos="fade-up">
+            <!-- Animated Badge -->
+            <div
+                class="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-full mb-6">
+                <span class="relative flex h-2 w-2">
+                    <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                </span>
+                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">IA Avançada • 100%
+                    Personalizado</span>
+            </div>
+
+            <!-- Main Title -->
+            <h1 class="text-5xl md:text-7xl font-display font-bold mb-6">
+                <span class="text-gradient-animated">Encontre o Carro</span>
+                <br>
+                <span class="text-gray-900 dark:text-white">Perfeito com IA</span>
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-8">
+                Sistema inteligente que analisa suas <span
+                    class="font-semibold text-primary-600 dark:text-primary-400">necessidades reais</span>
+                e recomenda o veículo ideal em segundos
+            </p>
+
+            <!-- Stats -->
+            <div class="flex flex-wrap justify-center gap-8 mb-12">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-primary-600 dark:text-primary-400">15.000+</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">Usuários Satisfeitos</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-green-600 dark:text-green-400">98%</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">Taxa de Acerto</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-purple-600 dark:text-purple-400">500+</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">Modelos Disponíveis</div>
+                </div>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button data-action="start-journey"
+                    class="btn-modern px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl font-semibold text-lg shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300">
+                    <i class="fas fa-rocket mr-2"></i>
+                    Começar Agora
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+                <button data-action="show-demo"
+                    class="btn-modern px-8 py-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-2xl font-semibold text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border border-gray-200 dark:border-gray-700">
+                    <i class="fas fa-play-circle mr-2"></i>
+                    Ver Demo
+                </button>
+            </div>
+        </section>
+        <!-- Questionário Section (Inicialmente Oculto) -->
+        <section id="questionario" x-show="journeyStarted" x-transition class="mb-12">
+            <!-- Progress Bar -->
+            <div class="glass rounded-2xl p-6 mb-8">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold"
+                            x-text="currentStep + 1">1</div>
+                        <div>
+                            <div class="text-lg font-semibold text-gray-900 dark:text-white">Pergunta <span
+                                    x-text="currentStep + 1">1</span> de <span x-text="totalSteps">8</span></div>
+                            <div class="text-sm text-gray-600 dark:text-gray-400">Tempo estimado: ~2 minutos</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Animated Progress Bar -->
+                <div class="relative h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full transition-all duration-700 ease-out"
+                        :style="`width: ${((currentStep + 1) / totalSteps) * 100}%`"></div>
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="glass rounded-3xl p-8 md:p-12 animate-slide-up">
+                <div x-show="currentStep < questions.length" x-transition>
+                    <!-- Question Header -->
+                    <div class="text-center mb-10">
+                        <div
+                            class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl mb-6">
+                            <span class="text-4xl" x-text="questions[currentStep]?.icon">💰</span>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white mb-3"
+                            x-text="questions[currentStep]?.question">Qual sua faixa de preço?</h2>
+                        <p class="text-lg text-gray-600 dark:text-gray-400" x-text="questions[currentStep]?.subtitle">
+                            Seja realista com seu orçamento disponível</p>
+                    </div>
+
+                    <!-- Options Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                        <template x-for="(option, index) in questions[currentStep]?.options" :key="index">
+                            <div @click="selectOption(option)"
+                                class="glass rounded-2xl p-6 cursor-pointer transition-all duration-300 hover:scale-105 border-2"
+                                :class="isSelected(option) ? 'border-blue-500 bg-blue-500/10' : 'border-transparent hover:border-gray-300 dark:hover:border-gray-600'">
+                                <div class="flex items-start space-x-4">
+                                    <div class="flex-shrink-0">
+                                        <div
+                                            class="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                                            <span class="text-2xl" x-text="option.icon">💰</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h3 class="font-semibold text-lg text-gray-900 dark:text-white mb-1"
+                                            x-text="option.label">Label</h3>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400" x-text="option.desc">
+                                            Description</p>
+                                    </div>
+                                    <div class="flex-shrink-0">
+                                        <div class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all"
+                                            :class="isSelected(option) ? 'border-blue-500 bg-blue-500' : 'border-gray-300 dark:border-gray-600'">
+                                            <i class="fas fa-check text-white text-xs" x-show="isSelected(option)"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Chat Section -->
+        <section class="mb-16" data-aos="fade-up">
+            <div class="glass rounded-3xl p-8">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-display font-bold text-gray-900 dark:text-white mb-4">💬 Chat com IA</h2>
+                    <p class="text-lg text-gray-600 dark:text-gray-400">Converse com nosso assistente virtual para
+                        esclarecer dúvidas</p>
+                </div>
+
+                <!-- Chat Messages -->
+                <div id="chat-messages" class="h-64 overflow-y-auto mb-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-2xl">
+                    <div class="message bot mb-4">
+                        <div class="flex justify-start">
+                            <div
+                                class="max-w-xs lg:max-w-md px-4 py-2 rounded-2xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                                Olá! Como posso ajudá-lo a encontrar o carro ideal?
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Input -->
+                <div class="flex space-x-4">
+                    <input type="text" id="chat-input" placeholder="Digite sua mensagem..."
+                        class="flex-1 px-4 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-200 dark:border-gray-700">
+                    <button data-action="send-message"
+                        class="btn-modern p-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:shadow-lg transition-all duration-300 hover:scale-105">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="mb-16" data-aos="fade-up">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-display font-bold text-gray-900 dark:text-white mb-4">✨ Por que escolher o
+                    FacilIAuto?</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Nossa IA analisa milhares de
+                    variáveis para encontrar o carro perfeito para você</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass rounded-2xl p-8 text-center">
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-brain text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">IA Avançada</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Algoritmos de machine learning analisam suas
+                        preferências e necessidades</p>
+                </div>
+
+                <div class="glass rounded-2xl p-8 text-center">
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-green-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-clock text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Resultados Rápidos</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Encontre seu carro ideal em menos de 5 minutos</p>
+                </div>
+
+                <div class="glass rounded-2xl p-8 text-center">
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-shield-alt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">100% Confiável</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Dados verificados e atualizados em tempo real</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    < !-- Footer -->
+        <footer class="glass border-t border-white/10 py-12">
+            <div class="container mx-auto px-4">
+                <div class="text-center">
+                    <div class="flex items-center justify-center space-x-3 mb-6">
+                        <div
+                            class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-car text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-display font-bold text-gradient-animated">FacilIAuto</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">Encontre seu carro ideal com inteligência
+                        artificial</p>
+                    <div class="flex justify-center space-x-6">
+                        <button data-action="show-catalog"
+                            class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Catálogo</button>
+                        <button data-action="show-favorites"
+                            class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Favoritos</button>
+                        <button data-action="show-profile"
+                            class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Perfil</button>
+                    </div>
+                    <div class="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
+                        <p class="text-sm text-gray-500 dark:text-gray-500">© 2025 FacilIAuto. Todos os direitos
+                            reservados.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- JavaScript Inline para evitar problemas de MIME type -->
+        <script type="text/javascript">
+            // FacilIAuto App - Versão Inline
+            class FacilIAutoApp {
+                constructor() {
+                    this.initialized = false;
+                    this.debugMode = true;
+                    this.journeyData = { started: false, currentStep: 0, answers: {}, totalSteps: 8 };
+                    this.handleAction = this.handleAction.bind(this);
+                    this.showNotification = this.showNotification.bind(this);
+                }
+
+                init() {
+                    try {
+                        console.log('🚀 Inicializando FacilIAuto App...');
+                        this.setupEventListeners();
+                        this.setupNotificationSystem();
+                        this.loadTheme();
+                        this.initializeAOS();
+                        this.initialized = true;
+                        console.log('✅ FacilIAuto App inicializado!');
+                        this.showNotification('Sistema carregado!', 'success');
+                    } catch (error) {
+                        console.error('❌ Erro na inicialização:', error);
+                    }
+                }
+
+                setupEventListeners() {
+                    document.addEventListener('click', (e) => {
+                        const actionElement = e.target.closest('[data-action]');
+                        if (actionElement) {
+                            e.preventDefault();
+                            const action = actionElement.dataset.action;
+                            this.handleAction(action, e, actionElement);
+                        }
+                    });
+
+                    document.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            const chatInput = document.getElementById('chat-input');
+                            if (chatInput && document.activeElement === chatInput) {
+                                e.preventDefault();
+                                this.handleAction('send-message', e);
+                            }
+                        }
+                    });
+                }
+
+                async handleAction(action, event, element) {
+                    try {
+                        console.log(`🎯 Executando ação: ${action}`);
+
+                        if (element) {
+                            element.style.transform = 'scale(0.95)';
+                            setTimeout(() => element.style.transform = '', 150);
+                        }
+
+                        switch (action) {
+                            case 'start-journey':
+                                await this.startJourney();
+                                break;
+                            case 'show-demo':
+                                this.showNotification('Demo em desenvolvimento', 'info');
+                                break;
+                            case 'toggle-theme':
+                                await this.toggleTheme();
+                                break;
+                            case 'go-home':
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                                this.showNotification('Bem-vindo de volta!', 'success');
+                                break;
+                            case 'send-message':
+                                await this.sendMessage();
+                                break;
+                            default:
+                                this.showNotification(`Ação "${action}" em desenvolvimento`, 'info');
+                        }
+                    } catch (error) {
+                        console.error(`❌ Erro ao executar ação ${action}:`, error);
+                        this.showNotification(`Erro ao executar ${action}`, 'error');
+                    }
+                }
+
+                async startJourney() {
+                    console.log('🚀 Iniciando jornada...');
+                    const questionario = document.getElementById('questionario');
+                    if (questionario) {
+                        questionario.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    this.journeyData.started = true;
+                    this.showNotification('Jornada iniciada! 🚗', 'success');
+                }
+
+                async toggleTheme() {
+                    const html = document.documentElement;
+                    const isDark = html.classList.contains('dark');
+
+                    if (isDark) {
+                        html.classList.remove('dark');
+                        this.currentTheme = 'light';
+                        this.showNotification('Tema claro ativado ☀️', 'success');
+                    } else {
+                        html.classList.add('dark');
+                        this.currentTheme = 'dark';
+                        this.showNotification('Tema escuro ativado 🌙', 'success');
+                    }
+
+                    localStorage.setItem('theme', this.currentTheme);
+                }
+
+                async sendMessage() {
+                    const chatInput = document.getElementById('chat-input');
+                    if (!chatInput) return;
+
+                    const message = chatInput.value.trim();
+                    if (!message) {
+                        this.showNotification('Digite uma mensagem primeiro', 'warning');
+                        return;
+                    }
+
+                    this.addChatMessage(message, 'user');
+                    chatInput.value = '';
+
+                    setTimeout(() => {
+                        this.addChatMessage('Obrigado pela mensagem! Sistema em desenvolvimento.', 'bot');
+                    }, 1000);
+
+                    this.showNotification('Mensagem enviada!', 'success');
+                }
+
+                addChatMessage(message, sender) {
+                    const chatMessages = document.getElementById('chat-messages');
+                    if (!chatMessages) return;
+
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = `message ${sender} mb-4 animate-slide-up`;
+
+                    const isUser = sender === 'user';
+                    messageDiv.innerHTML = `
+                        <div class="flex ${isUser ? 'justify-end' : 'justify-start'}">
+                            <div class="max-w-xs lg:max-w-md px-4 py-2 rounded-2xl ${isUser ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white'
+                        }">
+                                ${message}
+                            </div>
+                        </div>
+                    `;
+
+                    chatMessages.appendChild(messageDiv);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }
+
+                setupNotificationSystem() {
+                    if (!document.getElementById('notification-container')) {
+                        const container = document.createElement('div');
+                        container.id = 'notification-container';
+                        container.className = 'fixed top-20 right-4 z-50 space-y-2';
+                        document.body.appendChild(container);
+                    }
+                }
+
+                showNotification(message, type = 'info', duration = 4000) {
+                    const container = document.getElementById('notification-container');
+                    if (!container) return;
+
+                    const notification = document.createElement('div');
+
+                    const icons = {
+                        success: 'fas fa-check-circle text-green-500',
+                        error: 'fas fa-exclamation-circle text-red-500',
+                        warning: 'fas fa-exclamation-triangle text-yellow-500',
+                        info: 'fas fa-info-circle text-blue-500'
+                    };
+
+                    const colors = {
+                        success: 'border-green-500 bg-green-50 dark:bg-green-900/20',
+                        error: 'border-red-500 bg-red-50 dark:bg-red-900/20',
+                        warning: 'border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20',
+                        info: 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                    };
+
+                    notification.className = `notification glass rounded-lg p-4 border-l-4 ${colors[type]} shadow-lg max-w-sm`;
+                    notification.innerHTML = `
+                        <div class="flex items-start space-x-3">
+                            <i class="${icons[type]}"></i>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-gray-900 dark:text-white">${message}</p>
+                            </div>
+                            <button onclick="this.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+
+                    container.appendChild(notification);
+
+                    setTimeout(() => {
+                        if (notification.parentElement) {
+                            notification.style.opacity = '0';
+                            notification.style.transform = 'translateX(100%)';
+                            setTimeout(() => notification.remove(), 300);
+                        }
+                    }, duration);
+                }
+
+                loadTheme() {
+                    const savedTheme = localStorage.getItem('theme');
+                    if (savedTheme === 'dark') {
+                        document.documentElement.classList.add('dark');
+                        this.currentTheme = 'dark';
+                    }
+                }
+
+                initializeAOS() {
+                    if (typeof AOS !== 'undefined') {
+                        AOS.init({ duration: 800, easing: 'ease-in-out', once: true, offset: 100 });
+                    }
+                }
+
+                getAlpineData() {
+                    return {
+                        journeyStarted: this.journeyData.started,
+                        currentStep: this.journeyData.currentStep,
+                        totalSteps: this.journeyData.totalSteps,
+                        questions: [{
+                            icon: '💰',
+                            question: 'Qual sua faixa de preço?',
+                            subtitle: 'Seja realista com seu orçamento disponível',
+                            options: [
+                                { icon: '💵', label: 'Até R$ 30.000', desc: 'Carros usados e seminovos', value: 'budget' },
+                                { icon: '💳', label: 'R$ 30.000 - R$ 80.000', desc: 'Boa variedade de opções', value: 'mid' },
+                                { icon: '💎', label: 'R$ 80.000 - R$ 150.000', desc: 'Carros premium', value: 'premium' },
+                                { icon: '👑', label: 'Acima de R$ 150.000', desc: 'Carros de luxo', value: 'luxury' }
+                            ]
+                        }],
+                        answers: this.journeyData.answers,
+                        selectOption: (option) => {
+                            this.journeyData.answers[this.journeyData.currentStep] = option;
+                            console.log('Opção selecionada:', option);
+                        },
+                        isSelected: (option) => {
+                            return this.journeyData.answers[this.journeyData.currentStep]?.value === option.value;
+                        },
+                        canProceed: () => {
+                            return !!this.journeyData.answers[this.journeyData.currentStep];
+                        }
+                    };
+                }
+            }
+
+            // Função global para Alpine.js
+            window.faciliautoApp = function () {
+                if (!window.faciliautoAppInstance) {
+                    window.faciliautoAppInstance = new FacilIAutoApp();
+                }
+                return window.faciliautoAppInstance.getAlpineData();
+            };
+
+            // Inicialização quando DOM estiver pronto
+            document.addEventListener('DOMContentLoaded', () => {
+                if (!window.faciliautoAppInstance) {
+                    window.faciliautoAppInstance = new FacilIAutoApp();
+                    window.faciliautoAppInstance.init();
+                }
+            });
+        </script>
+
+</body>
+
+</html>
