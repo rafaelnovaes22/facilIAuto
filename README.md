@@ -26,7 +26,19 @@ O **FacilIAuto** é a primeira plataforma de recomendação automotiva mobile-fi
 
 ## 🚀 **Demonstração Rápida**
 
-### **⚡ Executar Sistema (2 comandos)**
+### **⚡ Nova Plataforma Unificada**
+
+O FacilIAuto agora é uma **plataforma única** que agrega carros de **múltiplas concessionárias**!
+
+**Terminal 1 - Testar Recommendation Engine:**
+```bash
+cd platform/backend
+python test_unified_engine.py
+```
+
+**Resultado**: Recomendações de 129+ carros de 3 concessionárias (RobustCar + outras)
+
+### **⚡ Sistema Legacy (RobustCar isolado)**
 
 **Terminal 1 - Backend:**
 ```bash
@@ -40,7 +52,8 @@ cd RobustCar/frontend
 npm run dev
 ```
 
-**🌐 Acessar:** http://localhost:3000
+**🌐 Acessar:** http://localhost:3000  
+**⚠️ Nota**: Este sistema mostra apenas carros da RobustCar. Use a plataforma unificada para ver todas as concessionárias.
 
 ### **🎯 Fluxo de Demo (5 minutos)**
 1. **Homepage** → Value proposition
@@ -101,15 +114,31 @@ npm run dev
 
 ```
 FacilIAuto/
-├── 📚 docs/                    # Documentação completa
-├── 🤖 [12 agentes]/           # Framework de agentes especializados
-├── 🚗 RobustCar/              # Sistema funcional completo
-│   ├── 🐍 api.py              # Backend FastAPI
+├── 🆕 platform/               # 🟢 PLATAFORMA UNIFICADA (NOVA!)
+│   ├── backend/
+│   │   ├── models/           # Car, Dealership, UserProfile
+│   │   ├── services/         # UnifiedRecommendationEngine
+│   │   └── data/             # 3 concessionárias, 129+ carros
+│   ├── frontend/             # (em desenvolvimento)
+│   └── README.md             # Documentação completa
+│
+├── 📚 docs/                   # Documentação completa
+├── 🤖 [12 agentes]/          # Framework de agentes especializados
+│
+├── 🚗 RobustCar/             # Sistema legacy (single-tenant)
+│   ├── 🐍 api.py             # Backend FastAPI
 │   ├── 🤖 recommendation_engine.py
-│   └── 📱 frontend/           # React app
-├── 📊 CarRecommendationSite/  # Prototipagem XP/E2E
-└── 🛠️ agent-cli.py           # Ferramenta de gestão
+│   └── 📱 frontend/          # React app
+│
+├── 📊 CarRecommendationSite/ # Prototipagem XP/E2E
+└── 🛠️ agent-cli.py          # Ferramenta de gestão
 ```
+
+### **🆕 Nova Arquitetura Multi-Concessionária**
+- **129+ carros** de **3 concessionárias** em uma busca
+- RobustCar é **uma das opções**, não a única
+- Sistema escalável para centenas de concessionárias
+- Ver detalhes em: `REESTRUTURACAO-COMPLETA.md`
 
 ---
 

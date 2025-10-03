@@ -1,3 +1,7 @@
+# ============================================
+# FacilIAuto - Professional .gitignore
+# ============================================
+
 # Python
 __pycache__/
 *.py[cod]
@@ -30,26 +34,18 @@ ENV/
 env.bak/
 venv.bak/
 
-# PyCharm
-.idea/
-
-# VS Code
-.vscode/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
 # Node.js
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-package-lock.json
-yarn.lock
 
 # Build outputs
 dist/
 build/
+.next/
+.nuxt/
+out/
 
 # Environment variables
 .env
@@ -61,6 +57,9 @@ build/
 # Logs
 logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Runtime data
 pids
@@ -68,85 +67,76 @@ pids
 *.seed
 *.pid.lock
 
-# Coverage directory used by tools like istanbul
+# Coverage directory
 coverage/
-
-# nyc test coverage
 .nyc_output
+*.lcov
+htmlcov/
+*.cover
+.hypothesis/
+.pytest_cache/
 
-# Dependency directories
-jspm_packages/
+# Test reports
+test-results/
+junit.xml
 
-# Optional npm cache directory
-.npm
-
-# Optional REPL history
-.node_repl_history
-
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
-.yarn-integrity
-
-# dotenv environment variables file
-.env
-
-# parcel-bundler cache (https://parceljs.org/)
-.cache
-.parcel-cache
-
-# next.js build output
-.next
-
-# nuxt.js build output
-.nuxt
-
-# vuepress build output
-.vuepress/dist
-
-# Serverless directories
-.serverless
-
-# FuseBox cache
-.fusebox/
-
-# DynamoDB Local files
-.dynamodb/
-
-# TernJS port file
-.tern-port
-
-# macOS
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
 .DS_Store
 
-# Windows
-Thumbs.db
-Desktop.ini
+# Cypress
+cypress/screenshots/
+cypress/videos/
+cypress/downloads/
 
 # Temporary files
 *.tmp
 *.temp
+*.cache
+.cache
+.parcel-cache
 
-# Data files (keep structure but ignore large data)
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Keep important data files but ignore large/generated ones
+# EXCEPTION: Keep sample data for demo purposes
+!platform/backend/data/*.json
+!CarRecommendationSite/frontend/cypress/fixtures/*.json
+
+# Keep test fixtures
+!**/fixtures/**/*.json
+
+# Ignore large CSV files (can be regenerated)
 *.csv
-*.json
-*.xlsx
-*.xls
 
-# Compiled files
+# Keep documentation
+!**/*.md
+!LICENSE
+!CONTRIBUTING.md
+
+# Ignore compiled binaries
 *.exe
 *.dll
 *.so
 *.dylib
 
-# IDE files
-*.swp
-*.swo
-*~
+# Ignore database files
+*.db
+*.sqlite
+*.sqlite3
 
-# Test coverage
-coverage/
-*.cover
-.hypothesis/
-.pytest_cache/
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# Keep configuration examples
+!**/*.example.*
+!**/*.template.*
