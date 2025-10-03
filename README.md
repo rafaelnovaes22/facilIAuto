@@ -129,42 +129,53 @@ python api/main.py
 
 ---
 
-## 📁 **Estrutura do Projeto**
+## 📁 **Estrutura do Projeto (Reorganizada)**
 
 ```
 FacilIAuto/
 ├── 🟢 platform/               # PLATAFORMA PRINCIPAL
-│   ├── backend/
-│   │   ├── models/           # Car, Dealership, UserProfile
-│   │   ├── services/         # UnifiedRecommendationEngine
-│   │   ├── data/             # 3 concessionárias, 129+ carros
-│   │   └── tests/            # Testes integrados
-│   ├── frontend/             # React + TypeScript (em desenvolvimento)
-│   └── README.md             # Documentação da plataforma
+│   ├── backend/              # API REST + Engine (97/100)
+│   │   ├── api/             # FastAPI - 10 endpoints
+│   │   ├── models/          # Pydantic models
+│   │   ├── services/        # UnifiedRecommendationEngine
+│   │   ├── data/            # 3 concessionárias, 129+ carros
+│   │   ├── tests/           # 63 testes TDD (87% coverage)
+│   │   └── README.md
+│   ├── frontend/            # React + TypeScript (em dev)
+│   └── XP-METHODOLOGY.md    # Metodologia XP completa
 │
-├── 🤖 [12 agentes]/          # Framework de agentes especializados
-│   ├── AI Engineer/
-│   ├── Tech Lead/
-│   ├── UX Especialist/
-│   └── ... (9 outros agentes)
+├── 🤖 agents/                # Framework de 12 agentes
+│   ├── ai-engineer/
+│   ├── tech-lead/
+│   ├── ux-especialist/
+│   ├── ... (9 outros)
+│   ├── agent-cli.py
+│   └── README.md
 │
-├── 📚 docs/                   # Documentação completa (17+ documentos)
-│   ├── ARQUITETURA-SAAS.md
-│   ├── VISAO-PRODUTO-SAAS.md
-│   └── ...
+├── 📚 docs/                  # Documentação organizada
+│   ├── business/            # 10 docs estratégia
+│   ├── technical/           # 3 docs arquitetura  
+│   ├── implementation/      # 5 docs XP/TDD
+│   ├── guides/              # 3 guias práticos
+│   └── README.md
 │
-├── 📄 FOR-RECRUITERS.md       # Avaliação técnica (Score: 92/100)
-├── 📖 CONTRIBUTING.md         # Guia de contribuição
-├── 🔧 agent-cli.py           # CLI para gerenciar agentes
-└── 📋 README.md              # Este arquivo
+├── 📦 examples/              # Protótipos de referência
+│   ├── CarRecommendationSite/  # XP/TDD/E2E completo
+│   ├── RobustCar/           # POC single-tenant
+│   └── README.md
+│
+├── 📄 FOR-RECRUITERS.md      # Avaliação técnica (97/100)
+├── 📖 CONTRIBUTING.md        # Guia de contribuição
+├── 📝 LICENSE               # MIT License
+└── 📋 README.md             # Este arquivo
 ```
 
-### **🎯 Foco: Código Executável**
-- **129+ carros** de **3 concessionárias** agregados
-- **Engine unificado** multi-tenant
-- **Framework de agentes** operacional
-- **Arquitetura escalável** para produção
-- Ver detalhes em: `REESTRUTURACAO-COMPLETA.md`
+### **🎯 Estrutura Profissional**
+- ✅ **6 arquivos na raiz** (limpa e organizada)
+- ✅ **Documentação categorizada** (business, technical, implementation, guides)
+- ✅ **Exemplos separados** (protótipos históricos)
+- ✅ **Navegação intuitiva**
+- ✅ **READMEs em cada pasta**
 
 ---
 
