@@ -1,4 +1,4 @@
-# 🏗️ **Arquitetura SaaS - CarMatch Platform**
+# 🏗️ **Arquitetura SaaS - FacilIAuto Platform**
 
 ## 🎯 **Visão Geral da Arquitetura**
 
@@ -599,7 +599,7 @@ async def rate_limit_middleware(request: Request, call_next):
 ### **📦 CI/CD Pipeline**
 ```yaml
 # .github/workflows/deploy.yml
-name: Deploy CarMatch SaaS
+name: Deploy FacilIAuto SaaS
 
 on:
   push:
