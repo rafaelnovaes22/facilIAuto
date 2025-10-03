@@ -36,6 +36,7 @@ interface CarRecommendation {
     categoria: string
     cor: string
     cidade: string
+    imagens: string[]
   }
   score: number
   justificativa: string
@@ -67,19 +68,63 @@ const ResultsPage = () => {
     }
 
     setQuestionnaireData(JSON.parse(savedData))
-    
-    // Simular chamada à API e gerar recomendações mock
-    generateMockRecommendations()
+
+    // Chamar API real de recomendações
+    generateRealRecommendations()
   }, [navigate, toast])
 
-  const generateMockRecommendations = async () => {
+  const generateRealRecommendations = async () => {
     setIsLoading(true)
     
-    // Simular tempo de processamento
-    await new Promise(resolve => setTimeout(resolve, 3000))
-
-    // Recomendações mock baseadas no estoque real da RobustCar
-    const mockRecommendations: CarRecommendation[] = [
+    try {
+      const savedData = localStorage.getItem('questionario_data')
+      if (!savedData) return
+      
+      const questionnaireData = JSON.parse(savedData)
+      
+      // Chamar API real de recomendações
+      const response = await fetch('http://127.0.0.1:8000/recomendar', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(questionnaireData)
+      })
+      
+      if (!response.ok) {
+        throw new Error('Erro ao buscar recomendações')
+      }
+      
+      const apiRecommendations = await response.json()
+      
+      // Converter formato da API para formato do frontend
+      const formattedRecommendations: CarRecommendation[] = apiRecommendations.map((rec: any) => ({
+        carro: {
+          titulo: rec.carro.nome,
+          preco: rec.carro.preco,
+          ano: rec.carro.ano,
+          km: rec.carro.quilometragem,
+          combustivel: rec.carro.combustivel,
+          marca: rec.carro.marca,
+          categoria: rec.carro.categoria,
+          cor: rec.carro.cor,
+          cidade: "São Paulo",
+          imagens: rec.carro.imagens || []
+        },
+        score: rec.score,
+        justificativa: rec.justificativa,
+        pontos_fortes: rec.pontos_fortes,
+        pontos_atencao: rec.pontos_atencao,
+        match_percentage: rec.match_percentage
+      }))
+      
+      setRecommendations(formattedRecommendations)
+      
+    } catch (error) {
+      console.error('Erro ao carregar recomendações:', error)
+      
+      // Fallback para dados mock se API falhar
+      const mockRecommendations: CarRecommendation[] = [
       {
         carro: {
           titulo: "Fiat Cronos Drive 1.3",
@@ -90,7 +135,10 @@ const ResultsPage = () => {
           marca: "Fiat",
           categoria: "Sedan",
           cor: "Branco",
-          cidade: "São Paulo"
+          cidade: "São Paulo",
+          imagens: [
+            "https://s3.carro57.com.br/FC/6757/7239942_15_M_d619e47ae3.jpeg"
+          ]
         },
         score: 8.7,
         justificativa: "Excelente custo-benefício que atende perfeitamente seu orçamento e necessidades familiares. O Cronos é conhecido pela economia de combustível e espaço interno.",
@@ -117,7 +165,10 @@ const ResultsPage = () => {
           marca: "Toyota",
           categoria: "Hatch",
           cor: "Prata",
-          cidade: "São Paulo"
+          cidade: "São Paulo",
+          imagens: [
+            "https://s3.carro57.com.br/FC/6757/7239943_1_M_8e2c4d1f23.jpeg"
+          ]
         },
         score: 8.4,
         justificativa: "Toyota oferece confiabilidade excepcional e ótima economia. Ideal para uso urbano com a praticidade de um hatch compacto.",
@@ -144,7 +195,10 @@ const ResultsPage = () => {
           marca: "Chevrolet",
           categoria: "SUV",
           cor: "Azul",
-          cidade: "São Paulo"
+          cidade: "São Paulo",
+          imagens: [
+            "https://s3.carro57.com.br/FC/6757/7092969_17_M_663378cf6a.jpeg"
+          ]
         },
         score: 7.9,
         justificativa: "SUV compacto com boa posição de dirigir e versatilidade. O motor turbo oferece boa performance urbana.",
@@ -162,8 +216,10 @@ const ResultsPage = () => {
         match_percentage: 79
       }
     ]
-
-    setRecommendations(mockRecommendations)
+      
+      setRecommendations(mockRecommendations)
+    }
+    
     setIsLoading(false)
   }
 
@@ -259,32 +315,42 @@ Gerado automaticamente pelo sistema FacilIAuto 🤖`
                     </Text>
                   </Box>
                 )}
-                
+
                 <CardBody>
                   <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-                    {/* Car Image Placeholder */}
+                    {/* Car Image */}
                     <Box>
-                      <Box
+                      <Image
+                        src={rec.carro.imagens[0]}
+                        alt={rec.carro.titulo}
                         h="200px"
-                        bg="gray.100"
+                        w="full"
+                        objectFit="cover"
                         rounded="lg"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
                         mb={4}
-                      >
-                        <VStack>
-                          <Icon as={FaCar} boxSize={12} color="gray.400" />
-                          <Text color="gray.500" fontSize="sm">Foto do veículo</Text>
-                        </VStack>
-                      </Box>
-                      
+                        fallback={
+                          <Box
+                            h="200px"
+                            bg="gray.100"
+                            rounded="lg"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            <VStack>
+                              <Icon as={FaCar} boxSize={12} color="gray.400" />
+                              <Text color="gray.500" fontSize="sm">Foto do veículo</Text>
+                            </VStack>
+                          </Box>
+                        }
+                      />
+
                       {/* Car Details */}
                       <VStack align="stretch" spacing={3}>
                         <Heading size="lg" color="blue.600">
                           {rec.carro.titulo}
                         </Heading>
-                        
+
                         <Text fontSize="2xl" fontWeight="bold" color="green.600">
                           R$ {rec.carro.preco.toLocaleString()}
                         </Text>
@@ -368,7 +434,7 @@ Gerado automaticamente pelo sistema FacilIAuto 🤖`
                         >
                           Compartilhar no WhatsApp
                         </Button>
-                        
+
                         <HStack w="full" spacing={3}>
                           <Button
                             colorScheme="blue"
@@ -398,11 +464,11 @@ Gerado automaticamente pelo sistema FacilIAuto 🤖`
           {/* Footer Actions */}
           <VStack spacing={4} w="full" pt={8}>
             <Divider />
-            
+
             <Text textAlign="center" color="gray.600">
               Não encontrou o que procura? Temos mais opções!
             </Text>
-            
+
             <HStack spacing={4}>
               <Button
                 colorScheme="blue"
@@ -411,7 +477,7 @@ Gerado automaticamente pelo sistema FacilIAuto 🤖`
               >
                 🔄 Refazer Questionário
               </Button>
-              
+
               <Button
                 colorScheme="blue"
                 onClick={() => {

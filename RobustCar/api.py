@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import List, Dict, Optional
+from contextlib import asynccontextmanager
 import json
 from datetime import datetime
 import logging
@@ -26,13 +27,53 @@ from recommendation_engine import (
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Global engine instance
+engine: Optional[RobustCarRecommendationEngine] = None
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Lifespan event handler para FastAPI"""
+    # Startup
+    global engine
+    try:
+        # Buscar arquivo de estoque mais recente
+        import glob
+        import os
+        
+        estoque_files = glob.glob("robustcar_estoque_*.json")
+        if not estoque_files:
+            logger.error("Nenhum arquivo de estoque encontrado")
+            yield
+            return
+        
+        # Usar arquivo mais recente
+        latest_file = max(estoque_files, key=os.path.getctime)
+        logger.info(f"Carregando estoque de: {latest_file}")
+        
+        with open(latest_file, 'r', encoding='utf-8') as f:
+            carros_data = json.load(f)
+        
+        # Inicializar engine
+        engine = RobustCarRecommendationEngine(carros_data)
+        logger.info(f"✅ Engine inicializada com {len(carros_data)} carros")
+        
+    except Exception as e:
+        logger.error(f"❌ Erro ao inicializar engine: {e}")
+        engine = None
+    
+    yield
+    
+    # Shutdown (cleanup se necessário)
+    logger.info("🔄 Finalizando aplicação")
+
 # FastAPI app
 app = FastAPI(
     title="RobustCar Recommendation API",
     description="Sistema de recomendação de carros para RobustCar",
     version="1.0.0",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
+    lifespan=lifespan
 )
 
 # CORS middleware para permitir frontend
@@ -43,9 +84,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Global engine instance
-engine: Optional[RobustCarRecommendationEngine] = None
 
 # Pydantic models para API
 class QuestionnaireRequest(BaseModel):
@@ -95,30 +133,6 @@ class EstoqueStats(BaseModel):
     por_categoria: Dict[str, int]
     por_faixa_preco: Dict[str, int]
     ultima_atualizacao: str
-
-@app.on_event("startup")
-async def startup_event():
-    """Inicializar engine na startup"""
-    global engine
-    try:
-        # Buscar arquivo de estoque mais recente
-        import glob
-        import os
-        
-        estoque_files = glob.glob("robustcar_estoque_*.json")
-        if not estoque_files:
-            logger.error("Nenhum arquivo de estoque encontrado")
-            return
-        
-        # Usar arquivo mais recente
-        latest_file = max(estoque_files, key=os.path.getctime)
-        logger.info(f"Carregando estoque: {latest_file}")
-        
-        engine = RobustCarRecommendationEngine(latest_file)
-        logger.info(f"Engine inicializada com {len(engine.estoque)} carros")
-        
-    except Exception as e:
-        logger.error(f"Erro ao inicializar engine: {e}")
 
 @app.get("/")
 async def root():
@@ -373,4 +387,4 @@ async def atualizar_estoque():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("api:app", host="0.0.0.0", port=8000, reload=True)
