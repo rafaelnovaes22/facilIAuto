@@ -1,0 +1,510 @@
+[
+  {
+    "_id": "64f1234567890abcdef12345",
+    "marca": "Toyota",
+    "modelo": "Corolla",
+    "versao": "XEI 2.0 Flex",
+    "ano": 2023,
+    "preco": {
+      "fipe": 125000,
+      "mercado": {
+        "min": 120000,
+        "max": 130000,
+        "medio": 125000
+      },
+      "financiamento": {
+        "entradaMinima": 25000,
+        "parcelaEstimada": 2100
+      }
+    },
+    "especificacoes": {
+      "tipo": "sedan",
+      "categoria": "premium",
+      "combustivel": "Flex",
+      "motor": {
+        "cilindrada": 2.0,
+        "potencia": 177,
+        "torque": 213
+      },
+      "consumo": {
+        "cidade": 12.8,
+        "estrada": 15.2,
+        "combinado": 14.0
+      },
+      "dimensoes": {
+        "comprimento": 4630,
+        "largura": 1780,
+        "altura": 1455,
+        "portaMalas": 470,
+        "entreEixos": 2700
+      },
+      "capacidades": {
+        "tanque": 60,
+        "lugares": 5,
+        "portas": 4
+      },
+      "transmissao": "automatico",
+      "tracao": "4x2"
+    },
+    "confiabilidade": {
+      "notaJDPower": 4.5,
+      "customanutencao": "medio",
+      "problemas": ["Ruído no ar condicionado após 50.000km"],
+      "recall": {
+        "quantidade": 1,
+        "ultimoAno": 2022
+      },
+      "pecas": {
+        "disponibilidade": "facil",
+        "preco": "medio"
+      }
+    },
+    "mercado": {
+      "vendas": {
+        "ranking": 3,
+        "volume": 45000,
+        "participacao": 8.5
+      },
+      "depreciacao": {
+        "ano1": 15,
+        "ano3": 35,
+        "ano5": 55
+      },
+      "liquidez": "alta",
+      "tempoMedioVenda": 25
+    },
+    "disponibilidade": {
+      "regioes": ["SP", "RJ", "MG", "PR", "SC", "RS"],
+      "concessionarias": ["Toyota Centro", "Toyota Shopping", "Toyota Zona Sul"],
+      "estoque": "alto",
+      "prazoEntrega": 15
+    },
+    "seguranca": {
+      "latinNCAP": 5,
+      "itens": ["ABS", "Airbags", "Controle de estabilidade", "Assistente de partida"]
+    },
+    "imagens": {
+      "principal": "/images/toyota-corolla-2023-principal.jpg",
+      "galeria": [
+        "/images/toyota-corolla-2023-1.jpg",
+        "/images/toyota-corolla-2023-2.jpg",
+        "/images/toyota-corolla-2023-3.jpg"
+      ],
+      "cores": [
+        {
+          "nome": "Branco Pérola",
+          "hex": "#F8F8FF",
+          "imagem": "/images/toyota-corolla-branco.jpg"
+        },
+        {
+          "nome": "Prata Metalico",
+          "hex": "#C0C0C0",
+          "imagem": "/images/toyota-corolla-prata.jpg"
+        }
+      ]
+    },
+    "reviews": {
+      "especialistas": [
+        {
+          "nota": 8.5,
+          "fonte": "Auto Esporte",
+          "pontos": {
+            "positivos": ["Confiabilidade", "Economia", "Espaço interno"],
+            "negativos": ["Preço elevado", "Potência limitada"]
+          }
+        }
+      ],
+      "usuarios": {
+        "nota": 4.2,
+        "totalAvaliacoes": 1250,
+        "distribuicao": {
+          "5": 45,
+          "4": 35,
+          "3": 15,
+          "2": 3,
+          "1": 2
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "_id": "64f1234567890abcdef12346",
+    "marca": "Honda",
+    "modelo": "Civic",
+    "versao": "EXL 2.0 CVT",
+    "ano": 2023,
+    "preco": {
+      "fipe": 140000,
+      "mercado": {
+        "min": 135000,
+        "max": 145000,
+        "medio": 140000
+      },
+      "financiamento": {
+        "entradaMinima": 28000,
+        "parcelaEstimada": 2350
+      }
+    },
+    "especificacoes": {
+      "tipo": "sedan",
+      "categoria": "premium",
+      "combustivel": "Flex",
+      "motor": {
+        "cilindrada": 2.0,
+        "potencia": 155,
+        "torque": 192
+      },
+      "consumo": {
+        "cidade": 11.5,
+        "estrada": 14.8,
+        "combinado": 13.2
+      },
+      "dimensoes": {
+        "comprimento": 4656,
+        "largura": 1799,
+        "altura": 1433,
+        "portaMalas": 519,
+        "entreEixos": 2735
+      },
+      "capacidades": {
+        "tanque": 50,
+        "lugares": 5,
+        "portas": 4
+      },
+      "transmissao": "cvt",
+      "tracao": "4x2"
+    },
+    "confiabilidade": {
+      "notaJDPower": 4.3,
+      "customanutencao": "medio",
+      "problemas": ["Problema na CVT após 80.000km"],
+      "recall": {
+        "quantidade": 0
+      },
+      "pecas": {
+        "disponibilidade": "facil",
+        "preco": "alto"
+      }
+    },
+    "mercado": {
+      "vendas": {
+        "ranking": 5,
+        "volume": 32000,
+        "participacao": 6.1
+      },
+      "depreciacao": {
+        "ano1": 18,
+        "ano3": 38,
+        "ano5": 58
+      },
+      "liquidez": "alta",
+      "tempoMedioVenda": 30
+    },
+    "disponibilidade": {
+      "regioes": ["SP", "RJ", "MG", "PR", "SC"],
+      "concessionarias": ["Honda Prime", "Honda Center", "Honda Sul"],
+      "estoque": "medio",
+      "prazoEntrega": 30
+    },
+    "reviews": {
+      "usuarios": {
+        "nota": 4.0,
+        "totalAvaliacoes": 890,
+        "distribuicao": {
+          "5": 40,
+          "4": 30,
+          "3": 20,
+          "2": 7,
+          "1": 3
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "_id": "64f1234567890abcdef12347",
+    "marca": "Volkswagen",
+    "modelo": "Polo",
+    "versao": "Highline 1.0 TSI",
+    "ano": 2023,
+    "preco": {
+      "fipe": 85000,
+      "mercado": {
+        "min": 82000,
+        "max": 88000,
+        "medio": 85000
+      },
+      "financiamento": {
+        "entradaMinima": 17000,
+        "parcelaEstimada": 1420
+      }
+    },
+    "especificacoes": {
+      "tipo": "hatch",
+      "categoria": "premium",
+      "combustivel": "Flex",
+      "motor": {
+        "cilindrada": 1.0,
+        "potencia": 128,
+        "torque": 200
+      },
+      "consumo": {
+        "cidade": 14.2,
+        "estrada": 16.8,
+        "combinado": 15.5
+      },
+      "dimensoes": {
+        "comprimento": 4053,
+        "largura": 1751,
+        "altura": 1446,
+        "portaMalas": 300,
+        "entreEixos": 2564
+      },
+      "capacidades": {
+        "tanque": 45,
+        "lugares": 5,
+        "portas": 4
+      },
+      "transmissao": "automatico",
+      "tracao": "4x2"
+    },
+    "confiabilidade": {
+      "notaJDPower": 4.1,
+      "customanutencao": "alto",
+      "problemas": ["Problemas elétricos", "Defeito no câmbio automático"],
+      "recall": {
+        "quantidade": 2,
+        "ultimoAno": 2023
+      },
+      "pecas": {
+        "disponibilidade": "moderada",
+        "preco": "alto"
+      }
+    },
+    "mercado": {
+      "vendas": {
+        "ranking": 8,
+        "volume": 28000,
+        "participacao": 5.3
+      },
+      "depreciacao": {
+        "ano1": 22,
+        "ano3": 45,
+        "ano5": 65
+      },
+      "liquidez": "media",
+      "tempoMedioVenda": 45
+    },
+    "disponibilidade": {
+      "regioes": ["SP", "RJ", "MG", "PR", "SC", "RS"],
+      "concessionarias": ["VW Center", "VW Shopping"],
+      "estoque": "baixo",
+      "prazoEntrega": 60
+    },
+    "reviews": {
+      "usuarios": {
+        "nota": 3.8,
+        "totalAvaliacoes": 650,
+        "distribuicao": {
+          "5": 30,
+          "4": 25,
+          "3": 25,
+          "2": 15,
+          "1": 5
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "_id": "64f1234567890abcdef12348",
+    "marca": "Hyundai",
+    "modelo": "HB20",
+    "versao": "Comfort Plus 1.0",
+    "ano": 2023,
+    "preco": {
+      "fipe": 65000,
+      "mercado": {
+        "min": 62000,
+        "max": 68000,
+        "medio": 65000
+      },
+      "financiamento": {
+        "entradaMinima": 13000,
+        "parcelaEstimada": 1085
+      }
+    },
+    "especificacoes": {
+      "tipo": "hatch",
+      "categoria": "popular",
+      "combustivel": "Flex",
+      "motor": {
+        "cilindrada": 1.0,
+        "potencia": 80,
+        "torque": 102
+      },
+      "consumo": {
+        "cidade": 15.8,
+        "estrada": 17.2,
+        "combinado": 16.5
+      },
+      "dimensoes": {
+        "comprimento": 3940,
+        "largura": 1680,
+        "altura": 1470,
+        "portaMalas": 300,
+        "entreEixos": 2530
+      },
+      "capacidades": {
+        "tanque": 50,
+        "lugares": 5,
+        "portas": 4
+      },
+      "transmissao": "manual",
+      "tracao": "4x2"
+    },
+    "confiabilidade": {
+      "notaJDPower": 4.0,
+      "customanutencao": "baixo",
+      "problemas": ["Problema no ar condicionado"],
+      "recall": {
+        "quantidade": 1,
+        "ultimoAno": 2022
+      },
+      "pecas": {
+        "disponibilidade": "facil",
+        "preco": "baixo"
+      }
+    },
+    "mercado": {
+      "vendas": {
+        "ranking": 2,
+        "volume": 75000,
+        "participacao": 14.2
+      },
+      "depreciacao": {
+        "ano1": 20,
+        "ano3": 42,
+        "ano5": 62
+      },
+      "liquidez": "alta",
+      "tempoMedioVenda": 20
+    },
+    "disponibilidade": {
+      "regioes": ["SP", "RJ", "MG", "PR", "SC", "RS", "BA", "GO"],
+      "concessionarias": ["Hyundai Motors", "Hyundai Prime", "Caoa Hyundai"],
+      "estoque": "alto",
+      "prazoEntrega": 10
+    },
+    "reviews": {
+      "usuarios": {
+        "nota": 4.1,
+        "totalAvaliacoes": 2100,
+        "distribuicao": {
+          "5": 35,
+          "4": 40,
+          "3": 15,
+          "2": 7,
+          "1": 3
+        }
+      }
+    },
+    "isActive": true
+  },
+  {
+    "_id": "64f1234567890abcdef12349",
+    "marca": "Chevrolet",
+    "modelo": "Tracker",
+    "versao": "LTZ 1.0 Turbo",
+    "ano": 2023,
+    "preco": {
+      "fipe": 95000,
+      "mercado": {
+        "min": 92000,
+        "max": 98000,
+        "medio": 95000
+      },
+      "financiamento": {
+        "entradaMinima": 19000,
+        "parcelaEstimada": 1580
+      }
+    },
+    "especificacoes": {
+      "tipo": "suv",
+      "categoria": "premium",
+      "combustivel": "Flex",
+      "motor": {
+        "cilindrada": 1.0,
+        "potencia": 116,
+        "torque": 166
+      },
+      "consumo": {
+        "cidade": 13.5,
+        "estrada": 15.8,
+        "combinado": 14.7
+      },
+      "dimensoes": {
+        "comprimento": 4270,
+        "largura": 1791,
+        "altura": 1616,
+        "portaMalas": 363,
+        "entreEixos": 2570
+      },
+      "capacidades": {
+        "tanque": 54,
+        "lugares": 5,
+        "portas": 4
+      },
+      "transmissao": "automatico",
+      "tracao": "4x2"
+    },
+    "confiabilidade": {
+      "notaJDPower": 3.8,
+      "customanutencao": "medio",
+      "problemas": ["Defeito na central multimídia", "Ruído no motor"],
+      "recall": {
+        "quantidade": 3,
+        "ultimoAno": 2023
+      },
+      "pecas": {
+        "disponibilidade": "facil",
+        "preco": "medio"
+      }
+    },
+    "mercado": {
+      "vendas": {
+        "ranking": 12,
+        "volume": 18000,
+        "participacao": 3.4
+      },
+      "depreciacao": {
+        "ano1": 25,
+        "ano3": 48,
+        "ano5": 68
+      },
+      "liquidez": "media",
+      "tempoMedioVenda": 40
+    },
+    "disponibilidade": {
+      "regioes": ["SP", "RJ", "MG", "PR", "SC", "RS"],
+      "concessionarias": ["Chevrolet Center", "Chevrolet Prime"],
+      "estoque": "medio",
+      "prazoEntrega": 45
+    },
+    "reviews": {
+      "usuarios": {
+        "nota": 3.9,
+        "totalAvaliacoes": 450,
+        "distribuicao": {
+          "5": 25,
+          "4": 35,
+          "3": 25,
+          "2": 10,
+          "1": 5
+        }
+      }
+    },
+    "isActive": true
+  }
+]

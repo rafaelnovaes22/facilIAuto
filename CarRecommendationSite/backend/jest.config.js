@@ -31,47 +31,13 @@ module.exports = {
       statements: 80
     }
   },
-  setupFilesAfterEnv: [
-    '<rootDir>/tests/setup.ts'
-  ],
   testTimeout: 10000,
   verbose: true,
   clearMocks: true,
   restoreMocks: true,
   
-  // Test environments for different types
-  projects: [
-    {
-      displayName: 'unit',
-      testMatch: ['<rootDir>/tests/unit/**/*.test.ts'],
-      testEnvironment: 'node'
-    },
-    {
-      displayName: 'integration',
-      testMatch: ['<rootDir>/tests/integration/**/*.test.ts'],
-      testEnvironment: 'node',
-      setupFilesAfterEnv: [
-        '<rootDir>/tests/setup.ts',
-        '<rootDir>/tests/integration/setup.ts'
-      ]
-    },
-    {
-      displayName: 'e2e',
-      testMatch: ['<rootDir>/tests/e2e/**/*.test.ts'],
-      testEnvironment: 'node',
-      setupFilesAfterEnv: [
-        '<rootDir>/tests/setup.ts',
-        '<rootDir>/tests/e2e/setup.ts'
-      ]
-    }
-  ],
-  
-  // Global test setup
-  globalSetup: '<rootDir>/tests/globalSetup.ts',
-  globalTeardown: '<rootDir>/tests/globalTeardown.ts',
-  
   // Module path mapping
-  moduleNameMapping: {
+  moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@tests/(.*)$': '<rootDir>/tests/$1'
   },

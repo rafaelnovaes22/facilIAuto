@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# 🚀 CarMatch XP Setup Script
+# 🚀 FacilIAuto XP Setup Script
 # Configura o ambiente completo para desenvolvimento com XP e testes E2E
 
 set -e
 
-echo "🚀 Setting up CarMatch with XP methodology..."
+echo "🚀 Setting up FacilIAuto with XP methodology..."
 echo "=============================================="
 
 # Colors for output
@@ -337,7 +337,7 @@ setup_xp_docs() {
     
     # Create quick reference
     cat > XP-QuickRef.md << 'EOF'
-# 🚀 CarMatch XP Quick Reference
+# 🚀 FacilIAuto XP Quick Reference
 
 ## Daily Commands
 
@@ -387,7 +387,7 @@ create_summary() {
     print_info "Creating setup summary..."
     
     cat > SETUP-COMPLETE.md << EOF
-# 🎉 CarMatch XP Setup Complete!
+# 🎉 FacilIAuto XP Setup Complete!
 
 ## What was configured:
 

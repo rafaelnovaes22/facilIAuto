@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe('CarMatch - Complete User Journey', () => {
+describe('FacilIAuto - Complete User Journey', () => {
   beforeEach(() => {
     // Seed database with test data
     cy.seedDatabase();

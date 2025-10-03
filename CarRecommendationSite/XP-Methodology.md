@@ -2,7 +2,7 @@
 
 ## 📋 Visão Geral
 
-O CarMatch será desenvolvido seguindo rigorosamente a metodologia XP (Extreme Programming), priorizando qualidade de código, entrega contínua e satisfação do cliente através de práticas ágeis comprovadas.
+O FacilIAuto será desenvolvido seguindo rigorosamente a metodologia XP (Extreme Programming), priorizando qualidade de código, entrega contínua e satisfação do cliente através de práticas ágeis comprovadas.
 
 ---
 
@@ -531,4 +531,4 @@ echo "✅ All checks passed"
 - Retrospectives
 ```
 
-Esta metodologia XP garantirá que o CarMatch seja desenvolvido com alta qualidade, entrega contínua e máxima satisfação dos usuários! 🚀
+Esta metodologia XP garantirá que o FacilIAuto seja desenvolvido com alta qualidade, entrega contínua e máxima satisfação dos usuários! 🚀
