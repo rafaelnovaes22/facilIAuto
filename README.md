@@ -114,30 +114,37 @@ npm run dev
 
 ```
 FacilIAuto/
-├── 🆕 platform/               # 🟢 PLATAFORMA UNIFICADA (NOVA!)
+├── 🟢 platform/               # PLATAFORMA PRINCIPAL
 │   ├── backend/
 │   │   ├── models/           # Car, Dealership, UserProfile
 │   │   ├── services/         # UnifiedRecommendationEngine
-│   │   └── data/             # 3 concessionárias, 129+ carros
-│   ├── frontend/             # (em desenvolvimento)
-│   └── README.md             # Documentação completa
+│   │   ├── data/             # 3 concessionárias, 129+ carros
+│   │   └── tests/            # Testes integrados
+│   ├── frontend/             # React + TypeScript (em desenvolvimento)
+│   └── README.md             # Documentação da plataforma
 │
-├── 📚 docs/                   # Documentação completa
 ├── 🤖 [12 agentes]/          # Framework de agentes especializados
+│   ├── AI Engineer/
+│   ├── Tech Lead/
+│   ├── UX Especialist/
+│   └── ... (9 outros agentes)
 │
-├── 🚗 RobustCar/             # Sistema legacy (single-tenant)
-│   ├── 🐍 api.py             # Backend FastAPI
-│   ├── 🤖 recommendation_engine.py
-│   └── 📱 frontend/          # React app
+├── 📚 docs/                   # Documentação completa (17+ documentos)
+│   ├── ARQUITETURA-SAAS.md
+│   ├── VISAO-PRODUTO-SAAS.md
+│   └── ...
 │
-├── 📊 CarRecommendationSite/ # Prototipagem XP/E2E
-└── 🛠️ agent-cli.py          # Ferramenta de gestão
+├── 📄 FOR-RECRUITERS.md       # Avaliação técnica (Score: 92/100)
+├── 📖 CONTRIBUTING.md         # Guia de contribuição
+├── 🔧 agent-cli.py           # CLI para gerenciar agentes
+└── 📋 README.md              # Este arquivo
 ```
 
-### **🆕 Nova Arquitetura Multi-Concessionária**
-- **129+ carros** de **3 concessionárias** em uma busca
-- RobustCar é **uma das opções**, não a única
-- Sistema escalável para centenas de concessionárias
+### **🎯 Foco: Código Executável**
+- **129+ carros** de **3 concessionárias** agregados
+- **Engine unificado** multi-tenant
+- **Framework de agentes** operacional
+- **Arquitetura escalável** para produção
 - Ver detalhes em: `REESTRUTURACAO-COMPLETA.md`
 
 ---

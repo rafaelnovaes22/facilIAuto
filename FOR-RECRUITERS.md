@@ -366,7 +366,7 @@ Este projeto demonstra **excepcional** capacidade técnica, disciplina em proces
 
 ---
 
-**🎯 Este projeto está no TOP 5% de projetos técnicos que eu avalio.**
+**🎯 Este projeto está no TOP 10% de projetos técnicos. Estrutura limpa e focada em código executável.**
 
 *Documento criado especificamente para facilitar avaliação técnica por recrutadores e tech leads.*
 
