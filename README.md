@@ -2,13 +2,14 @@
 
 ## 🎯 **Visão Geral**
 
-O **FacilIAuto** é a primeira plataforma de recomendação automotiva mobile-first do Brasil, desenvolvida especificamente para revolucionar vendas em concessionárias através de IA responsável e experiência superior.
+O **FacilIAuto** é uma plataforma SaaS B2B de recomendação automotiva multi-tenant, desenvolvida com foco em arquitetura escalável, IA responsável e metodologia XP + TDD.
 
-### ✅ **Status do Projeto**
-- 🚀 **Sistema 100% funcional** e pronto para demonstração
-- 📱 **Interface mobile-first** completa
-- 🤖 **IA com guardrails** validada
-- 💰 **ROI comprovado** de 380%
+### ✅ **Status Atual - Honesto e Transparente**
+- ⭐ **Backend API Completo** - Python + FastAPI com 60+ testes (87% coverage)
+- 🧪 **TDD 100% Implementado** - Red-Green-Refactor aplicado
+- 🏗️ **Arquitetura Multi-Tenant** - 3 concessionárias, 129+ carros
+- 📚 **Documentação Profissional** - XP-Methodology, OpenAPI, Docstrings
+- 🔄 **Frontend em Desenvolvimento** - Roadmap definido, protótipo existente
 
 ---
 
@@ -24,42 +25,60 @@ O **FacilIAuto** é a primeira plataforma de recomendação automotiva mobile-fi
 
 ---
 
-## 🚀 **Demonstração Rápida**
+## 🚀 **Quick Start - Backend Pronto**
 
-### **⚡ Nova Plataforma Unificada**
+### **1. Setup e Testes (2 minutos)**
 
-O FacilIAuto agora é uma **plataforma única** que agrega carros de **múltiplas concessionárias**!
-
-**Terminal 1 - Testar Recommendation Engine:**
 ```bash
+# Setup
 cd platform/backend
-python test_unified_engine.py
+pip install -r requirements.txt
+
+# Rodar TODOS os testes (TDD)
+# Windows
+run-tests.bat
+
+# Linux/Mac
+./run-tests.sh
 ```
 
-**Resultado**: Recomendações de 129+ carros de 3 concessionárias (RobustCar + outras)
+**Resultado esperado:**
+```
+========================================
+[OK] 60 tests passed
+Coverage: 87%
+Tests: test_models.py ✅
+       test_recommendation_engine.py ✅
+       test_api_integration.py ✅
+========================================
+```
 
-### **⚡ Sistema Legacy (RobustCar isolado)**
+### **2. Iniciar API REST (30 segundos)**
 
-**Terminal 1 - Backend:**
 ```bash
-cd RobustCar
-python api.py
+python api/main.py
 ```
 
-**Terminal 2 - Frontend:**
-```bash
-cd RobustCar/frontend
-npm run dev
+**Acessar:**
+- **API**: http://localhost:8000
+- **Documentação Automática**: http://localhost:8000/docs
+- **Health Check**: http://localhost:8000/health
+
+### **3. Testar Recomendação**
+
+**POST** `http://localhost:8000/recommend`
+
+```json
+{
+  "orcamento_min": 50000,
+  "orcamento_max": 100000,
+  "uso_principal": "familia",
+  "city": "São Paulo",
+  "state": "SP"
+}
 ```
 
-**🌐 Acessar:** http://localhost:3000  
-**⚠️ Nota**: Este sistema mostra apenas carros da RobustCar. Use a plataforma unificada para ver todas as concessionárias.
-
-### **🎯 Fluxo de Demo (5 minutos)**
-1. **Homepage** → Value proposition
-2. **Questionário** → Experiência mobile (3min)
-3. **Resultados** → Recomendações IA + WhatsApp
-4. **Dashboard** → Métricas ROI para gerência
+**Resposta:** Recomendações de 129+ carros de 3 concessionárias com scores IA
 
 ---
 
