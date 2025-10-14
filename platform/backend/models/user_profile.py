@@ -18,9 +18,10 @@ class UserProfile(BaseModel):
     city: Optional[str] = None
     state: Optional[str] = None
     priorizar_proximas: bool = True  # Priorizar concessionárias próximas
+    raio_maximo_km: Optional[int] = None  # 🤖 AI Engineer: Raio de busca em km (ex: 30, 50, 100)
     
     # Uso principal
-    uso_principal: str  # "familia", "trabalho", "lazer", "comercial", "primeiro_carro"
+    uso_principal: str  # "familia", "trabalho", "lazer", "comercial", "primeiro_carro", "transporte_passageiros"
     frequencia_uso: Optional[str] = "diaria"  # "diaria", "semanal", "eventual"
     
     # Composição familiar
@@ -35,15 +36,24 @@ class UserProfile(BaseModel):
         "espaco": 3,
         "performance": 3,
         "conforto": 3,
-        "seguranca": 3
+        "seguranca": 3,
+        # 📊 FASE 3: Métricas de "Carro Bom"
+        "revenda": 3,          # Índice de revenda
+        "confiabilidade": 3,   # Índice de confiabilidade
+        "custo_manutencao": 3  # Custo de manutenção
     }
     
     # Preferências
     marcas_preferidas: List[str] = []
     marcas_rejeitadas: List[str] = []
-    tipos_preferidos: List[str] = []  # ["Hatch", "Sedan", "SUV"]
+    tipos_preferidos: List[str] = []  # ["Hatch", "Sedan", "SUV", "Pickup", "Compacto", "Van"]
     combustivel_preferido: Optional[str] = None
-    cambio_preferido: Optional[str] = None  # "Manual", "Automatico"
+    cambio_preferido: Optional[str] = None
+    
+    # 🤖 AI Engineer: Filtros eliminatórios (FASE 1)
+    ano_minimo: Optional[int] = None  # Ex: 2018 (elimina carros mais antigos)
+    km_maxima: Optional[int] = None  # Ex: 80000 (elimina carros com mais quilometragem)
+    must_haves: List[str] = []  # Ex: ["ISOFIX", "6_airbags", "camera_re", "controle_estabilidade"]  # "Manual", "Automatico"
     
     # Experiência
     primeiro_carro: bool = False
@@ -68,6 +78,10 @@ class UserProfile(BaseModel):
                     "seguranca": 5
                 },
                 "tipos_preferidos": ["SUV", "Sedan"],
+                "ano_minimo": 2018,
+                "km_maxima": 80000,
+                "must_haves": ["ISOFIX", "6_airbags"],
+                "raio_maximo_km": 30,
                 "primeiro_carro": False
             }
         }

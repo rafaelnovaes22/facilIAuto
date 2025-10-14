@@ -2,8 +2,8 @@
 Modelo de Concessionária para a plataforma unificada FacilIAuto
 """
 
-from pydantic import BaseModel, HttpUrl
-from typing import Optional
+from pydantic import BaseModel, HttpUrl, Field
+from typing import Optional, List, Any
 from datetime import datetime
 
 
@@ -12,13 +12,13 @@ class Dealership(BaseModel):
     Modelo representando uma concessionária na plataforma
     """
     id: str  # "robustcar", "autocenter", "carplus"
-    name: str  # "RobustCar São Paulo"
-    city: str
-    state: str  # "SP", "RJ", "MG"
-    region: str  # "Sudeste", "Sul", "Nordeste"
+    name: str = Field(alias="nome")  # "RobustCar São Paulo"
+    city: str = Field(alias="cidade")
+    state: str = Field(alias="estado")  # "SP", "RJ", "MG"
+    region: str = Field(default="Sudeste", alias="regiao")  # "Sudeste", "Sul", "Nordeste"
     
     # Contato
-    phone: str
+    phone: str = Field(alias="telefone")
     whatsapp: str
     email: Optional[str] = None
     website: Optional[str] = None
@@ -30,6 +30,13 @@ class Dealership(BaseModel):
     # Address
     address: Optional[str] = None
     zip_code: Optional[str] = None
+    
+    # 🏗️ System Architecture: Coordenadas geográficas (FASE 1)
+    latitude: Optional[float] = None  # Ex: -23.5505 (São Paulo)
+    longitude: Optional[float] = None  # Ex: -46.6333 (São Paulo)
+    
+    # Carros da concessionária (armazenados no mesmo JSON)
+    carros: List[Any] = []  # Lista de carros (dict ou Car objects)
     
     # Status
     active: bool = True
@@ -45,6 +52,7 @@ class Dealership(BaseModel):
     avg_price: Optional[float] = 0
     
     class Config:
+        populate_by_name = True  # Aceitar tanto 'name' quanto 'nome'
         json_schema_extra = {
             "example": {
                 "id": "robustcar",
@@ -56,6 +64,8 @@ class Dealership(BaseModel):
                 "whatsapp": "5511987654321",
                 "email": "contato@robustcar.com.br",
                 "website": "https://robustcar.com.br",
+                "latitude": -23.5505,
+                "longitude": -46.6333,
                 "active": True,
                 "verified": True,
                 "premium": False

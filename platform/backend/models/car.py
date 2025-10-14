@@ -35,12 +35,22 @@ class Car(BaseModel):
     # Categorização (para recomendação)
     categoria: str  # "Hatch", "Sedan", "SUV", "Pickup", "Compacto"
     
+    # 📊 Data Analyst: Itens de segurança e conforto (FASE 1)
+    itens_seguranca: List[str] = []  # Ex: ["ISOFIX", "6_airbags", "controle_estabilidade", "ABS", "camera_re"]
+    itens_conforto: List[str] = []  # Ex: ["ar_condicionado", "direcao_eletrica", "vidro_eletrico", "sensor_estacionamento"]
+    
     # Scores de IA (0.0 a 1.0)
     score_familia: float = 0.5
     score_economia: float = 0.5
     score_performance: float = 0.5
     score_conforto: float = 0.5
     score_seguranca: float = 0.5
+    
+    # 📊 Data Analyst: Métricas de "Carro Bom" (FASE 3)
+    indice_revenda: float = 0.5              # 0-1 (liquidez + relação com FIPE)
+    taxa_depreciacao_anual: float = 0.15     # % ao ano (ex: 0.15 = 15%/ano)
+    custo_manutencao_anual: Optional[float] = None  # R$/ano estimado
+    indice_confiabilidade: float = 0.5       # 0-1 (recalls, problemas conhecidos)
     
     # Mídia
     imagens: List[str] = []
@@ -60,6 +70,8 @@ class Car(BaseModel):
     dealership_state: str
     dealership_phone: str
     dealership_whatsapp: str
+    dealership_latitude: Optional[float] = None  # 🏗️ System Architecture: Para cálculo de distância
+    dealership_longitude: Optional[float] = None
     
     class Config:
         json_schema_extra = {
