@@ -1,12 +1,12 @@
 // 🤖 AI Engineer + 🎨 UX: Score visual com explicação
-import { Box, HStack, VStack, Text, CircularProgress, CircularProgressLabel, Badge } from '@chakra-ui/react'
+import { VStack, CircularProgress, CircularProgressLabel, Badge } from '@chakra-ui/react'
 
 interface ScoreVisualProps {
   score: number
   percentage: number
 }
 
-export const ScoreVisual = ({ score, percentage }: ScoreVisualProps) => {
+export const ScoreVisual = ({ percentage }: ScoreVisualProps) => {
   // Determinar cor baseada no score
   const getColor = (pct: number) => {
     if (pct >= 80) return 'green'
@@ -40,7 +40,7 @@ export const ScoreVisual = ({ score, percentage }: ScoreVisualProps) => {
           {Math.round(percentage)}%
         </CircularProgressLabel>
       </CircularProgress>
-      
+
       <Badge
         colorScheme={color}
         fontSize="xs"

@@ -1,0 +1,28 @@
+# Development and Testing Dependencies for WhatsApp Chatbot
+
+# Core dependencies
+requests>=2.31.0
+python-dotenv>=1.0.0
+
+# Web framework (for webhook testing)
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+
+# Testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+httpx>=0.25.0  # For testing FastAPI
+
+# Code quality
+black>=23.10.0
+flake8>=6.1.0
+mypy>=1.6.0
+isort>=5.12.0
+
+# Pre-commit hooks
+pre-commit>=3.5.0
+
+# Utilities
+pydantic>=2.4.0
+pydantic-settings>=2.0.0

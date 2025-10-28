@@ -8,6 +8,7 @@ import {
   useToast,
 } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 import { FaArrowLeft, FaArrowRight, FaCheck } from 'react-icons/fa'
 import { useQuestionnaireStore } from '@/store/questionnaireStore'
 import { useRecommendations } from '@/hooks/useApi'
@@ -37,6 +38,68 @@ export default function QuestionnairePage() {
   } = useQuestionnaireStore()
 
   const { mutate: getRecommendations, isPending } = useRecommendations()
+
+  // Sync URL with current step
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const urlStep = params.get('step')
+
+    if (urlStep) {
+      const stepNumber = parseInt(urlStep, 10) - 1
+      if (stepNumber >= 0 && stepNumber <= 3 && stepNumber !== currentStep) {
+        // Don't update if it's the same step
+        return
+      }
+    }
+
+    // Update URL when step changes
+    const newParams = new URLSearchParams()
+    newParams.set('step', (currentStep + 1).toString())
+    window.history.replaceState({}, '', `?${newParams.toString()}`)
+  }, [currentStep])
+
+  // Restore step from URL on mount
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const urlStep = params.get('step')
+
+    if (urlStep) {
+      const stepNumber = parseInt(urlStep, 10) - 1
+      if (stepNumber >= 0 && stepNumber <= 3) {
+        useQuestionnaireStore.getState().setCurrentStep(stepNumber)
+      }
+    }
+  }, [])
+
+  // Keyboard navigation support
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if user is typing in an input
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement ||
+        e.target instanceof HTMLSelectElement
+      ) {
+        return
+      }
+
+      // Enter key - go to next step
+      if (e.key === 'Enter' && canGoNext() && !isPending) {
+        e.preventDefault()
+        handleNext()
+      }
+
+      // Escape key - go to previous step
+      if (e.key === 'Escape' && currentStep > 0) {
+        e.preventDefault()
+        previousStep()
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [currentStep, canGoNext, isPending])
 
   const handleNext = () => {
     if (currentStep === 3) {

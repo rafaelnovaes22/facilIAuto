@@ -1,0 +1,135 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: faciliauto-chatbot-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      - chatbot-network
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: faciliauto-chatbot-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-faciliauto_chatbot}
+      POSTGRES_USER: ${POSTGRES_USER:-faciliauto}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-faciliauto_dev_password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./config/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-faciliauto}"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      - chatbot-network
+
+  duckdb:
+    image: alpine:latest
+    container_name: faciliauto-chatbot-duckdb
+    volumes:
+      - duckdb_data:/data
+    command: tail -f /dev/null
+    networks:
+      - chatbot-network
+
+  celery-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: faciliauto-chatbot-celery-worker
+    command: python start_worker.py
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/1
+      - REDIS_URL=redis://redis:6379/0
+      - POSTGRES_URL=postgresql://${POSTGRES_USER:-faciliauto}:${POSTGRES_PASSWORD:-faciliauto_dev_password}@postgres:5432/${POSTGRES_DB:-faciliauto_chatbot}
+      - DUCKDB_PATH=/data/chatbot.duckdb
+      - WHATSAPP_API_URL=${WHATSAPP_API_URL}
+      - WHATSAPP_ACCESS_TOKEN=${WHATSAPP_ACCESS_TOKEN}
+      - BACKEND_API_URL=${BACKEND_API_URL:-http://host.docker.internal:8001}
+    volumes:
+      - ./src:/app/src
+      - ./config:/app/config
+      - duckdb_data:/data
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    networks:
+      - chatbot-network
+    restart: unless-stopped
+
+  celery-beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: faciliauto-chatbot-celery-beat
+    command: celery -A config.celery_config beat --loglevel=info
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/1
+      - REDIS_URL=redis://redis:6379/0
+      - POSTGRES_URL=postgresql://${POSTGRES_USER:-faciliauto}:${POSTGRES_PASSWORD:-faciliauto_dev_password}@postgres:5432/${POSTGRES_DB:-faciliauto_chatbot}
+    volumes:
+      - ./src:/app/src
+      - ./config:/app/config
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    networks:
+      - chatbot-network
+    restart: unless-stopped
+
+  chatbot-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: faciliauto-chatbot-api
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - POSTGRES_URL=postgresql://${POSTGRES_USER:-faciliauto}:${POSTGRES_PASSWORD:-faciliauto_dev_password}@postgres:5432/${POSTGRES_DB:-faciliauto_chatbot}
+      - DUCKDB_PATH=/data/chatbot.duckdb
+      - WHATSAPP_API_URL=${WHATSAPP_API_URL}
+      - WHATSAPP_ACCESS_TOKEN=${WHATSAPP_ACCESS_TOKEN}
+      - WHATSAPP_VERIFY_TOKEN=${WHATSAPP_VERIFY_TOKEN}
+      - BACKEND_API_URL=${BACKEND_API_URL:-http://host.docker.internal:8001}
+    ports:
+      - "8002:8000"
+    volumes:
+      - ./src:/app/src
+      - duckdb_data:/data
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    networks:
+      - chatbot-network
+    restart: unless-stopped
+
+volumes:
+  redis_data:
+  postgres_data:
+  duckdb_data:
+
+networks:
+  chatbot-network:
+    driver: bridge

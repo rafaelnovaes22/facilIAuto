@@ -1,0 +1,199 @@
+version: '3.8'
+
+services:
+  # Redis - Message broker e cache
+  redis:
+    image: redis:7-alpine
+    container_name: faciliauto-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      - faciliauto-network
+
+  # PostgreSQL - Banco de dados principal
+  postgres:
+    image: postgres:15-alpine
+    container_name: faciliauto-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-faciliauto_chatbot}
+      POSTGRES_USER: ${POSTGRES_USER:-faciliauto}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./config/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-faciliauto}"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      - faciliauto-network
+
+  # Chatbot API - FastAPI application
+  chatbot-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: faciliauto-chatbot-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      # Database
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-faciliauto}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-faciliauto_chatbot}
+      
+      # Redis
+      - REDIS_URL=redis://redis:6379/0
+      
+      # Celery
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      
+      # WhatsApp
+      - WHATSAPP_API_URL=${WHATSAPP_API_URL}
+      - WHATSAPP_ACCESS_TOKEN=${WHATSAPP_ACCESS_TOKEN}
+      - WHATSAPP_PHONE_NUMBER_ID=${WHATSAPP_PHONE_NUMBER_ID}
+      - WHATSAPP_VERIFY_TOKEN=${WHATSAPP_VERIFY_TOKEN}
+      - WHATSAPP_WEBHOOK_SECRET=${WHATSAPP_WEBHOOK_SECRET}
+      
+      # OpenAI
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      
+      # Backend API
+      - BACKEND_API_URL=${BACKEND_API_URL:-http://backend:3000}
+      
+      # Environment
+      - ENVIRONMENT=production
+      - LOG_LEVEL=INFO
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/logs
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8000 --workers 4
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - faciliauto-network
+
+  # Celery Worker - Processa mensagens assincronamente
+  celery-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: faciliauto-celery-worker
+    restart: unless-stopped
+    environment:
+      # Database
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-faciliauto}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-faciliauto_chatbot}
+      
+      # Redis
+      - REDIS_URL=redis://redis:6379/0
+      
+      # Celery
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      
+      # WhatsApp
+      - WHATSAPP_API_URL=${WHATSAPP_API_URL}
+      - WHATSAPP_ACCESS_TOKEN=${WHATSAPP_ACCESS_TOKEN}
+      - WHATSAPP_PHONE_NUMBER_ID=${WHATSAPP_PHONE_NUMBER_ID}
+      
+      # OpenAI
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      
+      # Backend API
+      - BACKEND_API_URL=${BACKEND_API_URL:-http://backend:3000}
+      
+      # Environment
+      - ENVIRONMENT=production
+      - LOG_LEVEL=INFO
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/logs
+    command: python start_worker.py
+    networks:
+      - faciliauto-network
+
+  # Celery Beat - Agendador de tarefas periódicas
+  celery-beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: faciliauto-celery-beat
+    restart: unless-stopped
+    environment:
+      # Database
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-faciliauto}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-faciliauto_chatbot}
+      
+      # Redis
+      - REDIS_URL=redis://redis:6379/0
+      
+      # Celery
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      
+      # Environment
+      - ENVIRONMENT=production
+      - LOG_LEVEL=INFO
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/logs
+    command: celery -A config.celery_config beat --loglevel=info
+    networks:
+      - faciliauto-network
+
+  # Flower - Monitoring de Celery (opcional)
+  flower:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: faciliauto-flower
+    restart: unless-stopped
+    ports:
+      - "5555:5555"
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - FLOWER_PORT=5555
+    depends_on:
+      - redis
+      - celery-worker
+    command: celery -A config.celery_config flower --port=5555
+    networks:
+      - faciliauto-network
+
+volumes:
+  redis_data:
+    driver: local
+  postgres_data:
+    driver: local
+
+networks:
+  faciliauto-network:
+    driver: bridge

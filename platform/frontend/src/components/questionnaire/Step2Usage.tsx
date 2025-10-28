@@ -5,9 +5,7 @@ import {
   Text,
   FormControl,
   FormLabel,
-  RadioGroup,
-  Radio,
-  Stack,
+  SimpleGrid,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
@@ -16,105 +14,116 @@ import {
   Switch,
   HStack,
   Box,
+  Divider,
 } from '@chakra-ui/react'
+import {
+  FaUsers,
+  FaBriefcase,
+  FaUmbrellaBeach,
+  FaTruck,
+  FaTaxi,
+  FaGraduationCap,
+} from 'react-icons/fa'
 import { useQuestionnaireStore } from '@/store/questionnaireStore'
+import { UsageProfileCard } from './UsageProfileCard'
+import type { UsoPrincipal } from '@/types'
+
+const USAGE_PROFILES = [
+  {
+    value: 'familia' as UsoPrincipal,
+    icon: FaUsers,
+    title: 'Família',
+    description: 'Levar as crianças na escola, fazer compras e passear nos finais de semana',
+  },
+  {
+    value: 'trabalho' as UsoPrincipal,
+    icon: FaBriefcase,
+    title: 'Trabalho',
+    description: 'Ir e voltar do trabalho todos os dias, economizando combustível',
+  },
+  {
+    value: 'lazer' as UsoPrincipal,
+    icon: FaUmbrellaBeach,
+    title: 'Lazer',
+    description: 'Viajar, conhecer lugares novos e curtir aventuras',
+  },
+  {
+    value: 'comercial' as UsoPrincipal,
+    icon: FaTruck,
+    title: 'Comercial',
+    description: 'Transportar produtos, fazer entregas e trabalhar',
+  },
+  {
+    value: 'transporte_passageiros' as UsoPrincipal,
+    icon: FaTaxi,
+    title: 'Uber/99',
+    description: 'Trabalhar com transporte de passageiros (Uber, 99, táxi)',
+  },
+  {
+    value: 'primeiro_carro' as UsoPrincipal,
+    icon: FaGraduationCap,
+    title: 'Primeiro Carro',
+    description: 'Meu primeiro carro, fácil de dirigir e estacionar',
+  },
+]
 
 export const Step2Usage = () => {
   const { formData, updateFormData } = useQuestionnaireStore()
 
+  const handleProfileSelect = (value: UsoPrincipal) => {
+    updateFormData({ uso_principal: value })
+  }
+
   return (
-    <VStack spacing={8} align="stretch" maxW="600px" mx="auto">
+    <VStack spacing={8} align="stretch" maxW="900px" mx="auto">
       {/* Header */}
       <VStack spacing={3} textAlign="center">
         <Heading size="lg" color="gray.800">
-          🚗 Como você vai usar o carro?
+          Como você vai usar o carro? 🚗
         </Heading>
-        <Text color="gray.600" fontSize="md">
-          Isso nos ajuda a encontrar o veículo perfeito para suas necessidades
+        <Text color="gray.600" fontSize="md" maxW="600px">
+          Escolha a opção que melhor descreve o uso principal do seu carro
         </Text>
       </VStack>
 
-      {/* Uso Principal */}
+      {/* Usage Profile Grid */}
       <FormControl isRequired>
-        <FormLabel fontSize="md" fontWeight="semibold" mb={4}>
-          Uso Principal
-        </FormLabel>
-        <RadioGroup
-          value={formData.uso_principal || 'familia'}
-          onChange={(value) =>
-            updateFormData({
-              uso_principal: value as any,
-            })
-          }
+        <SimpleGrid
+          columns={{ base: 1, md: 2, lg: 3 }}
+          spacing={4}
+          role="radiogroup"
         >
-          <Stack spacing={3}>
-            <Radio value="familia" size="lg" colorScheme="brand">
-              <Box>
-                <Text fontWeight="semibold">👨‍👩‍👧‍👦 Família</Text>
-                <Text fontSize="sm" color="gray.600">
-                  Transporte da família, passeios e atividades
-                </Text>
-              </Box>
-            </Radio>
-
-            <Radio value="trabalho" size="lg" colorScheme="brand">
-              <Box>
-                <Text fontWeight="semibold">💼 Trabalho</Text>
-                <Text fontSize="sm" color="gray.600">
-                  Deslocamento diário, reuniões e compromissos
-                </Text>
-              </Box>
-            </Radio>
-
-            <Radio value="lazer" size="lg" colorScheme="brand">
-              <Box>
-                <Text fontWeight="semibold">🏖️ Lazer</Text>
-                <Text fontSize="sm" color="gray.600">
-                  Viagens, aventuras e momentos de diversão
-                </Text>
-              </Box>
-            </Radio>
-
-            <Radio value="comercial" size="lg" colorScheme="brand">
-              <Box>
-                <Text fontWeight="semibold">🚚 Comercial</Text>
-                <Text fontSize="sm" color="gray.600">
-                  Transporte de produtos, entregas e serviços
-                </Text>
-              </Box>
-            </Radio>
-
-            <Radio value="transporte_passageiros" size="lg" colorScheme="brand">
-              <Box>
-                <Text fontWeight="semibold">🚖 Transporte de Passageiros</Text>
-                <Text fontSize="sm" color="gray.600">
-                  Uber, 99, táxi, van escolar ou executivo
-                </Text>
-              </Box>
-            </Radio>
-
-            <Radio value="primeiro_carro" size="lg" colorScheme="brand">
-              <Box>
-                <Text fontWeight="semibold">🎓 Primeiro Carro</Text>
-                <Text fontSize="sm" color="gray.600">
-                  Meu primeiro veículo, aprendendo a dirigir
-                </Text>
-              </Box>
-            </Radio>
-          </Stack>
-        </RadioGroup>
+          {USAGE_PROFILES.map((profile) => (
+            <UsageProfileCard
+              key={profile.value}
+              icon={profile.icon}
+              title={profile.title}
+              description={profile.description}
+              value={profile.value}
+              isSelected={formData.uso_principal === profile.value}
+              onClick={() => handleProfileSelect(profile.value)}
+            />
+          ))}
+        </SimpleGrid>
       </FormControl>
 
+      <Divider />
+
       {/* Composição Familiar */}
-      <VStack spacing={6} pt={4}>
-        <Heading size="md" color="gray.800" alignSelf="flex-start">
-          👥 Composição Familiar
-        </Heading>
+      <VStack spacing={6} align="stretch">
+        <VStack spacing={2} align="flex-start">
+          <Heading size="md" color="gray.800">
+            👥 Quem vai usar o carro?
+          </Heading>
+          <Text fontSize="sm" color="gray.600">
+            Isso nos ajuda a encontrar um carro com o tamanho certo
+          </Text>
+        </VStack>
 
         {/* Tamanho da Família */}
         <FormControl isRequired>
-          <FormLabel fontSize="sm">
-            Quantas pessoas usarão o carro regularmente?
+          <FormLabel fontSize="md" fontWeight="semibold">
+            Quantas pessoas vão usar o carro regularmente?
           </FormLabel>
           <NumberInput
             value={formData.tamanho_familia || 1}
@@ -135,13 +144,13 @@ export const Step2Usage = () => {
 
         {/* Crianças */}
         <FormControl>
-          <HStack justify="space-between">
-            <Box>
-              <FormLabel fontSize="sm" mb={0}>
+          <HStack justify="space-between" align="flex-start">
+            <Box flex={1}>
+              <FormLabel fontSize="md" fontWeight="semibold" mb={1}>
                 Tem crianças?
               </FormLabel>
-              <Text fontSize="xs" color="gray.600">
-                Prioriza segurança e espaço para cadeirinhas
+              <Text fontSize="sm" color="gray.600">
+                Vamos priorizar carros com mais segurança e espaço para cadeirinhas
               </Text>
             </Box>
             <Switch
@@ -157,13 +166,13 @@ export const Step2Usage = () => {
 
         {/* Idosos */}
         <FormControl>
-          <HStack justify="space-between">
-            <Box>
-              <FormLabel fontSize="sm" mb={0}>
+          <HStack justify="space-between" align="flex-start">
+            <Box flex={1}>
+              <FormLabel fontSize="md" fontWeight="semibold" mb={1}>
                 Tem idosos?
               </FormLabel>
-              <Text fontSize="xs" color="gray.600">
-                Prioriza conforto e facilidade de acesso
+              <Text fontSize="sm" color="gray.600">
+                Vamos priorizar carros mais confortáveis e fáceis de entrar e sair
               </Text>
             </Box>
             <Switch
@@ -179,22 +188,28 @@ export const Step2Usage = () => {
       </VStack>
 
       {/* Summary */}
-      <Box
-        bg="secondary.50"
-        p={4}
-        borderRadius="lg"
-        borderWidth="2px"
-        borderColor="secondary.200"
-      >
-        <Text fontSize="sm" color="gray.700">
-          <strong>Resumo:</strong> Carro para{' '}
-          <strong>{formData.uso_principal || 'família'}</strong>, usado por{' '}
-          <strong>{formData.tamanho_familia || 1} pessoa(s)</strong>
-          {formData.tem_criancas && ', com crianças'}
-          {formData.tem_idosos && ', com idosos'}
-        </Text>
-      </Box>
+      {formData.uso_principal && (
+        <Box
+          bg="brand.50"
+          p={4}
+          borderRadius="lg"
+          borderWidth="2px"
+          borderColor="brand.200"
+        >
+          <Text fontSize="sm" color="gray.700">
+            <strong>Resumo:</strong> Carro para{' '}
+            <strong>
+              {USAGE_PROFILES.find((p) => p.value === formData.uso_principal)
+                ?.title || 'uso geral'}
+            </strong>
+            , usado por <strong>{formData.tamanho_familia || 1} pessoa(s)</strong>
+            {formData.tem_criancas && ', com crianças'}
+            {formData.tem_idosos && ', com idosos'}
+          </Text>
+        </Box>
+      )}
     </VStack>
   )
 }
+
 

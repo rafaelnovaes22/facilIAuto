@@ -8,13 +8,11 @@ import {
   Text,
   Button,
   Select,
-  Badge,
   Spinner,
   Alert,
   AlertIcon,
   AlertTitle,
   AlertDescription,
-  SimpleGrid,
   useDisclosure,
 } from '@chakra-ui/react'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -23,6 +21,7 @@ import { FaArrowLeft, FaFilter, FaSortAmountDown } from 'react-icons/fa'
 import type { RecommendationResponse, Recommendation } from '@/types'
 import { CarCard } from '@/components/results/CarCard'
 import { CarDetailsModal } from '@/components/results/CarDetailsModal'
+import { ProfileSummary } from '@/components/results/ProfileSummary'
 
 export default function ResultsPage() {
   const location = useLocation()
@@ -32,7 +31,7 @@ export default function ResultsPage() {
   // State para filtros e ordenação
   const [sortBy, setSortBy] = useState<'score' | 'price_asc' | 'price_desc'>('score')
   const [filterCategory, setFilterCategory] = useState<string>('all')
-  
+
   // State para modal de detalhes
   const { isOpen: isDetailsOpen, onOpen: onDetailsOpen, onClose: onDetailsClose } = useDisclosure()
   const [selectedCar, setSelectedCar] = useState<Recommendation['car'] | null>(null)
@@ -52,7 +51,7 @@ export default function ResultsPage() {
   const handleDetailsClick = (car: Recommendation['car']) => {
     setSelectedCar(car)
     onDetailsOpen()
-    
+
     // 📈 Analytics: Track visualização de detalhes
     console.log('Details View:', {
       car_id: car.id,
@@ -170,60 +169,10 @@ export default function ResultsPage() {
             </Box>
 
             {/* Profile Summary */}
-            <Box
-              bg="white"
-              p={6}
-              borderRadius="xl"
-              boxShadow="sm"
-            >
-              <Heading size="sm" color="gray.700" mb={3}>
-                📋 Resumo do Perfil
-              </Heading>
-              <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
-                <VStack align="flex-start" spacing={1}>
-                  <Text fontSize="xs" color="gray.600" fontWeight="semibold">
-                    Orçamento
-                  </Text>
-                  <Text fontSize="sm" color="gray.800">
-                    {data.profile_summary.budget_range}
-                  </Text>
-                </VStack>
-
-                <VStack align="flex-start" spacing={1}>
-                  <Text fontSize="xs" color="gray.600" fontWeight="semibold">
-                    Uso Principal
-                  </Text>
-                  <Text fontSize="sm" color="gray.800">
-                    {data.profile_summary.usage}
-                  </Text>
-                </VStack>
-
-                <VStack align="flex-start" spacing={1}>
-                  <Text fontSize="xs" color="gray.600" fontWeight="semibold">
-                    Localização
-                  </Text>
-                  <Text fontSize="sm" color="gray.800">
-                    {data.profile_summary.location || 'Não especificada'}
-                  </Text>
-                </VStack>
-              </SimpleGrid>
-
-              {/* Top Priorities */}
-              {data.profile_summary.top_priorities && data.profile_summary.top_priorities.length > 0 && (
-                <Box mt={4}>
-                  <Text fontSize="xs" color="gray.600" fontWeight="semibold" mb={2}>
-                    Suas prioridades principais:
-                  </Text>
-                  <HStack spacing={2} flexWrap="wrap">
-                    {data.profile_summary.top_priorities.map((priority) => (
-                      <Badge key={priority} colorScheme="brand" fontSize="xs" px={3} py={1}>
-                        {priority}
-                      </Badge>
-                    ))}
-                  </HStack>
-                </Box>
-              )}
-            </Box>
+            <ProfileSummary
+              profileSummary={data.profile_summary}
+              onEdit={() => navigate('/questionario')}
+            />
           </VStack>
 
           {/* Filters & Sort */}
@@ -278,7 +227,15 @@ export default function ResultsPage() {
           </HStack>
 
           {/* Results Grid */}
-          <VStack spacing={4} align="stretch">
+          <Box
+            display="grid"
+            gridTemplateColumns={{
+              base: '1fr',           // Mobile: 1 coluna
+              md: 'repeat(2, 1fr)',  // Tablet: 2 colunas
+              lg: 'repeat(3, 1fr)',  // Desktop: 3 colunas
+            }}
+            gap={4}
+          >
             {processedRecommendations.map((recommendation) => (
               <CarCard
                 key={recommendation.car.id}
@@ -287,7 +244,7 @@ export default function ResultsPage() {
                 onDetailsClick={handleDetailsClick}
               />
             ))}
-          </VStack>
+          </Box>
 
           {/* Modal de Detalhes do Carro */}
           <CarDetailsModal

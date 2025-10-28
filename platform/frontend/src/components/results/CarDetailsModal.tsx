@@ -1,5 +1,5 @@
 // 🎨 UX + 🤖 AI Engineer: Modal de detalhes do carro com galeria
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
   Modal,
   ModalOverlay,
@@ -35,19 +35,64 @@ import {
 } from 'react-icons/fa'
 import type { Recommendation } from '@/types'
 import { formatCurrency, formatNumber } from '@/services/api'
+import interactionTracker from '@/services/InteractionTracker'
+import { CAR_PLACEHOLDER_LARGE, CAR_PLACEHOLDER_LOADING_LARGE, CAR_PLACEHOLDER_THUMB } from '@/utils/imagePlaceholder'
 
 interface CarDetailsModalProps {
   isOpen: boolean
   onClose: () => void
   car: Recommendation['car'] | null
+  userPreferences?: {
+    budget: number
+    usage: string
+    priorities: string[]
+  }
+  position?: number
+  matchScore?: number
 }
 
-export const CarDetailsModal = ({ isOpen, onClose, car }: CarDetailsModalProps) => {
+export const CarDetailsModal = ({ isOpen, onClose, car, userPreferences, position, matchScore }: CarDetailsModalProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const viewStartTime = useRef<number | null>(null)
+
+  // 🤖 ML: Rastrear tempo de visualização
+  useEffect(() => {
+    if (isOpen && car) {
+      // Iniciar contagem de tempo
+      viewStartTime.current = Date.now()
+    }
+
+    return () => {
+      // Ao fechar, calcular duração e enviar
+      if (viewStartTime.current && car && userPreferences) {
+        const durationSeconds = Math.floor((Date.now() - viewStartTime.current) / 1000)
+
+        interactionTracker.trackViewDuration(
+          car.id,
+          durationSeconds,
+          userPreferences,
+          {
+            marca: car.marca,
+            modelo: car.modelo,
+            ano: car.ano,
+            preco: car.preco,
+            categoria: car.categoria,
+            combustivel: car.combustivel,
+            cambio: car.cambio || 'Manual',
+            quilometragem: car.quilometragem
+          },
+          position,
+          matchScore
+        )
+
+        viewStartTime.current = null
+      }
+    }
+  }, [isOpen, car, userPreferences, position, matchScore])
 
   if (!car) return null
 
-  const images = car.imagens && car.imagens.length > 0 ? car.imagens : ['https://via.placeholder.com/800x600?text=Sem+Imagem']
+  const images = car.imagens && car.imagens.length > 0 ? car.imagens : [CAR_PLACEHOLDER_LARGE]
   const totalImages = images.length
 
   const nextImage = () => {
@@ -103,7 +148,7 @@ export const CarDetailsModal = ({ isOpen, onClose, car }: CarDetailsModalProps) 
                   objectFit="contain"
                   bg="gray.100"
                   borderRadius="lg"
-                  fallbackSrc="https://via.placeholder.com/800x600?text=Carregando..."
+                  fallbackSrc={CAR_PLACEHOLDER_LOADING_LARGE}
                 />
               </AspectRatio>
 
@@ -173,7 +218,7 @@ export const CarDetailsModal = ({ isOpen, onClose, car }: CarDetailsModalProps) 
                         src={img}
                         alt={`Miniatura ${index + 1}`}
                         objectFit="cover"
-                        fallbackSrc="https://via.placeholder.com/100x75?text=..."
+                        fallbackSrc={CAR_PLACEHOLDER_THUMB}
                       />
                     </AspectRatio>
                   </Box>
@@ -266,7 +311,7 @@ export const CarDetailsModal = ({ isOpen, onClose, car }: CarDetailsModalProps) 
                   <Text fontSize="lg" fontWeight="bold" color="gray.800" mb={3}>
                     {car.dealership_name}
                   </Text>
-                  
+
                   <VStack align="flex-start" spacing={2}>
                     <HStack>
                       <Icon as={FaMapMarkerAlt} color="brand.500" />

@@ -17,7 +17,8 @@ class CarClassifier:
         'SUV': [
             'tracker', 'creta', 'kicks', 't-cross', 'tcross', 'tiggo', 
             'compass', 'renegade', 'hr-v', 'hrv', 'wrv', 'ecosport', 'duster',
-            'captur', 'tucson', 'sportage', 'seltos', 'stonic', 'xc',
+            'captur', 'tucson', 'sportage', 'seltos', 'stonic', 
+            'xc60', 'xc90', 'xc40',  # Volvo XC (mais específico)
             'edge', 'equinox', 'trailblazer', 'blazer', 'outlander',
             'cx-5', 'cx-3', 'rav4', 'crv', 'cr-v', 'asx', 'vitara'
         ],
@@ -83,19 +84,40 @@ class CarClassifier:
         'xlt', 'xls', 's.design', 'r-design', 'sport', 'gtline'
     ]
     
-    def classify(self, nome: str, modelo: str) -> str:
+    def classify(self, nome: str, modelo: str, ano: int = None) -> str:
         """
         Classificar categoria baseado no nome/modelo
         
         Args:
             nome: Nome do carro (ex: "CHEVROLET TRACKER T")
             modelo: Modelo do carro (ex: "CHEVROLET TRACKER T")
+            ano: Ano do carro (opcional, usado para casos especiais)
         
         Returns:
             Categoria: SUV, Sedan, Pickup, Hatch, Compacto, Van
         """
         # Normalizar para lowercase para comparação
         search_text = f"{nome} {modelo}".lower()
+        
+        # Filtrar motos (não são carros)
+        # Palavras-chave diretas
+        moto_keywords = ['moto', 'motorcycle', 'bike', 'scooter', 'motocicleta']
+        if any(palavra in search_text for palavra in moto_keywords):
+            return 'Moto'
+        
+        # Modelos típicos de motos (CB, MT, XJ, etc.)
+        # Usar padrões mais específicos para evitar falsos positivos
+        moto_models = [
+            'cb ', 'cb-', 'cbr',  # Honda CB, CBR
+            'mt-07', 'mt-09', 'mt-03',  # Yamaha MT (específico)
+            'xj ', 'xj-', 'xt ', 'xt-', 'xtz', 'ybr', 'fazer', 'yzf',  # Yamaha
+            'ninja', 'z650', 'z900', 'zx',  # Kawasaki
+            'gsxr', 'gsx', 'v-strom',  # Suzuki
+            'crf', 'xre', 'bros',  # Honda off-road
+            'r1200', 'f800', 'g310'  # BMW motos
+        ]
+        if any(model in search_text for model in moto_models):
+            return 'Moto'
         
         # Buscar padrões em ordem de especificidade
         # 1. Pickup (mais específico)
@@ -114,6 +136,10 @@ class CarClassifier:
                 return 'SUV'
         
         # 4. Sedan (detectar "s" no final ou palavra sedan)
+        # Caso especial: Ford Focus 2009-2013 era sedan no Brasil
+        if 'focus' in search_text and ano and 2009 <= ano <= 2013:
+            return 'Sedan'
+        
         for pattern in self.MODEL_PATTERNS['Sedan']:
             if pattern in search_text:
                 return 'Sedan'

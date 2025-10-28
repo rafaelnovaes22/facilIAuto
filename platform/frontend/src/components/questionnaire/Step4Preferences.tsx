@@ -1,4 +1,4 @@
-// 🎨 UX + ✍️ Content Creator: Step 4 - Preferências (Opcional)
+// 🎨 UX + ✍️ Content Creator: Step 4 - Confirmação e Preferências
 import {
   VStack,
   Heading,
@@ -12,6 +12,11 @@ import {
   RadioGroup,
   Radio,
   Box,
+  HStack,
+  Button,
+  Icon,
+  Divider,
+  Badge,
 } from '@chakra-ui/react'
 import { useQuestionnaireStore } from '@/store/questionnaireStore'
 import { CATEGORIAS } from '@/types'
@@ -37,12 +42,14 @@ export const Step4Preferences = () => {
       {/* Header */}
       <VStack spacing={3} textAlign="center">
         <Heading size="lg" color="gray.800">
-          💎 Preferências (Opcional)
+          Quase lá! 🎉
         </Heading>
         <Text color="gray.600" fontSize="md">
-          Ajude-nos a refinar ainda mais as recomendações
+          Confirme sua localização e adicione preferências se quiser
         </Text>
       </VStack>
+
+
 
       {/* Tipos de Veículo */}
       <FormControl>
@@ -168,6 +175,23 @@ export const Step4Preferences = () => {
           💡 <strong>Dica:</strong> Essas preferências são opcionais. Se você
           não selecionar nada, nossa IA considerará todas as opções disponíveis
           para você.
+        </Text>
+      </Box>
+
+      {/* Ready to see results */}
+      <Box
+        bg="green.50"
+        p={5}
+        borderRadius="xl"
+        borderWidth="2px"
+        borderColor="green.200"
+        textAlign="center"
+      >
+        <Text fontSize="md" fontWeight="bold" color="green.800" mb={2}>
+          ✨ Tudo pronto!
+        </Text>
+        <Text fontSize="sm" color="green.700">
+          Clique em "Ver Recomendações" para descobrir os carros perfeitos para você
         </Text>
       </Box>
     </VStack>

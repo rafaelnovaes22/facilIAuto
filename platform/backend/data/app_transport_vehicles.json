@@ -1,0 +1,479 @@
+{
+    "metadata": {
+        "version": "2025.1",
+        "last_updated": "2025-10-15",
+        "source": "Uber, 99App, Correio Braziliense",
+        "notes": "Requisitos podem variar por cidade. Sempre consultar regras locais."
+    },
+    "requisitos_gerais": {
+        "portas_minimo": 4,
+        "lugares_minimo": 5,
+        "ar_condicionado": true,
+        "documentacao_em_dia": true,
+        "inspecao_aprovada": true
+    },
+    "categorias": {
+        "uberx_99pop": {
+            "nome": "UberX / 99Pop",
+            "descricao": "Categoria econômica",
+            "ano_minimo_fabricacao": 2015,
+            "idade_maxima_anos": 10,
+            "cores_aceitas": null,
+            "modelos_aceitos": [
+                "Chevrolet Onix",
+                "Chevrolet Onix Plus",
+                "Chevrolet Prisma",
+                "Chevrolet Spin",
+                "Chevrolet Cobalt",
+                "Hyundai HB20S",
+                "Renault Logan",
+                "Renault Sandero",
+                "Fiat Argo",
+                "Fiat Cronos",
+                "Fiat Mobi",
+                "Volkswagen Polo",
+                "Volkswagen Virtus",
+                "Volkswagen Voyage",
+                "Nissan Versa",
+                "Nissan V-Drive",
+                "Toyota Etios Sedan",
+                "Honda City",
+                "Honda City Hatchback",
+                "Peugeot 208",
+                "Ford Ka Sedan"
+            ],
+            "prioridades_recomendadas": {
+                "economia": 5,
+                "custo_manutencao": 5,
+                "revenda": 4,
+                "conforto": 3,
+                "espaco": 3
+            }
+        },
+        "uber_comfort": {
+            "nome": "Uber Comfort",
+            "descricao": "Categoria intermediária - mais espaço e conforto",
+            "ano_minimo_fabricacao": 2018,
+            "idade_maxima_anos": 7,
+            "cores_aceitas": null,
+            "modelos_excluidos_2025": [
+                "Hyundai HB20",
+                "Renault Sandero"
+            ],
+            "modelos_aceitos": [
+                "Chevrolet Onix Plus",
+                "Fiat Cronos",
+                "Renault Logan",
+                "Hyundai HB20S",
+                "Volkswagen Polo",
+                "Volkswagen Virtus",
+                "Nissan Versa",
+                "Nissan Kicks",
+                "Toyota Corolla",
+                "Toyota Yaris Sedan",
+                "Honda City",
+                "Honda Civic",
+                "Honda HR-V",
+                "Fiat Argo",
+                "Renault Duster",
+                "Renault Captur",
+                "Renault Kardian",
+                "Peugeot 2008",
+                "Peugeot 3008",
+                "Peugeot 408",
+                "Citroen C4 Cactus",
+                "Citroen Aircross",
+                "Citroen Basalt",
+                "Jeep Renegade",
+                "Jeep Compass",
+                "Hyundai Creta",
+                "Hyundai Tucson",
+                "Hyundai ix35",
+                "BYD Dolphin",
+                "BYD Yuan Plus",
+                "BYD D1",
+                "BYD King DM-i",
+                "Chery Tiggo 3X",
+                "Chery Tiggo 5X",
+                "Chery Tiggo 7",
+                "Chery Tiggo 8",
+                "Chery Arrizo 5",
+                "Chery Arrizo 6",
+                "Nissan Sentra",
+                "Nissan Leaf",
+                "Nissan Zoe",
+                "Mitsubishi ASX",
+                "Mitsubishi Eclipse Cross",
+                "Chevrolet Tracker",
+                "Chevrolet Equinox",
+                "Ford EcoSport",
+                "Ford Fusion",
+                "Kia Cerato",
+                "Kia Sportage",
+                "Kia Stonic",
+                "Audi A3",
+                "Audi Q3",
+                "Audi A4",
+                "BMW X1",
+                "BMW X2",
+                "BMW 320i",
+                "Mercedes-Benz C 180",
+                "Mercedes-Benz A-Class",
+                "Subaru Forester",
+                "Volvo XC40",
+                "Volvo XC60",
+                "Volvo EX30",
+                "Volvo S60",
+                "Lexus UX Hybrid",
+                "Lexus CT",
+                "Lexus ES",
+                "Land Rover Discovery Sport",
+                "Range Rover Evoque"
+            ],
+            "prioridades_recomendadas": {
+                "conforto": 5,
+                "espaco": 4,
+                "economia": 4,
+                "revenda": 4,
+                "custo_manutencao": 3
+            }
+        },
+        "uber_black": {
+            "nome": "Uber Black",
+            "descricao": "Categoria premium - sedans e SUVs de luxo",
+            "ano_minimo_fabricacao": 2017,
+            "idade_maxima_anos": 8,
+            "cores_aceitas": [
+                "preto",
+                "branco",
+                "prata",
+                "cinza"
+            ],
+            "nota": "Cores aceitas podem variar por cidade",
+            "modelos_aceitos": [
+                "Toyota Corolla",
+                "Toyota Corolla Altis Hybrid",
+                "Toyota Corolla Cross Hybrid",
+                "Toyota Prius",
+                "Toyota Prius Hybrid",
+                "Toyota Camry",
+                "Toyota RAV4",
+                "Honda Civic",
+                "Honda Accord",
+                "Honda ZR-V",
+                "Volkswagen Jetta",
+                "Volkswagen Passat",
+                "Volkswagen Tiguan",
+                "Volkswagen T-Cross",
+                "Volkswagen Nivus",
+                "Nissan Sentra",
+                "Nissan Kicks",
+                "Nissan Leaf",
+                "Nissan Altima",
+                "Hyundai Creta",
+                "Hyundai Tucson",
+                "Hyundai Elantra",
+                "Hyundai i30",
+                "Hyundai i30 Hatch",
+                "Hyundai Santa Fe",
+                "Hyundai Kona Hybrid",
+                "Ford Fusion",
+                "Ford Bronco",
+                "Ford Territory",
+                "BYD Dolphin",
+                "BYD Seal",
+                "BYD Yuan Plus",
+                "BYD Song Plus",
+                "BYD D1",
+                "BYD King DM-i",
+                "BYD Tang",
+                "BYD e5",
+                "BYD e6",
+                "BMW 1-series",
+                "BMW 3-series",
+                "BMW 320i",
+                "BMW X1",
+                "BMW X2",
+                "BMW X3",
+                "BMW X4",
+                "BMW X5",
+                "BMW X6",
+                "BMW X7",
+                "BMW M3",
+                "BMW M5",
+                "Audi A3",
+                "Audi A4",
+                "Audi A5",
+                "Audi A6",
+                "Audi A7",
+                "Audi A8",
+                "Audi Q3",
+                "Audi Q5",
+                "Audi Q7",
+                "Jeep Compass",
+                "Jeep Compass 4xe Plug-in Hybrid",
+                "Jeep Commander",
+                "Jeep Grand Cherokee",
+                "Jeep Cherokee",
+                "Peugeot 2008",
+                "Peugeot 3008",
+                "Peugeot 408",
+                "Peugeot 508",
+                "Peugeot 5008",
+                "Peugeot E-208",
+                "Peugeot E-2008",
+                "Volvo XC40",
+                "Volvo XC60",
+                "Volvo XC90",
+                "Volvo S60",
+                "Volvo S90",
+                "Volvo EX30",
+                "Chery Tiggo",
+                "Mercedes-Benz C-Class",
+                "Mercedes-Benz C180",
+                "Mercedes-Benz C200",
+                "Mercedes-Benz E-Class",
+                "Mercedes-Benz S-Class",
+                "Mercedes-Benz GLE",
+                "Mercedes-Benz GLA",
+                "Mercedes-Benz CLA",
+                "Citroen Basalt",
+                "Citroen C4 Cactus",
+                "Citroen C4 Grand Picasso"
+            ],
+            "prioridades_recomendadas": {
+                "conforto": 5,
+                "tecnologia": 5,
+                "imagem": 5,
+                "espaco": 4,
+                "economia": 3
+            }
+        }
+    },
+    "eletricos_hibridos": {
+        "descricao": "Veículos elétricos e híbridos aceitos em todas as categorias",
+        "beneficios": [
+            "Economia extrema de combustível",
+            "Incentivos fiscais",
+            "Manutenção reduzida",
+            "Imagem sustentável"
+        ],
+        "modelos": [
+            {
+                "marca": "BYD",
+                "modelos": [
+                    "Dolphin",
+                    "Yuan Plus",
+                    "D1",
+                    "King DM-i",
+                    "Song Plus",
+                    "Seal",
+                    "Tang",
+                    "e5",
+                    "e6"
+                ],
+                "tipo": "Elétrico/Híbrido"
+            },
+            {
+                "marca": "Toyota",
+                "modelos": [
+                    "Corolla Cross Hybrid",
+                    "Prius Hybrid"
+                ],
+                "tipo": "Híbrido"
+            },
+            {
+                "marca": "Volkswagen",
+                "modelos": [
+                    "ID.4"
+                ],
+                "tipo": "Elétrico",
+                "nota": "Em processo de homologação"
+            },
+            {
+                "marca": "Chevrolet",
+                "modelos": [
+                    "Bolt EV"
+                ],
+                "tipo": "Elétrico"
+            },
+            {
+                "marca": "Nissan",
+                "modelos": [
+                    "Leaf",
+                    "Leaf EV"
+                ],
+                "tipo": "Elétrico"
+            },
+            {
+                "marca": "Renault",
+                "modelos": [
+                    "Zoe"
+                ],
+                "tipo": "Elétrico"
+            },
+            {
+                "marca": "Jeep",
+                "modelos": [
+                    "Compass 4xe Plug-in Hybrid"
+                ],
+                "tipo": "Híbrido Plug-in"
+            },
+            {
+                "marca": "Mitsubishi",
+                "modelos": [
+                    "Outlander PHEV"
+                ],
+                "tipo": "Híbrido Plug-in"
+            }
+        ]
+    },
+    "recomendacoes_por_perfil": {
+        "iniciante": {
+            "categoria": "uberx_99pop",
+            "orcamento_min": 50000,
+            "orcamento_max": 70000,
+            "top_5": [
+                "Chevrolet Onix Plus",
+                "Fiat Cronos",
+                "Hyundai HB20S",
+                "Volkswagen Virtus",
+                "Nissan Versa"
+            ],
+            "justificativa": "Entrada acessível, manutenção barata, fácil de dirigir, boa revenda"
+        },
+        "intermediario": {
+            "categoria": "uber_comfort",
+            "orcamento_min": 70000,
+            "orcamento_max": 120000,
+            "top_5": [
+                "Toyota Corolla",
+                "Nissan Kicks",
+                "Jeep Compass",
+                "Honda Civic",
+                "Hyundai Creta"
+            ],
+            "justificativa": "Tarifa melhor, mais conforto, passageiros satisfeitos, melhor avaliação"
+        },
+        "profissional": {
+            "categoria": "uber_black",
+            "orcamento_min": 120000,
+            "orcamento_max": 250000,
+            "top_5": [
+                "Toyota Corolla Altis Hybrid",
+                "BYD Dolphin",
+                "Audi A3",
+                "BMW 320i",
+                "Mercedes-Benz C 180"
+            ],
+            "justificativa": "Tarifa premium, economia (híbrido), imagem profissional, ROI superior"
+        },
+        "sustentavel": {
+            "categoria": "todas",
+            "orcamento_min": 100000,
+            "orcamento_max": 200000,
+            "top_5": [
+                "BYD Dolphin",
+                "Nissan Leaf",
+                "Chevrolet Bolt EV",
+                "Toyota Corolla Cross Hybrid",
+                "BYD Seal"
+            ],
+            "justificativa": "Custo operacional mínimo, incentivos fiscais, manutenção reduzida"
+        }
+    },
+    "custo_operacional_mensal": {
+        "uberx_99pop": {
+            "exemplo": "Chevrolet Onix Plus",
+            "combustivel": {
+                "min": 800,
+                "max": 1200
+            },
+            "manutencao": {
+                "min": 200,
+                "max": 300
+            },
+            "seguro": {
+                "min": 150,
+                "max": 250
+            },
+            "depreciacao": {
+                "min": 400,
+                "max": 600
+            },
+            "total": {
+                "min": 1550,
+                "max": 2350
+            }
+        },
+        "uber_comfort": {
+            "exemplo": "Toyota Corolla",
+            "combustivel": {
+                "min": 900,
+                "max": 1400
+            },
+            "manutencao": {
+                "min": 300,
+                "max": 500
+            },
+            "seguro": {
+                "min": 200,
+                "max": 350
+            },
+            "depreciacao": {
+                "min": 600,
+                "max": 900
+            },
+            "total": {
+                "min": 2000,
+                "max": 3150
+            }
+        },
+        "uber_black": {
+            "exemplo": "Toyota Corolla Hybrid",
+            "combustivel": {
+                "min": 600,
+                "max": 900
+            },
+            "manutencao": {
+                "min": 400,
+                "max": 600
+            },
+            "seguro": {
+                "min": 300,
+                "max": 500
+            },
+            "depreciacao": {
+                "min": 800,
+                "max": 1200
+            },
+            "total": {
+                "min": 2100,
+                "max": 3200
+            }
+        },
+        "eletrico": {
+            "exemplo": "BYD Dolphin",
+            "eletricidade": {
+                "min": 200,
+                "max": 400
+            },
+            "manutencao": {
+                "min": 100,
+                "max": 200
+            },
+            "seguro": {
+                "min": 250,
+                "max": 400
+            },
+            "depreciacao": {
+                "min": 700,
+                "max": 1000
+            },
+            "total": {
+                "min": 1250,
+                "max": 2000
+            }
+        }
+    }
+}

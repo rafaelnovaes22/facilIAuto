@@ -140,3 +140,6 @@ Desktop.ini
 # Keep configuration examples
 !**/*.example.*
 !**/*.template.*
+
+# Archive folder (temporary/historical files)
+.archive/

@@ -29,6 +29,7 @@ Esta pasta contém toda a documentação estratégica, técnica e comercial do *
 - **[ARQUITETURA-SAAS.md](ARQUITETURA-SAAS.md)** - Arquitetura técnica multi-tenant
 - **[ORCHESTRATOR-SYSTEM.md](ORCHESTRATOR-SYSTEM.md)** - Sistema de orquestração de agentes
 - **[VISAO-PRODUTO-SAAS.md](VISAO-PRODUTO-SAAS.md)** - Visão do produto
+- **[technical/CLASSIFICADOR-CARROS.md](technical/CLASSIFICADOR-CARROS.md)** - Sistema de classificação de veículos
 
 ### 📈 **ESTRATÉGIA E VENDAS**
 - **[ESTRATEGIA-TARGETING-AVANCADO.md](ESTRATEGIA-TARGETING-AVANCADO.md)** - Targeting estratégico
@@ -39,6 +40,13 @@ Esta pasta contém toda a documentação estratégica, técnica e comercial do *
 ### 🏢 **MERCADO E COMPETIÇÃO**
 - **[Competitive Analysis - FacilIAuto.md](Competitive%20Analysis%20-%20FacilIAuto.md)** - Análise competitiva
 - **[GUIA-CONCESSIONARIAS.md](GUIA-CONCESSIONARIAS.md)** - Guia para concessionárias
+
+### 📁 **ESTRUTURA E ORGANIZAÇÃO**
+- **[PROJECT-STRUCTURE.md](PROJECT-STRUCTURE.md)** - Estrutura completa do projeto
+- **[RAIZ-ORGANIZADA.md](RAIZ-ORGANIZADA.md)** - Organização profissional da raiz
+
+### 📊 **RELATÓRIOS E CORREÇÕES**
+- **[reports/CORRECAO-CLASSIFICACAO-2025-01.md](reports/CORRECAO-CLASSIFICACAO-2025-01.md)** - Correção de classificação de carros (Jan/2025)
 
 ---
 

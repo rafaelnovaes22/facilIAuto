@@ -1,0 +1,42 @@
+[
+  {
+    "old": "Volkswagen T-Cross Tsiflex",
+    "new": "Volkswagen T-Cross Tsi",
+    "marca": "Volkswagen"
+  },
+  {
+    "old": "Fiat Mobi Likeflex",
+    "new": "Fiat Mobi Like",
+    "marca": "Fiat"
+  },
+  {
+    "old": "Fiat Fiorino Enduranceflex",
+    "new": "Fiat Fiorino Endurance",
+    "marca": "Fiat"
+  },
+  {
+    "old": "Chevrolet Tracker Premierflex",
+    "new": "Chevrolet Tracker Premier",
+    "marca": "Chevrolet"
+  },
+  {
+    "old": "Ford Fiesta 16Seflex",
+    "new": "Ford Fiesta 16Se",
+    "marca": "Ford"
+  },
+  {
+    "old": "Honda Fit Twistflex",
+    "new": "Honda Fit Twist",
+    "marca": "Honda"
+  },
+  {
+    "old": "Hyundai Ix35 Bflex",
+    "new": "Hyundai Ix35 B",
+    "marca": "Hyundai"
+  },
+  {
+    "old": "Toyota Corolla Xei18Flex",
+    "new": "Toyota Corolla Xei18",
+    "marca": "Toyota"
+  }
+]

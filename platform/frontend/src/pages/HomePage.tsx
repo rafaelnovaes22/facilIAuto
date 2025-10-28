@@ -11,6 +11,10 @@ import {
     Icon,
     Stack,
     Flex,
+    Spinner,
+    Alert,
+    AlertIcon,
+    AlertDescription,
 } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -21,13 +25,12 @@ import {
     FaCheckCircle,
     FaHeart,
 } from 'react-icons/fa'
-import { useAggregatedStats } from '@/hooks/useApi'
+import { useStats } from '@/hooks/useApi'
 import { formatCurrency, formatNumber } from '@/services/api'
 
 export default function HomePage() {
     const navigate = useNavigate()
-    const { totalCars, totalDealerships, avgPrice, isLoading } =
-        useAggregatedStats()
+    const { data: stats, isLoading, isError } = useStats()
 
     return (
         <Box bg="white">
@@ -39,7 +42,17 @@ export default function HomePage() {
                 alignItems="center"
             >
                 <Container maxW="container.xl" py={20}>
-                    <VStack spacing={8} textAlign="center">
+                    <VStack
+                        spacing={8}
+                        textAlign="center"
+                        animation="fadeIn 0.8s ease-in"
+                        sx={{
+                            '@keyframes fadeIn': {
+                                '0%': { opacity: 0, transform: 'translateY(20px)' },
+                                '100%': { opacity: 1, transform: 'translateY(0)' },
+                            },
+                        }}
+                    >
                         {/* Badge */}
                         <Box
                             bg="brand.100"
@@ -115,21 +128,50 @@ export default function HomePage() {
                         </HStack>
 
                         {/* Stats */}
-                        {!isLoading && (
-                            <SimpleGrid columns={{ base: 1, md: 3 }} spacing={8} pt={8} w="full">
+                        {isLoading && (
+                            <VStack pt={8} spacing={4}>
+                                <Spinner size="lg" color="brand.500" thickness="4px" />
+                                <Text fontSize="sm" color="gray.600">
+                                    Carregando estatísticas...
+                                </Text>
+                            </VStack>
+                        )}
+
+                        {isError && (
+                            <Alert
+                                status="warning"
+                                borderRadius="lg"
+                                maxW="2xl"
+                                mt={8}
+                            >
+                                <AlertIcon />
+                                <AlertDescription>
+                                    Não foi possível carregar as estatísticas no momento.
+                                </AlertDescription>
+                            </Alert>
+                        )}
+
+                        {!isLoading && !isError && stats && (
+                            <SimpleGrid
+                                columns={{ base: 1, md: 3 }}
+                                spacing={8}
+                                pt={8}
+                                w="full"
+                                animation="fadeIn 0.6s ease-in 0.3s both"
+                            >
                                 <StatCard
                                     label="Carros Disponíveis"
-                                    value={formatNumber(totalCars || 0)}
+                                    value={formatNumber(stats.total_cars || 0)}
                                     icon={FaRocket}
                                 />
                                 <StatCard
                                     label="Concessionárias"
-                                    value={formatNumber(totalDealerships || 0)}
+                                    value={formatNumber(stats.total_dealerships || 0)}
                                     icon={FaChartLine}
                                 />
                                 <StatCard
                                     label="Preço Médio"
-                                    value={formatCurrency(avgPrice || 0)}
+                                    value={formatCurrency(stats.avg_price || 0)}
                                     icon={FaBrain}
                                 />
                             </SimpleGrid>

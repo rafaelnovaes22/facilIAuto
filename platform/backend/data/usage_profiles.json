@@ -1,0 +1,511 @@
+{
+    "metadata": {
+        "version": "2025.1",
+        "last_updated": "2025-10-15",
+        "description": "Perfis de uso detalhados para sistema de recomendação"
+    },
+    "perfis": {
+        "familia": {
+            "nome": "Família",
+            "descricao": "Transporte familiar com segurança e espaço",
+            "frequencia_uso": "diaria",
+            "prioridades": {
+                "seguranca": 5,
+                "espaco": 5,
+                "conforto": 4,
+                "economia": 3,
+                "performance": 2
+            },
+            "requisitos_essenciais": {
+                "airbags_minimo": 6,
+                "isofix": true,
+                "controle_estabilidade": true,
+                "abs_ebd": true,
+                "porta_malas_minimo_litros": 300,
+                "lugares_minimo": 5,
+                "portas_minimo": 4
+            },
+            "categorias_ideais": [
+                "SUV",
+                "SUV Compacto",
+                "Sedan",
+                "Minivan"
+            ],
+            "perguntas_adicionais": [
+                {
+                    "pergunta": "Tamanho da família?",
+                    "opcoes": [
+                        "2-3 pessoas",
+                        "4-5 pessoas",
+                        "6+ pessoas"
+                    ],
+                    "impacto": "Define tamanho do veículo necessário"
+                },
+                {
+                    "pergunta": "Tem crianças?",
+                    "opcoes": [
+                        "Sim",
+                        "Não"
+                    ],
+                    "impacto": "ISOFIX obrigatório se sim"
+                },
+                {
+                    "pergunta": "Tem idosos?",
+                    "opcoes": [
+                        "Sim",
+                        "Não"
+                    ],
+                    "impacto": "Preferência por SUV (entrada alta)"
+                }
+            ],
+            "top_modelos": [
+                {
+                    "nome": "Jeep Compass Sport",
+                    "preco": 95990,
+                    "score": 95
+                },
+                {
+                    "nome": "Nissan Kicks SV",
+                    "preco": 98990,
+                    "score": 93
+                },
+                {
+                    "nome": "Hyundai Creta Comfort",
+                    "preco": 105990,
+                    "score": 94
+                },
+                {
+                    "nome": "Toyota Corolla XEi",
+                    "preco": 139990,
+                    "score": 96
+                },
+                {
+                    "nome": "Honda Civic EXL",
+                    "preco": 149990,
+                    "score": 94
+                }
+            ]
+        },
+        "trabalho": {
+            "nome": "Trabalho",
+            "descricao": "Deslocamento diário profissional",
+            "frequencia_uso": "diaria",
+            "prioridades": {
+                "economia": 5,
+                "confiabilidade": 5,
+                "custo_manutencao": 5,
+                "conforto": 4,
+                "revenda": 4,
+                "seguranca": 3,
+                "espaco": 2,
+                "performance": 2
+            },
+            "requisitos_essenciais": {
+                "consumo_minimo_cidade_kml": 12.0,
+                "ar_condicionado": true,
+                "direcao_eletrica": true,
+                "manutencao_acessivel": true
+            },
+            "categorias_ideais": [
+                "Sedan Compacto",
+                "Hatch",
+                "Sedan"
+            ],
+            "perguntas_adicionais": [
+                {
+                    "pergunta": "Quilometragem mensal?",
+                    "opcoes": [
+                        "< 1.000 km",
+                        "1.000-2.000 km",
+                        "> 2.000 km"
+                    ],
+                    "impacto": "Define importância da economia"
+                },
+                {
+                    "pergunta": "Tipo de trajeto?",
+                    "opcoes": [
+                        "Urbano",
+                        "Rodoviário",
+                        "Misto"
+                    ],
+                    "impacto": "Define categoria ideal"
+                },
+                {
+                    "pergunta": "Imagem profissional importante?",
+                    "opcoes": [
+                        "Sim",
+                        "Não"
+                    ],
+                    "impacto": "Sedan médio/premium se sim"
+                }
+            ],
+            "top_modelos": [
+                {
+                    "nome": "Chevrolet Onix Plus LT",
+                    "preco": 74990,
+                    "score": 98
+                },
+                {
+                    "nome": "Fiat Cronos Drive",
+                    "preco": 72990,
+                    "score": 96
+                },
+                {
+                    "nome": "Toyota Yaris Sedan XLS",
+                    "preco": 97990,
+                    "score": 97
+                },
+                {
+                    "nome": "Honda City EXL",
+                    "preco": 109990,
+                    "score": 95
+                },
+                {
+                    "nome": "Toyota Corolla GLi",
+                    "preco": 129990,
+                    "score": 99
+                }
+            ],
+            "custo_km_estimado": 2.04
+        },
+        "lazer": {
+            "nome": "Lazer",
+            "descricao": "Viagens e passeios recreativos",
+            "frequencia_uso": "semanal",
+            "prioridades": {
+                "performance": 5,
+                "conforto": 5,
+                "tecnologia": 4,
+                "espaco": 4,
+                "seguranca": 3,
+                "economia": 2
+            },
+            "requisitos_essenciais": {
+                "porta_malas_minimo_litros": 400,
+                "tecnologia_multimidia": true,
+                "conectividade": true,
+                "motor_potente": true
+            },
+            "categorias_ideais": [
+                "SUV",
+                "SUV Compacto",
+                "Crossover",
+                "Pickup"
+            ],
+            "perguntas_adicionais": [
+                {
+                    "pergunta": "Tipo de viagem?",
+                    "opcoes": [
+                        "Praia/campo",
+                        "Montanha/trilha",
+                        "Cidade/turismo"
+                    ],
+                    "impacto": "Define necessidade de 4x4"
+                },
+                {
+                    "pergunta": "Quantas pessoas geralmente?",
+                    "opcoes": [
+                        "2-3",
+                        "4-5",
+                        "6+"
+                    ],
+                    "impacto": "Define tamanho necessário"
+                }
+            ],
+            "top_modelos": [
+                {
+                    "nome": "Jeep Compass Trailhawk",
+                    "preco": 169990,
+                    "score": 96
+                },
+                {
+                    "nome": "Toyota Corolla Cross XRE",
+                    "preco": 189990,
+                    "score": 95
+                },
+                {
+                    "nome": "Volkswagen Tiguan Allspace",
+                    "preco": 169990,
+                    "score": 94
+                },
+                {
+                    "nome": "Honda HR-V Touring",
+                    "preco": 159990,
+                    "score": 93
+                },
+                {
+                    "nome": "Hyundai Tucson Limited",
+                    "preco": 179990,
+                    "score": 94
+                }
+            ]
+        },
+        "comercial": {
+            "nome": "Comercial",
+            "descricao": "Uso profissional e entregas",
+            "frequencia_uso": "diaria",
+            "prioridades": {
+                "capacidade_carga": 5,
+                "durabilidade": 5,
+                "custo_manutencao": 5,
+                "confiabilidade": 5,
+                "economia": 4,
+                "conforto": 2,
+                "tecnologia": 1
+            },
+            "requisitos_essenciais": {
+                "capacidade_carga_kg": 600,
+                "chassi_reforcado": true,
+                "manutencao_acessivel": true,
+                "consumo_minimo_kml": 10.0
+            },
+            "categorias_ideais": [
+                "Pickup",
+                "Furgão",
+                "Van"
+            ],
+            "perguntas_adicionais": [
+                {
+                    "pergunta": "Tipo de carga?",
+                    "opcoes": [
+                        "Leve (< 300kg)",
+                        "Média (300-600kg)",
+                        "Pesada (> 600kg)"
+                    ],
+                    "impacto": "Define categoria de veículo"
+                },
+                {
+                    "pergunta": "Necessita caçamba?",
+                    "opcoes": [
+                        "Sim",
+                        "Não"
+                    ],
+                    "impacto": "Pickup vs Furgão"
+                }
+            ],
+            "top_modelos": [
+                {
+                    "nome": "Fiat Strada Endurance",
+                    "preco": 89990,
+                    "score": 96
+                },
+                {
+                    "nome": "Volkswagen Saveiro Robust",
+                    "preco": 94990,
+                    "score": 95
+                },
+                {
+                    "nome": "Chevrolet Montana LS",
+                    "preco": 92990,
+                    "score": 94
+                },
+                {
+                    "nome": "Fiat Toro Endurance",
+                    "preco": 129990,
+                    "score": 93
+                },
+                {
+                    "nome": "Toyota Hilux SR",
+                    "preco": 219990,
+                    "score": 98
+                }
+            ],
+            "custo_operacional_mensal": {
+                "combustivel": 1500,
+                "manutencao": 300,
+                "seguro": 250,
+                "total": 2050
+            }
+        },
+        "primeiro_carro": {
+            "nome": "Primeiro Carro",
+            "descricao": "Iniciantes na compra de veículos",
+            "frequencia_uso": "variavel",
+            "prioridades": {
+                "seguranca": 5,
+                "facilidade_dirigir": 5,
+                "economia": 4,
+                "custo_manutencao": 4,
+                "revenda": 4,
+                "conforto": 3,
+                "tecnologia": 3
+            },
+            "requisitos_essenciais": {
+                "airbags_minimo": 4,
+                "abs": true,
+                "controle_estabilidade": true,
+                "direcao_leve": true,
+                "boa_visibilidade": true,
+                "consumo_minimo_kml": 12.0,
+                "seguro_acessivel": true
+            },
+            "categorias_ideais": [
+                "Hatch",
+                "Sedan Compacto"
+            ],
+            "perguntas_adicionais": [
+                {
+                    "pergunta": "Experiência de direção?",
+                    "opcoes": [
+                        "Nenhuma",
+                        "Pouca (< 1 ano)",
+                        "Moderada (1-3 anos)"
+                    ],
+                    "impacto": "Define tamanho e facilidade necessária"
+                },
+                {
+                    "pergunta": "Orçamento para seguro?",
+                    "opcoes": [
+                        "Limitado (< R$ 2.000/ano)",
+                        "Moderado (R$ 2-4k/ano)",
+                        "Flexível (> R$ 4k/ano)"
+                    ],
+                    "impacto": "Evita modelos muito visados se limitado"
+                },
+                {
+                    "pergunta": "Uso principal?",
+                    "opcoes": [
+                        "Cidade",
+                        "Rodovia",
+                        "Misto"
+                    ],
+                    "impacto": "Hatch para cidade, Sedan para rodovia"
+                }
+            ],
+            "top_modelos": [
+                {
+                    "nome": "Volkswagen Polo Track",
+                    "preco": 74990,
+                    "score": 96
+                },
+                {
+                    "nome": "Fiat Argo Drive",
+                    "preco": 69990,
+                    "score": 95
+                },
+                {
+                    "nome": "Chevrolet Onix LT",
+                    "preco": 72990,
+                    "score": 97
+                },
+                {
+                    "nome": "Hyundai HB20 Sense",
+                    "preco": 71990,
+                    "score": 94
+                },
+                {
+                    "nome": "Toyota Yaris Hatch XS",
+                    "preco": 84990,
+                    "score": 96
+                }
+            ],
+            "dicas_importantes": [
+                "Considere seminovo (2-3 anos) para melhor custo-benefício",
+                "Compare 3+ cotações de seguro",
+                "Faça vistoria mecânica antes de comprar",
+                "Siga manual de manutenção rigorosamente",
+                "Pratique em locais seguros antes de pegar trânsito"
+            ]
+        },
+        "transporte_passageiros": {
+            "nome": "Transporte de Passageiros",
+            "descricao": "Uber, 99 e similares",
+            "frequencia_uso": "diaria",
+            "prioridades": {
+                "economia": 5,
+                "custo_manutencao": 5,
+                "revenda": 4,
+                "conforto": 4,
+                "espaco": 3,
+                "confiabilidade": 5
+            },
+            "requisitos_essenciais": {
+                "portas_minimo": 4,
+                "lugares_minimo": 5,
+                "ar_condicionado": true,
+                "ano_compativel_categoria": true,
+                "documentacao_em_dia": true
+            },
+            "categorias_app": [
+                "uberx_99pop",
+                "uber_comfort",
+                "uber_black"
+            ],
+            "ver_documentacao": "docs/business/CARROS-TRANSPORTE-APP.md",
+            "perguntas_adicionais": [
+                {
+                    "pergunta": "Categoria desejada?",
+                    "opcoes": [
+                        "UberX/99Pop",
+                        "Uber Comfort",
+                        "Uber Black"
+                    ],
+                    "impacto": "Define requisitos de ano e modelo"
+                },
+                {
+                    "pergunta": "Perfil de motorista?",
+                    "opcoes": [
+                        "Iniciante",
+                        "Intermediário",
+                        "Profissional",
+                        "Sustentável"
+                    ],
+                    "impacto": "Define recomendações específicas"
+                }
+            ],
+            "top_modelos_por_categoria": {
+                "uberx_99pop": [
+                    {
+                        "nome": "Chevrolet Onix Plus",
+                        "preco": 74990,
+                        "score": 98
+                    },
+                    {
+                        "nome": "Fiat Cronos",
+                        "preco": 72990,
+                        "score": 96
+                    },
+                    {
+                        "nome": "Hyundai HB20S",
+                        "preco": 77990,
+                        "score": 94
+                    }
+                ],
+                "uber_comfort": [
+                    {
+                        "nome": "Toyota Corolla",
+                        "preco": 139990,
+                        "score": 99
+                    },
+                    {
+                        "nome": "Nissan Kicks",
+                        "preco": 98990,
+                        "score": 95
+                    },
+                    {
+                        "nome": "Jeep Compass",
+                        "preco": 145990,
+                        "score": 94
+                    }
+                ],
+                "uber_black": [
+                    {
+                        "nome": "Toyota Corolla Altis Hybrid",
+                        "preco": 159990,
+                        "score": 99
+                    },
+                    {
+                        "nome": "BYD Dolphin",
+                        "preco": 149990,
+                        "score": 97
+                    },
+                    {
+                        "nome": "Audi A3",
+                        "preco": 189990,
+                        "score": 96
+                    }
+                ]
+            }
+        }
+    }
+}

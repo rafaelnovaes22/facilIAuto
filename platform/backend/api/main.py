@@ -21,8 +21,10 @@ from models.feedback import (
     RefinementResponse,
     FeedbackAction
 )
+from models.interaction import InteractionEvent, InteractionStats
 from services.unified_recommendation_engine import UnifiedRecommendationEngine
 from services.feedback_engine import FeedbackEngine
+from services.interaction_service import InteractionService
 
 # Inicializar app
 app = FastAPI(
@@ -44,6 +46,7 @@ app.add_middleware(
 data_dir = os.path.join(backend_dir, "data")
 engine = UnifiedRecommendationEngine(data_dir=data_dir)
 feedback_engine = FeedbackEngine()  # 🤖 FASE 2: Engine de feedback
+interaction_service = InteractionService(data_dir=os.path.join(data_dir, "interactions"))  # 🤖 ML: Coleta de dados
 
 
 @app.get("/")
@@ -202,16 +205,25 @@ def recommend_cars(profile: UserProfile):
                         "ano": rec['car'].ano,
                         "preco": rec['car'].preco,
                         "quilometragem": rec['car'].quilometragem,
+                        "combustivel": rec['car'].combustivel,
+                        "cambio": rec['car'].cambio,
+                        "cor": rec['car'].cor,
+                        "portas": rec['car'].portas,
                         "categoria": rec['car'].categoria,
                         "imagens": rec['car'].imagens,
-                        "dealership": {
-                            "id": rec['car'].dealership_id,
-                            "name": rec['car'].dealership_name,
-                            "city": rec['car'].dealership_city,
-                            "state": rec['car'].dealership_state,
-                            "phone": rec['car'].dealership_phone,
-                            "whatsapp": rec['car'].dealership_whatsapp
-                        }
+                        "disponivel": rec['car'].disponivel,
+                        "destaque": rec['car'].destaque,
+                        "dealership_id": rec['car'].dealership_id,
+                        "dealership_name": rec['car'].dealership_name,
+                        "dealership_city": rec['car'].dealership_city,
+                        "dealership_state": rec['car'].dealership_state,
+                        "dealership_phone": rec['car'].dealership_phone,
+                        "dealership_whatsapp": rec['car'].dealership_whatsapp,
+                        "score_familia": rec['car'].score_familia,
+                        "score_economia": rec['car'].score_economia,
+                        "score_performance": rec['car'].score_performance,
+                        "score_conforto": rec['car'].score_conforto,
+                        "score_seguranca": rec['car'].score_seguranca
                     },
                     "match_score": rec['score'],
                     "match_percentage": rec['match_percentage'],
@@ -410,16 +422,25 @@ def refine_recommendations(request: RefinementRequest):
                         "ano": rec['car'].ano,
                         "preco": rec['car'].preco,
                         "quilometragem": rec['car'].quilometragem,
+                        "combustivel": rec['car'].combustivel,
+                        "cambio": rec['car'].cambio,
+                        "cor": rec['car'].cor,
+                        "portas": rec['car'].portas,
                         "categoria": rec['car'].categoria,
                         "imagens": rec['car'].imagens,
-                        "dealership": {
-                            "id": rec['car'].dealership_id,
-                            "name": rec['car'].dealership_name,
-                            "city": rec['car'].dealership_city,
-                            "state": rec['car'].dealership_state,
-                            "phone": rec['car'].dealership_phone,
-                            "whatsapp": rec['car'].dealership_whatsapp
-                        }
+                        "disponivel": rec['car'].disponivel,
+                        "destaque": rec['car'].destaque,
+                        "dealership_id": rec['car'].dealership_id,
+                        "dealership_name": rec['car'].dealership_name,
+                        "dealership_city": rec['car'].dealership_city,
+                        "dealership_state": rec['car'].dealership_state,
+                        "dealership_phone": rec['car'].dealership_phone,
+                        "dealership_whatsapp": rec['car'].dealership_whatsapp,
+                        "score_familia": rec['car'].score_familia,
+                        "score_economia": rec['car'].score_economia,
+                        "score_performance": rec['car'].score_performance,
+                        "score_conforto": rec['car'].score_conforto,
+                        "score_seguranca": rec['car'].score_seguranca
                     },
                     "match_score": round(rec['score'], 2),
                     "match_percentage": rec['match_percentage'],
@@ -474,6 +495,113 @@ def get_feedback_history(user_id: str):
             for f in history.feedbacks[-10:]  # Últimos 10
         ]
     }
+
+
+# ========================================
+# 🤖 ML SYSTEM: Endpoints de Coleta de Interações
+# ========================================
+
+@app.post("/api/interactions/track")
+async def track_interaction(event: InteractionEvent):
+    """
+    🤖 ML System: Registrar interação do usuário com veículo
+    
+    Este endpoint coleta dados de interações para treinamento futuro
+    de modelos de Machine Learning. Não afeta a experiência do usuário
+    se falhar (fail gracefully).
+    
+    Tipos de interação:
+    - "click": Usuário clicou no card do carro
+    - "view_details": Usuário visualizou detalhes do carro
+    - "whatsapp_contact": Usuário clicou para contatar via WhatsApp
+    
+    Args:
+        event: Evento de interação com dados do usuário e carro
+        
+    Returns:
+        Status da operação (sempre retorna sucesso para não bloquear UI)
+    """
+    try:
+        # Salvar interação
+        success = interaction_service.save_interaction(event)
+        
+        if success:
+            return {
+                "status": "success",
+                "message": "Interação registrada com sucesso",
+                "interaction_type": event.interaction_type,
+                "car_id": event.car_id
+            }
+        else:
+            # Logar erro mas não falhar
+            print(f"[AVISO] Falha ao salvar interação, mas continuando...")
+            return {
+                "status": "partial_success",
+                "message": "Interação recebida mas não persistida"
+            }
+    
+    except Exception as e:
+        # Nunca falhar - apenas logar
+        print(f"[ERRO] Erro ao processar interação: {e}")
+        return {
+            "status": "error",
+            "message": "Erro ao processar interação, mas operação continua"
+        }
+
+
+@app.get("/api/ml/stats")
+async def get_ml_stats():
+    """
+    🤖 ML System: Obter estatísticas do sistema de ML
+    
+    Retorna informações sobre:
+    - Total de interações coletadas
+    - Distribuição por tipo de interação
+    - Sessões e carros únicos
+    - Status de prontidão para treinamento
+    
+    Returns:
+        Estatísticas agregadas do sistema ML
+    """
+    try:
+        # Obter estatísticas
+        stats = interaction_service.get_stats()
+        total_count = interaction_service.get_interactions_count()
+        
+        # Verificar se há dados suficientes para treinamento
+        min_required = 500
+        ready_for_training = total_count >= min_required
+        
+        return {
+            "status": "operational",
+            "data_collection": {
+                "total_interactions": stats.total_interactions,
+                "click_count": stats.click_count,
+                "view_details_count": stats.view_details_count,
+                "whatsapp_contact_count": stats.whatsapp_contact_count,
+                "unique_sessions": stats.unique_sessions,
+                "unique_cars": stats.unique_cars,
+                "avg_duration_seconds": stats.avg_duration_seconds,
+                "last_interaction": stats.last_interaction.isoformat() if stats.last_interaction else None
+            },
+            "ml_readiness": {
+                "ready_for_training": ready_for_training,
+                "min_required_interactions": min_required,
+                "progress_percentage": min(100, (total_count / min_required) * 100),
+                "interactions_needed": max(0, min_required - total_count)
+            },
+            "ml_model": {
+                "available": False,  # Será True quando modelo for treinado
+                "version": None,
+                "last_trained": None
+            }
+        }
+    
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Erro ao obter estatísticas de ML: {str(e)}"
+        )
 
 
 # Para testes

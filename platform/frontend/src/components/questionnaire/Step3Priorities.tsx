@@ -1,43 +1,55 @@
 // 🎨 UX + ✍️ Content Creator: Step 3 - Prioridades
-import {
-  VStack,
-  Heading,
-  Text,
-  FormControl,
-  FormLabel,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
-  HStack,
-  Box,
-  Badge,
-} from '@chakra-ui/react'
+import { VStack, Heading, Text, Box, HStack, Badge } from '@chakra-ui/react'
 import { useQuestionnaireStore } from '@/store/questionnaireStore'
+import { PrioritySlider } from './PrioritySlider'
+import { useMemo } from 'react'
 
-const priorityLabels = {
-  1: 'Baixa',
-  2: 'Média-Baixa',
-  3: 'Média',
-  4: 'Alta',
-  5: 'Muito Alta',
-}
-
-const priorityColors = {
-  1: 'gray',
-  2: 'blue',
-  3: 'cyan',
-  4: 'green',
-  5: 'brand',
-}
+// Simplified priority definitions following "grandmother test"
+const PRIORITIES = [
+  {
+    key: 'economia',
+    label: 'Economia',
+    icon: '💰',
+    description: 'Gasta pouco combustível e é barato de manter',
+    tooltip: 'Carros econômicos gastam menos gasolina no dia a dia e têm manutenção mais em conta',
+  },
+  {
+    key: 'espaco',
+    label: 'Espaço',
+    icon: '📦',
+    description: 'Cabe muita coisa no porta-malas e é espaçoso por dentro',
+    tooltip: 'Perfeito para levar compras, malas de viagem ou transportar a família com conforto',
+  },
+  {
+    key: 'performance',
+    label: 'Potência',
+    icon: '🚀',
+    description: 'Tem força para subir ladeiras e ultrapassar com facilidade',
+    tooltip: 'Carros potentes aceleram rápido e têm mais facilidade em ultrapassagens',
+  },
+  {
+    key: 'conforto',
+    label: 'Conforto',
+    icon: '✨',
+    description: 'Direção macia, ar-condicionado bom e bancos confortáveis',
+    tooltip: 'Ideal para viagens longas e para quem passa muito tempo no carro',
+  },
+  {
+    key: 'seguranca',
+    label: 'Segurança',
+    icon: '🛡️',
+    description: 'Protege bem você e sua família em caso de acidente',
+    tooltip: 'Inclui airbags, freios que não travam as rodas e sistemas que ajudam a evitar acidentes',
+  },
+]
 
 export const Step3Priorities = () => {
   const { formData, updateFormData } = useQuestionnaireStore()
 
-  const handlePriorityChange = (key: string) => (value: number) => {
+  const handlePriorityChange = (key: keyof typeof priorities) => (value: number) => {
     updateFormData({
       prioridades: {
-        ...formData.prioridades,
+        ...priorities,
         [key]: value,
       },
     })
@@ -51,221 +63,86 @@ export const Step3Priorities = () => {
     seguranca: 3,
   }
 
+  // Calculate top 3 priorities for highlighting
+  const topPriorities = useMemo(() => {
+    return Object.entries(priorities)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 3)
+      .map(([key]) => key)
+  }, [priorities])
+
   return (
-    <VStack spacing={8} align="stretch" maxW="700px" mx="auto">
+    <VStack spacing={8} align="stretch" maxW="800px" mx="auto">
       {/* Header */}
       <VStack spacing={3} textAlign="center">
         <Heading size="lg" color="gray.800">
-          🎯 Quais são suas prioridades?
+          O que é mais importante para você? 🎯
         </Heading>
-        <Text color="gray.600" fontSize="md">
-          Ajuste os sliders para indicar o que é mais importante para você
+        <Text color="gray.600" fontSize="md" maxW="600px">
+          Ajuste os controles para mostrar o que você mais valoriza. Vamos destacar suas 3
+          prioridades principais.
         </Text>
       </VStack>
 
-      {/* Prioridade: Economia */}
-      <FormControl>
-        <HStack justify="space-between" mb={2}>
-          <FormLabel mb={0} fontSize="md" fontWeight="semibold">
-            💰 Economia
-          </FormLabel>
-          <Badge
-            colorScheme={priorityColors[priorities.economia as keyof typeof priorityColors]}
-            fontSize="sm"
-            px={3}
-            py={1}
-            borderRadius="full"
-          >
-            {priorityLabels[priorities.economia as keyof typeof priorityLabels]}
-          </Badge>
-        </HStack>
-        <Text fontSize="sm" color="gray.600" mb={3}>
-          Baixo consumo de combustível e manutenção econômica
-        </Text>
-        <Slider
-          value={priorities.economia}
-          onChange={handlePriorityChange('economia')}
-          min={1}
-          max={5}
-          step={1}
-          colorScheme="brand"
-        >
-          <SliderTrack>
-            <SliderFilledTrack />
-          </SliderTrack>
-          <SliderThumb boxSize={6} />
-        </Slider>
-      </FormControl>
+      {/* Priority Sliders */}
+      <VStack spacing={4} align="stretch">
+        {PRIORITIES.map((priority) => (
+          <PrioritySlider
+            key={priority.key}
+            label={priority.label}
+            icon={priority.icon}
+            description={priority.description}
+            tooltip={priority.tooltip}
+            value={priorities[priority.key as keyof typeof priorities]}
+            onChange={handlePriorityChange(priority.key as keyof typeof priorities)}
+            isTopPriority={topPriorities.includes(priority.key)}
+          />
+        ))}
+      </VStack>
 
-      {/* Prioridade: Espaço */}
-      <FormControl>
-        <HStack justify="space-between" mb={2}>
-          <FormLabel mb={0} fontSize="md" fontWeight="semibold">
-            📦 Espaço
-          </FormLabel>
-          <Badge
-            colorScheme={priorityColors[priorities.espaco as keyof typeof priorityColors]}
-            fontSize="sm"
-            px={3}
-            py={1}
-            borderRadius="full"
-          >
-            {priorityLabels[priorities.espaco as keyof typeof priorityLabels]}
-          </Badge>
-        </HStack>
-        <Text fontSize="sm" color="gray.600" mb={3}>
-          Porta-malas amplo e espaço interno confortável
-        </Text>
-        <Slider
-          value={priorities.espaco}
-          onChange={handlePriorityChange('espaco')}
-          min={1}
-          max={5}
-          step={1}
-          colorScheme="brand"
-        >
-          <SliderTrack>
-            <SliderFilledTrack />
-          </SliderTrack>
-          <SliderThumb boxSize={6} />
-        </Slider>
-      </FormControl>
-
-      {/* Prioridade: Performance */}
-      <FormControl>
-        <HStack justify="space-between" mb={2}>
-          <FormLabel mb={0} fontSize="md" fontWeight="semibold">
-            🚀 Performance
-          </FormLabel>
-          <Badge
-            colorScheme={priorityColors[priorities.performance as keyof typeof priorityColors]}
-            fontSize="sm"
-            px={3}
-            py={1}
-            borderRadius="full"
-          >
-            {priorityLabels[priorities.performance as keyof typeof priorityLabels]}
-          </Badge>
-        </HStack>
-        <Text fontSize="sm" color="gray.600" mb={3}>
-          Potência do motor e aceleração
-        </Text>
-        <Slider
-          value={priorities.performance}
-          onChange={handlePriorityChange('performance')}
-          min={1}
-          max={5}
-          step={1}
-          colorScheme="brand"
-        >
-          <SliderTrack>
-            <SliderFilledTrack />
-          </SliderTrack>
-          <SliderThumb boxSize={6} />
-        </Slider>
-      </FormControl>
-
-      {/* Prioridade: Conforto */}
-      <FormControl>
-        <HStack justify="space-between" mb={2}>
-          <FormLabel mb={0} fontSize="md" fontWeight="semibold">
-            ✨ Conforto
-          </FormLabel>
-          <Badge
-            colorScheme={priorityColors[priorities.conforto as keyof typeof priorityColors]}
-            fontSize="sm"
-            px={3}
-            py={1}
-            borderRadius="full"
-          >
-            {priorityLabels[priorities.conforto as keyof typeof priorityLabels]}
-          </Badge>
-        </HStack>
-        <Text fontSize="sm" color="gray.600" mb={3}>
-          Direção suave, ar-condicionado e acabamento interno
-        </Text>
-        <Slider
-          value={priorities.conforto}
-          onChange={handlePriorityChange('conforto')}
-          min={1}
-          max={5}
-          step={1}
-          colorScheme="brand"
-        >
-          <SliderTrack>
-            <SliderFilledTrack />
-          </SliderTrack>
-          <SliderThumb boxSize={6} />
-        </Slider>
-      </FormControl>
-
-      {/* Prioridade: Segurança */}
-      <FormControl>
-        <HStack justify="space-between" mb={2}>
-          <FormLabel mb={0} fontSize="md" fontWeight="semibold">
-            🛡️ Segurança
-          </FormLabel>
-          <Badge
-            colorScheme={priorityColors[priorities.seguranca as keyof typeof priorityColors]}
-            fontSize="sm"
-            px={3}
-            py={1}
-            borderRadius="full"
-          >
-            {priorityLabels[priorities.seguranca as keyof typeof priorityLabels]}
-          </Badge>
-        </HStack>
-        <Text fontSize="sm" color="gray.600" mb={3}>
-          Airbags, freios ABS e sistemas de assistência
-        </Text>
-        <Slider
-          value={priorities.seguranca}
-          onChange={handlePriorityChange('seguranca')}
-          min={1}
-          max={5}
-          step={1}
-          colorScheme="brand"
-        >
-          <SliderTrack>
-            <SliderFilledTrack />
-          </SliderTrack>
-          <SliderThumb boxSize={6} />
-        </Slider>
-      </FormControl>
-
-      {/* Summary */}
+      {/* Summary Box */}
       <Box
         bg="brand.50"
-        p={4}
-        borderRadius="lg"
+        p={5}
+        borderRadius="xl"
         borderWidth="2px"
-        borderColor="brand.200"
+        borderColor="brand.300"
       >
-        <Text fontSize="sm" color="gray.700" mb={2}>
-          <strong>Suas prioridades principais:</strong>
-        </Text>
-        <HStack spacing={2} flexWrap="wrap">
-          {Object.entries(priorities)
-            .sort(([, a], [, b]) => b - a)
-            .slice(0, 3)
-            .map(([key, value]) => (
-              <Badge
-                key={key}
-                colorScheme={priorityColors[value as keyof typeof priorityColors]}
-                fontSize="sm"
-                px={3}
-                py={1}
-              >
-                {key === 'economia' && '💰 Economia'}
-                {key === 'espaco' && '📦 Espaço'}
-                {key === 'performance' && '🚀 Performance'}
-                {key === 'conforto' && '✨ Conforto'}
-                {key === 'seguranca' && '🛡️ Segurança'}
-              </Badge>
-            ))}
-        </HStack>
+        <VStack spacing={3} align="stretch">
+          <HStack spacing={2}>
+            <Text fontSize="md" fontWeight="bold" color="gray.800">
+              🎯 Suas 3 prioridades principais:
+            </Text>
+          </HStack>
+          <HStack spacing={3} flexWrap="wrap">
+            {topPriorities.map((key, index) => {
+              const priority = PRIORITIES.find((p) => p.key === key)
+              return (
+                <Badge
+                  key={key}
+                  colorScheme="brand"
+                  fontSize="md"
+                  px={4}
+                  py={2}
+                  borderRadius="full"
+                  display="flex"
+                  alignItems="center"
+                  gap={2}
+                >
+                  <Text as="span">{index + 1}º</Text>
+                  <Text as="span">{priority?.icon}</Text>
+                  <Text as="span">{priority?.label}</Text>
+                </Badge>
+              )
+            })}
+          </HStack>
+          <Text fontSize="sm" color="gray.700" pt={2}>
+            Vamos usar essas prioridades para encontrar os carros perfeitos para você!
+          </Text>
+        </VStack>
       </Box>
     </VStack>
   )
 }
+
 

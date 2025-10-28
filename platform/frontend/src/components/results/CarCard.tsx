@@ -19,14 +19,22 @@ import { FaWhatsapp, FaGasPump, FaCog, FaCalendar, FaTachometerAlt, FaMapMarkerA
 import type { Recommendation } from '@/types'
 import { formatCurrency, formatNumber } from '@/services/api'
 import { ScoreVisual } from './ScoreVisual'
+import interactionTracker from '@/services/InteractionTracker'
+import { CAR_PLACEHOLDER, CAR_PLACEHOLDER_LOADING } from '@/utils/imagePlaceholder'
 
 interface CarCardProps {
   recommendation: Recommendation
   onWhatsAppClick?: (car: Recommendation['car']) => void
   onDetailsClick?: (car: Recommendation['car']) => void
+  position?: number
+  userPreferences?: {
+    budget: number
+    usage: string
+    priorities: string[]
+  }
 }
 
-export const CarCard = ({ recommendation, onWhatsAppClick, onDetailsClick }: CarCardProps) => {
+export const CarCard = ({ recommendation, onWhatsAppClick, onDetailsClick, position, userPreferences }: CarCardProps) => {
   const { car, match_percentage, justification } = recommendation
 
   const handleWhatsAppClick = () => {
@@ -34,11 +42,79 @@ export const CarCard = ({ recommendation, onWhatsAppClick, onDetailsClick }: Car
       `Olá! Vi o ${car.nome} no FacilIAuto e gostaria de mais informações.`
     )
     const whatsappUrl = `https://wa.me/${car.dealership_whatsapp}?text=${message}`
-    
+
     window.open(whatsappUrl, '_blank')
-    
+
+    // 🤖 ML: Rastrear clique no WhatsApp
+    if (userPreferences) {
+      interactionTracker.trackWhatsAppClick(
+        car.id,
+        userPreferences,
+        {
+          marca: car.marca,
+          modelo: car.modelo,
+          ano: car.ano,
+          preco: car.preco,
+          categoria: car.categoria,
+          combustivel: car.combustivel,
+          cambio: car.cambio || 'Manual',
+          quilometragem: car.quilometragem
+        },
+        position,
+        recommendation.match_score
+      )
+    }
+
     if (onWhatsAppClick) {
       onWhatsAppClick(car)
+    }
+  }
+
+  const handleDetailsClick = () => {
+    // 🤖 ML: Rastrear clique em detalhes
+    if (userPreferences) {
+      interactionTracker.trackViewDetails(
+        car.id,
+        userPreferences,
+        {
+          marca: car.marca,
+          modelo: car.modelo,
+          ano: car.ano,
+          preco: car.preco,
+          categoria: car.categoria,
+          combustivel: car.combustivel,
+          cambio: car.cambio || 'Manual',
+          quilometragem: car.quilometragem
+        },
+        position,
+        recommendation.match_score
+      )
+    }
+
+    if (onDetailsClick) {
+      onDetailsClick(car)
+    }
+  }
+
+  const handleCardClick = () => {
+    // 🤖 ML: Rastrear clique no card
+    if (userPreferences) {
+      interactionTracker.trackCarClick(
+        car.id,
+        userPreferences,
+        {
+          marca: car.marca,
+          modelo: car.modelo,
+          ano: car.ano,
+          preco: car.preco,
+          categoria: car.categoria,
+          combustivel: car.combustivel,
+          cambio: car.cambio || 'Manual',
+          quilometragem: car.quilometragem
+        },
+        position,
+        recommendation.match_score
+      )
     }
   }
 
@@ -54,18 +130,20 @@ export const CarCard = ({ recommendation, onWhatsAppClick, onDetailsClick }: Car
         transform: 'translateY(-4px)',
       }}
       transition="all 0.3s"
+      onClick={handleCardClick}
+      cursor="pointer"
     >
-      <CardBody p={6}>
-        <HStack align="flex-start" spacing={6}>
-          {/* Imagem do Carro - Esquerda */}
-          <Box flexShrink={0} position="relative">
-            <AspectRatio ratio={4 / 3} width="200px">
+      <CardBody p={0}>
+        <VStack align="stretch" spacing={0}>
+          {/* Imagem do Carro - Topo */}
+          <Box position="relative" width="100%">
+            <AspectRatio ratio={16 / 9} width="100%">
               <Image
-                src={mainImage || 'https://via.placeholder.com/400x300?text=Sem+Imagem'}
+                src={mainImage || CAR_PLACEHOLDER}
                 alt={car.nome}
                 objectFit="cover"
-                borderRadius="lg"
-                fallbackSrc="https://via.placeholder.com/400x300?text=Carregando..."
+                borderTopRadius="lg"
+                fallbackSrc={CAR_PLACEHOLDER_LOADING}
                 cursor={onDetailsClick ? 'pointer' : 'default'}
                 onClick={() => onDetailsClick?.(car)}
               />
@@ -85,18 +163,19 @@ export const CarCard = ({ recommendation, onWhatsAppClick, onDetailsClick }: Car
                 {car.imagens.length}
               </Badge>
             )}
+            {/* Score Badge no canto superior direito */}
+            <Box position="absolute" top={2} right={2}>
+              <Badge colorScheme="green" fontSize="lg" px={3} py={2} borderRadius="full">
+                {Math.round(match_percentage)}% Match
+              </Badge>
+            </Box>
           </Box>
 
-          {/* Score Visual */}
-          <Box flexShrink={0}>
-            <ScoreVisual score={recommendation.match_score} percentage={match_percentage} />
-          </Box>
-
-          {/* Informações do Carro - Centro */}
-          <VStack align="stretch" flex={1} spacing={4}>
+          {/* Informações do Carro - Abaixo da imagem */}
+          <VStack align="stretch" spacing={4} p={6}>
             {/* Nome do Carro */}
             <Box>
-              <HStack mb={2}>
+              <HStack mb={2} flexWrap="wrap">
                 <Badge colorScheme="purple" fontSize="xs">
                   {car.categoria}
                 </Badge>
@@ -106,14 +185,16 @@ export const CarCard = ({ recommendation, onWhatsAppClick, onDetailsClick }: Car
                   </Badge>
                 )}
               </HStack>
-              
+
               <Heading size="md" color="gray.800">
                 {car.nome}
               </Heading>
-              
-              <Text fontSize="sm" color="gray.600">
-                {car.marca} {car.modelo} {car.versao && `- ${car.versao}`}
-              </Text>
+
+              {car.versao && (
+                <Text fontSize="sm" color="gray.600">
+                  {car.versao}
+                </Text>
+              )}
             </Box>
 
             {/* Preço */}
@@ -194,7 +275,7 @@ export const CarCard = ({ recommendation, onWhatsAppClick, onDetailsClick }: Car
                   variant="outline"
                   colorScheme="brand"
                   size="sm"
-                  onClick={() => onDetailsClick(car)}
+                  onClick={handleDetailsClick}
                   leftIcon={<FaImages />}
                 >
                   Ver Detalhes e Fotos {hasMultipleImages && `(${car.imagens.length})`}
@@ -202,7 +283,7 @@ export const CarCard = ({ recommendation, onWhatsAppClick, onDetailsClick }: Car
               )}
             </VStack>
           </VStack>
-        </HStack>
+        </VStack>
       </CardBody>
     </Card>
   )

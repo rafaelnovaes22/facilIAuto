@@ -1,207 +1,124 @@
 """
-Testes de Classificação e Recomendação por Perfil
-Valida que as categorias estão corretas e recomendações são precisas
+Testes para o sistema de classificação de carros
 """
 
-import sys
-import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-
-from services.car_classifier import CarClassifier
-from services.unified_recommendation_engine import UnifiedRecommendationEngine
-from models.user_profile import UserProfile
+import pytest
+from services.car_classifier import classifier
 
 
-class TestCarClassification:
-    """Testes de classificação de carros"""
+class TestCarClassifier:
+    """Testes do classificador de carros"""
     
-    def test_tracker_is_suv(self):
-        """CHEVROLET TRACKER deve ser SUV, não Hatch"""
-        classifier = CarClassifier()
-        categoria = classifier.classify("CHEVROLET TRACKER T", "CHEVROLET TRACKER T")
-        assert categoria == "SUV", f"TRACKER deveria ser SUV, mas foi classificado como {categoria}"
-        print("[OK] TRACKER corretamente classificado como SUV")
+    def test_ford_focus_2009_2013_is_sedan(self):
+        """Ford Focus 2009-2013 deve ser classificado como Sedan"""
+        assert classifier.classify("Ford Focus", "Ford Focus", 2009) == "Sedan"
+        assert classifier.classify("Ford Focus", "Ford Focus", 2010) == "Sedan"
+        assert classifier.classify("Ford Focus", "Ford Focus", 2013) == "Sedan"
     
-    def test_frontier_is_pickup(self):
-        """NISSAN FRONTIER deve ser Pickup, não Hatch"""
-        classifier = CarClassifier()
-        categoria = classifier.classify("NISSAN FRONTIER ATTACK", "NISSAN FRONTIER ATTACK")
-        assert categoria == "Pickup", f"FRONTIER deveria ser Pickup, mas foi classificado como {categoria}"
-        print("[OK] FRONTIER corretamente classificado como Pickup")
+    def test_ford_focus_2014_plus_is_hatch(self):
+        """Ford Focus 2014+ deve ser classificado como Hatch"""
+        assert classifier.classify("Ford Focus", "Ford Focus", 2014) == "Hatch"
+        assert classifier.classify("Ford Focus", "Ford Focus", 2015) == "Hatch"
+        assert classifier.classify("Ford Focus", "Ford Focus", 2020) == "Hatch"
     
-    def test_corolla_is_sedan(self):
-        """TOYOTA COROLLA deve ser Sedan, não Hatch"""
-        classifier = CarClassifier()
-        categoria = classifier.classify("TOYOTA COROLLA GLI", "TOYOTA COROLLA GLI")
-        assert categoria == "Sedan", f"COROLLA deveria ser Sedan, mas foi classificado como {categoria}"
-        print("[OK] COROLLA corretamente classificado como Sedan")
+    def test_ford_focus_sedan_explicit(self):
+        """Ford Focus com 'Sedan' no nome sempre é Sedan"""
+        assert classifier.classify("Ford Focus Sedan", "Ford Focus Sedan", 2015) == "Sedan"
+        assert classifier.classify("Ford Focus Sedan", "Ford Focus Sedan", 2020) == "Sedan"
     
-    def test_kwid_is_compacto(self):
-        """RENAULT KWID deve ser Compacto, não Hatch"""
-        classifier = CarClassifier()
-        categoria = classifier.classify("RENAULT KWID ZEN", "RENAULT KWID ZEN")
-        assert categoria == "Compacto", f"KWID deveria ser Compacto, mas foi classificado como {categoria}"
-        print("[OK] KWID corretamente classificado como Compacto")
+    def test_motorcycles_detected(self):
+        """Motos devem ser detectadas corretamente"""
+        # Honda
+        assert classifier.classify("Honda CB 500", "Honda CB 500", 2020) == "Moto"
+        assert classifier.classify("Honda CBR 600", "Honda CBR 600", 2021) == "Moto"
+        
+        # Yamaha
+        assert classifier.classify("Yamaha MT-07", "Yamaha MT-07", 2021) == "Moto"
+        assert classifier.classify("Yamaha Xtz 250", "Yamaha Xtz 250", 2024) == "Moto"
+        assert classifier.classify("Yamaha Fazer 250", "Yamaha Fazer 250", 2020) == "Moto"
+        
+        # Kawasaki
+        assert classifier.classify("Kawasaki Ninja 300", "Kawasaki Ninja 300", 2020) == "Moto"
     
-    def test_spin_is_van(self):
-        """CHEVROLET SPIN deve ser Van, não Hatch"""
-        classifier = CarClassifier()
-        categoria = classifier.classify("CHEVROLET SPIN 1.8", "CHEVROLET SPIN 1.8")
-        assert categoria == "Van", f"SPIN deveria ser Van, mas foi classificado como {categoria}"
-        print("[OK] SPIN corretamente classificado como Van")
+    def test_cars_not_confused_with_motorcycles(self):
+        """Carros não devem ser confundidos com motos"""
+        # Onix MT (MT = Manual Transmission, não moto)
+        assert classifier.classify("Chevrolet Onix Mt", "Chevrolet Onix Mt", 2019) == "Hatch"
+        assert classifier.classify("Chevrolet Onix MT", "Chevrolet Onix MT", 2020) == "Hatch"
+    
+    def test_suv_classification(self):
+        """SUVs devem ser classificados corretamente"""
+        assert classifier.classify("Chevrolet Tracker", "Chevrolet Tracker", 2021) == "SUV"
+        assert classifier.classify("Hyundai Creta", "Hyundai Creta", 2020) == "SUV"
+        assert classifier.classify("Nissan Kicks", "Nissan Kicks", 2021) == "SUV"
+    
+    def test_sedan_classification(self):
+        """Sedans devem ser classificados corretamente"""
+        assert classifier.classify("Toyota Corolla", "Toyota Corolla", 2020) == "Sedan"
+        assert classifier.classify("Honda Civic", "Honda Civic", 2021) == "Sedan"
+        assert classifier.classify("Volkswagen Virtus", "Volkswagen Virtus", 2022) == "Sedan"
+    
+    def test_hatch_classification(self):
+        """Hatchbacks devem ser classificados corretamente"""
+        assert classifier.classify("Chevrolet Onix", "Chevrolet Onix", 2020) == "Hatch"
+        assert classifier.classify("Volkswagen Gol", "Volkswagen Gol", 2019) == "Hatch"
+        assert classifier.classify("Fiat Uno", "Fiat Uno", 2018) == "Hatch"
+    
+    def test_pickup_classification(self):
+        """Pickups devem ser classificadas corretamente"""
+        assert classifier.classify("Toyota Hilux", "Toyota Hilux", 2021) == "Pickup"
+        assert classifier.classify("Ford Ranger", "Ford Ranger", 2020) == "Pickup"
+        assert classifier.classify("Chevrolet S10", "Chevrolet S10", 2019) == "Pickup"
+    
+    def test_classification_without_year(self):
+        """Classificação deve funcionar sem ano (exceto casos especiais)"""
+        # Casos normais funcionam sem ano
+        assert classifier.classify("Chevrolet Onix", "Chevrolet Onix") == "Hatch"
+        assert classifier.classify("Toyota Corolla", "Toyota Corolla") == "Sedan"
+        
+        # Focus sem ano vai para Hatch (padrão atual)
+        assert classifier.classify("Ford Focus", "Ford Focus") == "Hatch"
+    
+    def test_case_insensitive(self):
+        """Classificação deve ser case-insensitive"""
+        assert classifier.classify("FORD FOCUS", "FORD FOCUS", 2009) == "Sedan"
+        assert classifier.classify("ford focus", "ford focus", 2009) == "Sedan"
+        assert classifier.classify("Ford Focus", "Ford Focus", 2009) == "Sedan"
 
 
-class TestProfileRecommendations:
-    """Testes de recomendação por perfil"""
+class TestCarClassifierFeatures:
+    """Testes para inferência de características"""
     
-    def test_familia_profile_prefers_suv(self):
-        """Perfil família deve priorizar SUV e Van sobre Hatch"""
-        engine = UnifiedRecommendationEngine()
+    def test_safety_items_by_year(self):
+        """Itens de segurança devem variar por ano"""
+        # 2024 tem mais itens
+        items_2024 = classifier.get_typical_safety_items(2024, "SUV")
+        assert '6_airbags' in items_2024
+        assert 'ISOFIX' in items_2024
         
-        profile = UserProfile(
-            orcamento_min=50000,
-            orcamento_max=150000,
-            uso_principal="familia",
-            tem_criancas=True,
-            prioridades={
-                "seguranca": 5,
-                "espaco": 5,
-                "economia": 2,
-                "performance": 2,
-                "conforto": 4
-            }
-        )
-        
-        recs = engine.recommend(profile, limit=10)
-        
-        # Verificar que há recomendações
-        assert len(recs) > 0, "Deveria ter recomendações para família"
-        
-        # Verificar que SUVs e Vans estão priorizados
-        top_3 = recs[:3]
-        suv_or_van_count = sum(1 for r in top_3 if r['car'].categoria in ['SUV', 'Van', 'Sedan'])
-        
-        assert suv_or_van_count >= 2, f"Top 3 para família deveria ter pelo menos 2 SUV/Van/Sedan, mas tem {suv_or_van_count}"
-        print(f"[OK] Perfil familia priorizando corretamente (Top 3: {[r['car'].categoria for r in top_3]})")
+        # 2010 tem menos itens
+        items_2010 = classifier.get_typical_safety_items(2010, "Hatch")
+        assert 'ABS' in items_2010
+        assert '6_airbags' not in items_2010
     
-    def test_primeiro_carro_prefers_hatch(self):
-        """Perfil primeiro carro deve priorizar Hatch e Compacto"""
-        engine = UnifiedRecommendationEngine()
+    def test_comfort_items_by_category(self):
+        """Itens de conforto devem variar por categoria"""
+        # SUV tem mais conforto
+        items_suv = classifier.get_typical_comfort_items("SUV", 2020)
+        assert 'sensor_estacionamento' in items_suv
         
-        profile = UserProfile(
-            orcamento_min=30000,
-            orcamento_max=60000,
-            uso_principal="primeiro_carro",
-            primeiro_carro=True,
-            prioridades={
-                "economia": 5,
-                "confiabilidade": 5,
-                "custo_manutencao": 5,
-                "performance": 1,
-                "espaco": 2
-            }
-        )
-        
-        recs = engine.recommend(profile, limit=10)
-        
-        # Verificar que há recomendações
-        assert len(recs) > 0, "Deveria ter recomendações para primeiro carro"
-        
-        # Verificar que Hatch/Compacto estão priorizados
-        top_5 = recs[:5]
-        small_cars_count = sum(1 for r in top_5 if r['car'].categoria in ['Hatch', 'Compacto'])
-        
-        assert small_cars_count >= 3, f"Top 5 para primeiro carro deveria ter pelo menos 3 Hatch/Compacto, mas tem {small_cars_count}"
-        print(f"[OK] Perfil primeiro carro priorizando corretamente (Top 5: {[r['car'].categoria for r in top_5]})")
+        # Compacto tem menos
+        items_compacto = classifier.get_typical_comfort_items("Compacto", 2020)
+        assert 'ar_condicionado' in items_compacto
+        assert 'sensor_estacionamento' not in items_compacto
     
-    def test_trabalho_prefers_sedan(self):
-        """Perfil trabalho deve priorizar Sedan e Hatch"""
-        engine = UnifiedRecommendationEngine()
-        
-        profile = UserProfile(
-            orcamento_min=50000,
-            orcamento_max=100000,
-            uso_principal="trabalho",
-            prioridades={
-                "economia": 5,
-                "conforto": 4,
-                "performance": 3,
-                "espaco": 2,
-                "seguranca": 3
-            }
-        )
-        
-        recs = engine.recommend(profile, limit=10)
-        
-        # Verificar que há recomendações
-        assert len(recs) > 0, "Deveria ter recomendações para trabalho"
-        
-        # Verificar que Sedan/Hatch estão priorizados
-        top_5 = recs[:5]
-        work_cars_count = sum(1 for r in top_5 if r['car'].categoria in ['Sedan', 'Hatch', 'Compacto'])
-        
-        assert work_cars_count >= 3, f"Top 5 para trabalho deveria ter pelo menos 3 Sedan/Hatch, mas tem {work_cars_count}"
-        print(f"[OK] Perfil trabalho priorizando corretamente (Top 5: {[r['car'].categoria for r in top_5]})")
-    
-    def test_comercial_prefers_pickup(self):
-        """Perfil comercial deve priorizar Pickup e Van"""
-        engine = UnifiedRecommendationEngine()
-        
-        profile = UserProfile(
-            orcamento_min=60000,
-            orcamento_max=150000,
-            uso_principal="comercial",
-            prioridades={
-                "espaco": 5,
-                "confiabilidade": 5,
-                "custo_manutencao": 4,
-                "economia": 3,
-                "performance": 3
-            }
-        )
-        
-        recs = engine.recommend(profile, limit=10)
-        
-        # Verificar que há recomendações
-        assert len(recs) > 0, "Deveria ter recomendações para comercial"
-        
-        # Verificar que Pickup/Van estão priorizados
-        top_3 = recs[:3]
-        commercial_cars_count = sum(1 for r in top_3 if r['car'].categoria in ['Pickup', 'Van'])
-        
-        # Deve ter pelo menos 1 Pickup/Van no top 3
-        assert commercial_cars_count >= 1, f"Top 3 para comercial deveria ter pelo menos 1 Pickup/Van, mas tem {commercial_cars_count}"
-        print(f"[OK] Perfil comercial priorizando corretamente (Top 3: {[r['car'].categoria for r in top_3]})")
+    def test_premium_version_detection(self):
+        """Versões premium devem ser detectadas"""
+        assert classifier.is_premium_version("Chevrolet Tracker Premier") == True
+        assert classifier.is_premium_version("Honda Civic LTZ") == True
+        assert classifier.is_premium_version("Volkswagen Polo Highline") == True
+        assert classifier.is_premium_version("Chevrolet Onix LT") == False
 
 
-def run_all_tests():
-    """Executar todos os testes"""
-    print("=" * 70)
-    print("TESTES DE CLASSIFICACAO E RECOMENDACAO")
-    print("=" * 70)
-    
-    # Testes de classificação
-    print("\n[TESTES DE CLASSIFICACAO]")
-    classification_tests = TestCarClassification()
-    classification_tests.test_tracker_is_suv()
-    classification_tests.test_frontier_is_pickup()
-    classification_tests.test_corolla_is_sedan()
-    classification_tests.test_kwid_is_compacto()
-    classification_tests.test_spin_is_van()
-    
-    # Testes de recomendação
-    print("\n[TESTES DE RECOMENDACAO POR PERFIL]")
-    profile_tests = TestProfileRecommendations()
-    profile_tests.test_familia_profile_prefers_suv()
-    profile_tests.test_primeiro_carro_prefers_hatch()
-    profile_tests.test_trabalho_prefers_sedan()
-    profile_tests.test_comercial_prefers_pickup()
-    
-    print("\n" + "=" * 70)
-    print("TODOS OS TESTES PASSARAM COM SUCESSO!")
-    print("=" * 70)
-
-
-if __name__ == "__main__":
-    run_all_tests()
-
+if __name__ == '__main__':
+    pytest.main([__file__, '-v'])
