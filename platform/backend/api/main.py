@@ -151,6 +151,11 @@ def recommend_cars(profile: UserProfile):
     Gerar recomendações personalizadas baseadas no perfil do usuário
     """
     try:
+        # 🐛 DEBUG: Log do perfil recebido
+        print(f"\n[API] Recebendo requisição /recommend")
+        print(f"[API] Orçamento: R$ {profile.orcamento_min:,.0f} - R$ {profile.orcamento_max:,.0f}")
+        print(f"[API] Ano: {profile.ano_minimo} a {profile.ano_maximo}")
+        
         # Validar orçamento
         if profile.orcamento_max < profile.orcamento_min:
             raise HTTPException(
@@ -164,6 +169,11 @@ def recommend_cars(profile: UserProfile):
             limit=10,
             score_threshold=0.2
         )
+        
+        # 🐛 DEBUG: Log dos resultados
+        print(f"[API] Engine retornou {len(recommendations)} recomendações")
+        for i, rec in enumerate(recommendations[:5], 1):
+            print(f"[API]   {i}. {rec['car'].nome} ({rec['car'].ano})")
         
         # Extrair top priorities do perfil (do dicionário prioridades)
         priority_labels = {

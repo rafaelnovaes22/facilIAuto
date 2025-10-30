@@ -296,3 +296,206 @@ class TestUnifiedRecommendationEngine:
         assert isinstance(grouped, dict)
         assert len(grouped) > 0
 
+
+    def test_filter_by_preferences_marcas_preferidas(self, temp_data_dir, multiple_cars):
+        """
+        🔥 NOVO: Teste filtro obrigatório de marcas preferidas
+        Quando marcas são especificadas, APENAS essas marcas devem retornar
+        """
+        engine = UnifiedRecommendationEngine(data_dir=temp_data_dir)
+        
+        # Criar perfil com marcas preferidas
+        profile = UserProfile(
+            orcamento_min=50000,
+            orcamento_max=150000,
+            uso_principal="familia",
+            tamanho_familia=4,
+            marcas_preferidas=["Toyota", "Honda"]
+        )
+        
+        # Aplicar filtro
+        filtered = engine.filter_by_preferences(multiple_cars, profile)
+        
+        # TODOS os carros devem ser Toyota ou Honda
+        for car in filtered:
+            assert car.marca in ["Toyota", "Honda"], f"Carro {car.marca} não deveria estar nos resultados"
+        
+        # Verificar que carros de outras marcas foram eliminados
+        other_brands = [c for c in multiple_cars if c.marca not in ["Toyota", "Honda"]]
+        assert len(other_brands) > 0, "Teste precisa ter carros de outras marcas"
+        assert len(filtered) < len(multiple_cars), "Filtro não eliminou carros"
+    
+    def test_filter_by_preferences_marcas_rejeitadas(self, temp_data_dir, multiple_cars):
+        """
+        🔥 NOVO: Teste filtro obrigatório de marcas rejeitadas
+        Marcas rejeitadas devem ser ELIMINADAS dos resultados
+        """
+        engine = UnifiedRecommendationEngine(data_dir=temp_data_dir)
+        
+        # Criar perfil com marcas rejeitadas
+        profile = UserProfile(
+            orcamento_min=50000,
+            orcamento_max=150000,
+            uso_principal="familia",
+            tamanho_familia=4,
+            marcas_rejeitadas=["Fiat", "Chevrolet"]
+        )
+        
+        # Aplicar filtro
+        filtered = engine.filter_by_preferences(multiple_cars, profile)
+        
+        # NENHUM carro deve ser Fiat ou Chevrolet
+        for car in filtered:
+            assert car.marca not in ["Fiat", "Chevrolet"], f"Carro {car.marca} deveria ter sido eliminado"
+    
+    def test_filter_by_preferences_tipos_preferidos(self, temp_data_dir, multiple_cars):
+        """
+        🔥 NOVO: Teste filtro obrigatório de tipos preferidos
+        Quando tipos são especificados, APENAS esses tipos devem retornar
+        """
+        engine = UnifiedRecommendationEngine(data_dir=temp_data_dir)
+        
+        # Criar perfil com tipos preferidos
+        profile = UserProfile(
+            orcamento_min=50000,
+            orcamento_max=150000,
+            uso_principal="familia",
+            tamanho_familia=4,
+            tipos_preferidos=["SUV", "Sedan"]
+        )
+        
+        # Aplicar filtro
+        filtered = engine.filter_by_preferences(multiple_cars, profile)
+        
+        # TODOS os carros devem ser SUV ou Sedan
+        for car in filtered:
+            assert car.categoria in ["SUV", "Sedan"], f"Carro {car.categoria} não deveria estar nos resultados"
+    
+    def test_filter_by_preferences_combustivel(self, temp_data_dir, multiple_cars):
+        """
+        🔥 NOVO: Teste filtro obrigatório de combustível
+        Quando combustível é especificado, APENAS esse combustível deve retornar
+        """
+        engine = UnifiedRecommendationEngine(data_dir=temp_data_dir)
+        
+        # Criar perfil com combustível preferido
+        profile = UserProfile(
+            orcamento_min=50000,
+            orcamento_max=150000,
+            uso_principal="trabalho",
+            tamanho_familia=1,
+            combustivel_preferido="Flex"
+        )
+        
+        # Aplicar filtro
+        filtered = engine.filter_by_preferences(multiple_cars, profile)
+        
+        # TODOS os carros devem ser Flex
+        for car in filtered:
+            assert car.combustivel == "Flex", f"Carro {car.combustivel} não deveria estar nos resultados"
+    
+    def test_filter_by_preferences_cambio(self, temp_data_dir, multiple_cars):
+        """
+        🔥 NOVO: Teste filtro obrigatório de câmbio
+        Quando câmbio é especificado, APENAS esse câmbio deve retornar
+        """
+        engine = UnifiedRecommendationEngine(data_dir=temp_data_dir)
+        
+        # Criar perfil com câmbio preferido
+        profile = UserProfile(
+            orcamento_min=50000,
+            orcamento_max=150000,
+            uso_principal="trabalho",
+            tamanho_familia=1,
+            cambio_preferido="Automático"
+        )
+        
+        # Aplicar filtro
+        filtered = engine.filter_by_preferences(multiple_cars, profile)
+        
+        # TODOS os carros devem ter câmbio automático
+        for car in filtered:
+            assert car.cambio and "Automático" in car.cambio, f"Carro {car.cambio} não deveria estar nos resultados"
+    
+    def test_filter_by_preferences_multiplos_filtros(self, temp_data_dir, multiple_cars):
+        """
+        🔥 NOVO: Teste múltiplos filtros obrigatórios simultaneamente
+        Todos os filtros devem ser aplicados em conjunto (AND lógico)
+        """
+        engine = UnifiedRecommendationEngine(data_dir=temp_data_dir)
+        
+        # Criar perfil com múltiplos filtros
+        profile = UserProfile(
+            orcamento_min=50000,
+            orcamento_max=150000,
+            uso_principal="familia",
+            tamanho_familia=4,
+            marcas_preferidas=["Toyota", "Honda"],
+            tipos_preferidos=["SUV"],
+            combustivel_preferido="Flex"
+        )
+        
+        # Aplicar filtro
+        filtered = engine.filter_by_preferences(multiple_cars, profile)
+        
+        # TODOS os carros devem atender TODOS os critérios
+        for car in filtered:
+            assert car.marca in ["Toyota", "Honda"], f"Marca {car.marca} incorreta"
+            assert car.categoria == "SUV", f"Categoria {car.categoria} incorreta"
+            assert car.combustivel == "Flex", f"Combustível {car.combustivel} incorreto"
+    
+    def test_recommend_with_mandatory_filters(self, temp_data_dir, multiple_cars):
+        """
+        🔥 NOVO: Teste integração completa com filtros obrigatórios
+        Verificar que recommend() aplica todos os filtros corretamente
+        """
+        engine = UnifiedRecommendationEngine(data_dir=temp_data_dir)
+        engine.all_cars = multiple_cars
+        
+        # Criar perfil com filtros obrigatórios
+        profile = UserProfile(
+            orcamento_min=50000,
+            orcamento_max=150000,
+            uso_principal="familia",
+            tamanho_familia=4,
+            ano_minimo=2018,
+            km_maxima=80000,
+            marcas_preferidas=["Toyota"],
+            tipos_preferidos=["SUV"]
+        )
+        
+        # Gerar recomendações
+        recommendations = engine.recommend(profile, limit=10)
+        
+        # Verificar que TODOS os resultados atendem aos filtros
+        for rec in recommendations:
+            car = rec['car']
+            assert car.preco >= 50000 and car.preco <= 150000, "Orçamento violado"
+            assert car.ano >= 2018, "Ano mínimo violado"
+            assert car.quilometragem <= 80000, "KM máxima violada"
+            assert car.marca == "Toyota", "Marca preferida violada"
+            assert car.categoria == "SUV", "Tipo preferido violado"
+    
+    def test_recommend_empty_results_when_no_match(self, temp_data_dir, multiple_cars):
+        """
+        🔥 NOVO: Teste que retorna lista vazia quando nenhum carro atende aos filtros
+        Não deve haver fallback que ignora filtros obrigatórios
+        """
+        engine = UnifiedRecommendationEngine(data_dir=temp_data_dir)
+        engine.all_cars = multiple_cars
+        
+        # Criar perfil com filtros impossíveis de atender
+        profile = UserProfile(
+            orcamento_min=50000,
+            orcamento_max=150000,
+            uso_principal="familia",
+            tamanho_familia=4,
+            marcas_preferidas=["Ferrari"],  # Marca que não existe no estoque
+            tipos_preferidos=["SUV"]
+        )
+        
+        # Gerar recomendações
+        recommendations = engine.recommend(profile, limit=10)
+        
+        # Deve retornar lista vazia
+        assert len(recommendations) == 0, "Deveria retornar lista vazia quando nenhum carro atende aos filtros"

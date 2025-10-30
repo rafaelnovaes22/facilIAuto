@@ -52,6 +52,7 @@ class UserProfile(BaseModel):
     
     # 🤖 AI Engineer: Filtros eliminatórios (FASE 1)
     ano_minimo: Optional[int] = None  # Ex: 2018 (elimina carros mais antigos)
+    ano_maximo: Optional[int] = None  # Ex: 2020 (elimina carros mais novos)
     km_maxima: Optional[int] = None  # Ex: 80000 (elimina carros com mais quilometragem)
     must_haves: List[str] = []  # Ex: ["ISOFIX", "6_airbags", "camera_re", "controle_estabilidade"]  # "Manual", "Automatico"
     

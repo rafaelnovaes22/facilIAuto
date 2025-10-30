@@ -13,6 +13,7 @@ from models.user_profile import UserProfile
 from models.dealership import Dealership
 from utils.geo_distance import calculate_distance, get_city_coordinates
 from services.car_metrics import CarMetricsCalculator
+from services.app_transport_validator import validator as app_transport_validator
 
 
 class UnifiedRecommendationEngine:
@@ -78,6 +79,16 @@ class UnifiedRecommendationEngine:
                 car_dict['dealership_latitude'] = dealership.latitude
                 car_dict['dealership_longitude'] = dealership.longitude
                 
+                # ⚠️ VALIDAÇÃO: Ignorar carros com preço zero ou inválido
+                preco = car_dict.get('preco', 0)
+                if preco <= 0:
+                    continue
+                
+                # ⚠️ VALIDAÇÃO: Ignorar motos (categoria Moto)
+                categoria = car_dict.get('categoria', '')
+                if categoria == 'Moto':
+                    continue
+                
                 try:
                     # 📊 FASE 3: Calcular métricas automaticamente se não existirem
                     if not car_dict.get('indice_confiabilidade') or car_dict.get('indice_confiabilidade') == 0.5:
@@ -103,21 +114,38 @@ class UnifiedRecommendationEngine:
         print(f"[OK] Total: {len(self.all_cars)} carros de {len(self.dealerships)} concessionarias")
     
     def filter_by_budget(self, cars: List[Car], profile: UserProfile) -> List[Car]:
-        """Filtrar carros por orçamento"""
-        return [
-            car for car in cars
-            if profile.orcamento_min <= car.preco <= profile.orcamento_max
-        ]
-    
-    def filter_by_year(self, cars: List[Car], ano_minimo: Optional[int]) -> List[Car]:
         """
-        🤖 AI Engineer (FASE 1): Filtrar por ano mínimo
-        Elimina carros mais antigos que o ano especificado
-        """
-        if not ano_minimo:
-            return cars
+        Filtrar carros por orçamento
         
-        return [car for car in cars if car.ano >= ano_minimo]
+        REGRAS CRÍTICAS:
+        - Preço deve ser > 0 (carros sem preço são ignorados)
+        - Preço deve estar DENTRO da faixa especificada (inclusive)
+        - Se nenhum carro atender, retorna lista vazia
+        """
+        filtered = [
+            car for car in cars
+            if car.preco > 0 and profile.orcamento_min <= car.preco <= profile.orcamento_max
+        ]
+        
+        if not filtered:
+            print(f"[AVISO] Nenhum carro encontrado na faixa R$ {profile.orcamento_min:,.2f} - R$ {profile.orcamento_max:,.2f}")
+        
+        return filtered
+    
+    def filter_by_year(self, cars: List[Car], ano_minimo: Optional[int], ano_maximo: Optional[int] = None) -> List[Car]:
+        """
+        🤖 AI Engineer (FASE 1): Filtrar por faixa de anos
+        Elimina carros fora da faixa especificada
+        """
+        filtered = cars
+        
+        if ano_minimo:
+            filtered = [car for car in filtered if car.ano >= ano_minimo]
+        
+        if ano_maximo:
+            filtered = [car for car in filtered if car.ano <= ano_maximo]
+        
+        return filtered
     
     def filter_by_km(self, cars: List[Car], km_maxima: Optional[int]) -> List[Car]:
         """
@@ -367,12 +395,12 @@ class UnifiedRecommendationEngine:
                 "Compacto": 0.30  # Muito inadequado
             },
             "transporte_passageiros": {
-                "Van": 0.95,      # Ideal - capacidade
-                "SUV": 0.70,      # Limitado a 5-7 lugares
-                "Sedan": 0.50,    # Apenas 5 lugares
-                "Pickup": 0.35,   # Inadequado
-                "Hatch": 0.25,    # Muito inadequado
-                "Compacto": 0.15  # Completamente inadequado
+                "Sedan": 0.95,    # Ideal - UberX/99Pop/Comfort
+                "SUV": 0.90,      # Muito bom - Uber Comfort/Black
+                "Hatch": 0.70,    # Bom - UberX/99Pop (alguns modelos)
+                "Compacto": 0.50, # Limitado - Apenas alguns aceitos
+                "Van": 0.40,      # Inadequado para app (muito grande)
+                "Pickup": 0.20    # Inadequado
             }
         }
         
@@ -434,8 +462,46 @@ class UnifiedRecommendationEngine:
             normalized = 1.0 - ((cost - MIN_COST) / (MAX_COST - MIN_COST))
             return max(0.0, min(1.0, normalized))
     
+    def filter_by_preferences(self, cars: List[Car], profile: UserProfile) -> List[Car]:
+        """
+        🔥 NOVO: Filtros de preferências agora são OBRIGATÓRIOS quando selecionados
+        Elimina carros que não atendem às preferências especificadas
+        """
+        filtered = cars
+        
+        # Marcas preferidas: se especificadas, APENAS essas marcas
+        if profile.marcas_preferidas:
+            filtered = [car for car in filtered if car.marca in profile.marcas_preferidas]
+            print(f"[FILTRO] Após marcas preferidas {profile.marcas_preferidas}: {len(filtered)} carros")
+        
+        # Marcas rejeitadas: ELIMINAR essas marcas
+        if profile.marcas_rejeitadas:
+            filtered = [car for car in filtered if car.marca not in profile.marcas_rejeitadas]
+            print(f"[FILTRO] Após rejeitar marcas {profile.marcas_rejeitadas}: {len(filtered)} carros")
+        
+        # Tipos preferidos: se especificados, APENAS esses tipos
+        if profile.tipos_preferidos:
+            filtered = [car for car in filtered if car.categoria in profile.tipos_preferidos]
+            print(f"[FILTRO] Após tipos preferidos {profile.tipos_preferidos}: {len(filtered)} carros")
+        
+        # Combustível preferido: se especificado, APENAS esse combustível
+        if profile.combustivel_preferido:
+            filtered = [car for car in filtered if car.combustivel == profile.combustivel_preferido]
+            print(f"[FILTRO] Após combustível {profile.combustivel_preferido}: {len(filtered)} carros")
+        
+        # Câmbio preferido: se especificado, APENAS esse câmbio
+        if profile.cambio_preferido:
+            filtered = [car for car in filtered if car.cambio and profile.cambio_preferido in car.cambio]
+            print(f"[FILTRO] Após câmbio {profile.cambio_preferido}: {len(filtered)} carros")
+        
+        return filtered
+    
     def score_preferences(self, car: Car, profile: UserProfile) -> float:
-        """Score baseado em preferências específicas"""
+        """
+        Score baseado em preferências específicas
+        ⚠️ NOTA: Este método agora é usado apenas para BONUS de score,
+        pois os filtros obrigatórios já foram aplicados em filter_by_preferences()
+        """
         score = 0.5  # Base neutra
         
         # Marcas preferidas (+30%)
@@ -530,6 +596,42 @@ class UnifiedRecommendationEngine:
             return suitable + less_suitable
         return cars
     
+    def filter_by_app_transport(self, cars: List[Car], profile: UserProfile) -> List[Car]:
+        """
+        Filtro específico para transporte de passageiros (Uber, 99, etc)
+        Valida se o carro atende aos requisitos das plataformas
+        """
+        # Se não é transporte de passageiros, não filtrar
+        if profile.uso_principal != "transporte_passageiros":
+            return cars
+        
+        # Categoria desejada (pode vir do perfil ou usar padrão)
+        categoria_app = getattr(profile, 'categoria_app', 'uberx_99pop')
+        
+        valid_cars = []
+        for car in cars:
+            # Validar se o carro é aceito para transporte de app
+            is_valid, reason = app_transport_validator.is_valid_for_app_transport(
+                marca=car.marca,
+                modelo=car.modelo,
+                ano=car.ano,
+                categoria_desejada=categoria_app
+            )
+            
+            if is_valid:
+                valid_cars.append(car)
+            else:
+                print(f"[FILTRO APP] {car.nome} ({car.ano}) rejeitado: {reason}")
+        
+        print(f"[FILTRO APP] {len(valid_cars)} de {len(cars)} carros válidos para {categoria_app}")
+        
+        # ⚠️ CRÍTICO: Não usar fallback! Se nenhum carro atende aos requisitos do Uber/99,
+        # retornar lista vazia para que o usuário saiba que precisa ajustar critérios
+        if not valid_cars:
+            print(f"[AVISO] Nenhum carro atende aos requisitos do {categoria_app}")
+        
+        return valid_cars
+    
     def recommend(
         self,
         profile: UserProfile,
@@ -540,12 +642,19 @@ class UnifiedRecommendationEngine:
         Gerar recomendações de TODAS as concessionárias
         🤖 AI Engineer (FASE 1): Filtros avançados aplicados
         
+        🔥 REGRA CRÍTICA: Todo filtro opcional, quando selecionado, torna-se OBRIGATÓRIO
+        
         Filtros eliminatórios (hard constraints):
         1. Orçamento (sempre aplicado)
-        2. Ano mínimo (se especificado)
+        2. Ano mínimo/máximo (se especificado)
         3. Quilometragem máxima (se especificada)
         4. Must-haves / itens obrigatórios (se especificados)
         5. Raio geográfico em km (se especificado)
+        6. Marcas preferidas (se especificadas - APENAS essas marcas)
+        7. Marcas rejeitadas (se especificadas - ELIMINA essas marcas)
+        8. Tipos preferidos (se especificados - APENAS esses tipos)
+        9. Combustível preferido (se especificado - APENAS esse combustível)
+        10. Câmbio preferido (se especificado - APENAS esse câmbio)
         
         Returns:
             Lista de dicionários com car, score, match_percentage, justificativa
@@ -555,10 +664,20 @@ class UnifiedRecommendationEngine:
         
         print(f"[FILTRO] Após orçamento: {len(filtered_cars)} carros")
         
-        # 2. 🤖 FASE 1: Filtrar por ano mínimo
-        filtered_cars = self.filter_by_year(filtered_cars, profile.ano_minimo)
-        if profile.ano_minimo:
+        # 2. 🤖 FASE 1: Filtrar por faixa de anos
+        filtered_cars = self.filter_by_year(filtered_cars, profile.ano_minimo, profile.ano_maximo)
+        if profile.ano_minimo and profile.ano_maximo:
+            print(f"[FILTRO] Após ano {profile.ano_minimo}-{profile.ano_maximo}: {len(filtered_cars)} carros")
+            # 🐛 DEBUG: Verificar se há carros fora da faixa
+            anos_invalidos = [c for c in filtered_cars if c.ano < profile.ano_minimo or c.ano > profile.ano_maximo]
+            if anos_invalidos:
+                print(f"[BUG] ❌ {len(anos_invalidos)} carros FORA da faixa após filtro!")
+                for car in anos_invalidos[:3]:
+                    print(f"  - {car.nome} ({car.ano})")
+        elif profile.ano_minimo:
             print(f"[FILTRO] Após ano >= {profile.ano_minimo}: {len(filtered_cars)} carros")
+        elif profile.ano_maximo:
+            print(f"[FILTRO] Após ano <= {profile.ano_maximo}: {len(filtered_cars)} carros")
         
         # 3. 🤖 FASE 1: Filtrar por quilometragem máxima
         filtered_cars = self.filter_by_km(filtered_cars, profile.km_maxima)
@@ -575,20 +694,24 @@ class UnifiedRecommendationEngine:
         if profile.raio_maximo_km:
             print(f"[FILTRO] Após raio {profile.raio_maximo_km}km: {len(filtered_cars)} carros")
         
-        # 6. Filtro de contexto: família com crianças
+        # 6. 🔥 NOVO: Filtrar por preferências (marcas, tipos, combustível, câmbio)
+        filtered_cars = self.filter_by_preferences(filtered_cars, profile)
+        
+        # 7. Filtro de contexto: família com crianças
         filtered_cars = self.filter_by_family_context(filtered_cars, profile)
         
-        # 7. Filtro de contexto: primeiro carro
+        # 8. Filtro de contexto: primeiro carro
         filtered_cars = self.filter_by_first_car(filtered_cars, profile)
         
+        # 9. 🚕 Filtro de contexto: transporte de passageiros (Uber, 99)
+        filtered_cars = self.filter_by_app_transport(filtered_cars, profile)
+        
         if not filtered_cars:
-            # Fallback: pegar os 5 carros mais próximos do orçamento (sem filtros avançados)
-            print("[AVISO] Nenhum carro após filtros. Usando fallback.")
-            all_sorted = sorted(
-                self.all_cars,
-                key=lambda c: abs(c.preco - profile.orcamento_max)
-            )
-            filtered_cars = all_sorted[:5]
+            # ⚠️ CRÍTICO: Não usar fallback que ignora orçamento!
+            # Se nenhum carro atende aos filtros, retornar lista vazia
+            # O frontend deve mostrar mensagem apropriada
+            print("[AVISO] Nenhum carro após filtros. Retornando lista vazia.")
+            return []
         
         # 6. Priorizar por localização (se especificado)
         if profile.city and profile.priorizar_proximas:
@@ -616,6 +739,14 @@ class UnifiedRecommendationEngine:
         
         # 4. Ordenar por score
         scored_cars.sort(key=lambda x: x['score'], reverse=True)
+        
+        # 🐛 DEBUG: Verificar anos antes de retornar
+        if profile.ano_minimo or profile.ano_maximo:
+            print(f"\n[DEBUG] Verificando anos antes de retornar {len(scored_cars)} carros:")
+            for rec in scored_cars[:limit]:
+                car = rec['car']
+                status = "✅" if (not profile.ano_minimo or car.ano >= profile.ano_minimo) and (not profile.ano_maximo or car.ano <= profile.ano_maximo) else "❌"
+                print(f"  {status} {car.nome} ({car.ano}) - Score: {rec['score']:.2f}")
         
         # 5. Retornar top N
         return scored_cars[:limit]
