@@ -25,6 +25,7 @@ from models.interaction import InteractionEvent, InteractionStats
 from services.unified_recommendation_engine import UnifiedRecommendationEngine
 from services.feedback_engine import FeedbackEngine
 from services.interaction_service import InteractionService
+from services.app_transport_validator import validator as app_transport_validator
 
 # Inicializar app
 app = FastAPI(
@@ -233,7 +234,15 @@ def recommend_cars(profile: UserProfile):
                         "score_economia": rec['car'].score_economia,
                         "score_performance": rec['car'].score_performance,
                         "score_conforto": rec['car'].score_conforto,
-                        "score_seguranca": rec['car'].score_seguranca
+                        "score_seguranca": rec['car'].score_seguranca,
+                        # Adicionar categorias de transporte aceitas se for transporte_passageiros
+                        "app_transport_categories": (
+                            app_transport_validator.get_accepted_categories(
+                                rec['car'].marca,
+                                rec['car'].modelo,
+                                rec['car'].ano
+                            ) if profile.uso_principal == "transporte_passageiros" and app_transport_validator.app_vehicles_data else []
+                        ) if profile.uso_principal == "transporte_passageiros" else None
                     },
                     "match_score": rec['score'],
                     "match_percentage": rec['match_percentage'],

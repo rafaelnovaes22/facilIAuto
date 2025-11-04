@@ -48,6 +48,15 @@ Esta pasta contém toda a documentação estratégica, técnica e comercial do *
 ### 📊 **RELATÓRIOS E CORREÇÕES**
 - **[reports/CORRECAO-CLASSIFICACAO-2025-01.md](reports/CORRECAO-CLASSIFICACAO-2025-01.md)** - Correção de classificação de carros (Jan/2025)
 
+### 🎯 **FILTROS E RECOMENDAÇÃO**
+- **[RESUMO-FILTROS-ANO.md](RESUMO-FILTROS-ANO.md)** - Resumo executivo: Filtros de ano implementados
+- **[technical/PRINCIPIO-FILTROS-OBRIGATORIOS.md](technical/PRINCIPIO-FILTROS-OBRIGATORIOS.md)** - Princípio fundamental de filtros
+- **[technical/FILTROS-RESUMO.md](technical/FILTROS-RESUMO.md)** - Referência rápida de filtros
+- **[technical/FILTROS-FLUXOGRAMA.md](technical/FILTROS-FLUXOGRAMA.md)** - Fluxograma visual de filtros
+- **[technical/FILTROS-CHECKLIST-VALIDACAO.md](technical/FILTROS-CHECKLIST-VALIDACAO.md)** - Checklist de validação
+- **[technical/README-FILTROS.md](technical/README-FILTROS.md)** - Índice completo de filtros
+- **[implementation/FILTROS-ANO-COMPLETO.md](implementation/FILTROS-ANO-COMPLETO.md)** - Implementação completa
+
 ---
 
 ## 🎯 **DOCUMENTOS PRIORITÁRIOS**

@@ -160,6 +160,11 @@ export interface UserProfile {
     combustivel_preferido?: string
     cambio_preferido?: string
 
+    // Filtros eliminatórios
+    ano_minimo?: number
+    ano_maximo?: number
+    km_maxima?: number
+
     // Experiência
     primeiro_carro?: boolean
     experiencia_anos?: number
@@ -233,6 +238,8 @@ export interface QuestionnaireFormData {
     // Step 1: Orçamento e Localização
     orcamento_min: number
     orcamento_max: number
+    ano_minimo?: number
+    ano_maximo?: number
     city?: string
     state?: string
 

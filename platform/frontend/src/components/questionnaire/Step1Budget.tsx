@@ -8,6 +8,7 @@ import {
 import { useQuestionnaireStore } from '@/store/questionnaireStore'
 import { BudgetSlider } from './BudgetSlider'
 import { LocationSelector } from './LocationSelector'
+import { YearSelector } from './YearSelector'
 
 export const Step1Budget = () => {
   const { formData, updateFormData } = useQuestionnaireStore()
@@ -21,6 +22,10 @@ export const Step1Budget = () => {
 
   const handleLocationChange = (location: { city?: string; state?: string }) => {
     updateFormData(location)
+  }
+
+  const handleYearChange = (min?: number, max?: number) => {
+    updateFormData({ ano_minimo: min, ano_maximo: max })
   }
 
   return (
@@ -43,6 +48,16 @@ export const Step1Budget = () => {
         minLimit={10000}
         maxLimit={500000}
         step={5000}
+      />
+
+      {/* Divider */}
+      <Divider />
+
+      {/* Year Selector */}
+      <YearSelector
+        minValue={formData.ano_minimo}
+        maxValue={formData.ano_maximo}
+        onChange={handleYearChange}
       />
 
       {/* Divider */}

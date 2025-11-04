@@ -1,0 +1,137 @@
+# RobustCar Scraper Configuration
+# Version: 1.0.0
+
+scraper:
+  name: "robustcar-scraper"
+  version: "1.0.0"
+  source_url: "https://www.robustcar.com.br"
+  
+# HTTP Client Configuration
+http:
+  timeout: 30
+  max_retries: 3
+  retry_backoff: 2.0
+  user_agent: "FacilIAuto-Scraper/1.0 (contact@faciliauto.com)"
+  verify_ssl: true
+  
+# Rate Limiting Configuration
+rate_limiting:
+  requests_per_minute: 60
+  delay_between_requests: 1.0
+  respect_429: true
+  business_hours_throttle: 0.5
+  business_hours_start: 8
+  business_hours_end: 18
+  
+# Worker Pool Configuration
+workers:
+  max_concurrent: 3
+  queue_size: 100
+  graceful_shutdown_timeout: 30
+  
+# Cache Configuration
+cache:
+  enabled: true
+  ttl_hours: 24
+  max_size_mb: 100
+  cache_dir: "cache/"
+  
+# Output Configuration
+output:
+  format: "json"
+  compression: "gzip"
+  schema_version: "1.0"
+  output_dir: "output/"
+  rejected_file: "rejected.json"
+  
+# Data Quality Configuration
+quality:
+  min_completeness: 0.95
+  fail_threshold: 0.10
+  required_fields:
+    - nome
+    - marca
+    - modelo
+    - ano
+    - preco
+    - quilometragem
+    - combustivel
+    - cambio
+    - categoria
+  
+# State Management Configuration
+state:
+  db_path: "state/scraper_state.db"
+  checkpoint_interval: 50
+  checkpoint_retention_days: 7
+  
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "json"
+  file: "logs/scraper.log"
+  max_file_size_mb: 100
+  backup_count: 5
+  console_output: true
+  
+# Metrics Configuration
+metrics:
+  enabled: true
+  prometheus_port: 9090
+  export_interval_seconds: 60
+  
+# Execution Mode Configuration
+execution:
+  mode: "full"  # Options: "full", "incremental"
+  max_vehicles: null  # null = no limit
+  dry_run: false
+  resume_from_checkpoint: null
+  
+# CSS Selectors Configuration
+selectors:
+  listing_page:
+    vehicle_links: "a.vehicle-card"
+    next_page: "a.pagination-next"
+  vehicle_page:
+    nome:
+      - "h1.car-title"
+      - "div.vehicle-name h1"
+      - "span.title-main"
+    preco:
+      - "span.car-price"
+      - "div.price-value"
+      - "p.valor strong"
+    marca:
+      - "span.brand"
+      - "div.vehicle-brand"
+    modelo:
+      - "span.model"
+      - "div.vehicle-model"
+    ano:
+      - "span.year"
+      - "div.vehicle-year"
+    quilometragem:
+      - "span.mileage"
+      - "div.vehicle-km"
+    combustivel:
+      - "span.fuel"
+      - "div.vehicle-fuel"
+    cambio:
+      - "span.transmission"
+      - "div.specs .cambio"
+      - "li:contains('Câmbio') span"
+    cor:
+      - "span.color"
+      - "div.vehicle-color"
+    portas:
+      - "span.doors"
+      - "div.vehicle-doors"
+    categoria:
+      - "span.category"
+      - "div.vehicle-category"
+    imagens:
+      - "div.gallery img"
+      - "div.vehicle-images img"
+    descricao:
+      - "div.description"
+      - "div.vehicle-description"

@@ -45,17 +45,45 @@
 - **Frequência**: Diária (alta quilometragem)
 - **Prioridades**: Capacidade (5), Durabilidade (5), Economia (4)
 
-### **Top 10 Modelos**
-1. Fiat Strada Endurance - R$ 89.990
-2. Volkswagen Saveiro Robust - R$ 94.990
-3. Chevrolet Montana LS - R$ 92.990
-4. Renault Oroch Zen - R$ 99.990
-5. Fiat Toro Endurance - R$ 129.990
-6. Nissan Frontier S - R$ 189.990
-7. Toyota Hilux SR - R$ 219.990
-8. Chevrolet S10 LS - R$ 179.990
-9. Volkswagen Amarok Trendline - R$ 199.990
-10. Renault Master Furgão - R$ 189.990
+### ⚠️ **IMPORTANTE: O que é veículo comercial?**
+
+**✅ VEÍCULOS COMERCIAIS para entregas leves/médias (aceitos)**:
+- **Pickups PEQUENAS**: Strada, Saveiro, Montana, Oroch (versões básicas)
+- **Furgões**: Fiorino, Kangoo, Ducato, Master, Sprinter, Berlingo, Partner
+- **Vans**: Kombi, Transporter, Daily
+
+**❌ NÃO são comerciais para entregas leves**:
+
+**Pickups de Lazer/Aventura**:
+- Fiat Toro
+- Nissan Frontier
+- Mitsubishi L200
+- Toyota Hilux
+- Ford Ranger
+- Chevrolet S10
+- Volkswagen Amarok
+- RAM 1500/2500
+
+**VUCs e Caminhões Leves** (carga pesada - requer CNH C):
+- Hyundai HR, HD
+- Kia Bongo, K2500
+- Mercedes-Benz Accelo, Atego
+- Volkswagen Delivery
+- Ford Cargo
+- Iveco Tector
+- JAC J6
+
+### **Top 10 Modelos Comerciais**
+1. Fiat Strada Endurance - R$ 89.990 ⭐ Pickup pequena
+2. Volkswagen Saveiro Robust - R$ 94.990 ⭐ Pickup pequena
+3. Chevrolet Montana LS - R$ 92.990 ⭐ Pickup pequena
+4. Fiat Fiorino - R$ 79.990 ⭐ Furgão compacto
+5. Renault Kangoo - R$ 89.990 ⭐ Furgão
+6. Citroën Berlingo - R$ 94.990 ⭐ Furgão
+7. Peugeot Partner - R$ 92.990 ⭐ Furgão
+8. Fiat Ducato - R$ 159.990 ⭐ Furgão grande
+9. Renault Master - R$ 189.990 ⭐ Van
+10. Mercedes-Benz Sprinter - R$ 249.990 ⭐ Van premium
 
 ### **Requisitos**
 - Capacidade de carga: 600kg+

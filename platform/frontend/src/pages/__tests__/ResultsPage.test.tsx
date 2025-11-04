@@ -292,4 +292,101 @@ describe('ResultsPage', () => {
         expect(within(carCards[0]).getByText('Fiat Cronos Drive')).toBeInTheDocument()
         expect(within(carCards[1]).getByText('Toyota Yaris XLS')).toBeInTheDocument()
     })
+
+    it('should render year filter controls', () => {
+        renderWithRouter()
+        expect(screen.getByText(/Ano de:/i)).toBeInTheDocument()
+        expect(screen.getByText(/até:/i)).toBeInTheDocument()
+    })
+
+    it('should filter by minimum year', () => {
+        renderWithRouter()
+
+        const yearMinSelect = screen.getAllByRole('combobox')[2] // Third select (after category and sort)
+        fireEvent.change(yearMinSelect, { target: { value: '2023' } })
+
+        // Should show only 2023 car (Fiat)
+        expect(screen.getByText('Fiat Cronos Drive')).toBeInTheDocument()
+        expect(screen.queryByText('Toyota Yaris XLS')).not.toBeInTheDocument()
+        expect(screen.getByText(/1 resultado\(s\)/i)).toBeInTheDocument()
+    })
+
+    it('should filter by maximum year', () => {
+        renderWithRouter()
+
+        const yearMaxSelect = screen.getAllByRole('combobox')[3] // Fourth select
+        fireEvent.change(yearMaxSelect, { target: { value: '2022' } })
+
+        // Should show only 2022 car (Toyota)
+        expect(screen.getByText('Toyota Yaris XLS')).toBeInTheDocument()
+        expect(screen.queryByText('Fiat Cronos Drive')).not.toBeInTheDocument()
+        expect(screen.getByText(/1 resultado\(s\)/i)).toBeInTheDocument()
+    })
+
+    it('should filter by year range', () => {
+        renderWithRouter()
+
+        const yearMinSelect = screen.getAllByRole('combobox')[2]
+        const yearMaxSelect = screen.getAllByRole('combobox')[3]
+
+        fireEvent.change(yearMinSelect, { target: { value: '2022' } })
+        fireEvent.change(yearMaxSelect, { target: { value: '2023' } })
+
+        // Should show both cars
+        expect(screen.getByText('Fiat Cronos Drive')).toBeInTheDocument()
+        expect(screen.getByText('Toyota Yaris XLS')).toBeInTheDocument()
+        expect(screen.getByText(/2 resultado\(s\)/i)).toBeInTheDocument()
+    })
+
+    it('should show clear year filters button when filters are active', () => {
+        renderWithRouter()
+
+        const yearMinSelect = screen.getAllByRole('combobox')[2]
+        fireEvent.change(yearMinSelect, { target: { value: '2023' } })
+
+        expect(screen.getByText(/Limpar Anos/i)).toBeInTheDocument()
+    })
+
+    it('should clear year filters when clear button is clicked', () => {
+        renderWithRouter()
+
+        const yearMinSelect = screen.getAllByRole('combobox')[2] as HTMLSelectElement
+        fireEvent.change(yearMinSelect, { target: { value: '2023' } })
+
+        const clearButton = screen.getByText(/Limpar Anos/i)
+        fireEvent.click(clearButton)
+
+        // Should show all cars again
+        expect(screen.getByText('Fiat Cronos Drive')).toBeInTheDocument()
+        expect(screen.getByText('Toyota Yaris XLS')).toBeInTheDocument()
+        expect(screen.getByText(/2 resultado\(s\)/i)).toBeInTheDocument()
+        expect(yearMinSelect.value).toBe('')
+    })
+
+    it('should combine category and year filters', () => {
+        renderWithRouter()
+
+        const categorySelect = screen.getAllByRole('combobox')[0]
+        const yearMinSelect = screen.getAllByRole('combobox')[2]
+
+        fireEvent.change(categorySelect, { target: { value: 'sedan' } })
+        fireEvent.change(yearMinSelect, { target: { value: '2023' } })
+
+        // Should show only Fiat (sedan + 2023)
+        expect(screen.getByText('Fiat Cronos Drive')).toBeInTheDocument()
+        expect(screen.queryByText('Toyota Yaris XLS')).not.toBeInTheDocument()
+        expect(screen.getByText(/1 resultado\(s\)/i)).toBeInTheDocument()
+    })
+
+    it('should show no results when year range excludes all cars', () => {
+        renderWithRouter()
+
+        const yearMinSelect = screen.getAllByRole('combobox')[2]
+        fireEvent.change(yearMinSelect, { target: { value: '2024' } })
+
+        // Should show empty state
+        expect(screen.queryByText('Fiat Cronos Drive')).not.toBeInTheDocument()
+        expect(screen.queryByText('Toyota Yaris XLS')).not.toBeInTheDocument()
+        expect(screen.getByText(/0 resultado\(s\)/i)).toBeInTheDocument()
+    })
 })

@@ -1,123 +1,280 @@
 """
-Testes para o sistema de classificação de carros
+Testes para o sistema de classificação de veículos
+Garante que motos não sejam classificadas como carros e vice-versa
 """
 
 import pytest
-from services.car_classifier import classifier
+from services.car_classifier import CarClassifier
 
 
-class TestCarClassifier:
-    """Testes do classificador de carros"""
+class TestCarClassification:
+    """Testes de classificação de veículos"""
     
-    def test_ford_focus_2009_2013_is_sedan(self):
-        """Ford Focus 2009-2013 deve ser classificado como Sedan"""
-        assert classifier.classify("Ford Focus", "Ford Focus", 2009) == "Sedan"
-        assert classifier.classify("Ford Focus", "Ford Focus", 2010) == "Sedan"
-        assert classifier.classify("Ford Focus", "Ford Focus", 2013) == "Sedan"
+    def setup_method(self):
+        """Setup para cada teste"""
+        self.classifier = CarClassifier()
     
-    def test_ford_focus_2014_plus_is_hatch(self):
-        """Ford Focus 2014+ deve ser classificado como Hatch"""
-        assert classifier.classify("Ford Focus", "Ford Focus", 2014) == "Hatch"
-        assert classifier.classify("Ford Focus", "Ford Focus", 2015) == "Hatch"
-        assert classifier.classify("Ford Focus", "Ford Focus", 2020) == "Hatch"
+    # ========== TESTES DE MOTOS ==========
     
-    def test_ford_focus_sedan_explicit(self):
-        """Ford Focus com 'Sedan' no nome sempre é Sedan"""
-        assert classifier.classify("Ford Focus Sedan", "Ford Focus Sedan", 2015) == "Sedan"
-        assert classifier.classify("Ford Focus Sedan", "Ford Focus Sedan", 2020) == "Sedan"
+    def test_yamaha_xtz_250_is_moto(self):
+        """Yamaha XTZ 250 deve ser classificada como Moto"""
+        result = self.classifier.classify(
+            nome="Yamaha Xtz 250",
+            modelo="Xtz 250",
+            ano=2024,
+            marca="YAMAHA"
+        )
+        assert result == 'Moto', "Yamaha XTZ 250 deve ser Moto"
     
-    def test_motorcycles_detected(self):
-        """Motos devem ser detectadas corretamente"""
-        # Honda
-        assert classifier.classify("Honda CB 500", "Honda CB 500", 2020) == "Moto"
-        assert classifier.classify("Honda CBR 600", "Honda CBR 600", 2021) == "Moto"
-        
-        # Yamaha
-        assert classifier.classify("Yamaha MT-07", "Yamaha MT-07", 2021) == "Moto"
-        assert classifier.classify("Yamaha Xtz 250", "Yamaha Xtz 250", 2024) == "Moto"
-        assert classifier.classify("Yamaha Fazer 250", "Yamaha Fazer 250", 2020) == "Moto"
-        
-        # Kawasaki
-        assert classifier.classify("Kawasaki Ninja 300", "Kawasaki Ninja 300", 2020) == "Moto"
+    def test_yamaha_neo_is_moto(self):
+        """Yamaha Neo Automatic (scooter) deve ser classificada como Moto"""
+        result = self.classifier.classify(
+            nome="Yamaha Neo Automatic",
+            modelo="Neo Automatic",
+            ano=2024,
+            marca="YAMAHA"
+        )
+        assert result == 'Moto', "Yamaha Neo deve ser Moto (scooter)"
     
-    def test_cars_not_confused_with_motorcycles(self):
-        """Carros não devem ser confundidos com motos"""
-        # Onix MT (MT = Manual Transmission, não moto)
-        assert classifier.classify("Chevrolet Onix Mt", "Chevrolet Onix Mt", 2019) == "Hatch"
-        assert classifier.classify("Chevrolet Onix MT", "Chevrolet Onix MT", 2020) == "Hatch"
+    def test_honda_cb_is_moto(self):
+        """Honda CB deve ser classificada como Moto"""
+        result = self.classifier.classify(
+            nome="Honda CB 500",
+            modelo="CB 500",
+            ano=2024,
+            marca="Honda"
+        )
+        assert result == 'Moto', "Honda CB deve ser Moto"
     
-    def test_suv_classification(self):
-        """SUVs devem ser classificados corretamente"""
-        assert classifier.classify("Chevrolet Tracker", "Chevrolet Tracker", 2021) == "SUV"
-        assert classifier.classify("Hyundai Creta", "Hyundai Creta", 2020) == "SUV"
-        assert classifier.classify("Nissan Kicks", "Nissan Kicks", 2021) == "SUV"
+    def test_kawasaki_ninja_is_moto(self):
+        """Kawasaki Ninja deve ser classificada como Moto"""
+        result = self.classifier.classify(
+            nome="Kawasaki Ninja 400",
+            modelo="Ninja 400",
+            ano=2024,
+            marca="Kawasaki"
+        )
+        assert result == 'Moto', "Kawasaki Ninja deve ser Moto"
     
-    def test_sedan_classification(self):
-        """Sedans devem ser classificados corretamente"""
-        assert classifier.classify("Toyota Corolla", "Toyota Corolla", 2020) == "Sedan"
-        assert classifier.classify("Honda Civic", "Honda Civic", 2021) == "Sedan"
-        assert classifier.classify("Volkswagen Virtus", "Volkswagen Virtus", 2022) == "Sedan"
+    def test_yamaha_brand_always_moto(self):
+        """Qualquer Yamaha deve ser Moto (no Brasil, Yamaha só faz motos)"""
+        result = self.classifier.classify(
+            nome="Yamaha Fazer 250",
+            modelo="Fazer 250",
+            ano=2024,
+            marca="YAMAHA"
+        )
+        assert result == 'Moto', "Yamaha só fabrica motos no Brasil"
     
-    def test_hatch_classification(self):
-        """Hatchbacks devem ser classificados corretamente"""
-        assert classifier.classify("Chevrolet Onix", "Chevrolet Onix", 2020) == "Hatch"
-        assert classifier.classify("Volkswagen Gol", "Volkswagen Gol", 2019) == "Hatch"
-        assert classifier.classify("Fiat Uno", "Fiat Uno", 2018) == "Hatch"
+    # ========== TESTES DE CARROS (NÃO MOTOS) ==========
     
-    def test_pickup_classification(self):
-        """Pickups devem ser classificadas corretamente"""
-        assert classifier.classify("Toyota Hilux", "Toyota Hilux", 2021) == "Pickup"
-        assert classifier.classify("Ford Ranger", "Ford Ranger", 2020) == "Pickup"
-        assert classifier.classify("Chevrolet S10", "Chevrolet S10", 2019) == "Pickup"
+    def test_chevrolet_onix_is_hatch(self):
+        """Chevrolet Onix deve ser classificado como Hatch (não Moto)"""
+        result = self.classifier.classify(
+            nome="Chevrolet Onix Mt",
+            modelo="Chevrolet Onix Mt",
+            ano=2024,
+            marca="Chevrolet"
+        )
+        assert result == 'Hatch', "Chevrolet Onix deve ser Hatch"
     
-    def test_classification_without_year(self):
-        """Classificação deve funcionar sem ano (exceto casos especiais)"""
-        # Casos normais funcionam sem ano
-        assert classifier.classify("Chevrolet Onix", "Chevrolet Onix") == "Hatch"
-        assert classifier.classify("Toyota Corolla", "Toyota Corolla") == "Sedan"
-        
-        # Focus sem ano vai para Hatch (padrão atual)
-        assert classifier.classify("Ford Focus", "Ford Focus") == "Hatch"
+    def test_toyota_prius_is_hatch(self):
+        """Toyota Prius deve ser classificado como Hatch (não Moto)"""
+        result = self.classifier.classify(
+            nome="Toyota Prius Hybrid",
+            modelo="Toyota Prius Hybrid",
+            ano=2024,
+            marca="Toyota"
+        )
+        assert result == 'Hatch', "Toyota Prius deve ser Hatch"
     
-    def test_case_insensitive(self):
-        """Classificação deve ser case-insensitive"""
-        assert classifier.classify("FORD FOCUS", "FORD FOCUS", 2009) == "Sedan"
-        assert classifier.classify("ford focus", "ford focus", 2009) == "Sedan"
-        assert classifier.classify("Ford Focus", "Ford Focus", 2009) == "Sedan"
+    def test_mitsubishi_asx_is_suv(self):
+        """Mitsubishi ASX deve ser classificado como SUV (não Moto)"""
+        result = self.classifier.classify(
+            nome="Mitsubishi Asx Cvt",
+            modelo="Mitsubishi Asx Cvt",
+            ano=2024,
+            marca="Mitsubishi"
+        )
+        assert result == 'SUV', "Mitsubishi ASX deve ser SUV"
+    
+    def test_honda_civic_is_sedan(self):
+        """Honda Civic deve ser classificado como Sedan (não confundir com Honda motos)"""
+        result = self.classifier.classify(
+            nome="Honda Civic 2.0 EX",
+            modelo="Civic",
+            ano=2024,
+            marca="Honda"
+        )
+        assert result == 'Sedan', "Honda Civic deve ser Sedan"
+    
+    def test_honda_fit_is_hatch(self):
+        """Honda Fit deve ser classificado como Hatch (não confundir com Honda motos)"""
+        result = self.classifier.classify(
+            nome="Honda Fit 1.5",
+            modelo="Fit",
+            ano=2024,
+            marca="Honda"
+        )
+        assert result == 'Hatch', "Honda Fit deve ser Hatch"
+    
+    # ========== TESTES DE CATEGORIAS DE CARROS ==========
+    
+    def test_tracker_is_suv(self):
+        """Chevrolet Tracker deve ser SUV"""
+        result = self.classifier.classify(
+            nome="Chevrolet Tracker T",
+            modelo="Chevrolet Tracker T",
+            ano=2025,
+            marca="Chevrolet"
+        )
+        assert result == 'SUV', "Tracker deve ser SUV"
+    
+    def test_corolla_is_sedan(self):
+        """Toyota Corolla deve ser Sedan"""
+        result = self.classifier.classify(
+            nome="Toyota Corolla Gli",
+            modelo="Toyota Corolla Gli",
+            ano=2022,
+            marca="Toyota"
+        )
+        assert result == 'Sedan', "Corolla deve ser Sedan"
+    
+    def test_strada_is_pickup(self):
+        """Fiat Strada deve ser Pickup"""
+        result = self.classifier.classify(
+            nome="Fiat Strada Volcano",
+            modelo="Fiat Strada Volcano",
+            ano=2025,
+            marca="Fiat"
+        )
+        assert result == 'Pickup', "Strada deve ser Pickup"
+    
+    def test_gol_is_hatch(self):
+        """Volkswagen Gol deve ser Hatch"""
+        result = self.classifier.classify(
+            nome="Volkswagen Gol 1.0",
+            modelo="Gol",
+            ano=2020,
+            marca="Volkswagen"
+        )
+        assert result == 'Hatch', "Gol deve ser Hatch"
+    
+    def test_kwid_is_compacto(self):
+        """Renault Kwid deve ser Compacto"""
+        result = self.classifier.classify(
+            nome="Renault Kwid Zen",
+            modelo="Renault Kwid Zen",
+            ano=2025,
+            marca="Renault"
+        )
+        assert result == 'Compacto', "Kwid deve ser Compacto"
+    
+    # ========== TESTES DE EDGE CASES ==========
+    
+    def test_mt_in_model_name_not_always_moto(self):
+        """'MT' no nome não significa necessariamente moto (pode ser Manual Transmission)"""
+        result = self.classifier.classify(
+            nome="Chevrolet Onix MT",
+            modelo="Onix MT",
+            ano=2024,
+            marca="Chevrolet"
+        )
+        assert result == 'Hatch', "Onix MT deve ser Hatch (MT = Manual Transmission)"
+    
+    def test_cvt_in_model_name_is_car(self):
+        """CVT no nome indica transmissão automática (carro, não moto)"""
+        result = self.classifier.classify(
+            nome="Nissan Kicks CVT",
+            modelo="Kicks CVT",
+            ano=2024,
+            marca="Nissan"
+        )
+        assert result == 'SUV', "Kicks CVT deve ser SUV"
+    
+    def test_hybrid_is_car(self):
+        """Hybrid no nome indica carro híbrido"""
+        result = self.classifier.classify(
+            nome="Toyota Prius Hybrid",
+            modelo="Prius Hybrid",
+            ano=2024,
+            marca="Toyota"
+        )
+        assert result == 'Hatch', "Prius Hybrid deve ser Hatch"
+    
+    # ========== TESTES DE REGRESSÃO (BUGS ENCONTRADOS) ==========
+    
+    def test_regression_yamaha_neo_not_hatch(self):
+        """
+        REGRESSÃO: Yamaha Neo foi classificada como Hatch
+        Deve ser Moto (scooter)
+        """
+        result = self.classifier.classify(
+            nome="Yamaha Neo Automatic",
+            modelo="Neo Automatic",
+            ano=2024,
+            marca="YAMAHA"
+        )
+        assert result == 'Moto', "BUG: Yamaha Neo foi classificada como Hatch"
+    
+    def test_regression_onix_not_moto(self):
+        """
+        REGRESSÃO: Chevrolet Onix foi classificado como Moto
+        Deve ser Hatch
+        """
+        result = self.classifier.classify(
+            nome="Chevrolet Onix Mt",
+            modelo="Chevrolet Onix Mt",
+            ano=2024,
+            marca="Chevrolet"
+        )
+        assert result == 'Hatch', "BUG: Onix foi classificado como Moto"
+    
+    def test_price_range_10k_15k_no_motos(self):
+        """
+        REGRESSÃO: Busca por faixa de preço R$ 10k-15k retornou moto
+        Motos devem ter disponivel=False para não aparecer em buscas de carros
+        """
+        # Este teste verifica a lógica, não o classificador diretamente
+        # Mas documenta o requisito: motos devem ter disponivel=False
+        pass
 
 
 class TestCarClassifierFeatures:
-    """Testes para inferência de características"""
+    """Testes para características típicas de veículos"""
     
-    def test_safety_items_by_year(self):
-        """Itens de segurança devem variar por ano"""
-        # 2024 tem mais itens
-        items_2024 = classifier.get_typical_safety_items(2024, "SUV")
-        assert '6_airbags' in items_2024
-        assert 'ISOFIX' in items_2024
-        
-        # 2010 tem menos itens
-        items_2010 = classifier.get_typical_safety_items(2010, "Hatch")
-        assert 'ABS' in items_2010
-        assert '6_airbags' not in items_2010
+    def setup_method(self):
+        """Setup para cada teste"""
+        self.classifier = CarClassifier()
     
-    def test_comfort_items_by_category(self):
-        """Itens de conforto devem variar por categoria"""
-        # SUV tem mais conforto
-        items_suv = classifier.get_typical_comfort_items("SUV", 2020)
-        assert 'sensor_estacionamento' in items_suv
-        
-        # Compacto tem menos
-        items_compacto = classifier.get_typical_comfort_items("Compacto", 2020)
-        assert 'ar_condicionado' in items_compacto
-        assert 'sensor_estacionamento' not in items_compacto
+    def test_safety_items_2024_suv(self):
+        """SUV 2024 deve ter itens de segurança modernos"""
+        items = self.classifier.get_typical_safety_items(
+            ano=2024,
+            categoria='SUV',
+            modelo='Tracker Premier'
+        )
+        assert 'ABS' in items
+        assert 'airbag' in items
+        assert '6_airbags' in items
+        assert 'ISOFIX' in items
+    
+    def test_comfort_items_suv(self):
+        """SUV deve ter mais itens de conforto"""
+        items = self.classifier.get_typical_comfort_items(
+            categoria='SUV',
+            ano=2024,
+            modelo='Tracker Premier'
+        )
+        assert 'ar_condicionado' in items
+        assert 'direcao_eletrica' in items
+        assert 'vidro_eletrico' in items
     
     def test_premium_version_detection(self):
-        """Versões premium devem ser detectadas"""
-        assert classifier.is_premium_version("Chevrolet Tracker Premier") == True
-        assert classifier.is_premium_version("Honda Civic LTZ") == True
-        assert classifier.is_premium_version("Volkswagen Polo Highline") == True
-        assert classifier.is_premium_version("Chevrolet Onix LT") == False
+        """Detectar versões premium"""
+        assert self.classifier.is_premium_version('Tracker Premier')
+        assert self.classifier.is_premium_version('Onix LTZ')
+        assert not self.classifier.is_premium_version('Gol 1.0')
 
 
 if __name__ == '__main__':

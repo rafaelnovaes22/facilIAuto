@@ -1,0 +1,234 @@
+# CSS Selectors Configuration for RobustCar Scraper
+# 
+# This file defines CSS selectors with fallback options for extracting
+# vehicle data from RobustCar website HTML.
+#
+# Each field has multiple selectors tried in order (primary -> fallback)
+# Requirements: 9.1, 9.2, 9.5
+
+# Listing page selectors
+listing:
+  # Vehicle card/link selectors
+  vehicle_links:
+    - "a.vehicle-card"
+    - "div.car-item a"
+    - "article.vehicle a[href*='/veiculo/']"
+    - ".listing-item a"
+  
+  # Pagination selectors
+  next_page:
+    - "a.next-page"
+    - "a[rel='next']"
+    - ".pagination .next"
+    - "a:contains('Próxima')"
+  
+  # Total count
+  total_vehicles:
+    - "span.total-count"
+    - ".results-count"
+    - "p.total-results"
+
+# Vehicle detail page selectors
+vehicle:
+  # Basic information
+  nome:
+    - "h1.vehicle-title"
+    - "h1.car-name"
+    - "div.vehicle-header h1"
+    - ".title-main"
+    - "h1"
+  
+  marca:
+    - "span.vehicle-brand"
+    - ".car-brand"
+    - "div.specs .marca"
+    - "meta[property='og:brand']"
+  
+  modelo:
+    - "span.vehicle-model"
+    - ".car-model"
+    - "div.specs .modelo"
+    - "meta[property='og:model']"
+  
+  ano:
+    - "span.vehicle-year"
+    - ".car-year"
+    - "div.specs .ano"
+    - "li:contains('Ano') span"
+    - ".year-info"
+  
+  # Price
+  preco:
+    - "span.vehicle-price"
+    - "div.price-value"
+    - ".car-price"
+    - "p.valor strong"
+    - ".price-tag"
+    - "meta[property='og:price:amount']"
+  
+  # Mileage
+  quilometragem:
+    - "span.vehicle-km"
+    - ".car-mileage"
+    - "div.specs .km"
+    - "li:contains('KM') span"
+    - "li:contains('Quilometragem') span"
+    - ".mileage-info"
+  
+  # Fuel type
+  combustivel:
+    - "span.vehicle-fuel"
+    - ".car-fuel"
+    - "div.specs .combustivel"
+    - "li:contains('Combustível') span"
+    - ".fuel-type"
+  
+  # Transmission
+  cambio:
+    - "span.vehicle-transmission"
+    - ".car-transmission"
+    - "div.specs .cambio"
+    - "li:contains('Câmbio') span"
+    - "li:contains('Transmissão') span"
+    - ".transmission-info"
+  
+  # Color
+  cor:
+    - "span.vehicle-color"
+    - ".car-color"
+    - "div.specs .cor"
+    - "li:contains('Cor') span"
+    - ".color-info"
+  
+  # Doors
+  portas:
+    - "span.vehicle-doors"
+    - ".car-doors"
+    - "div.specs .portas"
+    - "li:contains('Portas') span"
+    - ".doors-info"
+  
+  # Category
+  categoria:
+    - "span.vehicle-category"
+    - ".car-category"
+    - "div.specs .categoria"
+    - "li:contains('Categoria') span"
+    - "meta[property='og:type']"
+  
+  # Images
+  imagens:
+    - "div.vehicle-gallery img"
+    - ".car-images img"
+    - ".gallery-item img"
+    - "img.vehicle-photo"
+    - ".photo-gallery img"
+    - "meta[property='og:image']"
+  
+  # Description
+  descricao:
+    - "div.vehicle-description"
+    - ".car-description"
+    - ".description-text"
+    - "div.details-text"
+    - "meta[property='og:description']"
+
+# Extraction patterns and mappings
+patterns:
+  # Price patterns (regex)
+  price:
+    - "R\\$\\s*([\\d.,]+)"
+    - "([\\d.,]+)\\s*reais?"
+    - "Valor:\\s*R\\$\\s*([\\d.,]+)"
+  
+  # Mileage patterns (regex)
+  km:
+    - "([\\d.,]+)\\s*km"
+    - "([\\d.,]+)\\s*quilômetros?"
+    - "KM:\\s*([\\d.,]+)"
+  
+  # Year patterns (regex)
+  year:
+    - "(\\d{4})/(\\d{4})"  # 2022/2023 format
+    - "(\\d{4})"           # Single year
+  
+  # Doors patterns (regex)
+  doors:
+    - "(\\d+)\\s*portas?"
+    - "Portas:\\s*(\\d+)"
+
+# Value mappings
+mappings:
+  # Transmission type normalization
+  cambio:
+    "manual": "Manual"
+    "automático": "Automático"
+    "automatico": "Automático"
+    "automático cvt": "Automático CVT"
+    "automatico cvt": "Automático CVT"
+    "cvt": "Automático CVT"
+    "automatizada": "Automatizada"
+    "amt": "Automatizada"
+  
+  # Fuel type normalization
+  combustivel:
+    "flex": "Flex"
+    "flexível": "Flex"
+    "flexivel": "Flex"
+    "gasolina": "Gasolina"
+    "diesel": "Diesel"
+    "elétrico": "Elétrico"
+    "eletrico": "Elétrico"
+    "híbrido": "Híbrido"
+    "hibrido": "Híbrido"
+  
+  # Category normalization
+  categoria:
+    "hatch": "Hatch"
+    "hatchback": "Hatch"
+    "sedan": "Sedan"
+    "sedã": "Sedan"
+    "suv": "SUV"
+    "utilitário": "SUV"
+    "utilitario": "SUV"
+    "pickup": "Pickup"
+    "picape": "Pickup"
+    "compacto": "Compacto"
+    "van": "Van"
+    "minivan": "Van"
+
+# Validation rules
+validation:
+  required_fields:
+    - nome
+    - preco
+    - ano
+    - cambio
+    - combustivel
+    - categoria
+  
+  optional_fields:
+    - marca
+    - modelo
+    - quilometragem
+    - cor
+    - portas
+    - imagens
+    - descricao
+
+# Notes for selector updates:
+# 
+# 1. To update selectors, modify this file and restart the scraper
+# 2. Selectors are tried in order - put most specific first
+# 3. Use browser DevTools to inspect HTML and find correct selectors
+# 4. Test selectors with: document.querySelector('selector')
+# 5. For debugging, enable DEBUG logging to see which selector was used
+# 
+# Common selector patterns:
+# - Class: .class-name
+# - ID: #element-id
+# - Attribute: [attribute='value']
+# - Contains text: :contains('text') (BeautifulSoup only)
+# - Child: parent > child
+# - Descendant: ancestor descendant
+# - Multiple: selector1, selector2

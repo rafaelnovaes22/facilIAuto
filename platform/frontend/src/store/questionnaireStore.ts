@@ -5,17 +5,17 @@ import type { QuestionnaireFormData, UserProfile } from '@/types'
 interface QuestionnaireStore {
   // Current step (0-3)
   currentStep: number
-  
+
   // Form data
   formData: Partial<QuestionnaireFormData>
-  
+
   // Actions
   setCurrentStep: (step: number) => void
   nextStep: () => void
   previousStep: () => void
   updateFormData: (data: Partial<QuestionnaireFormData>) => void
   resetForm: () => void
-  
+
   // Computed
   canGoNext: () => boolean
   isComplete: () => boolean
@@ -25,6 +25,8 @@ interface QuestionnaireStore {
 const initialFormData: Partial<QuestionnaireFormData> = {
   orcamento_min: 50000,
   orcamento_max: 100000,
+  ano_minimo: undefined,
+  ano_maximo: undefined,
   city: undefined,
   state: undefined,
   uso_principal: 'familia',
@@ -139,6 +141,8 @@ export const useQuestionnaireStore = create<QuestionnaireStore>((set, get) => ({
       marcas_rejeitadas: [],
       tipos_preferidos: formData.tipos_preferidos || [],
       cambio_preferido: formData.cambio_preferido,
+      ano_minimo: formData.ano_minimo,
+      ano_maximo: formData.ano_maximo,
       primeiro_carro: false,
     }
   },

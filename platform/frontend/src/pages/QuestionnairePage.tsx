@@ -35,6 +35,7 @@ export default function QuestionnairePage() {
     canGoNext,
     isComplete,
     toUserProfile,
+    resetForm,
   } = useQuestionnaireStore()
 
   const { mutate: getRecommendations, isPending } = useRecommendations()
@@ -109,6 +110,12 @@ export default function QuestionnairePage() {
       nextStep()
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
+  }
+
+  const handleResetAndGoHome = () => {
+    console.log('Reset: Usuário voltando ao início do questionário')
+    resetForm() // Limpa todos os dados e volta para step 0
+    navigate('/') // Volta para a home
   }
 
   const handleSubmit = () => {
@@ -220,7 +227,7 @@ export default function QuestionnairePage() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigate('/')}
+            onClick={handleResetAndGoHome}
             color="gray.600"
           >
             ← Voltar para o início

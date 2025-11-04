@@ -244,6 +244,7 @@
             "nome": "Comercial",
             "descricao": "Uso profissional e entregas",
             "frequencia_uso": "diaria",
+            "observacao_critica": "⚠️ Pickups médias/grandes (Toro, Frontier, L200, Hilux, Ranger, S10, Amarok) são veículos de LAZER/AVENTURA, NÃO comerciais! Use pickups pequenas (Strada, Saveiro, Montana) ou furgões.",
             "prioridades": {
                 "capacidade_carga": 5,
                 "durabilidade": 5,
@@ -254,16 +255,70 @@
                 "tecnologia": 1
             },
             "requisitos_essenciais": {
-                "capacidade_carga_kg": 600,
+                "capacidade_carga_kg": 500,
                 "chassi_reforcado": true,
                 "manutencao_acessivel": true,
-                "consumo_minimo_kml": 10.0
+                "consumo_minimo_kml": 9.0,
+                "tipo_veiculo": "pickup_pequena_ou_furgao"
             },
             "categorias_ideais": [
-                "Pickup",
+                "Pickup Pequena",
                 "Furgão",
-                "Van"
+                "Van",
+                "Utilitário"
             ],
+            "categorias_rejeitadas": [
+                "Pickup Média",
+                "Pickup Grande",
+                "SUV",
+                "Sedan",
+                "Hatch"
+            ],
+            "veiculos_comerciais_validos": {
+                "pickups_pequenas": [
+                    "Fiat Strada",
+                    "Volkswagen Saveiro",
+                    "Chevrolet Montana",
+                    "Renault Oroch (versões básicas)"
+                ],
+                "furgoes": [
+                    "Fiat Fiorino",
+                    "Fiat Ducato",
+                    "Renault Kangoo",
+                    "Renault Master",
+                    "Citroën Berlingo",
+                    "Peugeot Partner",
+                    "Mercedes-Benz Sprinter",
+                    "Volkswagen Transporter",
+                    "Iveco Daily"
+                ]
+            },
+            "veiculos_nao_comerciais": {
+                "pickups_lazer": [
+                    "Fiat Toro",
+                    "Nissan Frontier",
+                    "Mitsubishi L200",
+                    "Toyota Hilux",
+                    "Ford Ranger",
+                    "Chevrolet S10",
+                    "Volkswagen Amarok",
+                    "RAM 1500/2500"
+                ],
+                "vucs_caminhoes": [
+                    "Hyundai HR",
+                    "Hyundai HD",
+                    "Kia Bongo",
+                    "Kia K2500",
+                    "Mercedes-Benz Accelo",
+                    "Mercedes-Benz Atego",
+                    "Volkswagen Delivery",
+                    "Ford Cargo",
+                    "Iveco Tector",
+                    "JAC J6"
+                ],
+                "motivo_pickups": "São pickups médias/grandes projetadas para lazer, aventura e off-road, não para uso comercial profissional",
+                "motivo_vucs": "São VUCs e caminhões para carga pesada, requerem CNH categoria C ou superior, não são adequados para entregas urbanas leves"
+            },
             "perguntas_adicionais": [
                 {
                     "pergunta": "Tipo de carga?",
@@ -275,39 +330,65 @@
                     "impacto": "Define categoria de veículo"
                 },
                 {
-                    "pergunta": "Necessita caçamba?",
+                    "pergunta": "Necessita caçamba aberta?",
                     "opcoes": [
-                        "Sim",
-                        "Não"
+                        "Sim (pickup pequena)",
+                        "Não (furgão fechado)"
                     ],
-                    "impacto": "Pickup vs Furgão"
+                    "impacto": "Pickup pequena vs Furgão"
+                },
+                {
+                    "pergunta": "Volume de carga?",
+                    "opcoes": [
+                        "Pequeno (< 3m³)",
+                        "Médio (3-6m³)",
+                        "Grande (> 6m³)"
+                    ],
+                    "impacto": "Furgão compacto vs Van grande"
                 }
             ],
             "top_modelos": [
                 {
                     "nome": "Fiat Strada Endurance",
+                    "tipo": "Pickup Pequena",
                     "preco": 89990,
                     "score": 96
                 },
                 {
                     "nome": "Volkswagen Saveiro Robust",
+                    "tipo": "Pickup Pequena",
                     "preco": 94990,
                     "score": 95
                 },
                 {
                     "nome": "Chevrolet Montana LS",
+                    "tipo": "Pickup Pequena",
                     "preco": 92990,
                     "score": 94
                 },
                 {
-                    "nome": "Fiat Toro Endurance",
-                    "preco": 129990,
+                    "nome": "Fiat Fiorino",
+                    "tipo": "Furgão Compacto",
+                    "preco": 79990,
                     "score": 93
                 },
                 {
-                    "nome": "Toyota Hilux SR",
-                    "preco": 219990,
-                    "score": 98
+                    "nome": "Renault Kangoo",
+                    "tipo": "Furgão",
+                    "preco": 89990,
+                    "score": 92
+                },
+                {
+                    "nome": "Fiat Ducato",
+                    "tipo": "Furgão Grande",
+                    "preco": 159990,
+                    "score": 94
+                },
+                {
+                    "nome": "Renault Master",
+                    "tipo": "Van",
+                    "preco": 189990,
+                    "score": 95
                 }
             ],
             "custo_operacional_mensal": {

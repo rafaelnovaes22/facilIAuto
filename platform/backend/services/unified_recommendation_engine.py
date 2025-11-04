@@ -14,6 +14,7 @@ from models.dealership import Dealership
 from utils.geo_distance import calculate_distance, get_city_coordinates
 from services.car_metrics import CarMetricsCalculator
 from services.app_transport_validator import validator as app_transport_validator
+from services.commercial_vehicle_validator import validator as commercial_vehicle_validator
 
 
 class UnifiedRecommendationEngine:
@@ -346,6 +347,16 @@ class UnifiedRecommendationEngine:
         # Normalizar
         final_score = score / weights_sum if weights_sum > 0 else 0.0
         
+        # 5. 🚚 AJUSTE COMERCIAL: Penalizar veículos inadequados
+        if profile.uso_principal == "comercial" and hasattr(car, 'commercial_suitability'):
+            suitability = car.commercial_suitability
+            # Multiplicar score pela adequação comercial
+            final_score = final_score * suitability["score"]
+            
+            # Log de penalização
+            if suitability["score"] < 1.0:
+                print(f"[SCORE] {car.marca} {car.modelo}: {final_score:.2f} (penalizado por adequação comercial: {suitability['score']})")
+        
         return max(0.0, min(1.0, final_score))
     
     def score_category_by_usage(self, car: Car, profile: UserProfile) -> float:
@@ -379,12 +390,15 @@ class UnifiedRecommendationEngine:
                 "Van": 0.30       # Inadequado
             },
             "comercial": {
-                "Pickup": 0.95,   # Ideal - capacidade de carga
-                "Van": 0.90,      # Ideal - volume
-                "SUV": 0.60,      # Ok mas limitado
-                "Sedan": 0.40,    # Inadequado
-                "Hatch": 0.30,    # Inadequado
-                "Compacto": 0.25  # Muito inadequado
+                "Furgão": 0.95,   # Ideal - volume e proteção de carga
+                "Van": 0.95,      # Ideal - volume
+                "Pickup Pequena": 0.90,  # Muito bom - caçamba para carga
+                "Utilitário": 0.85,  # Bom - versátil
+                "Pickup": 0.30,   # Inadequado - geralmente são pickups médias/grandes de lazer
+                "SUV": 0.20,      # Inadequado - não é comercial
+                "Sedan": 0.15,    # Muito inadequado
+                "Hatch": 0.10,    # Muito inadequado
+                "Compacto": 0.10  # Muito inadequado
             },
             "lazer": {
                 "SUV": 0.95,      # Ideal - aventura/off-road
@@ -632,6 +646,69 @@ class UnifiedRecommendationEngine:
         
         return valid_cars
     
+    def filter_by_commercial_use(self, cars: List[Car], profile: UserProfile) -> List[Car]:
+        """
+        🚚 Filtro específico para uso comercial
+        Classifica veículos por adequação ao uso comercial
+        
+        MODO: Semi-permissivo com avisos
+        - Aceita: IDEAL, ADEQUADO, LIMITADO
+        - Rejeita: INADEQUADO (pickups de lazer, SUVs, sedans)
+        - Veículos limitados recebem avisos claros (ex: requer CNH C)
+        
+        Classificação:
+        - IDEAL (score 1.0): Pickups pequenas, furgões, vans ✅
+        - ADEQUADO (score 0.8-0.95): Versões específicas ✅
+        - LIMITADO (score 0.3): VUCs/caminhões (requer CNH C) ⚠️
+        - INADEQUADO (score 0.0-0.2): Pickups de lazer, SUVs ❌ REJEITADO
+        """
+        # Se não é uso comercial, não filtrar
+        if profile.uso_principal != "comercial":
+            return cars
+        
+        classified_cars = []
+        rejected_cars = []
+        
+        for car in cars:
+            # Obter adequação do veículo
+            suitability = commercial_vehicle_validator.get_commercial_suitability(
+                marca=car.marca,
+                modelo=car.modelo,
+                versao=getattr(car, 'versao', None),
+                categoria=car.categoria
+            )
+            
+            # Adicionar metadados de adequação ao carro
+            car.commercial_suitability = suitability
+            
+            # Filtrar: aceitar apenas IDEAL, ADEQUADO e LIMITADO
+            # Rejeitar: INADEQUADO
+            if suitability["nivel"] in ["ideal", "adequado", "limitado"]:
+                classified_cars.append(car)
+                
+                # Log de classificação
+                if suitability["nivel"] == "ideal":
+                    print(f"[COMERCIAL] ✅ {car.marca} {car.modelo} - {suitability['tipo']} (score: {suitability['score']})")
+                elif suitability["nivel"] == "adequado":
+                    print(f"[COMERCIAL] ✓ {car.marca} {car.modelo} - {suitability['tipo']} (score: {suitability['score']})")
+                elif suitability["nivel"] == "limitado":
+                    print(f"[COMERCIAL] ⚠️ {car.marca} {car.modelo} - {suitability['tipo']} (score: {suitability['score']}) - {suitability['avisos'][0]}")
+            else:
+                rejected_cars.append(car)
+                print(f"[COMERCIAL] ❌ {car.marca} {car.modelo} - {suitability['tipo']} (score: {suitability['score']}) - REJEITADO (inadequado)")
+        
+        # Ordenar por adequação (ideais primeiro)
+        classified_cars.sort(key=lambda c: c.commercial_suitability["score"], reverse=True)
+        
+        ideal_count = len([c for c in classified_cars if c.commercial_suitability["nivel"] == "ideal"])
+        adequate_count = len([c for c in classified_cars if c.commercial_suitability["nivel"] == "adequado"])
+        limited_count = len([c for c in classified_cars if c.commercial_suitability["nivel"] == "limitado"])
+        
+        print(f"[COMERCIAL] Aceitos: {ideal_count} ideais, {adequate_count} adequados, {limited_count} limitados")
+        print(f"[COMERCIAL] Rejeitados: {len(rejected_cars)} inadequados (pickups de lazer, SUVs, sedans)")
+        
+        return classified_cars
+    
     def recommend(
         self,
         profile: UserProfile,
@@ -706,6 +783,9 @@ class UnifiedRecommendationEngine:
         # 9. 🚕 Filtro de contexto: transporte de passageiros (Uber, 99)
         filtered_cars = self.filter_by_app_transport(filtered_cars, profile)
         
+        # 10. 🚚 Filtro de contexto: uso comercial (pickups pequenas e furgões)
+        filtered_cars = self.filter_by_commercial_use(filtered_cars, profile)
+        
         if not filtered_cars:
             # ⚠️ CRÍTICO: Não usar fallback que ignora orçamento!
             # Se nenhum carro atende aos filtros, retornar lista vazia
@@ -754,6 +834,18 @@ class UnifiedRecommendationEngine:
     def generate_justification(self, car: Car, profile: UserProfile, score: float) -> str:
         """Gerar justificativa para a recomendação"""
         reasons = []
+        warnings = []
+        
+        # 🚚 AVISOS COMERCIAIS (se aplicável)
+        if profile.uso_principal == "comercial" and hasattr(car, 'commercial_suitability'):
+            suitability = car.commercial_suitability
+            
+            if suitability["nivel"] == "ideal":
+                reasons.append(f"✅ Veículo comercial ideal ({suitability['tipo'].replace('_', ' ')})")
+            elif suitability["nivel"] == "limitado":
+                warnings.extend(suitability["avisos"])
+            elif suitability["nivel"] == "inadequado":
+                warnings.extend(suitability["avisos"])
         
         # Categoria apropriada
         if self.score_category_by_usage(car, profile) > 0.7:
@@ -787,7 +879,14 @@ class UnifiedRecommendationEngine:
         if not reasons:
             reasons.append("Boa opção dentro do seu orçamento")
         
-        return ". ".join(reasons) + "."
+        # Montar justificativa
+        justification = ". ".join(reasons) + "."
+        
+        # Adicionar avisos se houver
+        if warnings:
+            justification += " | AVISOS: " + " | ".join(warnings)
+        
+        return justification
     
     def get_stats(self) -> Dict:
         """Estatísticas gerais da plataforma"""

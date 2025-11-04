@@ -84,7 +84,7 @@ class CarClassifier:
         'xlt', 'xls', 's.design', 'r-design', 'sport', 'gtline'
     ]
     
-    def classify(self, nome: str, modelo: str, ano: int = None) -> str:
+    def classify(self, nome: str, modelo: str, ano: int = None, marca: str = None) -> str:
         """
         Classificar categoria baseado no nome/modelo
         
@@ -92,32 +92,60 @@ class CarClassifier:
             nome: Nome do carro (ex: "CHEVROLET TRACKER T")
             modelo: Modelo do carro (ex: "CHEVROLET TRACKER T")
             ano: Ano do carro (opcional, usado para casos especiais)
+            marca: Marca do veículo (opcional, ajuda na classificação)
         
         Returns:
-            Categoria: SUV, Sedan, Pickup, Hatch, Compacto, Van
+            Categoria: SUV, Sedan, Pickup, Hatch, Compacto, Van, Moto
         """
         # Normalizar para lowercase para comparação
         search_text = f"{nome} {modelo}".lower()
+        marca_lower = (marca or '').lower()
         
-        # Filtrar motos (não são carros)
-        # Palavras-chave diretas
-        moto_keywords = ['moto', 'motorcycle', 'bike', 'scooter', 'motocicleta']
+        # IMPORTANTE: Filtrar motos PRIMEIRO (não são carros)
+        
+        # 1. Marcas que só fabricam motos no Brasil
+        moto_only_brands = ['yamaha', 'kawasaki', 'suzuki', 'ducati', 'triumph', 
+                           'ktm', 'harley-davidson', 'bmw motorrad', 'royal enfield',
+                           'benelli', 'dafra', 'shineray', 'traxx', 'kasinski']
+        if marca_lower in moto_only_brands:
+            return 'Moto'
+        
+        # 2. Palavras-chave diretas de motos
+        moto_keywords = ['moto', 'motorcycle', 'bike', 'scooter', 'motocicleta', 
+                        'cilindrada', ' cc ', 'trail', 'enduro', 'custom']
         if any(palavra in search_text for palavra in moto_keywords):
             return 'Moto'
         
-        # Modelos típicos de motos (CB, MT, XJ, etc.)
-        # Usar padrões mais específicos para evitar falsos positivos
-        moto_models = [
-            'cb ', 'cb-', 'cbr',  # Honda CB, CBR
-            'mt-07', 'mt-09', 'mt-03',  # Yamaha MT (específico)
-            'xj ', 'xj-', 'xt ', 'xt-', 'xtz', 'ybr', 'fazer', 'yzf',  # Yamaha
-            'ninja', 'z650', 'z900', 'zx',  # Kawasaki
-            'gsxr', 'gsx', 'v-strom',  # Suzuki
-            'crf', 'xre', 'bros',  # Honda off-road
-            'r1200', 'f800', 'g310'  # BMW motos
-        ]
-        if any(model in search_text for model in moto_models):
-            return 'Moto'
+        # 3. Modelos típicos de motos
+        # IMPORTANTE: Verificar contexto para evitar falsos positivos
+        # MT pode ser "Manual Transmission", CVT é "Continuously Variable Transmission"
+        
+        # Palavras que indicam que é um carro, não moto
+        car_indicators = ['hybrid', 'cvt', 'automatic', 'turbo', 'flex', 'sedan', 
+                         'hatch', 'suv', 'pickup', 'wagon', 'sport']
+        is_likely_car = any(indicator in search_text for indicator in car_indicators)
+        
+        # Se tem indicadores de carro, não verificar modelos de moto
+        if not is_likely_car:
+            moto_models = [
+                # Honda motos
+                'cb ', 'cb-', 'cbr', 'cb125', 'cb300', 'cb500', 'cb650', 'cb1000',
+                'crf', 'xre', 'bros', 'biz', 'pop', 'titan', 'fan',
+                # Yamaha motos (excluir 'mt' genérico, usar apenas específicos)
+                'mt-07', 'mt-09', 'mt-03', 'mt 07', 'mt 09', 'mt 03',
+                'xj', 'xtz', 'ybr', 'fazer', 'yzf', 'r1', 'r3', 'r6',
+                'neo', 'nmax', 'crosser', 'lander', 'tenere',  # Scooters e trail
+                # Kawasaki
+                'ninja', 'z650', 'z900', 'zx', 'versys',
+                # Suzuki motos
+                'gsxr', 'gsx', 'v-strom', 'bandit', 'intruder',
+                # BMW motos
+                'r1200', 'f800', 'g310', 'gs', 'adventure',
+                # Scooters
+                'pcx', 'sh', 'lead', 'burgman'
+            ]
+            if any(model in search_text for model in moto_models):
+                return 'Moto'
         
         # Buscar padrões em ordem de especificidade
         # 1. Pickup (mais específico)
