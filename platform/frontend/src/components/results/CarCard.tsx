@@ -15,10 +15,11 @@ import {
   Image,
   AspectRatio,
 } from '@chakra-ui/react'
-import { FaWhatsapp, FaGasPump, FaCog, FaCalendar, FaTachometerAlt, FaMapMarkerAlt, FaImages } from 'react-icons/fa'
+import { FaWhatsapp, FaGasPump, FaCog, FaCalendar, FaTachometerAlt, FaMapMarkerAlt, FaImages, FaCircle, FaExclamationTriangle } from 'react-icons/fa'
 import type { Recommendation } from '@/types'
 import { formatCurrency, formatNumber } from '@/services/api'
 import { ScoreVisual } from './ScoreVisual'
+import { TCOBreakdownCard } from './TCOBreakdownCard'
 import interactionTracker from '@/services/InteractionTracker'
 import { CAR_PLACEHOLDER, CAR_PLACEHOLDER_LOADING } from '@/utils/imagePlaceholder'
 
@@ -35,7 +36,31 @@ interface CarCardProps {
 }
 
 export const CarCard = ({ recommendation, onWhatsAppClick, onDetailsClick, position, userPreferences }: CarCardProps) => {
-  const { car, match_percentage, justification } = recommendation
+  const { car, match_percentage, justification, tco_breakdown, fits_budget, budget_percentage, financial_health } = recommendation
+
+  // Helper functions for budget status display
+  const getBudgetStatus = (): string | null => {
+    if (!tco_breakdown || fits_budget === undefined) {
+      return null
+    }
+    return fits_budget ? "Dentro do orçamento" : "Acima do orçamento"
+  }
+
+  const getBudgetColor = (): string => {
+    if (fits_budget === undefined) return "gray"
+    return fits_budget ? "green" : "orange"
+  }
+
+  // Helper function for consumption description
+  const getConsumptionDescription = (consumption: number): string => {
+    if (consumption >= 12) {
+      return `Bom consumo na categoria (${consumption.toFixed(1)} km/L)`
+    } else if (consumption >= 10) {
+      return `Consumo moderado (${consumption.toFixed(1)} km/L)`
+    } else {
+      return `Consumo elevado (${consumption.toFixed(1)} km/L)`
+    }
+  }
 
   const handleWhatsAppClick = () => {
     const message = encodeURIComponent(
@@ -175,13 +200,27 @@ export const CarCard = ({ recommendation, onWhatsAppClick, onDetailsClick, posit
           <VStack align="stretch" spacing={4} p={6}>
             {/* Nome do Carro */}
             <Box>
-              <HStack mb={2} flexWrap="wrap">
+              <HStack mb={2} flexWrap="wrap" gap={2}>
                 <Badge colorScheme="purple" fontSize="xs">
                   {car.categoria}
                 </Badge>
                 {car.destaque && (
                   <Badge colorScheme="orange" fontSize="xs">
                     ⭐ Destaque
+                  </Badge>
+                )}
+                {/* High mileage badge */}
+                {car.quilometragem > 100000 && (
+                  <Badge colorScheme="orange" fontSize="xs" display="flex" alignItems="center" gap={1}>
+                    <Icon as={FaExclamationTriangle} boxSize={2} />
+                    {(car.quilometragem / 1000).toFixed(0)}k km
+                  </Badge>
+                )}
+                {/* Financial health indicator */}
+                {financial_health && (
+                  <Badge colorScheme={financial_health.color} fontSize="xs" display="flex" alignItems="center" gap={1}>
+                    <Icon as={FaCircle} boxSize={2} />
+                    {financial_health.percentage.toFixed(0)}% da renda
                   </Badge>
                 )}
               </HStack>
@@ -240,6 +279,15 @@ export const CarCard = ({ recommendation, onWhatsAppClick, onDetailsClick, posit
                 {justification}
               </Text>
             </Box>
+
+            {/* TCO Breakdown */}
+            {tco_breakdown && (
+              <TCOBreakdownCard
+                tco={tco_breakdown}
+                fits_budget={fits_budget}
+                budget_percentage={budget_percentage}
+              />
+            )}
 
             <Divider />
 

@@ -84,6 +84,21 @@ O questionário atual usa termos técnicos que usuários comuns não entendem (I
 
 ---
 
+### Requirement 6: Capacidade Financeira do Usuário
+
+**User Story**: Como usuário, quero informar minha renda mensal de forma discreta, para que o sistema recomende carros que cabem no meu orçamento sem me constranger.
+
+#### Acceptance Criteria
+
+1. WHEN o usuário acessa pergunta sobre renda, THE Sistema SHALL usar linguagem respeitosa e não-invasiva
+2. WHEN o usuário seleciona faixa salarial, THE Sistema SHALL calcular TCO máximo recomendado (30% da renda líquida)
+3. WHEN o sistema filtra carros, THE Sistema SHALL considerar TCO total (financiamento + combustível + manutenção + seguro)
+4. WHEN o sistema mostra recomendações, THE Sistema SHALL exibir custo mensal estimado de forma clara
+5. THE Sistema SHALL permitir que usuário pule esta pergunta (opcional)
+6. THE Sistema SHALL garantir privacidade dos dados financeiros do usuário
+
+---
+
 ## 🎨 Exemplos de Transformação
 
 ### ❌ ANTES (Técnico e Confuso)
@@ -135,6 +150,16 @@ O questionário atual usa termos técnicos que usuários comuns não entendem (I
 | "É seu primeiro carro?" | Sim | Direção leve, boa visibilidade, compacto |
 | "Tem experiência dirigindo?" | Pouca | Câmbio automático preferível, sensores |
 | "Orçamento limitado?" | Sim | Seguro < R$ 3k/ano, evitar modelos visados |
+
+### Capacidade Financeira
+
+| Pergunta Simples | Resposta | Requisito Técnico Inferido |
+|------------------|----------|----------------------------|
+| "Quanto você ganha por mês?" | Até R$ 3.000 | TCO máximo R$ 900/mês (30% renda) |
+| "Quanto você ganha por mês?" | R$ 3.000 - R$ 5.000 | TCO máximo R$ 1.500/mês (30% renda) |
+| "Quanto você ganha por mês?" | R$ 5.000 - R$ 8.000 | TCO máximo R$ 2.400/mês (30% renda) |
+| "Quanto você ganha por mês?" | R$ 8.000 - R$ 12.000 | TCO máximo R$ 3.600/mês (30% renda) |
+| "Quanto você ganha por mês?" | Acima de R$ 12.000 | TCO máximo R$ 5.000/mês (30-40% renda) |
 
 ---
 
@@ -236,6 +261,16 @@ Conte mais sobre sua família:
    ○ 2-3 pessoas
    ○ 4-5 pessoas
    ○ 6+ pessoas
+
+💰 Qual sua renda mensal líquida? (opcional)
+   ○ Até R$ 3.000
+   ○ R$ 3.000 - R$ 5.000
+   ○ R$ 5.000 - R$ 8.000
+   ○ R$ 8.000 - R$ 12.000
+   ○ Acima de R$ 12.000
+   ○ Prefiro não informar
+   💡 Ajuda a recomendar carros que cabem no seu orçamento
+   🔒 Seus dados são privados e seguros
 ```
 
 ---
@@ -270,6 +305,63 @@ Use os controles para indicar o que mais importa:
 
 ---
 
+## 💰 Cálculo de TCO (Total Cost of Ownership)
+
+### Componentes do TCO Mensal
+
+```
+TCO Mensal = Financiamento + Combustível + Manutenção + Seguro + IPVA/12
+
+Exemplo para Fiat Argo 1.0 (R$ 70.000):
+- Financiamento: R$ 1.400/mês (60x, entrada 20%)
+- Combustível: R$ 400/mês (1.000 km, 13 km/L, R$ 5,20/L)
+- Manutenção: R$ 150/mês (média anual R$ 1.800)
+- Seguro: R$ 200/mês (R$ 2.400/ano)
+- IPVA: R$ 117/mês (R$ 1.400/ano)
+────────────────────────────────────────────
+TCO Total: R$ 2.267/mês
+
+Recomendado para renda: R$ 7.500+ (30% da renda)
+```
+
+### Regra de Ouro: 30% da Renda Líquida
+
+- **Conservador**: 25-30% da renda líquida
+- **Moderado**: 30-35% da renda líquida
+- **Agressivo**: 35-40% da renda líquida (não recomendado)
+
+### Faixas de Renda e TCO Máximo
+
+| Renda Líquida Mensal | TCO Máximo (30%) | Faixa de Preço do Carro |
+|----------------------|------------------|-------------------------|
+| Até R$ 3.000 | R$ 900 | R$ 30.000 - R$ 45.000 |
+| R$ 3.000 - R$ 5.000 | R$ 1.500 | R$ 50.000 - R$ 70.000 |
+| R$ 5.000 - R$ 8.000 | R$ 2.400 | R$ 70.000 - R$ 100.000 |
+| R$ 8.000 - R$ 12.000 | R$ 3.600 | R$ 100.000 - R$ 150.000 |
+| Acima de R$ 12.000 | R$ 5.000+ | R$ 150.000+ |
+
+### Exibição para o Usuário (Linguagem Simples)
+
+```
+✅ Cabe no seu orçamento
+
+💰 Custo mensal estimado: R$ 2.267
+
+📊 Detalhes:
+   🏦 Parcela do financiamento: R$ 1.400
+   ⛽ Combustível (1.000 km/mês): R$ 400
+   🔧 Manutenção: R$ 150
+   🛡️ Seguro: R$ 200
+   📋 IPVA: R$ 117
+
+💡 Representa 30% da sua renda mensal
+   (dentro do recomendado)
+
+[Ver simulação completa]
+```
+
+---
+
 ## ✅ Checklist de Implementação
 
 ### Questionário
@@ -278,24 +370,41 @@ Use os controles para indicar o que mais importa:
 - [ ] Adicionar tooltips explicativos
 - [ ] Usar linguagem de benefício
 - [ ] Adicionar exemplos visuais quando necessário
+- [ ] Adicionar pergunta sobre renda mensal (opcional)
+- [ ] Garantir privacidade e segurança dos dados financeiros
 
 ### Mapeamento
 - [ ] Criar dicionário de tradução (simples → técnico)
 - [ ] Implementar lógica de inferência de requisitos
 - [ ] Testar todos os cenários de uso
 - [ ] Validar que requisitos técnicos são gerados corretamente
+- [ ] Implementar cálculo de TCO baseado em faixa salarial
 
 ### Resultados
 - [ ] Traduzir justificativas técnicas em linguagem simples
 - [ ] Usar comparações do dia-a-dia
 - [ ] Destacar benefícios ao invés de especificações
 - [ ] Adicionar sub-texto técnico (opcional, colapsado)
+- [ ] Exibir custo mensal estimado de forma clara
+- [ ] Mostrar se carro cabe no orçamento do usuário
+- [ ] Permitir simulação de financiamento
+
+### Cálculo de TCO
+- [ ] Implementar fórmula de TCO mensal
+- [ ] Integrar dados de seguro por modelo
+- [ ] Integrar dados de IPVA por estado
+- [ ] Calcular consumo médio baseado em uso declarado
+- [ ] Estimar manutenção por categoria de veículo
+- [ ] Aplicar regra de 30% da renda líquida
+- [ ] Filtrar carros fora do orçamento (opcional)
 
 ### Testes com Usuários
 - [ ] Testar com 5+ usuários leigos
 - [ ] Coletar feedback sobre clareza
 - [ ] Identificar pontos de confusão
 - [ ] Iterar até 100% de compreensão
+- [ ] Validar sensibilidade da pergunta sobre renda
+- [ ] Testar taxa de skip da pergunta financeira
 
 ---
 
@@ -306,10 +415,40 @@ Use os controles para indicar o que mais importa:
 3. **Tempo**: Questionário completo em < 3 minutos
 4. **Satisfação**: NPS > 8 na experiência do questionário
 5. **Precisão**: Requisitos técnicos inferidos corretamente em 95%+ dos casos
+6. **Privacidade**: Usuários se sentem seguros ao informar renda (taxa de skip < 30%)
+7. **Relevância Financeira**: Recomendações respeitam capacidade financeira do usuário
+
+---
+
+## 🔒 Privacidade e Segurança de Dados Financeiros
+
+### Princípios
+
+1. **Opcional**: Usuário pode pular pergunta sobre renda
+2. **Anônimo**: Dados não são vinculados a identidade pessoal
+3. **Temporário**: Dados financeiros não são armazenados permanentemente
+4. **Criptografado**: Transmissão via HTTPS
+5. **Transparente**: Usuário sabe exatamente como dado será usado
+
+### Mensagem de Privacidade
+
+```
+🔒 Seus dados são seguros
+
+Usamos sua renda apenas para recomendar carros 
+que cabem no seu orçamento.
+
+✓ Não compartilhamos com terceiros
+✓ Não armazenamos permanentemente
+✓ Você pode pular esta pergunta
+
+[Saiba mais sobre privacidade]
+```
 
 ---
 
 **Criado em**: 15 de Outubro, 2025  
-**Versão**: 1.0  
-**Status**: 📋 REQUIREMENTS DEFINIDOS
+**Atualizado em**: 5 de Novembro, 2025  
+**Versão**: 1.1  
+**Status**: 📋 REQUIREMENTS ATUALIZADOS - Adicionado Requirement 6 (Capacidade Financeira)
 

@@ -2,8 +2,117 @@
 Modelo de Perfil de Usuário para sistema de recomendação
 """
 
-from pydantic import BaseModel
-from typing import Optional, List, Dict
+from pydantic import BaseModel, Field
+from typing import Optional, List, Dict, Any
+
+
+class FinancialCapacity(BaseModel):
+    """
+    Capacidade financeira do usuário
+    
+    Attributes:
+        monthly_income_range: Faixa de renda mensal (ex: "3000-5000", "5000-8000")
+        max_monthly_tco: TCO máximo mensal recomendado (30% da renda média)
+        is_disclosed: Se o usuário informou ou pulou a pergunta
+    """
+    monthly_income_range: Optional[str] = Field(
+        None,
+        description="Faixa de renda mensal (ex: '3000-5000', '5000-8000', '12000+')"
+    )
+    max_monthly_tco: Optional[float] = Field(
+        None,
+        description="TCO máximo mensal recomendado (30% da renda média)",
+        ge=0
+    )
+    is_disclosed: bool = Field(
+        False,
+        description="Se o usuário informou sua capacidade financeira"
+    )
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "monthly_income_range": "5000-8000",
+                "max_monthly_tco": 2400.0,
+                "is_disclosed": True
+            }
+        }
+
+
+class TCOBreakdown(BaseModel):
+    """
+    Detalhamento do custo total de propriedade (Total Cost of Ownership)
+    
+    Attributes:
+        financing_monthly: Parcela mensal do financiamento
+        fuel_monthly: Custo mensal estimado de combustível
+        maintenance_monthly: Custo mensal estimado de manutenção
+        insurance_monthly: Custo mensal estimado de seguro (anual / 12)
+        ipva_monthly: Custo mensal de IPVA (anual / 12)
+        total_monthly: Soma de todos os custos mensais
+        assumptions: Premissas utilizadas no cálculo
+    """
+    financing_monthly: float = Field(
+        ...,
+        description="Parcela mensal do financiamento",
+        ge=0
+    )
+    fuel_monthly: float = Field(
+        ...,
+        description="Custo mensal estimado de combustível",
+        ge=0
+    )
+    maintenance_monthly: float = Field(
+        ...,
+        description="Custo mensal estimado de manutenção",
+        ge=0
+    )
+    insurance_monthly: float = Field(
+        ...,
+        description="Custo mensal estimado de seguro",
+        ge=0
+    )
+    ipva_monthly: float = Field(
+        ...,
+        description="Custo mensal de IPVA",
+        ge=0
+    )
+    total_monthly: float = Field(
+        ...,
+        description="Custo total mensal (soma de todos)",
+        ge=0
+    )
+    assumptions: Dict[str, Any] = Field(
+        default_factory=lambda: {
+            "down_payment_percent": 20,
+            "financing_months": 60,
+            "annual_interest_rate": 12.0,
+            "monthly_km": 1000,
+            "fuel_price_per_liter": 5.20,
+            "state": "SP"
+        },
+        description="Premissas utilizadas no cálculo"
+    )
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "financing_monthly": 1400.0,
+                "fuel_monthly": 400.0,
+                "maintenance_monthly": 150.0,
+                "insurance_monthly": 200.0,
+                "ipva_monthly": 117.0,
+                "total_monthly": 2267.0,
+                "assumptions": {
+                    "down_payment_percent": 20,
+                    "financing_months": 60,
+                    "annual_interest_rate": 12.0,
+                    "monthly_km": 1000,
+                    "fuel_price_per_liter": 5.20,
+                    "state": "SP"
+                }
+            }
+        }
 
 
 class UserProfile(BaseModel):
@@ -59,6 +168,12 @@ class UserProfile(BaseModel):
     # Experiência
     primeiro_carro: bool = False
     experiencia_anos: Optional[int] = None
+    
+    # Capacidade Financeira (NOVO - Requirement 6)
+    financial_capacity: Optional[FinancialCapacity] = Field(
+        None,
+        description="Capacidade financeira do usuário para cálculo de TCO"
+    )
     
     class Config:
         json_schema_extra = {

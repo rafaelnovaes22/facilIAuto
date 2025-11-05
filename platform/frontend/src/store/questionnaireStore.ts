@@ -33,6 +33,7 @@ const initialFormData: Partial<QuestionnaireFormData> = {
   tamanho_familia: 1,
   tem_criancas: false,
   tem_idosos: false,
+  faixa_salarial: null,
   prioridades: {
     economia: 3,
     espaco: 3,
@@ -96,7 +97,11 @@ export const useQuestionnaireStore = create<QuestionnaireStore>((set, get) => ({
           formData.tamanho_familia > 0
         )
       case 2: // Prioridades
-        return true // Sempre pode avançar (tem valores default)
+        // Verificar se pelo menos 1 prioridade foi selecionada (valor 5)
+        const priorities = formData.prioridades
+        if (!priorities) return false
+        const selectedCount = Object.values(priorities).filter(v => v === 5).length
+        return selectedCount >= 1 && selectedCount <= 3
       case 3: // Preferências (opcional)
         return true
       default:

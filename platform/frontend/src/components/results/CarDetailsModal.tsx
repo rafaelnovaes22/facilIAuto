@@ -33,8 +33,9 @@ import {
   FaPalette,
   FaDoorOpen,
 } from 'react-icons/fa'
-import type { Recommendation } from '@/types'
+import type { Recommendation, TCOBreakdown } from '@/types'
 import { formatCurrency, formatNumber } from '@/services/api'
+import { TCOBreakdownCard } from './TCOBreakdownCard'
 import interactionTracker from '@/services/InteractionTracker'
 import { CAR_PLACEHOLDER_LARGE, CAR_PLACEHOLDER_LOADING_LARGE, CAR_PLACEHOLDER_THUMB } from '@/utils/imagePlaceholder'
 
@@ -42,6 +43,9 @@ interface CarDetailsModalProps {
   isOpen: boolean
   onClose: () => void
   car: Recommendation['car'] | null
+  tco_breakdown?: TCOBreakdown
+  fits_budget?: boolean
+  budget_percentage?: number
   userPreferences?: {
     budget: number
     usage: string
@@ -51,7 +55,7 @@ interface CarDetailsModalProps {
   matchScore?: number
 }
 
-export const CarDetailsModal = ({ isOpen, onClose, car, userPreferences, position, matchScore }: CarDetailsModalProps) => {
+export const CarDetailsModal = ({ isOpen, onClose, car, tco_breakdown, fits_budget, budget_percentage, userPreferences, position, matchScore }: CarDetailsModalProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const viewStartTime = useRef<number | null>(null)
 
@@ -227,6 +231,18 @@ export const CarDetailsModal = ({ isOpen, onClose, car, userPreferences, positio
             )}
 
             <Divider />
+
+            {/* TCO Breakdown */}
+            {tco_breakdown && (
+              <>
+                <TCOBreakdownCard
+                  tco={tco_breakdown}
+                  fits_budget={fits_budget}
+                  budget_percentage={budget_percentage}
+                />
+                <Divider />
+              </>
+            )}
 
             {/* Informações do Veículo */}
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>

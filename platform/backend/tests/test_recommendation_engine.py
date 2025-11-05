@@ -8,7 +8,7 @@ import tempfile
 import shutil
 from models.car import Car
 from models.dealership import Dealership
-from models.user_profile import UserProfile
+from models.user_profile import UserProfile, TCOBreakdown, FinancialCapacity
 from services.unified_recommendation_engine import UnifiedRecommendationEngine
 
 
@@ -499,3 +499,242 @@ class TestUnifiedRecommendationEngine:
         
         # Deve retornar lista vazia
         assert len(recommendations) == 0, "Deveria retornar lista vazia quando nenhum carro atende aos filtros"
+    
+    def test_assess_financial_health_green_status(self, temp_data_dir):
+        """
+        Teste: Status verde (saudável) para TCO ≤20% da renda
+        Requirements: 2.1, 2.2, 2.3, 2.4, 2.5
+        """
+        engine = UnifiedRecommendationEngine(data_dir=temp_data_dir)
+        
+        # Criar perfil com renda de 8k-12k (média: 10k)
+        profile = UserProfile(
+            orcamento_min=50000,
+            orcamento_max=100000,
+            uso_principal="familia",
+            financial_capacity=FinancialCapacity(
+                monthly_income_range="8000-12000",
+                max_monthly_tco=3000,
+                is_disclosed=True
+            )
+        )
+        
+        # TCO de R$ 2.000 = 20% de R$ 10.000
+        tco = TCOBreakdown(
+            financing_monthly=1200.0,
+            fuel_monthly=400.0,
+            maintenance_monthly=200.0,
+            insurance_monthly=150.0,
+            ipva_monthly=50.0,
+            total_monthly=2000.0,
+            assumptions={}
+        )
+        
+        # Avaliar saúde financeira
+        health = engine.assess_financial_health(tco, profile)
+        
+        # Verificações
+        assert health is not None
+        assert health['status'] == 'healthy'
+        assert health['color'] == 'green'
+        assert health['message'] == 'Saudável'
+        assert health['percentage'] == 20.0
+    
+    def test_assess_financial_health_yellow_status(self, temp_data_dir):
+        """
+        Teste: Status amarelo (atenção) para TCO entre 20-30% da renda
+        Requirements: 2.1, 2.2, 2.3, 2.4, 2.5
+        """
+        engine = UnifiedRecommendationEngine(data_dir=temp_data_dir)
+        
+        # Criar perfil com renda de 8k-12k (média: 10k)
+        profile = UserProfile(
+            orcamento_min=50000,
+            orcamento_max=100000,
+            uso_principal="familia",
+            financial_capacity=FinancialCapacity(
+                monthly_income_range="8000-12000",
+                max_monthly_tco=3000,
+                is_disclosed=True
+            )
+        )
+        
+        # TCO de R$ 2.500 = 25% de R$ 10.000
+        tco = TCOBreakdown(
+            financing_monthly=1500.0,
+            fuel_monthly=500.0,
+            maintenance_monthly=250.0,
+            insurance_monthly=200.0,
+            ipva_monthly=50.0,
+            total_monthly=2500.0,
+            assumptions={}
+        )
+        
+        # Avaliar saúde financeira
+        health = engine.assess_financial_health(tco, profile)
+        
+        # Verificações
+        assert health is not None
+        assert health['status'] == 'caution'
+        assert health['color'] == 'yellow'
+        assert health['message'] == 'Atenção'
+        assert health['percentage'] == 25.0
+    
+    def test_assess_financial_health_red_status(self, temp_data_dir):
+        """
+        Teste: Status vermelho (alto comprometimento) para TCO >30% da renda
+        Requirements: 2.1, 2.2, 2.3, 2.4, 2.5
+        """
+        engine = UnifiedRecommendationEngine(data_dir=temp_data_dir)
+        
+        # Criar perfil com renda de 8k-12k (média: 10k)
+        profile = UserProfile(
+            orcamento_min=50000,
+            orcamento_max=100000,
+            uso_principal="familia",
+            financial_capacity=FinancialCapacity(
+                monthly_income_range="8000-12000",
+                max_monthly_tco=3000,
+                is_disclosed=True
+            )
+        )
+        
+        # TCO de R$ 3.500 = 35% de R$ 10.000
+        tco = TCOBreakdown(
+            financing_monthly=2000.0,
+            fuel_monthly=700.0,
+            maintenance_monthly=400.0,
+            insurance_monthly=300.0,
+            ipva_monthly=100.0,
+            total_monthly=3500.0,
+            assumptions={}
+        )
+        
+        # Avaliar saúde financeira
+        health = engine.assess_financial_health(tco, profile)
+        
+        # Verificações
+        assert health is not None
+        assert health['status'] == 'high_commitment'
+        assert health['color'] == 'red'
+        assert health['message'] == 'Alto comprometimento'
+        assert health['percentage'] == 35.0
+    
+    def test_assess_financial_health_percentage_accuracy(self, temp_data_dir):
+        """
+        Teste: Precisão do cálculo de percentual
+        Requirements: 2.1, 2.2, 2.3, 2.4, 2.5
+        """
+        engine = UnifiedRecommendationEngine(data_dir=temp_data_dir)
+        
+        # Criar perfil com renda de 5k-8k (média: 6.5k)
+        profile = UserProfile(
+            orcamento_min=30000,
+            orcamento_max=60000,
+            uso_principal="trabalho",
+            financial_capacity=FinancialCapacity(
+                monthly_income_range="5000-8000",
+                max_monthly_tco=1800,
+                is_disclosed=True
+            )
+        )
+        
+        # TCO de R$ 1.300 = 20% de R$ 6.500
+        tco = TCOBreakdown(
+            financing_monthly=800.0,
+            fuel_monthly=300.0,
+            maintenance_monthly=100.0,
+            insurance_monthly=80.0,
+            ipva_monthly=20.0,
+            total_monthly=1300.0,
+            assumptions={}
+        )
+        
+        # Avaliar saúde financeira
+        health = engine.assess_financial_health(tco, profile)
+        
+        # Verificações de precisão
+        assert health is not None
+        assert health['percentage'] == 20.0
+        assert health['status'] == 'healthy'
+        
+        # Testar com TCO diferente: R$ 1.950 = 30% de R$ 6.500
+        tco2 = TCOBreakdown(
+            financing_monthly=1200.0,
+            fuel_monthly=450.0,
+            maintenance_monthly=150.0,
+            insurance_monthly=120.0,
+            ipva_monthly=30.0,
+            total_monthly=1950.0,
+            assumptions={}
+        )
+        
+        health2 = engine.assess_financial_health(tco2, profile)
+        assert health2 is not None
+        assert health2['percentage'] == 30.0
+        assert health2['status'] == 'caution'
+    
+    def test_assess_financial_health_no_financial_capacity(self, temp_data_dir):
+        """
+        Teste: Retornar None quando não há capacidade financeira informada
+        Requirements: 2.1, 2.2, 2.3, 2.4, 2.5
+        """
+        engine = UnifiedRecommendationEngine(data_dir=temp_data_dir)
+        
+        # Criar perfil SEM capacidade financeira
+        profile = UserProfile(
+            orcamento_min=50000,
+            orcamento_max=100000,
+            uso_principal="familia"
+        )
+        
+        tco = TCOBreakdown(
+            financing_monthly=1200.0,
+            fuel_monthly=400.0,
+            maintenance_monthly=200.0,
+            insurance_monthly=150.0,
+            ipva_monthly=50.0,
+            total_monthly=2000.0,
+            assumptions={}
+        )
+        
+        # Avaliar saúde financeira
+        health = engine.assess_financial_health(tco, profile)
+        
+        # Deve retornar None
+        assert health is None
+    
+    def test_assess_financial_health_not_disclosed(self, temp_data_dir):
+        """
+        Teste: Retornar None quando capacidade financeira não foi divulgada
+        Requirements: 2.1, 2.2, 2.3, 2.4, 2.5
+        """
+        engine = UnifiedRecommendationEngine(data_dir=temp_data_dir)
+        
+        # Criar perfil com capacidade financeira não divulgada
+        profile = UserProfile(
+            orcamento_min=50000,
+            orcamento_max=100000,
+            uso_principal="familia",
+            financial_capacity=FinancialCapacity(
+                monthly_income_range="8000-12000",
+                max_monthly_tco=3000,
+                is_disclosed=False  # Não divulgado
+            )
+        )
+        
+        tco = TCOBreakdown(
+            financing_monthly=1200.0,
+            fuel_monthly=400.0,
+            maintenance_monthly=200.0,
+            insurance_monthly=150.0,
+            ipva_monthly=50.0,
+            total_monthly=2000.0,
+            assumptions={}
+        )
+        
+        # Avaliar saúde financeira
+        health = engine.assess_financial_health(tco, profile)
+        
+        # Deve retornar None
+        assert health is None

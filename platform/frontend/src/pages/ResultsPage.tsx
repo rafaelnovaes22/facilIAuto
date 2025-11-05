@@ -38,7 +38,7 @@ export default function ResultsPage() {
 
   // State para modal de detalhes
   const { isOpen: isDetailsOpen, onOpen: onDetailsOpen, onClose: onDetailsClose } = useDisclosure()
-  const [selectedCar, setSelectedCar] = useState<Recommendation['car'] | null>(null)
+  const [selectedRecommendation, setSelectedRecommendation] = useState<Recommendation | null>(null)
 
   // 📈 Data Analyst: Track de visualizações
   const handleWhatsAppClick = (car: Recommendation['car']) => {
@@ -53,7 +53,9 @@ export default function ResultsPage() {
 
   // Handler para abrir modal de detalhes
   const handleDetailsClick = (car: Recommendation['car']) => {
-    setSelectedCar(car)
+    // Find the full recommendation object
+    const recommendation = processedRecommendations.find(rec => rec.car.id === car.id)
+    setSelectedRecommendation(recommendation || null)
     onDetailsOpen()
 
     // 📈 Analytics: Track visualização de detalhes
@@ -426,7 +428,10 @@ export default function ResultsPage() {
           <CarDetailsModal
             isOpen={isDetailsOpen}
             onClose={onDetailsClose}
-            car={selectedCar}
+            car={selectedRecommendation?.car || null}
+            tco_breakdown={selectedRecommendation?.tco_breakdown}
+            fits_budget={selectedRecommendation?.fits_budget}
+            budget_percentage={selectedRecommendation?.budget_percentage}
           />
 
           {/* Footer CTA - Apenas quando há resultados */}

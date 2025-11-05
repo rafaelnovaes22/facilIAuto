@@ -246,7 +246,13 @@ def recommend_cars(profile: UserProfile):
                     },
                     "match_score": rec['score'],
                     "match_percentage": rec['match_percentage'],
-                    "justification": rec['justificativa']
+                    "justification": rec['justificativa'],
+                    # 💰 TCO Information (Requirements 1.1-1.5, 2.1-2.5)
+                    "tco_breakdown": rec.get('tco_breakdown').model_dump() if rec.get('tco_breakdown') else None,
+                    "fits_budget": rec.get('fits_budget'),
+                    "budget_percentage": round(rec.get('budget_percentage'), 1) if rec.get('budget_percentage') is not None else None,
+                    # 🚦 Financial Health Indicator (Requirements 2.1-2.5)
+                    "financial_health": rec.get('financial_health')
                 }
                 for rec in recommendations
             ]

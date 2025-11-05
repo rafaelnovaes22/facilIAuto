@@ -19,11 +19,11 @@ Cypress.Commands.add('fillQuestionnaire', (data = {}) => {
   // Step 1: Orçamento
   cy.get('input[type="number"]').first().clear().type(String(config.orcamentoMin))
   cy.get('input[type="number"]').eq(1).clear().type(String(config.orcamentoMax))
-  
+
   if (config.state) {
     cy.get('select').first().select(config.state)
   }
-  
+
   if (config.city) {
     cy.get('input[placeholder*="São Paulo"]').type(config.city)
   }
@@ -32,7 +32,7 @@ Cypress.Commands.add('fillQuestionnaire', (data = {}) => {
 
   // Step 2: Uso e Família
   cy.contains(`label`, config.usoPrincipal === 'familia' ? 'Família' : 'Trabalho').click()
-  
+
   cy.get('input[type="number"]').clear().type(String(config.tamanhoFamilia))
 
   if (config.temCriancas) {
@@ -45,7 +45,12 @@ Cypress.Commands.add('fillQuestionnaire', (data = {}) => {
 
   cy.contains('button', 'Próximo').click()
 
-  // Step 3: Prioridades (usar valores default)
+  // Step 3: Prioridades (selecionar 3 prioridades)
+  // Clicar em 3 cards de prioridades (Economia, Espaço, Segurança)
+  cy.contains('Economia').click()
+  cy.contains('Espaço').click()
+  cy.contains('Segurança').click()
+
   cy.contains('button', 'Próximo').click()
 
   // Step 4: Preferências (pular)
@@ -71,5 +76,5 @@ declare global {
   }
 }
 
-export {}
+export { }
 

@@ -2,8 +2,8 @@
 Modelo de Carro para a plataforma unificada FacilIAuto
 """
 
-from pydantic import BaseModel, HttpUrl
-from typing import List, Optional
+from pydantic import BaseModel, HttpUrl, Field
+from typing import List, Optional, Any
 from datetime import datetime
 
 
@@ -113,4 +113,96 @@ class CarFilter(BaseModel):
     city: Optional[str] = None
     state: Optional[str] = None
     dealership_id: Optional[str] = None
+
+
+class CarRecommendation(BaseModel):
+    """
+    Recomendação de carro com informações de match e TCO
+    
+    Attributes:
+        car: Objeto Car com todas as informações do veículo
+        score: Score de match (0.0 a 1.0)
+        match_percentage: Percentual de match (0 a 100)
+        justifications: Lista de justificativas da recomendação
+        tco_breakdown: Detalhamento de custos (TCO) - opcional
+        fits_budget: Se o carro cabe no orçamento do usuário - opcional
+        budget_percentage: Percentual do orçamento que o TCO representa - opcional
+    """
+    car: Car = Field(
+        ...,
+        description="Dados completos do carro recomendado"
+    )
+    score: float = Field(
+        ...,
+        description="Score de match (0.0 a 1.0)",
+        ge=0.0,
+        le=1.0
+    )
+    match_percentage: int = Field(
+        ...,
+        description="Percentual de match (0 a 100)",
+        ge=0,
+        le=100
+    )
+    justifications: List[str] = Field(
+        default_factory=list,
+        description="Lista de justificativas da recomendação"
+    )
+    tco_breakdown: Optional[Any] = Field(
+        None,
+        description="Detalhamento do custo total de propriedade (TCO) - TCOBreakdown object"
+    )
+    fits_budget: Optional[bool] = Field(
+        None,
+        description="Se o carro cabe no orçamento do usuário"
+    )
+    budget_percentage: Optional[float] = Field(
+        None,
+        description="Percentual do orçamento que o TCO representa",
+        ge=0
+    )
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "car": {
+                    "id": "robust_001",
+                    "dealership_id": "robustcar",
+                    "nome": "FIAT CRONOS DRIVE 1.3",
+                    "marca": "Fiat",
+                    "modelo": "Cronos",
+                    "ano": 2022,
+                    "preco": 84990.0,
+                    "quilometragem": 35000,
+                    "combustivel": "Flex",
+                    "cambio": "Manual",
+                    "categoria": "Sedan",
+                    "score_familia": 0.8,
+                    "score_economia": 0.9,
+                    "disponivel": True,
+                    "dealership_name": "RobustCar São Paulo",
+                    "dealership_city": "São Paulo",
+                    "dealership_state": "SP",
+                    "dealership_phone": "(11) 1234-5678",
+                    "dealership_whatsapp": "5511987654321"
+                },
+                "score": 0.85,
+                "match_percentage": 85,
+                "justifications": [
+                    "✅ Ótima economia de combustível",
+                    "✅ Espaço adequado para família",
+                    "✅ Segurança completa"
+                ],
+                "tco_breakdown": {
+                    "financing_monthly": 1400.0,
+                    "fuel_monthly": 400.0,
+                    "maintenance_monthly": 150.0,
+                    "insurance_monthly": 200.0,
+                    "ipva_monthly": 117.0,
+                    "total_monthly": 2267.0
+                },
+                "fits_budget": True,
+                "budget_percentage": 30.0
+            }
+        }
 

@@ -5,16 +5,17 @@ Sistema de Recomendação Unificado - Agrega carros de TODAS as concessionárias
 
 import json
 import os
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Optional, Tuple, Any
 from datetime import datetime
 
 from models.car import Car
-from models.user_profile import UserProfile
+from models.user_profile import UserProfile, TCOBreakdown
 from models.dealership import Dealership
 from utils.geo_distance import calculate_distance, get_city_coordinates
 from services.car_metrics import CarMetricsCalculator
 from services.app_transport_validator import validator as app_transport_validator
 from services.commercial_vehicle_validator import validator as commercial_vehicle_validator
+from services.tco_calculator import TCOCalculator
 
 
 class UnifiedRecommendationEngine:
@@ -704,10 +705,246 @@ class UnifiedRecommendationEngine:
         adequate_count = len([c for c in classified_cars if c.commercial_suitability["nivel"] == "adequado"])
         limited_count = len([c for c in classified_cars if c.commercial_suitability["nivel"] == "limitado"])
         
-        print(f"[COMERCIAL] Aceitos: {ideal_count} ideais, {adequate_count} adequados, {limited_count} limitados")
-        print(f"[COMERCIAL] Rejeitados: {len(rejected_cars)} inadequados (pickups de lazer, SUVs, sedans)")
+        print(f"[COMERCIAL] Resultado: {ideal_count} ideais, {adequate_count} adequados, {limited_count} limitados")
         
         return classified_cars
+    
+    def calculate_tco_for_car(
+        self,
+        car: Car,
+        profile: UserProfile
+    ) -> Optional[TCOBreakdown]:
+        """
+        Calcula TCO (Total Cost of Ownership) para um carro específico
+        
+        Args:
+            car: Carro para calcular TCO
+            profile: Perfil do usuário (para obter estado, km mensal, etc)
+            
+        Returns:
+            TCOBreakdown com detalhamento de custos ou None se não for possível calcular
+        """
+        try:
+            # Obter consumo do carro (km/L)
+            fuel_efficiency = getattr(car, 'consumo_cidade', None) or getattr(car, 'consumo', 12.0)
+            
+            # Calcular idade do carro
+            current_year = datetime.now().year
+            car_age = current_year - car.ano
+            
+            # Obter quilometragem do carro (com fallback para 0 se não disponível)
+            car_mileage = getattr(car, 'quilometragem', 0) or 0
+            
+            # Criar calculadora de TCO com parâmetros do usuário
+            calculator = TCOCalculator(
+                down_payment_percent=0.20,
+                financing_months=60,
+                annual_interest_rate=0.12,
+                monthly_km=1000,  # Padrão, pode ser ajustado baseado no perfil
+                fuel_price_per_liter=5.20,
+                state=profile.state or "SP",
+                user_profile="standard"
+            )
+            
+            # Calcular TCO com quilometragem para ajuste de manutenção
+            tco = calculator.calculate_tco(
+                car_price=car.preco,
+                car_category=car.categoria,
+                fuel_efficiency_km_per_liter=fuel_efficiency,
+                car_age=car_age,
+                car_mileage=car_mileage  # Passar quilometragem para ajuste
+            )
+            
+            return tco
+        
+        except Exception as e:
+            print(f"[ERRO] Falha ao calcular TCO para {car.nome}: {e}")
+            return None
+    
+    def assess_financial_health(
+        self,
+        tco: TCOBreakdown,
+        profile: UserProfile
+    ) -> Optional[Dict[str, Any]]:
+        """
+        Avalia saúde financeira baseado em TCO vs renda
+        
+        Args:
+            tco: Breakdown de TCO do veículo
+            profile: Perfil do usuário com financial_capacity
+            
+        Returns:
+            Dicionário com status, percentage, color, message ou None se não disponível
+            
+        Regras:
+        - Verde (≤20%): Saudável
+        - Amarelo (20-30%): Atenção
+        - Vermelho (>30%): Alto comprometimento
+        """
+        # Se não há capacidade financeira informada, não avaliar
+        if not profile.financial_capacity or not profile.financial_capacity.is_disclosed:
+            return None
+        
+        # Obter faixa de renda
+        income_range = profile.financial_capacity.monthly_income_range
+        if not income_range:
+            return None
+        
+        # Calcular renda média da faixa
+        income_brackets = {
+            "0-3000": (0, 3000),
+            "3000-5000": (3000, 5000),
+            "5000-8000": (5000, 8000),
+            "8000-12000": (8000, 12000),
+            "12000+": (12000, 16000)
+        }
+        
+        if income_range not in income_brackets:
+            return None
+        
+        min_income, max_income = income_brackets[income_range]
+        avg_income = (min_income + max_income) / 2
+        
+        # Calcular percentual do TCO em relação à renda
+        percentage = (tco.total_monthly / avg_income) * 100
+        
+        # Determinar status baseado no percentual
+        if percentage <= 20:
+            status = "healthy"
+            color = "green"
+            message = "Saudável"
+        elif percentage <= 30:
+            status = "caution"
+            color = "yellow"
+            message = "Atenção"
+        else:
+            status = "high_commitment"
+            color = "red"
+            message = "Alto comprometimento"
+        
+        return {
+            "status": status,
+            "percentage": round(percentage, 1),
+            "color": color,
+            "message": message
+        }
+    
+    def validate_budget_status(
+        self,
+        tco: TCOBreakdown,
+        profile: UserProfile
+    ) -> Tuple[Optional[bool], str]:
+        """
+        Valida se o veículo cabe no orçamento do usuário
+        
+        Args:
+            tco: Breakdown de TCO do veículo
+            profile: Perfil do usuário com financial_capacity
+            
+        Returns:
+            Tupla com (fits_budget: bool ou None, status_message: str)
+            
+        Regras:
+        - Compara tco.total_monthly com profile.financial_capacity.max_monthly_tco
+        - Retorna True se TCO <= max_monthly_tco
+        - Retorna False se TCO > max_monthly_tco
+        - Retorna None se não há dados de capacidade financeira
+        """
+        # Se não há capacidade financeira informada, retornar None
+        if not profile.financial_capacity or not profile.financial_capacity.is_disclosed:
+            return (None, "Orçamento não informado")
+        
+        max_tco = profile.financial_capacity.max_monthly_tco
+        if not max_tco:
+            return (None, "Orçamento não informado")
+        
+        # Comparar TCO total mensal com orçamento máximo
+        fits = tco.total_monthly <= max_tco
+        
+        if fits:
+            return (True, "Dentro do orçamento")
+        else:
+            return (False, "Acima do orçamento")
+    
+    def filter_by_financial_capacity(
+        self,
+        cars_with_tco: List[Tuple[Car, Optional[TCOBreakdown]]],
+        profile: UserProfile
+    ) -> List[Tuple[Car, Optional[TCOBreakdown]]]:
+        """
+        Filtra carros por capacidade financeira do usuário
+        
+        Args:
+            cars_with_tco: Lista de tuplas (car, tco_breakdown)
+            profile: Perfil do usuário com financial_capacity
+            
+        Returns:
+            Lista filtrada de carros que cabem no orçamento (com 10% de tolerância)
+        """
+        # Se usuário não informou capacidade financeira, não filtrar
+        if not profile.financial_capacity or not profile.financial_capacity.is_disclosed:
+            return cars_with_tco
+        
+        max_tco = profile.financial_capacity.max_monthly_tco
+        if not max_tco:
+            return cars_with_tco
+        
+        # Filtrar carros com TCO dentro do orçamento (10% de tolerância)
+        tolerance = 1.10
+        filtered = [
+            (car, tco) for car, tco in cars_with_tco
+            if tco and tco.total_monthly <= max_tco * tolerance
+        ]
+        
+        print(f"[FILTRO TCO] {len(filtered)} de {len(cars_with_tco)} carros cabem no orçamento (max: R$ {max_tco:.2f}/mês)")
+        
+        return filtered
+    
+    def apply_financial_bonus(
+        self,
+        base_score: float,
+        tco: Optional[TCOBreakdown],
+        profile: UserProfile
+    ) -> float:
+        """
+        Aplica bonus de score para carros que cabem bem no orçamento
+        
+        Args:
+            base_score: Score base do carro
+            tco: Breakdown de TCO
+            profile: Perfil do usuário com financial_capacity
+            
+        Returns:
+            Score ajustado com bonus financeiro
+        """
+        # Se não há TCO ou capacidade financeira, retornar score base
+        if not tco or not profile.financial_capacity or not profile.financial_capacity.is_disclosed:
+            return base_score
+        
+        max_tco = profile.financial_capacity.max_monthly_tco
+        if not max_tco:
+            return base_score
+        
+        actual_tco = tco.total_monthly
+        
+        # Calcular % do orçamento usado
+        budget_usage = actual_tco / max_tco
+        
+        # Bonus para carros que usam 70-90% do orçamento (sweet spot)
+        if 0.70 <= budget_usage <= 0.90:
+            bonus = 0.05  # +5% no score
+        elif 0.50 <= budget_usage < 0.70:
+            bonus = 0.03  # +3% no score (mais econômico)
+        elif 0.90 < budget_usage <= 1.0:
+            bonus = 0.02  # +2% no score (no limite)
+        elif budget_usage > 1.0:
+            bonus = -0.10  # -10% no score (acima do orçamento)
+        else:
+            bonus = 0.01  # +1% no score (muito abaixo)
+        
+        adjusted_score = min(1.0, base_score + bonus)
+        
+        return adjusted_score
     
     def recommend(
         self,
@@ -793,31 +1030,87 @@ class UnifiedRecommendationEngine:
             print("[AVISO] Nenhum carro após filtros. Retornando lista vazia.")
             return []
         
-        # 6. Priorizar por localização (se especificado)
+        # 11. 💰 Calcular TCO para cada carro (Requirement 6.2)
+        cars_with_tco = []
+        for car in filtered_cars:
+            tco = self.calculate_tco_for_car(car, profile)
+            cars_with_tco.append((car, tco))
+        
+        # 12. 💰 Filtrar por capacidade financeira (Requirement 6.3)
+        cars_with_tco = self.filter_by_financial_capacity(cars_with_tco, profile)
+        
+        if not cars_with_tco:
+            print("[AVISO] Nenhum carro após filtro de capacidade financeira. Retornando lista vazia.")
+            return []
+        
+        # 13. Priorizar por localização (se especificado)
         if profile.city and profile.priorizar_proximas:
-            filtered_cars = self.prioritize_by_location(
-                filtered_cars,
+            # Extrair apenas os carros para priorização
+            cars_only = [car for car, tco in cars_with_tco]
+            prioritized_cars = self.prioritize_by_location(
+                cars_only,
                 profile.city,
                 profile.state or ""
             )
+            # Reconstruir lista com TCO mantendo a ordem
+            car_to_tco = {car.id: tco for car, tco in cars_with_tco}
+            cars_with_tco = [(car, car_to_tco[car.id]) for car in prioritized_cars]
         
-        # 3. Calcular scores
+        # 14. Calcular scores com bonus financeiro
         scored_cars = []
-        for car in filtered_cars:
+        for car, tco in cars_with_tco:
             if not car.disponivel:
                 continue
             
-            score = self.calculate_match_score(car, profile)
+            # Score base
+            base_score = self.calculate_match_score(car, profile)
             
-            if score >= score_threshold:
+            # Aplicar bonus financeiro (Requirement 6.3)
+            final_score = self.apply_financial_bonus(base_score, tco, profile)
+            
+            if final_score >= score_threshold:
+                # Validar status do orçamento usando novo método
+                fits_budget = None
+                budget_status_message = "Orçamento não informado"
+                
+                if tco:
+                    fits_budget, budget_status_message = self.validate_budget_status(tco, profile)
+                
+                # Calcular percentual da renda (para compatibilidade)
+                budget_percentage = None
+                if tco and profile.financial_capacity and profile.financial_capacity.is_disclosed:
+                    income_range = profile.financial_capacity.monthly_income_range
+                    if income_range:
+                        # Calcular renda média
+                        income_brackets = {
+                            "0-3000": (0, 3000),
+                            "3000-5000": (3000, 5000),
+                            "5000-8000": (5000, 8000),
+                            "8000-12000": (8000, 12000),
+                            "12000+": (12000, 16000)
+                        }
+                        if income_range in income_brackets:
+                            min_income, max_income = income_brackets[income_range]
+                            avg_income = (min_income + max_income) / 2
+                            budget_percentage = (tco.total_monthly / avg_income) * 100
+                
+                # Avaliar saúde financeira
+                financial_health = None
+                if tco:
+                    financial_health = self.assess_financial_health(tco, profile)
+                
                 scored_cars.append({
                     'car': car,
-                    'score': score,
-                    'match_percentage': int(score * 100),
-                    'justificativa': self.generate_justification(car, profile, score)
+                    'score': final_score,
+                    'match_percentage': int(final_score * 100),
+                    'justificativa': self.generate_justification(car, profile, final_score),
+                    'tco_breakdown': tco,  # Requirement 6.4
+                    'fits_budget': fits_budget,
+                    'budget_percentage': budget_percentage,
+                    'financial_health': financial_health  # NEW: Financial health indicator
                 })
         
-        # 4. Ordenar por score
+        # 15. Ordenar por score
         scored_cars.sort(key=lambda x: x['score'], reverse=True)
         
         # 🐛 DEBUG: Verificar anos antes de retornar

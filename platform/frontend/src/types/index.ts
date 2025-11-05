@@ -174,11 +174,42 @@ export interface UserProfile {
 // RECOMMENDATION TYPES
 // ============================================
 
+export interface TCOBreakdown {
+    financing_monthly: number
+    fuel_monthly: number
+    maintenance_monthly: number
+    insurance_monthly: number
+    ipva_monthly: number
+    total_monthly: number
+    assumptions: {
+        down_payment_percent: number
+        financing_months: number
+        annual_interest_rate: number
+        monthly_km: number
+        fuel_price_per_liter: number
+        fuel_efficiency: number
+        state: string
+        maintenance_adjustment?: {
+            factor: number
+            reason: string
+        }
+    }
+}
+
 export interface Recommendation {
     car: Car
     match_score: number
     match_percentage: number
     justification: string
+    tco_breakdown?: TCOBreakdown
+    fits_budget?: boolean
+    budget_percentage?: number
+    financial_health?: {
+        status: 'healthy' | 'caution' | 'high_commitment'
+        percentage: number
+        color: 'green' | 'yellow' | 'red'
+        message: string
+    }
 }
 
 export interface RecommendationResponse {
@@ -248,6 +279,7 @@ export interface QuestionnaireFormData {
     tamanho_familia: number
     tem_criancas: boolean
     tem_idosos: boolean
+    faixa_salarial?: string | null  // "0-3000", "3000-5000", etc.
 
     // Step 3: Prioridades
     prioridades: UserProfile['prioridades']
