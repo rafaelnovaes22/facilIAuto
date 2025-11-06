@@ -4,6 +4,7 @@ import { TCOBreakdownCard } from './TCOBreakdownCard'
 import type { TCOBreakdown } from '@/types'
 
 // Mock TCO data for testing
+// Note: Backend sends percentages as numbers (20 = 20%, not 0.20)
 const mockTCO: TCOBreakdown = {
     financing_monthly: 1500,
     fuel_monthly: 400,
@@ -12,9 +13,9 @@ const mockTCO: TCOBreakdown = {
     ipva_monthly: 100,
     total_monthly: 2500,
     assumptions: {
-        down_payment_percent: 0.2,
+        down_payment_percent: 20,  // Backend sends as 20 (not 0.20)
         financing_months: 60,
-        annual_interest_rate: 0.12,
+        annual_interest_rate: 12,  // Backend sends as 12 (not 0.12)
         monthly_km: 1000,
         fuel_price_per_liter: 5.2,
         fuel_efficiency: 12,

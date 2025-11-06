@@ -16,6 +16,7 @@ from services.car_metrics import CarMetricsCalculator
 from services.app_transport_validator import validator as app_transport_validator
 from services.commercial_vehicle_validator import validator as commercial_vehicle_validator
 from services.tco_calculator import TCOCalculator
+from services.fuel_price_service import fuel_price_service
 
 
 class UnifiedRecommendationEngine:
@@ -709,6 +710,32 @@ class UnifiedRecommendationEngine:
         
         return classified_cars
     
+    def _estimate_fuel_efficiency_by_category(self, category: str) -> float:
+        """
+        Estima consumo de combustível baseado na categoria do veículo
+        Valores baseados em médias de mercado (km/L - gasolina/flex)
+        
+        Args:
+            category: Categoria do veículo
+            
+        Returns:
+            Consumo estimado em km/L
+        """
+        efficiency_by_category = {
+            "Hatch": 13.5,           # Compactos econômicos
+            "Sedan Compacto": 13.0,  # Sedans pequenos
+            "Sedan": 11.5,           # Sedans médios
+            "SUV Compacto": 11.0,    # SUVs compactos
+            "SUV": 9.5,              # SUVs médios/grandes
+            "Pickup": 9.0,           # Pickups
+            "Van": 8.5,              # Vans
+            "Furgão": 9.0,           # Furgões
+            "Crossover": 11.5,       # Crossovers
+            "Minivan": 10.0          # Minivans
+        }
+        
+        return efficiency_by_category.get(category, 11.0)  # Default: 11 km/L
+    
     def calculate_tco_for_car(
         self,
         car: Car,
@@ -726,7 +753,13 @@ class UnifiedRecommendationEngine:
         """
         try:
             # Obter consumo do carro (km/L)
-            fuel_efficiency = getattr(car, 'consumo_cidade', None) or getattr(car, 'consumo', 12.0)
+            # Prioridade: consumo_cidade > consumo_estrada > consumo > estimativa por categoria
+            fuel_efficiency = (
+                getattr(car, 'consumo_cidade', None) or 
+                getattr(car, 'consumo_estrada', None) or 
+                getattr(car, 'consumo', None) or
+                self._estimate_fuel_efficiency_by_category(car.categoria)
+            )
             
             # Calcular idade do carro
             current_year = datetime.now().year
@@ -735,13 +768,17 @@ class UnifiedRecommendationEngine:
             # Obter quilometragem do carro (com fallback para 0 se não disponível)
             car_mileage = getattr(car, 'quilometragem', 0) or 0
             
+            # Obter preço atualizado do combustível
+            # Busca de: variável de ambiente > cache > API > padrão
+            fuel_price = fuel_price_service.get_current_price(state=profile.state or "SP")
+            
             # Criar calculadora de TCO com parâmetros do usuário
             calculator = TCOCalculator(
                 down_payment_percent=0.20,
                 financing_months=60,
                 annual_interest_rate=0.12,
                 monthly_km=1000,  # Padrão, pode ser ajustado baseado no perfil
-                fuel_price_per_liter=5.20,
+                fuel_price_per_liter=fuel_price,
                 state=profile.state or "SP",
                 user_profile="standard"
             )

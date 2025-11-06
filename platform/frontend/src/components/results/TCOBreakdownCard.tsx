@@ -148,7 +148,7 @@ export const TCOBreakdownCard = ({ tco, fits_budget, budget_percentage, financia
                                 icon={FaUniversity}
                                 label="Parcela do financiamento"
                                 amount={tco.financing_monthly}
-                                hint={`${tco.assumptions.financing_months}x com ${tco.assumptions.down_payment_percent * 100}% de entrada`}
+                                hint={`${tco.assumptions.financing_months}x com ${tco.assumptions.down_payment_percent.toFixed(0)}% de entrada`}
                             />
 
                             <Divider />
@@ -235,7 +235,7 @@ export const TCOBreakdownCard = ({ tco, fits_budget, budget_percentage, financia
                                     <HStack justify="space-between">
                                         <Text color="gray.600">Entrada:</Text>
                                         <Text fontWeight="semibold" color="gray.800">
-                                            {(tco.assumptions.down_payment_percent * 100).toFixed(0)}%
+                                            {tco.assumptions.down_payment_percent.toFixed(0)}%
                                         </Text>
                                     </HStack>
                                     <HStack justify="space-between">
@@ -248,7 +248,7 @@ export const TCOBreakdownCard = ({ tco, fits_budget, budget_percentage, financia
                                         <HStack justify="space-between">
                                             <Text color="gray.600">Taxa de juros:</Text>
                                             <Text fontWeight="semibold" color="gray.800">
-                                                {(tco.assumptions.annual_interest_rate * 100).toFixed(1)}% a.a.
+                                                {tco.assumptions.annual_interest_rate.toFixed(1)}% a.a.
                                             </Text>
                                         </HStack>
                                     )}

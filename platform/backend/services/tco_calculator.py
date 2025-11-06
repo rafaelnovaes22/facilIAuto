@@ -40,6 +40,66 @@ class TCOBreakdown(BaseModel):
 class TCOCalculator:
     """Calculadora de TCO (Total Cost of Ownership)"""
     
+    # Preços médios de combustíveis (atualizados em março/2025)
+    # Fonte: ANP (Agência Nacional do Petróleo)
+    # Última atualização: 06/11/2024
+    FUEL_PRICES = {
+        "Gasolina": 6.17,   # R$/litro (março 2025)
+        "Etanol": 4.28,     # R$/litro (fevereiro 2025)
+        "Flex": 5.50,       # Média ponderada (70% gasolina, 30% etanol)
+        "Diesel": 6.00,     # Estimativa para diesel
+        "GNV": 4.50         # Estimativa para GNV
+    }
+    
+    # Data da última atualização dos preços
+    FUEL_PRICES_LAST_UPDATE = "2024-11-06"
+    
+    @staticmethod
+    def load_fuel_prices_from_file(data_dir: str = "data") -> Dict[str, float]:
+        """
+        Carrega preços de combustíveis do arquivo JSON
+        
+        Args:
+            data_dir: Diretório onde está o arquivo fuel_prices.json
+            
+        Returns:
+            Dicionário com preços por tipo de combustível
+        """
+        import json
+        import os
+        
+        fuel_prices_file = os.path.join(data_dir, "fuel_prices.json")
+        
+        if os.path.exists(fuel_prices_file):
+            try:
+                with open(fuel_prices_file, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    prices = {}
+                    for fuel_type, info in data.get("prices", {}).items():
+                        prices[fuel_type] = info.get("price", 0.0)
+                    return prices
+            except Exception as e:
+                print(f"[AVISO] Erro ao carregar fuel_prices.json: {e}")
+                return TCOCalculator.FUEL_PRICES
+        else:
+            print(f"[AVISO] Arquivo {fuel_prices_file} não encontrado, usando preços padrão")
+            return TCOCalculator.FUEL_PRICES
+    
+    @staticmethod
+    def get_fuel_price(fuel_type: str, data_dir: str = "data") -> float:
+        """
+        Obtém preço atualizado de combustível
+        
+        Args:
+            fuel_type: Tipo de combustível (Gasolina, Etanol, Flex, etc)
+            data_dir: Diretório dos dados
+            
+        Returns:
+            Preço por litro em R$
+        """
+        prices = TCOCalculator.load_fuel_prices_from_file(data_dir)
+        return prices.get(fuel_type, prices.get("Flex", 5.50))
+    
     # Custo anual base de manutenção por categoria (dados de mercado)
     MAINTENANCE_COSTS = {
         "Hatch": 1500,
@@ -105,7 +165,8 @@ class TCOCalculator:
         financing_months: int = 60,
         annual_interest_rate: float = 0.12,
         monthly_km: int = 1000,
-        fuel_price_per_liter: float = 5.20,
+        fuel_price_per_liter: float = None,
+        fuel_type: str = "Flex",
         state: str = "SP",
         user_profile: str = "standard"
     ):
@@ -117,7 +178,8 @@ class TCOCalculator:
             financing_months: Número de parcelas (padrão 60)
             annual_interest_rate: Taxa anual de juros (padrão 12%)
             monthly_km: Quilometragem mensal estimada (padrão 1000)
-            fuel_price_per_liter: Preço do combustível (padrão R$ 5,20)
+            fuel_price_per_liter: Preço do combustível (se None, usa preço médio do tipo)
+            fuel_type: Tipo de combustível (Gasolina, Etanol, Flex, Diesel, GNV)
             state: Estado para cálculo de IPVA (padrão SP)
             user_profile: Perfil do segurado (standard, young, senior)
         """
@@ -125,7 +187,14 @@ class TCOCalculator:
         self.financing_months = financing_months
         self.annual_interest_rate = annual_interest_rate
         self.monthly_km = monthly_km
-        self.fuel_price_per_liter = fuel_price_per_liter
+        self.fuel_type = fuel_type
+        
+        # Se preço não foi especificado, usar preço médio do tipo de combustível
+        if fuel_price_per_liter is None:
+            self.fuel_price_per_liter = self.FUEL_PRICES.get(fuel_type, self.FUEL_PRICES["Flex"])
+        else:
+            self.fuel_price_per_liter = fuel_price_per_liter
+        
         self.state = state
         self.user_profile = user_profile
     
@@ -252,10 +321,19 @@ class TCOCalculator:
         total = financing + fuel + maintenance + insurance + ipva
         
         # Construir assumptions com transparência total
+        # Garantir que percentuais sejam exibidos corretamente (0-100)
+        down_payment_display = self.down_payment_percent
+        if down_payment_display <= 1.0:
+            down_payment_display = down_payment_display * 100
+        
+        interest_rate_display = self.annual_interest_rate
+        if interest_rate_display <= 1.0:
+            interest_rate_display = interest_rate_display * 100
+        
         assumptions = {
-            "down_payment_percent": self.down_payment_percent * 100,
+            "down_payment_percent": round(down_payment_display, 1),
             "financing_months": self.financing_months,
-            "annual_interest_rate": self.annual_interest_rate * 100,
+            "annual_interest_rate": round(interest_rate_display, 1),
             "monthly_km": self.monthly_km,
             "fuel_price_per_liter": self.fuel_price_per_liter,
             "fuel_efficiency": fuel_efficiency_km_per_liter,

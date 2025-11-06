@@ -1,0 +1,55 @@
+{
+    "last_update": "2024-11-06",
+    "source": "ANP (Agência Nacional do Petróleo)",
+    "prices": {
+        "Gasolina": {
+            "price": 6.17,
+            "unit": "R$/litro",
+            "reference_date": "março 2025",
+            "notes": "Gasolina comum"
+        },
+        "Etanol": {
+            "price": 4.28,
+            "unit": "R$/litro",
+            "reference_date": "fevereiro 2025",
+            "notes": "Etanol comum"
+        },
+        "Flex": {
+            "price": 5.50,
+            "unit": "R$/litro",
+            "reference_date": "março 2025",
+            "notes": "Média ponderada (70% gasolina, 30% etanol) - calculado automaticamente"
+        },
+        "Diesel": {
+            "price": 6.00,
+            "unit": "R$/litro",
+            "reference_date": "março 2025",
+            "notes": "Diesel S10 - estimativa"
+        },
+        "GNV": {
+            "price": 4.50,
+            "unit": "R$/m³",
+            "reference_date": "março 2025",
+            "notes": "Gás Natural Veicular - estimativa"
+        }
+    },
+    "calculation_notes": {
+        "flex_calculation": "Preço Flex = (0.70 × Gasolina) + (0.30 × Etanol)",
+        "flex_reasoning": "Carros flex geralmente usam 70% gasolina e 30% etanol devido à diferença de eficiência energética"
+    },
+    "update_instructions": {
+        "frequency": "Mensal ou quando houver variação significativa (>5%)",
+        "sources": [
+            "https://www.gov.br/anp/pt-br/assuntos/precos-e-defesa-da-concorrencia/precos",
+            "https://precos.anp.gov.br/"
+        ],
+        "how_to_update": [
+            "1. Acessar site da ANP",
+            "2. Verificar preços médios nacionais ou por estado",
+            "3. Atualizar valores neste arquivo",
+            "4. Atualizar 'last_update' com data atual",
+            "5. Recalcular preço Flex se necessário",
+            "6. Commit e deploy"
+        ]
+    }
+}

@@ -26,6 +26,7 @@ from services.unified_recommendation_engine import UnifiedRecommendationEngine
 from services.feedback_engine import FeedbackEngine
 from services.interaction_service import InteractionService
 from services.app_transport_validator import validator as app_transport_validator
+from services.fuel_price_service import fuel_price_service
 
 # Inicializar app
 app = FastAPI(
@@ -34,10 +35,23 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS
+# CORS - Configuração para produção
+ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Desenvolvimento local
+    "http://localhost:5173",  # Vite dev server
+    "https://*.railway.app",  # Railway (wildcard não funciona, adicionar manualmente)
+    "https://faciliauto-frontend-production.up.railway.app",  # Frontend Railway
+    "https://faciliauto.vercel.app",  # Vercel (se usar)
+]
+
+# Em produção, Railway injeta variáveis de ambiente
+frontend_url = os.getenv("FRONTEND_URL")
+if frontend_url:
+    ALLOWED_ORIGINS.append(frontend_url)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Em produção, especificar domínios
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -629,10 +643,47 @@ async def get_ml_stats():
         )
 
 
+# ⛽ Fuel Price Management Endpoints
+
+@app.get("/fuel-price")
+def get_fuel_price():
+    """
+    Obter preço atual do combustível
+    
+    Returns:
+        Informações sobre o preço atual e sua fonte
+    """
+    return fuel_price_service.get_price_info()
+
+
+@app.post("/fuel-price/update")
+def update_fuel_price(new_price: float):
+    """
+    Atualizar preço do combustível manualmente
+    
+    Args:
+        new_price: Novo preço em R$/L
+        
+    Returns:
+        Confirmação da atualização
+        
+    Note:
+        Requer autenticação em produção
+    """
+    try:
+        fuel_price_service.update_default_price(new_price)
+        return {
+            "success": True,
+            "message": f"Preço atualizado para R$ {new_price:.2f}/L",
+            "price_info": fuel_price_service.get_price_info()
+        }
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
 # Para testes e produção
 if __name__ == "__main__":
     import uvicorn
     # Railway fornece a porta via variável de ambiente PORT
     port = int(os.environ.get("PORT", 8000))
     uvicorn.run(app, host="0.0.0.0", port=port)
-
