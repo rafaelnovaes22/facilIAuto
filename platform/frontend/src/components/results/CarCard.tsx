@@ -63,10 +63,13 @@ export const CarCard = ({ recommendation, onWhatsAppClick, onDetailsClick, posit
   }
 
   const handleWhatsAppClick = () => {
+    // Usar número configurado via variável de ambiente ou número padrão
+    const whatsappNumber = import.meta.env.VITE_WHATSAPP_NUMBER || '5511949105033'
+
     const message = encodeURIComponent(
-      `Olá! Vi o ${car.nome} no FacilIAuto e gostaria de mais informações.`
+      `Olá! Vi o ${car.nome} (${car.ano}) por R$ ${formatCurrency(car.preco)} no FacilIAuto e gostaria de mais informações.`
     )
-    const whatsappUrl = `https://wa.me/${car.dealership_whatsapp}?text=${message}`
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`
 
     window.open(whatsappUrl, '_blank')
 
