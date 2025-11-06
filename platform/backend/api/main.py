@@ -178,10 +178,10 @@ def recommend_cars(profile: UserProfile):
                 detail="Orçamento máximo deve ser maior que o mínimo"
             )
         
-        # Gerar recomendações
+        # Gerar recomendações - apenas os 3 melhores
         recommendations = engine.recommend(
             profile=profile,
-            limit=10,
+            limit=3,
             score_threshold=0.2
         )
         
