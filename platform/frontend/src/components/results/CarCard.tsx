@@ -280,12 +280,32 @@ export const CarCard = ({ recommendation, onWhatsAppClick, onDetailsClick, posit
               </Text>
             </Box>
 
+            {/* Consumption Description */}
+            {tco_breakdown?.assumptions?.fuel_efficiency && (
+              <Box
+                bg="green.50"
+                p={3}
+                borderRadius="md"
+                borderLeftWidth="3px"
+                borderLeftColor="green.500"
+              >
+                <HStack spacing={2}>
+                  <Icon as={FaGasPump} color="green.600" />
+                  <Text fontSize="sm" color="gray.700">
+                    {getConsumptionDescription(tco_breakdown.assumptions.fuel_efficiency)}
+                  </Text>
+                </HStack>
+              </Box>
+            )}
+
             {/* TCO Breakdown */}
             {tco_breakdown && (
               <TCOBreakdownCard
                 tco={tco_breakdown}
                 fits_budget={fits_budget}
                 budget_percentage={budget_percentage}
+                financial_health={financial_health}
+                car_mileage={car.quilometragem}
               />
             )}
 

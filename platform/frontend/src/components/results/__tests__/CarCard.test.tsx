@@ -228,4 +228,138 @@ describe('CarCard', () => {
         const image = container.querySelector('img')
         expect(image).toHaveAttribute('src', expect.stringContaining('placeholder'))
     })
+
+    describe('Consumption description logic', () => {
+        it('should display "Bom consumo" for consumption ≥12 km/L', () => {
+            const recommendationWithGoodConsumption = {
+                ...mockRecommendation,
+                tco_breakdown: {
+                    financing_monthly: 1500,
+                    fuel_monthly: 300,
+                    maintenance_monthly: 200,
+                    insurance_monthly: 150,
+                    ipva_monthly: 100,
+                    total_monthly: 2250,
+                    assumptions: {
+                        down_payment_percent: 0.2,
+                        financing_months: 60,
+                        annual_interest_rate: 0.12,
+                        monthly_km: 1000,
+                        fuel_price_per_liter: 5.2,
+                        fuel_efficiency: 12.5,
+                        state: 'SP',
+                    },
+                },
+            }
+
+            render(
+                <CarCard
+                    recommendation={recommendationWithGoodConsumption}
+                    onWhatsAppClick={mockOnWhatsAppClick}
+                    onDetailsClick={mockOnDetailsClick}
+                />
+            )
+
+            expect(screen.getByText(/Bom consumo na categoria \(12\.5 km\/L\)/i)).toBeInTheDocument()
+        })
+
+        it('should display "Consumo moderado" for consumption between 10-12 km/L', () => {
+            const recommendationWithModerateConsumption = {
+                ...mockRecommendation,
+                tco_breakdown: {
+                    financing_monthly: 1500,
+                    fuel_monthly: 350,
+                    maintenance_monthly: 200,
+                    insurance_monthly: 150,
+                    ipva_monthly: 100,
+                    total_monthly: 2300,
+                    assumptions: {
+                        down_payment_percent: 0.2,
+                        financing_months: 60,
+                        annual_interest_rate: 0.12,
+                        monthly_km: 1000,
+                        fuel_price_per_liter: 5.2,
+                        fuel_efficiency: 11.0,
+                        state: 'SP',
+                    },
+                },
+            }
+
+            render(
+                <CarCard
+                    recommendation={recommendationWithModerateConsumption}
+                    onWhatsAppClick={mockOnWhatsAppClick}
+                    onDetailsClick={mockOnDetailsClick}
+                />
+            )
+
+            expect(screen.getByText(/Consumo moderado \(11\.0 km\/L\)/i)).toBeInTheDocument()
+        })
+
+        it('should display "Consumo elevado" for consumption <10 km/L', () => {
+            const recommendationWithHighConsumption = {
+                ...mockRecommendation,
+                tco_breakdown: {
+                    financing_monthly: 1500,
+                    fuel_monthly: 450,
+                    maintenance_monthly: 200,
+                    insurance_monthly: 150,
+                    ipva_monthly: 100,
+                    total_monthly: 2400,
+                    assumptions: {
+                        down_payment_percent: 0.2,
+                        financing_months: 60,
+                        annual_interest_rate: 0.12,
+                        monthly_km: 1000,
+                        fuel_price_per_liter: 5.2,
+                        fuel_efficiency: 8.5,
+                        state: 'SP',
+                    },
+                },
+            }
+
+            render(
+                <CarCard
+                    recommendation={recommendationWithHighConsumption}
+                    onWhatsAppClick={mockOnWhatsAppClick}
+                    onDetailsClick={mockOnDetailsClick}
+                />
+            )
+
+            expect(screen.getByText(/Consumo elevado \(8\.5 km\/L\)/i)).toBeInTheDocument()
+        })
+
+        it('should display consumption value with one decimal place', () => {
+            const recommendationWithConsumption = {
+                ...mockRecommendation,
+                tco_breakdown: {
+                    financing_monthly: 1500,
+                    fuel_monthly: 300,
+                    maintenance_monthly: 200,
+                    insurance_monthly: 150,
+                    ipva_monthly: 100,
+                    total_monthly: 2250,
+                    assumptions: {
+                        down_payment_percent: 0.2,
+                        financing_months: 60,
+                        annual_interest_rate: 0.12,
+                        monthly_km: 1000,
+                        fuel_price_per_liter: 5.2,
+                        fuel_efficiency: 13.7,
+                        state: 'SP',
+                    },
+                },
+            }
+
+            render(
+                <CarCard
+                    recommendation={recommendationWithConsumption}
+                    onWhatsAppClick={mockOnWhatsAppClick}
+                    onDetailsClick={mockOnDetailsClick}
+                />
+            )
+
+            expect(screen.getByText(/Bom consumo na categoria \(13\.7 km\/L\)/i)).toBeInTheDocument()
+        })
+    })
 })
