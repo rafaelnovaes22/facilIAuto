@@ -18,7 +18,6 @@ import {
 import { FaWhatsapp, FaGasPump, FaCog, FaCalendar, FaTachometerAlt, FaMapMarkerAlt, FaImages, FaCircle, FaExclamationTriangle } from 'react-icons/fa'
 import type { Recommendation } from '@/types'
 import { formatCurrency, formatNumber } from '@/services/api'
-import { ScoreVisual } from './ScoreVisual'
 import { TCOBreakdownCard } from './TCOBreakdownCard'
 import interactionTracker from '@/services/InteractionTracker'
 import { CAR_PLACEHOLDER, CAR_PLACEHOLDER_LOADING } from '@/utils/imagePlaceholder'
