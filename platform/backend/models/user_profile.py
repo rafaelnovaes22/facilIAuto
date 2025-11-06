@@ -21,8 +21,8 @@ class FinancialCapacity(BaseModel):
     )
     max_monthly_tco: Optional[float] = Field(
         None,
-        description="TCO máximo mensal recomendado (30% da renda média)",
-        ge=0
+        description="TCO máximo mensal recomendado (30% da renda média)"
+        # Note: Validation moved to API endpoint for better error messages
     )
     is_disclosed: bool = Field(
         False,

@@ -178,6 +178,35 @@ def recommend_cars(profile: UserProfile):
                 detail="Orçamento máximo deve ser maior que o mínimo"
             )
         
+        # 💰 Validar financial_capacity (Requirements 6.1-6.5)
+        if profile.financial_capacity:
+            fc = profile.financial_capacity
+            
+            # Lista de faixas salariais válidas (case-sensitive)
+            valid_ranges = ["0-3000", "3000-5000", "5000-8000", "8000-12000", "12000+"]
+            
+            # Requirement 6.3: Validar que max_monthly_tco é positivo quando fornecido
+            # (Validação antes de outras para capturar valores negativos)
+            if fc.max_monthly_tco is not None and fc.max_monthly_tco < 0:
+                raise HTTPException(
+                    status_code=400,
+                    detail="max_monthly_tco deve ser maior ou igual a zero"
+                )
+            
+            # Requirement 6.4: Validar consistência - se is_disclosed=true, monthly_income_range deve existir
+            if fc.is_disclosed and not fc.monthly_income_range:
+                raise HTTPException(
+                    status_code=400,
+                    detail="monthly_income_range é obrigatório quando is_disclosed=true"
+                )
+            
+            # Requirement 6.2: Validar que monthly_income_range está em lista de opções válidas (case-sensitive)
+            if fc.monthly_income_range and fc.monthly_income_range not in valid_ranges:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"monthly_income_range inválido. Opções válidas: {', '.join(valid_ranges)}"
+                )
+        
         # Gerar recomendações - apenas os 3 melhores
         recommendations = engine.recommend(
             profile=profile,

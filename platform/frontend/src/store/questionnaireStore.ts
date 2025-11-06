@@ -1,6 +1,43 @@
 // 💻 Tech Lead: State management com Zustand
 import { create } from 'zustand'
-import type { QuestionnaireFormData, UserProfile } from '@/types'
+import type { QuestionnaireFormData, UserProfile, FinancialCapacity } from '@/types'
+
+/**
+ * Calcula a capacidade financeira baseada na faixa salarial informada
+ * @param faixaSalarial - Faixa salarial selecionada pelo usuário
+ * @returns Objeto FinancialCapacity ou null se não informado
+ */
+const calculateFinancialCapacity = (
+  faixaSalarial: string | null | undefined
+): FinancialCapacity | null => {
+  if (!faixaSalarial) {
+    return null
+  }
+
+  // Mapeamento de faixas salariais para intervalos numéricos
+  const incomeBrackets: Record<string, [number, number]> = {
+    '0-3000': [0, 3000],
+    '3000-5000': [3000, 5000],
+    '5000-8000': [5000, 8000],
+    '8000-12000': [8000, 12000],
+    '12000+': [12000, 16000], // Assumindo limite superior de 16000
+  }
+
+  const bracket = incomeBrackets[faixaSalarial]
+  if (!bracket) {
+    return null
+  }
+
+  const [minIncome, maxIncome] = bracket
+  const avgIncome = (minIncome + maxIncome) / 2
+  const maxMonthlyTco = avgIncome * 0.30
+
+  return {
+    monthly_income_range: faixaSalarial,
+    max_monthly_tco: maxMonthlyTco,
+    is_disclosed: true,
+  }
+}
 
 interface QuestionnaireStore {
   // Current step (0-3)
@@ -149,6 +186,7 @@ export const useQuestionnaireStore = create<QuestionnaireStore>((set, get) => ({
       ano_minimo: formData.ano_minimo,
       ano_maximo: formData.ano_maximo,
       primeiro_carro: false,
+      financial_capacity: calculateFinancialCapacity(formData.faixa_salarial),
     }
   },
 }))

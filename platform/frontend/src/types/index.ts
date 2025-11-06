@@ -124,6 +124,12 @@ export interface DealershipStats {
 // USER PROFILE TYPES
 // ============================================
 
+export interface FinancialCapacity {
+    monthly_income_range: string  // "0-3000", "3000-5000", "5000-8000", "8000-12000", "12000+"
+    max_monthly_tco: number       // 30% da renda média
+    is_disclosed: boolean         // true se informado, false se pulou
+}
+
 export interface UserProfile {
     // Orçamento
     orcamento_min: number
@@ -168,6 +174,9 @@ export interface UserProfile {
     // Experiência
     primeiro_carro?: boolean
     experiencia_anos?: number
+
+    // Capacidade financeira
+    financial_capacity?: FinancialCapacity | null
 }
 
 // ============================================

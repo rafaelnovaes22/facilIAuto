@@ -14,8 +14,9 @@ import {
   Icon,
   Image,
   AspectRatio,
+  Tooltip,
 } from '@chakra-ui/react'
-import { FaWhatsapp, FaGasPump, FaCog, FaCalendar, FaTachometerAlt, FaMapMarkerAlt, FaImages, FaCircle, FaExclamationTriangle } from 'react-icons/fa'
+import { FaWhatsapp, FaGasPump, FaCog, FaCalendar, FaTachometerAlt, FaMapMarkerAlt, FaImages, FaCircle, FaExclamationTriangle, FaInfoCircle } from 'react-icons/fa'
 import type { Recommendation } from '@/types'
 import { formatCurrency, formatNumber } from '@/services/api'
 import { TCOBreakdownCard } from './TCOBreakdownCard'
@@ -211,6 +212,45 @@ export const CarCard = ({ recommendation, onWhatsAppClick, onDetailsClick, posit
                     ⭐ Destaque
                   </Badge>
                 )}
+                {/* Budget Status Badge - Only show when fits_budget is not null */}
+                {fits_budget !== null && fits_budget !== undefined && (
+                  <HStack spacing={1}>
+                    <Badge
+                      colorScheme={fits_budget ? 'green' : 'yellow'}
+                      fontSize="xs"
+                      display="flex"
+                      alignItems="center"
+                      gap={1}
+                      data-testid="budget-tag"
+                    >
+                      {fits_budget ? '✓ Dentro do orçamento' : '⚠ Acima do orçamento'}
+                    </Badge>
+                    {tco_breakdown && (
+                      <Tooltip
+                        label={
+                          <VStack align="start" spacing={1} p={1}>
+                            <Text fontSize="xs" fontWeight="bold" mb={1}>Detalhamento do TCO mensal:</Text>
+                            <Text fontSize="xs">Financiamento: {formatCurrency(tco_breakdown.financing_monthly)}</Text>
+                            <Text fontSize="xs">Combustível: {formatCurrency(tco_breakdown.fuel_monthly)}</Text>
+                            <Text fontSize="xs">Manutenção: {formatCurrency(tco_breakdown.maintenance_monthly)}</Text>
+                            <Text fontSize="xs">Seguro: {formatCurrency(tco_breakdown.insurance_monthly)}</Text>
+                            <Text fontSize="xs">IPVA: {formatCurrency(tco_breakdown.ipva_monthly)}</Text>
+                            <Divider my={1} />
+                            <Text fontSize="xs" fontWeight="bold">Total: {formatCurrency(tco_breakdown.total_monthly)}/mês</Text>
+                          </VStack>
+                        }
+                        placement="top"
+                        hasArrow
+                        bg="gray.700"
+                        color="white"
+                      >
+                        <Box as="span" cursor="pointer">
+                          <Icon as={FaInfoCircle} boxSize={3} color="gray.500" />
+                        </Box>
+                      </Tooltip>
+                    )}
+                  </HStack>
+                )}
                 {/* High mileage badge */}
                 {car.quilometragem > 100000 && (
                   <Badge colorScheme="orange" fontSize="xs" display="flex" alignItems="center" gap={1}>
@@ -220,10 +260,30 @@ export const CarCard = ({ recommendation, onWhatsAppClick, onDetailsClick, posit
                 )}
                 {/* Financial health indicator */}
                 {financial_health && (
-                  <Badge colorScheme={financial_health.color} fontSize="xs" display="flex" alignItems="center" gap={1}>
-                    <Icon as={FaCircle} boxSize={2} />
-                    {financial_health.percentage.toFixed(0)}% da renda
-                  </Badge>
+                  <Tooltip
+                    label={
+                      <VStack align="start" spacing={1} p={1}>
+                        <Text fontSize="xs" fontWeight="bold">{financial_health.message}</Text>
+                        <Text fontSize="xs">
+                          {financial_health.status === 'healthy' && 'Este veículo representa um comprometimento saudável da sua renda mensal (até 25%).'}
+                          {financial_health.status === 'caution' && 'Este veículo está no limite recomendado da sua renda mensal (25-30%).'}
+                          {financial_health.status === 'high_commitment' && 'Este veículo ultrapassa o recomendado da sua renda mensal (acima de 30%).'}
+                        </Text>
+                        <Text fontSize="xs" color="gray.300">
+                          Comprometimento: {financial_health.percentage.toFixed(0)}% da renda
+                        </Text>
+                      </VStack>
+                    }
+                    placement="top"
+                    hasArrow
+                    bg="gray.700"
+                    color="white"
+                  >
+                    <Badge colorScheme={financial_health.color} fontSize="xs" display="flex" alignItems="center" gap={1} cursor="pointer">
+                      <Icon as={FaCircle} boxSize={2} />
+                      {financial_health.percentage.toFixed(0)}% da renda
+                    </Badge>
+                  </Tooltip>
                 )}
               </HStack>
 
