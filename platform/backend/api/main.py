@@ -58,10 +58,27 @@ app.add_middleware(
 )
 
 # Inicializar engines
+print("[STARTUP] Inicializando engines...")
 data_dir = os.path.join(backend_dir, "data")
-engine = UnifiedRecommendationEngine(data_dir=data_dir)
-feedback_engine = FeedbackEngine()  # 🤖 FASE 2: Engine de feedback
-interaction_service = InteractionService(data_dir=os.path.join(data_dir, "interactions"))  # 🤖 ML: Coleta de dados
+print(f"[STARTUP] Data directory: {data_dir}")
+
+try:
+    print("[STARTUP] Carregando UnifiedRecommendationEngine...")
+    engine = UnifiedRecommendationEngine(data_dir=data_dir)
+    print(f"[STARTUP] Engine carregado com {len(engine.cars)} carros")
+    
+    print("[STARTUP] Inicializando FeedbackEngine...")
+    feedback_engine = FeedbackEngine()
+    
+    print("[STARTUP] Inicializando InteractionService...")
+    interaction_service = InteractionService(data_dir=os.path.join(data_dir, "interactions"))
+    
+    print("[STARTUP] ✅ Todos os engines inicializados com sucesso!")
+except Exception as e:
+    print(f"[STARTUP] ❌ ERRO ao inicializar engines: {e}")
+    import traceback
+    traceback.print_exc()
+    raise
 
 
 @app.get("/")
