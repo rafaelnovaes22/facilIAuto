@@ -65,7 +65,7 @@ print(f"[STARTUP] Data directory: {data_dir}")
 try:
     print("[STARTUP] Carregando UnifiedRecommendationEngine...")
     engine = UnifiedRecommendationEngine(data_dir=data_dir)
-    print(f"[STARTUP] Engine carregado com {len(engine.cars)} carros")
+    print(f"[STARTUP] Engine carregado com {len(engine.all_cars)} carros")
     
     print("[STARTUP] Inicializando FeedbackEngine...")
     feedback_engine = FeedbackEngine()
