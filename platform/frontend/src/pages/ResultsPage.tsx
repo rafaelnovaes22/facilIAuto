@@ -153,13 +153,45 @@ export default function ResultsPage() {
     setFilterYearMax(null)
   }
 
-  // Loading state
-  if (!data) {
+  // Loading or error state
+  if (!data || !data.profile_summary) {
     return (
       <Box bg="gray.50" minH="100vh" display="flex" alignItems="center" justifyContent="center">
-        <VStack spacing={4}>
-          <Spinner size="xl" color="brand.500" thickness="4px" />
-          <Text color="gray.600">Carregando recomendações...</Text>
+        <VStack spacing={6} textAlign="center" p={8}>
+          {!data ? (
+            <>
+              <Spinner size="xl" color="brand.500" thickness="4px" />
+              <Text color="gray.600">Carregando recomendações...</Text>
+            </>
+          ) : (
+            <>
+              <Alert
+                status="error"
+                variant="subtle"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                textAlign="center"
+                minHeight="200px"
+                borderRadius="xl"
+              >
+                <AlertIcon boxSize="40px" mr={0} />
+                <AlertTitle mt={4} mb={1} fontSize="xl">
+                  Erro ao carregar resultados
+                </AlertTitle>
+                <AlertDescription maxWidth="sm">
+                  Não foi possível processar sua busca. Por favor, tente novamente.
+                </AlertDescription>
+              </Alert>
+              <Button
+                colorScheme="brand"
+                size="lg"
+                onClick={handleResetAndRestart}
+              >
+                Voltar ao início
+              </Button>
+            </>
+          )}
         </VStack>
       </Box>
     )

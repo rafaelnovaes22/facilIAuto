@@ -134,21 +134,57 @@ export default function QuestionnairePage() {
 
     getRecommendations(userProfile, {
       onSuccess: (data) => {
-        toast({
-          title: 'Recomendações encontradas!',
-          description: `${data.total_recommendations} carros perfeitos para você`,
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
-        })
+        // Validar se recebemos dados válidos
+        if (!data || !data.profile_summary) {
+          toast({
+            title: 'Erro ao processar recomendações',
+            description: 'Não foi possível processar sua busca. Tente novamente.',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          })
+          return
+        }
+
+        // Mostrar mensagem apropriada
+        if (data.total_recommendations === 0) {
+          toast({
+            title: 'Nenhum carro encontrado',
+            description: 'Não encontramos carros que atendam aos seus critérios. Vamos ajustar sua busca.',
+            status: 'info',
+            duration: 4000,
+            isClosable: true,
+          })
+        } else {
+          toast({
+            title: 'Recomendações encontradas!',
+            description: `${data.total_recommendations} carros perfeitos para você`,
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+          })
+        }
 
         // Navegar para resultados com dados
         navigate('/resultados', { state: { recommendations: data } })
       },
       onError: (error) => {
+        console.error('Erro na API:', error)
+
+        // Mensagem de erro mais amigável
+        let errorMessage = 'Não foi possível buscar recomendações. Tente novamente.'
+
+        if (error?.detail?.includes('cidade') || error?.detail?.includes('estado')) {
+          errorMessage = 'Não temos concessionárias na região selecionada. Tente outra cidade ou estado.'
+        } else if (error?.status === 500) {
+          errorMessage = 'Erro no servidor. Nossa equipe já foi notificada.'
+        } else if (error?.message) {
+          errorMessage = error.message
+        }
+
         toast({
           title: 'Erro ao buscar recomendações',
-          description: error.message || 'Tente novamente',
+          description: errorMessage,
           status: 'error',
           duration: 5000,
           isClosable: true,
