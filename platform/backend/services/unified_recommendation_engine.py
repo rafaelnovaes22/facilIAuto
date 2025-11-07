@@ -228,8 +228,36 @@ class UnifiedRecommendationEngine:
         
         return filtered
     
+    def filter_by_state(self, cars: List[Car], user_state: Optional[str]) -> List[Car]:
+        """
+        Filtrar carros por estado (hard constraint se especificado)
+        
+        Se o usuário especificar um estado, retorna APENAS carros daquele estado.
+        Se não especificar, retorna todos os carros.
+        
+        Args:
+            cars: Lista de carros
+            user_state: Estado do usuário (ex: "SP", "RJ")
+        
+        Returns:
+            Carros filtrados por estado (ou todos se não especificado)
+        """
+        if not user_state:
+            # Usuário não especificou estado - retornar todos
+            return cars
+        
+        # Filtrar apenas carros do estado especificado
+        filtered = [
+            car for car in cars 
+            if car.dealership_state and car.dealership_state.upper() == user_state.upper()
+        ]
+        
+        print(f"[FILTRO] Estado {user_state}: {len(filtered)} carros (de {len(cars)} totais)")
+        
+        return filtered
+    
     def prioritize_by_location(self, cars: List[Car], user_city: str, user_state: str) -> List[Car]:
-        """Priorizar carros de concessionárias próximas"""
+        """Priorizar carros de concessionárias próximas (dentro do mesmo estado)"""
         same_city = []
         same_state = []
         others = []
@@ -1039,6 +1067,9 @@ class UnifiedRecommendationEngine:
         filtered_cars = self.filter_by_must_haves(filtered_cars, profile.must_haves)
         if profile.must_haves:
             print(f"[FILTRO] Após must-haves {profile.must_haves}: {len(filtered_cars)} carros")
+        
+        # 4.5. 📍 Filtrar por estado (se especificado)
+        filtered_cars = self.filter_by_state(filtered_cars, profile.state)
         
         # 5. 💻 FASE 1: Filtrar por raio geográfico
         filtered_cars = self.filter_by_radius(filtered_cars, profile.city, profile.raio_maximo_km)

@@ -264,24 +264,45 @@ def _recommend_cars_impl(profile: UserProfile):
     for i, rec in enumerate(recommendations[:5], 1):
         print(f"[API]   {i}. {rec['car'].nome} ({rec['car'].ano})")
     
-    # Requirement 2.1: Melhorar resposta quando não há concessionárias na região
+    # Requirement 2.1: Melhorar resposta quando não há recomendações
     if len(recommendations) == 0:
-        print(f"[API] ⚠️ Nenhuma recomendação encontrada para {profile.state}")
-        print(f"[API] Possíveis razões: sem concessionárias no estado ou sem carros no orçamento")
-        
-        # Retornar 200 com lista vazia e mensagem explicativa
-        return {
-            "total_recommendations": 0,
-            "profile_summary": {
-                "budget_range": f"R$ {profile.orcamento_min:,.0f} - R$ {profile.orcamento_max:,.0f}",
-                "usage": profile.uso_principal,
-                "location": f"{profile.city or 'N/A'}, {profile.state or 'N/A'}",
-                "top_priorities": []
-            },
-            "recommendations": [],
-            "message": f"Nenhuma concessionária disponível em {profile.state}",
-            "suggestion": "Tente expandir seu orçamento ou selecionar um estado próximo"
-        }
+        # Verificar se o usuário especificou localização
+        if profile.state:
+            # Usuário especificou estado mas não há carros disponíveis
+            print(f"[API] ⚠️ Nenhuma recomendação encontrada para {profile.state}")
+            print(f"[API] Possíveis razões: sem concessionárias no estado ou sem carros no orçamento")
+            
+            # Retornar 200 com lista vazia e mensagem explicativa
+            return {
+                "total_recommendations": 0,
+                "profile_summary": {
+                    "budget_range": f"R$ {profile.orcamento_min:,.0f} - R$ {profile.orcamento_max:,.0f}",
+                    "usage": profile.uso_principal,
+                    "location": f"{profile.city or 'N/A'}, {profile.state}",
+                    "top_priorities": []
+                },
+                "recommendations": [],
+                "message": f"Nenhuma concessionária disponível em {profile.state}",
+                "suggestion": "Tente expandir seu orçamento ou selecionar um estado próximo"
+            }
+        else:
+            # Usuário NÃO especificou estado - não há carros em NENHUM lugar
+            print(f"[API] ⚠️ Nenhuma recomendação encontrada (sem filtro de localização)")
+            print(f"[API] Possíveis razões: orçamento muito restrito ou filtros muito específicos")
+            
+            # Retornar 200 com lista vazia e mensagem genérica
+            return {
+                "total_recommendations": 0,
+                "profile_summary": {
+                    "budget_range": f"R$ {profile.orcamento_min:,.0f} - R$ {profile.orcamento_max:,.0f}",
+                    "usage": profile.uso_principal,
+                    "location": "Qualquer localização",
+                    "top_priorities": []
+                },
+                "recommendations": [],
+                "message": "Nenhum carro encontrado com os filtros selecionados",
+                "suggestion": "Tente aumentar seu orçamento ou ajustar suas preferências"
+            }
     
     # Extrair top priorities do perfil (do dicionário prioridades)
     priority_labels = {
