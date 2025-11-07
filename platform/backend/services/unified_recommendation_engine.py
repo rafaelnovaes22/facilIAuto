@@ -256,6 +256,34 @@ class UnifiedRecommendationEngine:
         
         return filtered
     
+    def filter_by_city(self, cars: List[Car], user_city: Optional[str]) -> List[Car]:
+        """
+        Filtrar carros por cidade (hard constraint se especificado)
+        
+        Se o usuário especificar uma cidade, retorna APENAS carros daquela cidade.
+        Se não especificar, retorna todos os carros.
+        
+        Args:
+            cars: Lista de carros
+            user_city: Cidade do usuário (ex: "São Paulo", "Rio de Janeiro")
+        
+        Returns:
+            Carros filtrados por cidade (ou todos se não especificado)
+        """
+        if not user_city:
+            # Usuário não especificou cidade - retornar todos
+            return cars
+        
+        # Filtrar apenas carros da cidade especificada (case-insensitive)
+        filtered = [
+            car for car in cars 
+            if car.dealership_city and car.dealership_city.lower() == user_city.lower()
+        ]
+        
+        print(f"[FILTRO] Cidade {user_city}: {len(filtered)} carros (de {len(cars)} totais)")
+        
+        return filtered
+    
     def prioritize_by_location(self, cars: List[Car], user_city: str, user_state: str) -> List[Car]:
         """Priorizar carros de concessionárias próximas (dentro do mesmo estado)"""
         same_city = []
@@ -1070,6 +1098,9 @@ class UnifiedRecommendationEngine:
         
         # 4.5. 📍 Filtrar por estado (se especificado)
         filtered_cars = self.filter_by_state(filtered_cars, profile.state)
+        
+        # 4.6. 📍 Filtrar por cidade (se especificado)
+        filtered_cars = self.filter_by_city(filtered_cars, profile.city)
         
         # 5. 💻 FASE 1: Filtrar por raio geográfico
         filtered_cars = self.filter_by_radius(filtered_cars, profile.city, profile.raio_maximo_km)

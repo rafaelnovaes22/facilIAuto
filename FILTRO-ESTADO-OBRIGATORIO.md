@@ -1,4 +1,4 @@
-# Filtro de Estado: De Priorização para Obrigatório
+# Filtro de Localização (Estado e Cidade): De Priorização para Obrigatório
 
 ## Problema Identificado
 
@@ -6,7 +6,8 @@ O sistema estava **priorizando** carros por localização, mas não **filtrando*
 
 - ❌ Usuário seleciona "AC" (Acre) → Sistema mostra carros de SP
 - ❌ Usuário seleciona "RJ" → Sistema mostra carros de todos os estados
-- ❌ Mensagem "Nenhuma concessionária disponível em X" aparecia mesmo quando havia carros de outros estados
+- ❌ Usuário seleciona "São Paulo, SP" → Sistema mostra carros de outras cidades de SP
+- ❌ Mensagem "Nenhuma concessionária disponível em X" aparecia mesmo quando havia carros de outros lugares
 
 ## Comportamento Anterior
 
@@ -20,19 +21,24 @@ O sistema estava **priorizando** carros por localização, mas não **filtrando*
 
 ## Novo Comportamento
 
-### Quando usuário especifica estado:
+### Quando usuário especifica cidade E estado:
+- Sistema **filtra** e mostra **APENAS** carros daquela cidade
+- Se não houver carros → Mensagem: "Nenhuma concessionária disponível em {cidade}, {estado}"
+- Sugestão: "Tente expandir seu orçamento ou buscar em cidades próximas"
+
+### Quando usuário especifica apenas estado:
 - Sistema **filtra** e mostra **APENAS** carros daquele estado
-- Se não houver carros naquele estado → Mensagem clara: "Nenhuma concessionária disponível em {estado}"
+- Se não houver carros → Mensagem: "Nenhuma concessionária disponível em {estado}"
 - Sugestão: "Tente expandir seu orçamento ou selecionar um estado próximo"
 
-### Quando usuário NÃO especifica estado:
+### Quando usuário NÃO especifica localização:
 - Sistema mostra **todos os carros** de qualquer localização
 - Sem filtro geográfico aplicado
 - Se não houver carros → Mensagem genérica sobre orçamento/filtros
 
 ## Alterações Técnicas
 
-### 1. Novo Método: `filter_by_state()`
+### 1. Novos Métodos: `filter_by_state()` e `filter_by_city()`
 
 **Arquivo**: `platform/backend/services/unified_recommendation_engine.py`
 
@@ -40,33 +46,47 @@ O sistema estava **priorizando** carros por localização, mas não **filtrando*
 def filter_by_state(self, cars: List[Car], user_state: Optional[str]) -> List[Car]:
     """
     Filtrar carros por estado (hard constraint se especificado)
-    
-    Se o usuário especificar um estado, retorna APENAS carros daquele estado.
-    Se não especificar, retorna todos os carros.
     """
     if not user_state:
-        # Usuário não especificou estado - retornar todos
         return cars
     
-    # Filtrar apenas carros do estado especificado
     filtered = [
         car for car in cars 
         if car.dealership_state and car.dealership_state.upper() == user_state.upper()
     ]
     
     print(f"[FILTRO] Estado {user_state}: {len(filtered)} carros (de {len(cars)} totais)")
+    return filtered
+
+def filter_by_city(self, cars: List[Car], user_city: Optional[str]) -> List[Car]:
+    """
+    Filtrar carros por cidade (hard constraint se especificado)
+    """
+    if not user_city:
+        return cars
     
+    filtered = [
+        car for car in cars 
+        if car.dealership_city and car.dealership_city.lower() == user_city.lower()
+    ]
+    
+    print(f"[FILTRO] Cidade {user_city}: {len(filtered)} carros (de {len(cars)} totais)")
     return filtered
 ```
 
-### 2. Aplicação do Filtro no `recommend()`
+### 2. Aplicação dos Filtros no `recommend()`
 
 **Posição**: Após `filter_by_must_haves`, antes de `filter_by_radius`
 
 ```python
 # 4.5. 📍 Filtrar por estado (se especificado)
 filtered_cars = self.filter_by_state(filtered_cars, profile.state)
+
+# 4.6. 📍 Filtrar por cidade (se especificado)
+filtered_cars = self.filter_by_city(filtered_cars, profile.city)
 ```
+
+**Ordem importante**: Primeiro filtra por estado, depois por cidade (mais específico)
 
 ### 3. Lógica de Mensagem na API
 
@@ -75,14 +95,21 @@ filtered_cars = self.filter_by_state(filtered_cars, profile.state)
 ```python
 if len(recommendations) == 0:
     # Verificar se o usuário especificou localização
-    if profile.state:
-        # Usuário especificou estado mas não há carros disponíveis
+    if profile.city and profile.state:
+        # Cidade E estado especificados
+        location_str = f"{profile.city}, {profile.state}"
+        return {
+            "message": f"Nenhuma concessionária disponível em {location_str}",
+            "suggestion": "Tente expandir seu orçamento ou buscar em cidades próximas"
+        }
+    elif profile.state:
+        # Apenas estado especificado
         return {
             "message": f"Nenhuma concessionária disponível em {profile.state}",
             "suggestion": "Tente expandir seu orçamento ou selecionar um estado próximo"
         }
     else:
-        # Usuário NÃO especificou estado - não há carros em NENHUM lugar
+        # Nenhuma localização especificada
         return {
             "message": "Nenhum carro encontrado com os filtros selecionados",
             "suggestion": "Tente aumentar seu orçamento ou ajustar suas preferências"

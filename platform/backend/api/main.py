@@ -266,8 +266,26 @@ def _recommend_cars_impl(profile: UserProfile):
     
     # Requirement 2.1: Melhorar resposta quando não há recomendações
     if len(recommendations) == 0:
-        # Verificar se o usuário especificou localização
-        if profile.state:
+        # Verificar se o usuário especificou localização (cidade E/OU estado)
+        if profile.city and profile.state:
+            # Usuário especificou cidade E estado
+            location_str = f"{profile.city}, {profile.state}"
+            print(f"[API] ⚠️ Nenhuma recomendação encontrada para {location_str}")
+            print(f"[API] Possíveis razões: sem concessionárias na cidade ou sem carros no orçamento")
+            
+            return {
+                "total_recommendations": 0,
+                "profile_summary": {
+                    "budget_range": f"R$ {profile.orcamento_min:,.0f} - R$ {profile.orcamento_max:,.0f}",
+                    "usage": profile.uso_principal,
+                    "location": location_str,
+                    "top_priorities": []
+                },
+                "recommendations": [],
+                "message": f"Nenhuma concessionária disponível em {location_str}",
+                "suggestion": "Tente expandir seu orçamento ou buscar em cidades próximas"
+            }
+        elif profile.state:
             # Usuário especificou estado mas não há carros disponíveis
             print(f"[API] ⚠️ Nenhuma recomendação encontrada para {profile.state}")
             print(f"[API] Possíveis razões: sem concessionárias no estado ou sem carros no orçamento")
