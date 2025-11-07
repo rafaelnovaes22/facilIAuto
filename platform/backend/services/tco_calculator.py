@@ -32,7 +32,7 @@ class TCOBreakdown(BaseModel):
         "monthly_km": 1000,
         "fuel_price_per_liter": 5.20,
         "state": "SP",
-        "annual_interest_rate": 12.0,
+        "annual_interest_rate": 24.0,  # 24% a.a. (2% a.m.) - média mercado 2025
         "fuel_efficiency": 12.0
     }
 
@@ -163,7 +163,7 @@ class TCOCalculator:
         self,
         down_payment_percent: float = 0.20,
         financing_months: int = 60,
-        annual_interest_rate: float = 0.12,
+        annual_interest_rate: float = 0.24,  # 24% a.a. (2% a.m.)
         monthly_km: int = 1000,
         fuel_price_per_liter: float = None,
         fuel_type: str = "Flex",
@@ -176,7 +176,7 @@ class TCOCalculator:
         Args:
             down_payment_percent: Percentual de entrada (padrão 20%)
             financing_months: Número de parcelas (padrão 60)
-            annual_interest_rate: Taxa anual de juros (padrão 12%)
+            annual_interest_rate: Taxa anual de juros (padrão 24% a.a. = 2% a.m.)
             monthly_km: Quilometragem mensal estimada (padrão 1000)
             fuel_price_per_liter: Preço do combustível (se None, usa preço médio do tipo)
             fuel_type: Tipo de combustível (Gasolina, Etanol, Flex, Diesel, GNV)
@@ -226,7 +226,7 @@ class TCOCalculator:
         # Validar taxa de juros (0.5-5% ao mês = 6-60% ao ano)
         monthly_rate = annual_interest_rate / 12
         if monthly_rate < 0.005 or monthly_rate > 0.05:
-            annual_interest_rate = 0.12  # Default 12% ao ano (1% ao mês)
+            annual_interest_rate = 0.24  # Default 24% ao ano (2% ao mês)
         
         return down_payment_percent, financing_months, annual_interest_rate
     

@@ -832,7 +832,7 @@ class UnifiedRecommendationEngine:
             calculator = TCOCalculator(
                 down_payment_percent=0.20,
                 financing_months=60,
-                annual_interest_rate=0.12,
+                annual_interest_rate=0.24,  # 24% a.a. (2% a.m.) - média mercado 2025
                 monthly_km=1000,  # Padrão, pode ser ajustado baseado no perfil
                 fuel_price_per_liter=fuel_price,
                 state=profile.state or "SP",

@@ -106,7 +106,7 @@ class TestTCOBreakdown:
         
         assert tco.assumptions["down_payment_percent"] == 20
         assert tco.assumptions["financing_months"] == 60
-        assert tco.assumptions["annual_interest_rate"] == 12.0
+        assert tco.assumptions["annual_interest_rate"] == 24.0  # Atualizado para 24% a.a.
         assert tco.assumptions["monthly_km"] == 1000
         assert tco.assumptions["fuel_price_per_liter"] == 5.20
         assert tco.assumptions["state"] == "SP"
