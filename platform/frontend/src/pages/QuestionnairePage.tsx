@@ -195,12 +195,13 @@ export default function QuestionnairePage() {
         setApiError(error)
 
         // Implement exponential backoff retry logic for network errors
-        if (
-          (error.code === 'NETWORK_ERROR' ||
-            error.code === 'ECONNABORTED' ||
-            error.code === 'ETIMEDOUT') &&
-          retryCount < MAX_RETRIES
-        ) {
+        const isNetworkError = error.code && (
+          error.code === 'NETWORK_ERROR' ||
+          error.code === 'ECONNABORTED' ||
+          error.code === 'ETIMEDOUT'
+        )
+
+        if (isNetworkError && retryCount < MAX_RETRIES) {
           const nextRetryCount = retryCount + 1
           const backoffDelay = Math.pow(2, nextRetryCount) * 1000 // 2s, 4s, 8s
 
