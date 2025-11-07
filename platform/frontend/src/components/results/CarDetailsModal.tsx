@@ -44,8 +44,8 @@ interface CarDetailsModalProps {
   onClose: () => void
   car: Recommendation['car'] | null
   tco_breakdown?: TCOBreakdown
-  fits_budget?: boolean
-  budget_percentage?: number
+  fits_budget?: boolean | null
+  budget_percentage?: number | null
   userPreferences?: {
     budget: number
     usage: string
