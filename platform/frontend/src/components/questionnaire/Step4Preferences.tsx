@@ -17,25 +17,26 @@ import {
   Icon,
   Divider,
   Badge,
+  Spinner,
+  Center,
 } from '@chakra-ui/react'
+import { useQuery } from '@tanstack/react-query'
 import { useQuestionnaireStore } from '@/store/questionnaireStore'
 import { CATEGORIAS } from '@/types'
-
-const MARCAS_POPULARES = [
-  'Fiat',
-  'Ford',
-  'Volkswagen',
-  'Chevrolet',
-  'Toyota',
-  'Honda',
-  'Hyundai',
-  'Nissan',
-  'Renault',
-  'Jeep',
-]
+import { getBrandsWithModels, queryKeys } from '@/services/api'
 
 export const Step4Preferences = () => {
   const { formData, updateFormData } = useQuestionnaireStore()
+
+  // Buscar marcas e modelos disponíveis da API
+  const { data: brandsModels, isLoading: isLoadingBrands } = useQuery({
+    queryKey: queryKeys.brandsModels,
+    queryFn: getBrandsWithModels,
+    staleTime: 1000 * 60 * 60, // 1 hora (dados raramente mudam)
+  })
+
+  // Extrair lista de marcas ordenadas
+  const availableBrands = brandsModels ? Object.keys(brandsModels).sort() : []
 
   return (
     <VStack spacing={8} align="stretch" maxW="700px" mx="auto">
@@ -88,25 +89,40 @@ export const Step4Preferences = () => {
         <Text fontSize="sm" color="gray.600" mb={3}>
           Tem alguma marca de preferência? (opcional)
         </Text>
-        <CheckboxGroup
-          value={formData.marcas_preferidas || []}
-          onChange={(values) =>
-            updateFormData({ marcas_preferidas: values as string[] })
-          }
-        >
-          <SimpleGrid columns={{ base: 2, md: 3 }} spacing={3}>
-            {MARCAS_POPULARES.map((marca) => (
-              <Checkbox
-                key={marca}
-                value={marca}
-                size="lg"
-                colorScheme="brand"
-              >
-                {marca}
-              </Checkbox>
-            ))}
-          </SimpleGrid>
-        </CheckboxGroup>
+
+        {isLoadingBrands ? (
+          <Center py={8}>
+            <Spinner size="md" color="brand.500" />
+          </Center>
+        ) : (
+          <CheckboxGroup
+            value={formData.marcas_preferidas || []}
+            onChange={(values) =>
+              updateFormData({ marcas_preferidas: values as string[] })
+            }
+          >
+            <SimpleGrid columns={{ base: 2, md: 3 }} spacing={3}>
+              {availableBrands.map((marca) => {
+                const modelCount = brandsModels?.[marca]?.length || 0
+                return (
+                  <Checkbox
+                    key={marca}
+                    value={marca}
+                    size="lg"
+                    colorScheme="brand"
+                  >
+                    <HStack spacing={2}>
+                      <Text>{marca}</Text>
+                      <Badge colorScheme="gray" fontSize="xs">
+                        {modelCount}
+                      </Badge>
+                    </HStack>
+                  </Checkbox>
+                )
+              })}
+            </SimpleGrid>
+          </CheckboxGroup>
+        )}
       </FormControl>
 
       {/* Câmbio */}
