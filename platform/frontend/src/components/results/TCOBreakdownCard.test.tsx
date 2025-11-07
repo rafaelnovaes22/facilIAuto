@@ -61,6 +61,21 @@ describe('TCOBreakdownCard - Budget Status Display', () => {
         expect(withinBudget).not.toBeInTheDocument()
         expect(aboveBudget).not.toBeInTheDocument()
     })
+
+    it('should not display budget badge when fits_budget is null (user did not provide income)', () => {
+        render(
+            <TCOBreakdownCard
+                tco={mockTCO}
+                fits_budget={null}
+            />
+        )
+
+        const withinBudget = screen.queryByText('Dentro do orçamento')
+        const aboveBudget = screen.queryByText('Acima do orçamento')
+
+        expect(withinBudget).not.toBeInTheDocument()
+        expect(aboveBudget).not.toBeInTheDocument()
+    })
 })
 
 describe('TCOBreakdownCard - Financial Health Indicator', () => {

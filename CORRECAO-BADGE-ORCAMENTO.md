@@ -1,126 +1,134 @@
-# Correção: Badge "Acima do Orçamento" Aparecendo Incorretamente
+# Correção: Badge "Acima do Orçamento" no Custo Mensal
 
 ## Problema Identificado
 
-O badge "⚠️ ACIMA DO ORÇAMENTO" estava aparecendo mesmo quando o usuário **não informou a faixa de renda** no Step 2.
+O badge "ACIMA DO ORÇAMENTO" estava aparecendo no card de custo mensal estimado mesmo quando o usuário **não informou a renda mensal** no questionário.
 
 ### Comportamento Incorreto
-- Usuário **não informa** faixa de renda (Step 2)
-- Sistema mostra badge "⚠️ ACIMA DO ORÇAMENTO"
-- ❌ Não faz sentido mostrar "acima do orçamento" se não há orçamento definido!
+- Badge aparecia sempre que `fits_budget` era `false`
+- Não verificava se o usuário havia fornecido informação de renda
 
-### Comportamento Correto
-O badge só deve aparecer quando:
-1. ✅ Usuário **informou** a faixa de renda
-2. ✅ E o custo mensal **ultrapassa** o orçamento calculado
+### Comportamento Esperado
+- Badge deve aparecer **somente** quando:
+  1. Usuário informou a renda mensal (selecionou faixa salarial)
+  2. O custo mensal estimado está acima do orçamento (`fits_budget === false`)
 
-## Causa Raiz
+## Solução Implementada
 
-### Backend (Correto) ✅
-O backend já estava funcionando corretamente:
+### Arquivo Modificado
+`platform/frontend/src/components/results/TCOBreakdownCard.tsx`
 
-**Arquivo**: `platform/backend/services/unified_recommendation_engine.py`
+### Mudanças
 
-```python
-def validate_budget_status(self, tco, profile):
-    # Se não há capacidade financeira informada, retornar None
-    if not profile.financial_capacity or not profile.financial_capacity.is_disclosed:
-        return (None, "Orçamento não informado")
-    
-    # ... resto da lógica
-```
-
-O backend retorna `None` quando o usuário não informou a renda.
-
-### Frontend (Problema) ❌
-
-**Arquivo**: `platform/frontend/src/types/index.ts`
-
-**ANTES**:
+#### 1. Função `getBudgetStatus()`
 ```typescript
-export interface Recommendation {
-    fits_budget?: boolean  // ❌ Não aceita null
-    budget_percentage?: number
-    financial_health?: {
-        // ...
-    }
+// ANTES
+const getBudgetStatus = () => {
+    if (fits_budget === undefined) return null
+    return fits_budget ? 'Dentro do orçamento' : 'Acima do orçamento'
+}
+
+// DEPOIS
+const getBudgetStatus = () => {
+    if (fits_budget === undefined || fits_budget === null) return null
+    return fits_budget ? 'Dentro do orçamento' : 'Acima do orçamento'
 }
 ```
 
-**Problema**: O tipo TypeScript não aceitava `null`, então o valor `null` do backend era convertido para `undefined` ou `false`.
-
-## Correção Aplicada
-
-### Atualizar Tipo TypeScript
-
-**Arquivo**: `platform/frontend/src/types/index.ts`
-
-**DEPOIS**:
+#### 2. Função `getBudgetColor()`
 ```typescript
-export interface Recommendation {
-    fits_budget?: boolean | null  // ✅ Aceita null quando usuário não informou renda
-    budget_percentage?: number | null
-    financial_health?: {
-        status: 'healthy' | 'caution' | 'high_commitment'
-        percentage: number
-        color: 'green' | 'yellow' | 'red'
-        message: string
-    } | null  // ✅ Também pode ser null
+// ANTES
+const getBudgetColor = () => {
+    if (fits_budget === undefined) return 'gray'
+    return fits_budget ? 'green' : 'orange'
+}
+
+// DEPOIS
+const getBudgetColor = () => {
+    if (fits_budget === undefined || fits_budget === null) return 'gray'
+    return fits_budget ? 'green' : 'orange'
 }
 ```
 
-### Verificação no Frontend (Já Estava Correta)
+### Lógica de Exibição
 
-**Arquivo**: `platform/frontend/src/components/results/CarCard.tsx`
+O badge agora segue esta lógica:
+
+| `fits_budget` | Badge Exibido | Cor | Cenário |
+|---------------|---------------|-----|---------|
+| `null` | ❌ Não exibe | - | Usuário não informou renda |
+| `undefined` | ❌ Não exibe | - | Dados não disponíveis |
+| `true` | ✅ "Dentro do orçamento" | Verde | Dentro do orçamento |
+| `false` | ⚠️ "Acima do orçamento" | Laranja | Acima do orçamento |
+
+## Testes Adicionados
+
+Adicionado teste no arquivo `TCOBreakdownCard.test.tsx`:
 
 ```typescript
-{/* Budget Status Badge - Only show when fits_budget is not null */}
-{fits_budget !== null && fits_budget !== undefined && (
-  <HStack spacing={1}>
-    <Badge colorScheme={fits_budget ? 'green' : 'yellow'}>
-      {fits_budget ? '✓ Dentro do orçamento' : '⚠ Acima do orçamento'}
-    </Badge>
-  </HStack>
-)}
+it('should not display budget badge when fits_budget is null (user did not provide income)', () => {
+    render(
+        <TCOBreakdownCard
+            tco={mockTCO}
+            fits_budget={null}
+        />
+    )
+
+    const withinBudget = screen.queryByText('Dentro do orçamento')
+    const aboveBudget = screen.queryByText('Acima do orçamento')
+
+    expect(withinBudget).not.toBeInTheDocument()
+    expect(aboveBudget).not.toBeInTheDocument()
+})
 ```
 
-A condição já estava correta, mas o tipo não permitia `null`.
+## Validação
 
-## Comportamento Após Correção
+### Cenários Testados
 
-### Cenário 1: Usuário NÃO Informou Renda
-- Backend: `fits_budget = None`
-- Frontend: `fits_budget = null`
-- **Badge**: Não aparece ✅
+1. ✅ **Usuário não informou renda** (`fits_budget = null`)
+   - Badge não aparece
+   - Custo mensal é exibido normalmente
 
-### Cenário 2: Usuário Informou Renda + Dentro do Orçamento
-- Backend: `fits_budget = True`
-- Frontend: `fits_budget = true`
-- **Badge**: "✓ Dentro do orçamento" (verde) ✅
+2. ✅ **Usuário informou renda e está dentro do orçamento** (`fits_budget = true`)
+   - Badge verde "Dentro do orçamento" aparece
+   - Indicador de saúde financeira é exibido
 
-### Cenário 3: Usuário Informou Renda + Acima do Orçamento
-- Backend: `fits_budget = False`
-- Frontend: `fits_budget = false`
-- **Badge**: "⚠ Acima do orçamento" (amarelo) ✅
+3. ✅ **Usuário informou renda e está acima do orçamento** (`fits_budget = false`)
+   - Badge laranja "Acima do orçamento" aparece
+   - Indicador de saúde financeira é exibido
 
 ## Impacto
 
-### Antes (Incorreto)
-- ❌ Badge aparecia sempre
-- ❌ Confundia usuários que não informaram renda
-- ❌ Parecia que o sistema estava "forçando" informação de renda
+### UX Melhorada
+- Usuários que pularam a pergunta de renda não veem avisos desnecessários
+- Badge só aparece quando relevante (quando há contexto de renda)
+- Experiência mais limpa e menos confusa
 
-### Depois (Correto)
-- ✅ Badge só aparece quando relevante
-- ✅ Usuário entende que é opcional informar renda
-- ✅ Quando informa, recebe feedback útil sobre orçamento
+### Consistência
+- Alinhado com a lógica do backend que retorna `null` quando renda não é informada
+- Consistente com outros indicadores financeiros (financial_health)
 
-## Arquivo Modificado
+## Arquivos Modificados
 
-`platform/frontend/src/types/index.ts`
-- Interface `Recommendation`
-- Campos: `fits_budget`, `budget_percentage`, `financial_health`
-- Agora aceitam `null` além de `undefined`
+1. `platform/frontend/src/components/results/TCOBreakdownCard.tsx`
+   - Atualizado `getBudgetStatus()` para verificar `null`
+   - Atualizado `getBudgetColor()` para verificar `null`
 
-## Data
-2025-11-07
+2. `platform/frontend/src/components/results/TCOBreakdownCard.test.tsx`
+   - Adicionado teste para cenário `fits_budget = null`
+
+## Status
+
+✅ **Correção Completa**
+- Código atualizado
+- Testes adicionados
+- Sem erros de diagnóstico
+- Pronto para deploy
+
+---
+
+**Data**: 2025-11-07
+**Tipo**: Bug Fix - UX
+**Prioridade**: Média
+**Impacto**: Melhoria na experiência do usuário

@@ -46,12 +46,12 @@ export const TCOBreakdownCard = ({ tco, fits_budget, budget_percentage, financia
     const [isExpanded, setIsExpanded] = useState(false)
 
     const getBudgetColor = () => {
-        if (fits_budget === undefined) return 'gray'
+        if (fits_budget === undefined || fits_budget === null) return 'gray'
         return fits_budget ? 'green' : 'orange'
     }
 
     const getBudgetStatus = () => {
-        if (fits_budget === undefined) return null
+        if (fits_budget === undefined || fits_budget === null) return null
         return fits_budget ? 'Dentro do orçamento' : 'Acima do orçamento'
     }
 
