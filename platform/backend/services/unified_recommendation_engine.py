@@ -1244,8 +1244,17 @@ class UnifiedRecommendationEngine:
             reasons.append(f"Categoria {car.categoria} ideal para {profile.uso_principal}")
         
         # Prioridades atendidas
+        # Economia: verificar consumo REAL, não apenas score relativo
         if profile.prioridades.get("economia", 0) >= 4 and car.score_economia > 0.7:
-            reasons.append("Excelente economia de combustível")
+            # Estimar consumo real do carro
+            consumo_estimado = self.estimate_fuel_consumption(car)
+            
+            # Só mencionar "excelente economia" se consumo for realmente bom (>= 12 km/L)
+            if consumo_estimado >= 12:
+                reasons.append("Excelente economia de combustível")
+            elif consumo_estimado >= 10:
+                reasons.append("Boa economia de combustível para a categoria")
+            # Se consumo < 10 km/L, não mencionar economia (mesmo que score seja alto)
         
         if profile.prioridades.get("espaco", 0) >= 4 and car.score_familia > 0.7:
             reasons.append("Amplo espaço para família")
