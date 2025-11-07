@@ -211,14 +211,14 @@ export interface Recommendation {
     match_percentage: number
     justification: string
     tco_breakdown?: TCOBreakdown
-    fits_budget?: boolean
-    budget_percentage?: number
+    fits_budget?: boolean | null  // null quando usuário não informou renda
+    budget_percentage?: number | null
     financial_health?: {
         status: 'healthy' | 'caution' | 'high_commitment'
         percentage: number
         color: 'green' | 'yellow' | 'red'
         message: string
-    }
+    } | null
 }
 
 export interface RecommendationResponse {
