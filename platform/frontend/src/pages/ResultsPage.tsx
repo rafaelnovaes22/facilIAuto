@@ -17,8 +17,8 @@ import {
 } from '@chakra-ui/react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useState, useMemo } from 'react'
-import { FaArrowLeft, FaFilter, FaSortAmountDown, FaCalendar } from 'react-icons/fa'
-import type { RecommendationResponse, Recommendation } from '@/types'
+import { FaArrowLeft, FaFilter, FaSortAmountDown, FaCalendar, FaRedo, FaEdit, FaMapMarkerAlt } from 'react-icons/fa'
+import type { RecommendationResponse, Recommendation, ApiError } from '@/types'
 import { CarCard } from '@/components/results/CarCard'
 import { CarDetailsModal } from '@/components/results/CarDetailsModal'
 import { ProfileSummary } from '@/components/results/ProfileSummary'
@@ -28,6 +28,7 @@ export default function ResultsPage() {
   const location = useLocation()
   const navigate = useNavigate()
   const data = location.state?.recommendations as RecommendationResponse | undefined
+  const error = location.state?.error as ApiError | undefined
   const resetForm = useQuestionnaireStore((state) => state.resetForm)
 
   // State para filtros e ordenação
@@ -153,45 +154,296 @@ export default function ResultsPage() {
     setFilterYearMax(null)
   }
 
-  // Loading or error state
-  if (!data || !data.profile_summary) {
-    return (
-      <Box bg="gray.50" minH="100vh" display="flex" alignItems="center" justifyContent="center">
-        <VStack spacing={6} textAlign="center" p={8}>
-          {!data ? (
-            <>
-              <Spinner size="xl" color="brand.500" thickness="4px" />
-              <Text color="gray.600">Carregando recomendações...</Text>
-            </>
-          ) : (
-            <>
-              <Alert
-                status="error"
-                variant="subtle"
-                flexDirection="column"
-                alignItems="center"
-                justifyContent="center"
-                textAlign="center"
-                minHeight="200px"
-                borderRadius="xl"
-              >
-                <AlertIcon boxSize="40px" mr={0} />
-                <AlertTitle mt={4} mb={1} fontSize="xl">
-                  Erro ao carregar resultados
-                </AlertTitle>
-                <AlertDescription maxWidth="sm">
-                  Não foi possível processar sua busca. Por favor, tente novamente.
-                </AlertDescription>
-              </Alert>
+  // Handler para retry (recarregar a página para tentar novamente)
+  const handleRetry = () => {
+    console.log('Retry: Usuário tentando novamente após erro')
+    window.location.reload()
+  }
+
+  // Determinar tipo de erro e mensagens apropriadas
+  const getErrorDisplay = (err: ApiError) => {
+    switch (err.code) {
+      case 'ECONNABORTED':
+      case 'ETIMEDOUT':
+        return {
+          status: 'warning' as const,
+          icon: '⏱️',
+          title: 'Servidor não respondeu',
+          message: 'O servidor está demorando para responder. Verifique sua conexão e tente novamente.',
+          actions: (
+            <HStack spacing={4}>
               <Button
+                colorScheme="brand"
+                size="lg"
+                leftIcon={<FaRedo />}
+                onClick={handleRetry}
+              >
+                Tentar Novamente
+              </Button>
+              <Button
+                variant="outline"
+                colorScheme="brand"
+                size="lg"
+                leftIcon={<FaEdit />}
+                onClick={handleEditSearch}
+              >
+                Editar Busca
+              </Button>
+            </HStack>
+          ),
+        }
+
+      case 'NETWORK_ERROR':
+        return {
+          status: 'error' as const,
+          icon: '🔌',
+          title: 'Erro de conexão',
+          message: 'Não foi possível conectar ao servidor. Verifique sua conexão com a internet.',
+          actions: (
+            <HStack spacing={4}>
+              <Button
+                colorScheme="brand"
+                size="lg"
+                leftIcon={<FaRedo />}
+                onClick={handleRetry}
+              >
+                Tentar Novamente
+              </Button>
+              <Button
+                variant="outline"
                 colorScheme="brand"
                 size="lg"
                 onClick={handleResetAndRestart}
               >
-                Voltar ao início
+                Voltar ao Início
               </Button>
-            </>
-          )}
+            </HStack>
+          ),
+        }
+
+      case 'METHOD_NOT_ALLOWED':
+        return {
+          status: 'error' as const,
+          icon: '⚙️',
+          title: 'Erro no servidor',
+          message: 'Problema de configuração da API. Nossa equipe foi notificada e está trabalhando na solução.',
+          actions: (
+            <HStack spacing={4}>
+              <Button
+                colorScheme="brand"
+                size="lg"
+                leftIcon={<FaRedo />}
+                onClick={handleRetry}
+              >
+                Tentar Novamente
+              </Button>
+              <Button
+                variant="outline"
+                colorScheme="brand"
+                size="lg"
+                onClick={handleResetAndRestart}
+              >
+                Nova Busca
+              </Button>
+            </HStack>
+          ),
+        }
+
+      case 'SERVER_ERROR':
+        return {
+          status: 'error' as const,
+          icon: '🔧',
+          title: 'Erro ao processar sua busca',
+          message: err.detail || 'Ocorreu um erro interno no servidor. Por favor, tente novamente.',
+          actions: (
+            <HStack spacing={4}>
+              <Button
+                colorScheme="brand"
+                size="lg"
+                leftIcon={<FaRedo />}
+                onClick={handleRetry}
+              >
+                Tentar Novamente
+              </Button>
+              <Button
+                variant="outline"
+                colorScheme="brand"
+                size="lg"
+                leftIcon={<FaEdit />}
+                onClick={handleEditSearch}
+              >
+                Editar Busca
+              </Button>
+            </HStack>
+          ),
+        }
+
+      case 'VALIDATION_ERROR':
+        return {
+          status: 'warning' as const,
+          icon: '⚠️',
+          title: 'Dados inválidos',
+          message: err.detail || 'Alguns dados informados não são válidos. Por favor, revise sua busca.',
+          actions: (
+            <HStack spacing={4}>
+              <Button
+                colorScheme="brand"
+                size="lg"
+                leftIcon={<FaEdit />}
+                onClick={handleEditSearch}
+              >
+                Editar Busca
+              </Button>
+              <Button
+                variant="outline"
+                colorScheme="brand"
+                size="lg"
+                onClick={handleResetAndRestart}
+              >
+                Nova Busca
+              </Button>
+            </HStack>
+          ),
+        }
+
+      default:
+        return {
+          status: 'error' as const,
+          icon: '❌',
+          title: 'Erro desconhecido',
+          message: err.message || 'Ocorreu um erro inesperado. Por favor, tente novamente.',
+          actions: (
+            <HStack spacing={4}>
+              <Button
+                colorScheme="brand"
+                size="lg"
+                leftIcon={<FaRedo />}
+                onClick={handleRetry}
+              >
+                Tentar Novamente
+              </Button>
+              <Button
+                variant="outline"
+                colorScheme="brand"
+                size="lg"
+                onClick={handleResetAndRestart}
+              >
+                Voltar ao Início
+              </Button>
+            </HStack>
+          ),
+        }
+    }
+  }
+
+  // Verificar se há erro de API
+  if (error) {
+    const errorDisplay = getErrorDisplay(error)
+
+    return (
+      <Box bg="gray.50" minH="100vh" display="flex" alignItems="center" justifyContent="center">
+        <Container maxW="container.md">
+          <VStack spacing={6} textAlign="center" p={8}>
+            <Alert
+              status={errorDisplay.status}
+              variant="subtle"
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+              textAlign="center"
+              minHeight="300px"
+              borderRadius="xl"
+              bg="white"
+              boxShadow="lg"
+            >
+              <Text fontSize="6xl" mb={4}>{errorDisplay.icon}</Text>
+              <AlertTitle mt={4} mb={2} fontSize="2xl" color="gray.800">
+                {errorDisplay.title}
+              </AlertTitle>
+              <AlertDescription maxWidth="md" fontSize="lg" color="gray.600" mb={6}>
+                {errorDisplay.message}
+              </AlertDescription>
+              {errorDisplay.actions}
+            </Alert>
+          </VStack>
+        </Container>
+      </Box>
+    )
+  }
+
+  // Verificar se há recomendações vazias (sem concessionárias no estado)
+  if (data && data.total_recommendations === 0) {
+    const userState = data.profile_summary?.location?.split(',')[1]?.trim() || 'seu estado'
+    const nearbyStates = ['SP', 'RJ', 'MG', 'PR', 'SC', 'RS'] // Estados com mais concessionárias
+
+    return (
+      <Box bg="gray.50" minH="100vh" display="flex" alignItems="center" justifyContent="center">
+        <Container maxW="container.md">
+          <VStack spacing={6} textAlign="center" p={8}>
+            <Alert
+              status="info"
+              variant="subtle"
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+              textAlign="center"
+              minHeight="400px"
+              borderRadius="xl"
+              bg="white"
+              boxShadow="lg"
+            >
+              <Text fontSize="6xl" mb={4}>🗺️</Text>
+              <AlertTitle mt={4} mb={2} fontSize="2xl" color="gray.800">
+                Nenhuma concessionária em {userState}
+              </AlertTitle>
+              <AlertDescription maxWidth="md" fontSize="lg" color="gray.600" mb={4}>
+                Infelizmente ainda não temos concessionárias parceiras na sua região.
+              </AlertDescription>
+
+              <VStack spacing={3} mb={6} align="start" bg="blue.50" p={4} borderRadius="md" w="full" maxW="md">
+                <HStack>
+                  <FaMapMarkerAlt color="blue" />
+                  <Text fontSize="md" fontWeight="bold" color="blue.800">
+                    Estados com concessionárias disponíveis:
+                  </Text>
+                </HStack>
+                <Text fontSize="sm" color="blue.700">
+                  {nearbyStates.join(', ')}
+                </Text>
+              </VStack>
+
+              <HStack spacing={4}>
+                <Button
+                  colorScheme="brand"
+                  size="lg"
+                  leftIcon={<FaEdit />}
+                  onClick={handleEditSearch}
+                >
+                  Editar Localização
+                </Button>
+                <Button
+                  variant="outline"
+                  colorScheme="brand"
+                  size="lg"
+                  onClick={handleResetAndRestart}
+                >
+                  Nova Busca
+                </Button>
+              </HStack>
+            </Alert>
+          </VStack>
+        </Container>
+      </Box>
+    )
+  }
+
+  // Loading state
+  if (!data || !data.profile_summary) {
+    return (
+      <Box bg="gray.50" minH="100vh" display="flex" alignItems="center" justifyContent="center">
+        <VStack spacing={6} textAlign="center" p={8}>
+          <Spinner size="xl" color="brand.500" thickness="4px" />
+          <Text color="gray.600">Carregando recomendações...</Text>
         </VStack>
       </Box>
     )

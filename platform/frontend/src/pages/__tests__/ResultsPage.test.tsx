@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, within } from '@testing-library/react'
 import { BrowserRouter, MemoryRouter } from 'react-router-dom'
 import ResultsPage from '../ResultsPage'
-import type { RecommendationResponse } from '@/types'
+import type { RecommendationResponse, ApiError } from '@/types'
 
 // Mock useNavigate
 const mockNavigate = vi.fn()
@@ -388,5 +388,143 @@ describe('ResultsPage', () => {
         expect(screen.queryByText('Fiat Cronos Drive')).not.toBeInTheDocument()
         expect(screen.queryByText('Toyota Yaris XLS')).not.toBeInTheDocument()
         expect(screen.getByText(/0 resultado\(s\)/i)).toBeInTheDocument()
+    })
+
+    // Error handling tests
+    describe('Error Handling', () => {
+        const renderWithError = (error: ApiError) => {
+            return render(
+                <MemoryRouter
+                    initialEntries={[
+                        {
+                            pathname: '/resultados',
+                            state: { error },
+                        },
+                    ]}
+                >
+                    <ResultsPage />
+                </MemoryRouter>
+            )
+        }
+
+        it('should display network timeout error', () => {
+            const error: ApiError = {
+                message: 'Timeout',
+                status: 0,
+                code: 'ECONNABORTED',
+            }
+
+            renderWithError(error)
+
+            expect(screen.getByText(/Servidor não respondeu/i)).toBeInTheDocument()
+            expect(screen.getByText(/está demorando para responder/i)).toBeInTheDocument()
+            expect(screen.getByText(/Tentar Novamente/i)).toBeInTheDocument()
+            expect(screen.getByText(/Editar Busca/i)).toBeInTheDocument()
+        })
+
+        it('should display network error', () => {
+            const error: ApiError = {
+                message: 'Network Error',
+                status: 0,
+                code: 'NETWORK_ERROR',
+            }
+
+            renderWithError(error)
+
+            expect(screen.getByText(/Erro de conexão/i)).toBeInTheDocument()
+            expect(screen.getByText(/Não foi possível conectar ao servidor/i)).toBeInTheDocument()
+            expect(screen.getByText(/Tentar Novamente/i)).toBeInTheDocument()
+            expect(screen.getByText(/Voltar ao Início/i)).toBeInTheDocument()
+        })
+
+        it('should display method not allowed error', () => {
+            const error: ApiError = {
+                message: 'Method Not Allowed',
+                status: 405,
+                code: 'METHOD_NOT_ALLOWED',
+            }
+
+            renderWithError(error)
+
+            expect(screen.getByText(/Erro no servidor/i)).toBeInTheDocument()
+            expect(screen.getByText(/Problema de configuração da API/i)).toBeInTheDocument()
+            expect(screen.getByText(/equipe foi notificada/i)).toBeInTheDocument()
+            expect(screen.getByText(/Tentar Novamente/i)).toBeInTheDocument()
+        })
+
+        it('should display server error', () => {
+            const error: ApiError = {
+                message: 'Server Error',
+                detail: 'Internal server error',
+                status: 500,
+                code: 'SERVER_ERROR',
+            }
+
+            renderWithError(error)
+
+            expect(screen.getByText(/Erro ao processar sua busca/i)).toBeInTheDocument()
+            expect(screen.getByText(/Internal server error/i)).toBeInTheDocument()
+            expect(screen.getByText(/Tentar Novamente/i)).toBeInTheDocument()
+            expect(screen.getByText(/Editar Busca/i)).toBeInTheDocument()
+        })
+
+        it('should display validation error', () => {
+            const error: ApiError = {
+                message: 'Validation Error',
+                detail: 'Invalid budget range',
+                status: 400,
+                code: 'VALIDATION_ERROR',
+            }
+
+            renderWithError(error)
+
+            expect(screen.getByText(/Dados inválidos/i)).toBeInTheDocument()
+            expect(screen.getByText(/Invalid budget range/i)).toBeInTheDocument()
+            expect(screen.getByText(/Editar Busca/i)).toBeInTheDocument()
+            expect(screen.getByText(/Nova Busca/i)).toBeInTheDocument()
+        })
+
+        it('should display unknown error', () => {
+            const error: ApiError = {
+                message: 'Unknown Error',
+                status: 503,
+            }
+
+            renderWithError(error)
+
+            expect(screen.getByText(/Erro desconhecido/i)).toBeInTheDocument()
+            expect(screen.getByText(/Unknown Error/i)).toBeInTheDocument()
+            expect(screen.getByText(/Tentar Novamente/i)).toBeInTheDocument()
+        })
+
+        it('should display no dealerships error with nearby states', () => {
+            const emptyRecommendations: RecommendationResponse = {
+                ...mockRecommendations,
+                recommendations: [],
+                total_recommendations: 0,
+                profile_summary: {
+                    ...mockRecommendations.profile_summary,
+                    location: 'Manaus, AM',
+                },
+            }
+
+            render(
+                <MemoryRouter
+                    initialEntries={[
+                        {
+                            pathname: '/resultados',
+                            state: { recommendations: emptyRecommendations },
+                        },
+                    ]}
+                >
+                    <ResultsPage />
+                </MemoryRouter>
+            )
+
+            expect(screen.getByText(/Nenhuma concessionária em AM/i)).toBeInTheDocument()
+            expect(screen.getByText(/Estados com concessionárias disponíveis/i)).toBeInTheDocument()
+            expect(screen.getByText(/SP, RJ, MG, PR, SC, RS/i)).toBeInTheDocument()
+            expect(screen.getByText(/Editar Localização/i)).toBeInTheDocument()
+        })
     })
 })

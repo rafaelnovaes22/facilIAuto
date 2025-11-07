@@ -54,6 +54,11 @@ out/
 .env.test.local
 .env.production.local
 
+# Keep default environment files (non-sensitive defaults)
+!.env.development
+!.env.production
+!.env.example
+
 # Logs
 logs
 *.log

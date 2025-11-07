@@ -250,6 +250,8 @@ class InteractionTracker {
     }
 }
 
-// Exportar instância singleton
-const interactionTracker = new InteractionTracker();
+// Exportar instância singleton com API URL do ambiente
+import { API_URL } from '@/config/env';
+
+const interactionTracker = new InteractionTracker(API_URL);
 export default interactionTracker;

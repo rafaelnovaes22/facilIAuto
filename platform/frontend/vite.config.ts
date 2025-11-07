@@ -13,10 +13,13 @@ export default defineConfig({
     server: {
         port: 3000,
         proxy: {
+            // Proxy /api requests to backend in development
+            // The /api prefix is forwarded as-is to the backend
+            // Example: /api/recommend -> http://localhost:8000/api/recommend
             '/api': {
                 target: 'http://localhost:8000',
                 changeOrigin: true,
-                rewrite: (path) => path.replace(/^\/api/, ''),
+                // No rewrite - forward /api prefix to backend
             },
         },
     },

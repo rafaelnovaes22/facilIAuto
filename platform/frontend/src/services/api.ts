@@ -1,5 +1,6 @@
 // 🤖 AI Engineer + 💻 Tech Lead: Service layer com guardrails
-import axios, { AxiosError, AxiosInstance } from 'axios'
+import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios'
+import { API_URL } from '@/config/env'
 import type {
     Car,
     CarFilter,
@@ -12,11 +13,18 @@ import type {
 } from '@/types'
 
 // ============================================
+// SESSION ID FOR TRACEABILITY
+// ============================================
+
+// Generate unique session ID for tracking requests across the user session
+const SESSION_ID = `session_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`
+
+// ============================================
 // AXIOS INSTANCE CONFIG
 // ============================================
 
 const api: AxiosInstance = axios.create({
-    baseURL: '/api', // Proxy configurado no Vite
+    baseURL: API_URL, // Use validated environment variable from config
     timeout: 30000, // 30s timeout
     headers: {
         'Content-Type': 'application/json',
@@ -24,22 +32,125 @@ const api: AxiosInstance = axios.create({
 })
 
 // ============================================
-// INTERCEPTORS - ERROR HANDLING
+// INTERCEPTORS - REQUEST LOGGING
 // ============================================
 
-// 🤖 AI Engineer: Guardrails de erro
-api.interceptors.response.use(
-    response => response,
-    (error: AxiosError<ApiError>) => {
-        // Tratar erros de forma consistente
-        const apiError: ApiError = {
-            message: error.response?.data?.message || error.message || 'Erro desconhecido',
-            detail: error.response?.data?.detail,
-            status: error.response?.status || 500,
-        }
+// Request interceptor for detailed logging
+api.interceptors.request.use(
+    (config: InternalAxiosRequestConfig) => {
+        const timestamp = new Date().toISOString()
+        const method = config.method?.toUpperCase() || 'UNKNOWN'
+        const url = `${config.baseURL}${config.url}`
 
-        // Log para debugging (remover em produção)
-        console.error('API Error:', apiError)
+        console.log(`[API Request] ${timestamp} | session_id: ${SESSION_ID} | ${method} ${url}`, {
+            params: config.params,
+            data: config.data,
+        })
+
+        return config
+    },
+    (error: AxiosError) => {
+        console.error(`[API Request Error] session_id: ${SESSION_ID}`, error)
+        return Promise.reject(error)
+    }
+)
+
+// ============================================
+// INTERCEPTORS - RESPONSE ERROR HANDLING
+// ============================================
+
+// Response interceptor with specific error handling by type
+api.interceptors.response.use(
+    response => {
+        const timestamp = new Date().toISOString()
+        const status = response.status
+        const url = response.config.url
+
+        console.log(`[API Response] ${timestamp} | session_id: ${SESSION_ID} | ${status} ${url}`)
+
+        return response
+    },
+    (error: AxiosError<ApiError>) => {
+        const timestamp = new Date().toISOString()
+
+        // Determine error type and create appropriate error object
+        let apiError: ApiError
+
+        if (error.code === 'ECONNABORTED' || error.code === 'ETIMEDOUT') {
+            // Network timeout
+            apiError = {
+                message: 'Servidor não respondeu. Verifique sua conexão.',
+                detail: 'Timeout ao conectar com o servidor',
+                status: 0,
+                code: error.code,
+            }
+            console.error(`[API Error - Timeout] ${timestamp} | session_id: ${SESSION_ID}`, {
+                code: error.code,
+                url: error.config?.url,
+            })
+        } else if (!error.response) {
+            // Network error (no response received)
+            apiError = {
+                message: 'Erro de conexão com servidor',
+                detail: 'Não foi possível conectar ao servidor. Verifique sua conexão.',
+                status: 0,
+                code: 'NETWORK_ERROR',
+            }
+            console.error(`[API Error - Network] ${timestamp} | session_id: ${SESSION_ID}`, {
+                message: error.message,
+                url: error.config?.url,
+            })
+        } else if (error.response.status === 405) {
+            // Method not allowed - configuration issue
+            apiError = {
+                message: 'Erro no servidor',
+                detail: 'Problema de configuração da API. Nossa equipe foi notificada.',
+                status: 405,
+                code: 'METHOD_NOT_ALLOWED',
+            }
+            console.error(`[API Error - 405] ${timestamp} | session_id: ${SESSION_ID}`, {
+                method: error.config?.method,
+                url: error.config?.url,
+                baseURL: error.config?.baseURL,
+            })
+        } else if (error.response.status === 500) {
+            // Server error
+            apiError = {
+                message: 'Erro ao processar sua busca',
+                detail: error.response.data?.detail || 'Erro interno do servidor',
+                status: 500,
+                code: 'SERVER_ERROR',
+            }
+            console.error(`[API Error - 500] ${timestamp} | session_id: ${SESSION_ID}`, {
+                url: error.config?.url,
+                detail: error.response.data?.detail,
+            })
+        } else if (error.response.status === 400) {
+            // Bad request - validation error
+            apiError = {
+                message: error.response.data?.message || 'Dados inválidos',
+                detail: error.response.data?.detail || 'Verifique os dados informados',
+                status: 400,
+                code: 'VALIDATION_ERROR',
+            }
+            console.error(`[API Error - 400] ${timestamp} | session_id: ${SESSION_ID}`, {
+                url: error.config?.url,
+                detail: error.response.data?.detail,
+            })
+        } else {
+            // Other errors
+            apiError = {
+                message: error.response.data?.message || error.message || 'Erro desconhecido',
+                detail: error.response.data?.detail,
+                status: error.response.status || 500,
+                code: 'UNKNOWN_ERROR',
+            }
+            console.error(`[API Error - ${error.response.status}] ${timestamp} | session_id: ${SESSION_ID}`, {
+                url: error.config?.url,
+                status: error.response.status,
+                detail: error.response.data,
+            })
+        }
 
         return Promise.reject(apiError)
     }
@@ -125,6 +236,7 @@ export const getRecommendations = async (
         // 🤖 AI Engineer: Validar antes de enviar
         validateUserProfile(profile)
 
+        // Use /recommend (without /api prefix) - backend has both routes but /recommend is primary
         const { data } = await api.post<RecommendationResponse>(
             '/recommend',
             profile
