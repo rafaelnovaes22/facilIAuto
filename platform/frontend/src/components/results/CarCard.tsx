@@ -54,11 +54,11 @@ export const CarCard = ({ recommendation, onWhatsAppClick, onDetailsClick, posit
   // Helper function for consumption description
   const getConsumptionDescription = (consumption: number): string => {
     if (consumption >= 12) {
-      return `Bom consumo na categoria (${consumption.toFixed(1)} km/L)`
+      return `Bom consumo na categoria (${consumption.toFixed(1)} km/L com gasolina)`
     } else if (consumption >= 10) {
-      return `Consumo moderado (${consumption.toFixed(1)} km/L)`
+      return `Consumo moderado (${consumption.toFixed(1)} km/L com gasolina)`
     } else {
-      return `Consumo elevado (${consumption.toFixed(1)} km/L)`
+      return `Consumo elevado (${consumption.toFixed(1)} km/L com gasolina)`
     }
   }
 

@@ -12,17 +12,21 @@ from pathlib import Path
 
 class FuelPriceService:
     """
-    Serviço para obter preço atualizado de combustível
+    Serviço para obter preço atualizado de GASOLINA
     
     Fontes (em ordem de prioridade):
     1. Variável de ambiente FUEL_PRICE
     2. Cache local (válido por 7 dias)
     3. API externa (se configurada)
-    4. Valor padrão (R$ 5,89)
+    4. Valor padrão (R$ 6,17 - gasolina)
+    
+    Nota: Sempre usa preço da GASOLINA para cálculos de TCO,
+    independente do tipo de combustível do veículo (Flex, Etanol, etc)
     """
     
-    # Preço padrão (atualizado manualmente quando necessário)
-    DEFAULT_PRICE = 5.89  # R$ 5,89/L (novembro 2024)
+    # Preço padrão de GASOLINA (atualizado manualmente quando necessário)
+    # Fonte: ANP - Agência Nacional do Petróleo
+    DEFAULT_PRICE = 6.17  # R$ 6,17/L gasolina (março 2025)
     
     # Duração do cache (7 dias)
     CACHE_DURATION_DAYS = 7
@@ -34,13 +38,13 @@ class FuelPriceService:
     
     def get_current_price(self, state: str = "SP") -> float:
         """
-        Obtém preço atual do combustível
+        Obtém preço atual da GASOLINA
         
         Args:
             state: Estado para buscar preço regional (futuro)
             
         Returns:
-            Preço do combustível em R$/L
+            Preço da gasolina em R$/L
         """
         # 1. Tentar variável de ambiente (para deploy fácil)
         env_price = os.getenv("FUEL_PRICE")

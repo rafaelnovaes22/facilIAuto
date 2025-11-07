@@ -156,9 +156,9 @@ export const TCOBreakdownCard = ({ tco, fits_budget, budget_percentage, financia
                             {/* Fuel */}
                             <TCOItem
                                 icon={FaGasPump}
-                                label="Combustível"
+                                label="Combustível (gasolina)"
                                 amount={tco.fuel_monthly}
-                                hint={`${tco.assumptions.monthly_km} km/mês, R$ ${tco.assumptions.fuel_price_per_liter.toFixed(2)}/L`}
+                                hint={`${tco.assumptions.monthly_km} km/mês, R$ ${tco.assumptions.fuel_price_per_liter.toFixed(2)}/L gasolina`}
                             />
 
                             <Divider />
