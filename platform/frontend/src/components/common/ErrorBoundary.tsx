@@ -1,17 +1,30 @@
-// 💻 Tech Lead: Root error boundary component
-import { Component, ErrorInfo, ReactNode } from 'react'
-import { Box, Button, Heading, Text, VStack, Icon } from '@chakra-ui/react'
-import { FiAlertTriangle } from 'react-icons/fi'
+// 💻 Tech Lead: Error Boundary for catching React errors
+import React, { Component, ErrorInfo, ReactNode } from 'react'
+import {
+    Box,
+    Container,
+    VStack,
+    Heading,
+    Text,
+    Button,
+    Alert,
+    AlertIcon,
+    AlertTitle,
+    AlertDescription,
+    Code,
+} from '@chakra-ui/react'
+import { FaHome, FaRedo } from 'react-icons/fa'
 
 interface Props {
     children: ReactNode
     fallback?: ReactNode
-    onReset?: () => void
+    onError?: (error: Error, errorInfo: ErrorInfo) => void
 }
 
 interface State {
     hasError: boolean
     error: Error | null
+    errorInfo: ErrorInfo | null
 }
 
 class ErrorBoundary extends Component<Props, State> {
@@ -20,77 +33,167 @@ class ErrorBoundary extends Component<Props, State> {
         this.state = {
             hasError: false,
             error: null,
+            errorInfo: null,
         }
     }
 
     static getDerivedStateFromError(error: Error): State {
+        // Update state so the next render will show the fallback UI
         return {
             hasError: true,
             error,
+            errorInfo: null,
         }
     }
 
-    componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+    componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+        // Log error to console
         console.error('ErrorBoundary caught an error:', error, errorInfo)
-    }
 
-    handleReset = (): void => {
-        this.setState({ hasError: false, error: null })
-        if (this.props.onReset) {
-            this.props.onReset()
-        } else {
-            window.location.href = '/'
+        // Update state with error details
+        this.setState({
+            error,
+            errorInfo,
+        })
+
+        // Call optional error handler
+        if (this.props.onError) {
+            this.props.onError(error, errorInfo)
         }
+
+        // Here you could also send error to monitoring service (Sentry, etc)
     }
 
-    render(): ReactNode {
+    handleReset = () => {
+        this.setState({
+            hasError: false,
+            error: null,
+            errorInfo: null,
+        })
+    }
+
+    handleGoHome = () => {
+        window.location.href = '/'
+    }
+
+    render() {
         if (this.state.hasError) {
+            // Custom fallback UI
             if (this.props.fallback) {
                 return this.props.fallback
             }
 
+            // Default error UI
             return (
-                <Box
-                    minH="100vh"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    bg="gray.50"
-                    px={4}
-                >
-                    <VStack spacing={6} maxW="md" textAlign="center">
-                        <Icon as={FiAlertTriangle} boxSize={16} color="red.500" />
-                        <Heading size="lg" color="gray.800">
-                            Ops! Algo deu errado
-                        </Heading>
-                        <Text color="gray.600" fontSize="md">
-                            Encontramos um problema inesperado. Não se preocupe, você pode
-                            tentar novamente.
-                        </Text>
-                        {process.env.NODE_ENV === 'development' && this.state.error && (
-                            <Box
-                                bg="red.50"
-                                p={4}
-                                borderRadius="md"
-                                borderWidth="1px"
-                                borderColor="red.200"
-                                w="full"
-                                textAlign="left"
+                <Box bg="gray.50" minH="100vh" py={10}>
+                    <Container maxW="container.md">
+                        <VStack spacing={6} align="stretch">
+                            <Alert
+                                status="error"
+                                variant="subtle"
+                                flexDirection="column"
+                                alignItems="center"
+                                justifyContent="center"
+                                textAlign="center"
+                                borderRadius="xl"
+                                p={8}
                             >
-                                <Text fontSize="sm" fontFamily="mono" color="red.800">
-                                    {this.state.error.message}
-                                </Text>
-                            </Box>
-                        )}
-                        <Button
-                            size="lg"
-                            onClick={this.handleReset}
-                            colorScheme="brand"
-                            w="full"
-                        >
-                            Voltar para o início
-                        </Button>
-                    </VStack>
+                                <AlertIcon boxSize="50px" mr={0} />
+                                <AlertTitle mt={4} mb={2} fontSize="2xl">
+                                    Ops! Algo deu errado
+                                </AlertTitle>
+                                <AlertDescription maxWidth="lg" mb={6}>
+                                    Ocorreu um erro inesperado. Nossa equipe foi notificada e
+                                    estamos trabalhando para resolver o problema.
+                                </AlertDescription>
+
+                                <VStack spacing={4} w="full">
+                                    <Button
+                                        colorScheme="blue"
+                                        size="lg"
+                                        leftIcon={<FaRedo />}
+                                        onClick={this.handleReset}
+                                    >
+                                        Tentar Novamente
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        size="lg"
+                                        leftIcon={<FaHome />}
+                                        onClick={this.handleGoHome}
+                                    >
+                                        Voltar para Início
+                                    </Button>
+                                </VStack>
+                            </Alert>
+
+                            {/* Error details (only in development) */}
+                            {import.meta.env.DEV && this.state.error && (
+                                <Box
+                                    bg="white"
+                                    p={6}
+                                    borderRadius="xl"
+                                    boxShadow="md"
+                                    maxH="400px"
+                                    overflowY="auto"
+                                >
+                                    <Heading size="md" mb={4} color="red.600">
+                                        Detalhes do Erro (Dev Mode)
+                                    </Heading>
+                                    <VStack align="stretch" spacing={4}>
+                                        <Box>
+                                            <Text fontWeight="bold" mb={2}>
+                                                Mensagem:
+                                            </Text>
+                                            <Code
+                                                display="block"
+                                                whiteSpace="pre-wrap"
+                                                p={3}
+                                                borderRadius="md"
+                                                colorScheme="red"
+                                            >
+                                                {this.state.error.message}
+                                            </Code>
+                                        </Box>
+                                        {this.state.error.stack && (
+                                            <Box>
+                                                <Text fontWeight="bold" mb={2}>
+                                                    Stack Trace:
+                                                </Text>
+                                                <Code
+                                                    display="block"
+                                                    whiteSpace="pre-wrap"
+                                                    p={3}
+                                                    borderRadius="md"
+                                                    fontSize="xs"
+                                                    colorScheme="red"
+                                                >
+                                                    {this.state.error.stack}
+                                                </Code>
+                                            </Box>
+                                        )}
+                                        {this.state.errorInfo && (
+                                            <Box>
+                                                <Text fontWeight="bold" mb={2}>
+                                                    Component Stack:
+                                                </Text>
+                                                <Code
+                                                    display="block"
+                                                    whiteSpace="pre-wrap"
+                                                    p={3}
+                                                    borderRadius="md"
+                                                    fontSize="xs"
+                                                    colorScheme="red"
+                                                >
+                                                    {this.state.errorInfo.componentStack}
+                                                </Code>
+                                            </Box>
+                                        )}
+                                    </VStack>
+                                </Box>
+                            )}
+                        </VStack>
+                    </Container>
                 </Box>
             )
         }

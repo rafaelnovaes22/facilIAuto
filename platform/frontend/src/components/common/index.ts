@@ -1,5 +1,4 @@
 // 💻 Tech Lead: Common components barrel export
-export { default as ErrorBoundary } from './ErrorBoundary'
 export { default as PageErrorBoundary } from './PageErrorBoundary'
 export { default as LoadingSpinner } from './LoadingSpinner'
 export { default as SkeletonCard } from './SkeletonCard'

@@ -6,10 +6,15 @@ import {
   HStack,
   Button,
   useToast,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  Text,
 } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
-import { FaArrowLeft, FaArrowRight, FaCheck } from 'react-icons/fa'
+import { useEffect, useState } from 'react'
+import { FaArrowLeft, FaArrowRight, FaCheck, FaRedo } from 'react-icons/fa'
 import { useQuestionnaireStore } from '@/store/questionnaireStore'
 import { useRecommendations } from '@/hooks/useApi'
 import { ProgressIndicator } from '@/components/questionnaire/ProgressIndicator'
@@ -17,6 +22,7 @@ import { Step1Budget } from '@/components/questionnaire/Step1Budget'
 import { Step2Usage } from '@/components/questionnaire/Step2Usage'
 import { Step3Priorities } from '@/components/questionnaire/Step3Priorities'
 import { Step4Preferences } from '@/components/questionnaire/Step4Preferences'
+import type { ApiError } from '@/types'
 
 const STEP_TITLES = [
   'Orçamento',
@@ -39,6 +45,11 @@ export default function QuestionnairePage() {
   } = useQuestionnaireStore()
 
   const { mutate: getRecommendations, isPending } = useRecommendations()
+
+  // Error state for API failures
+  const [apiError, setApiError] = useState<ApiError | null>(null)
+  const [retryCount, setRetryCount] = useState(0)
+  const MAX_RETRIES = 3
 
   // Sync URL with current step
   useEffect(() => {
@@ -118,7 +129,7 @@ export default function QuestionnairePage() {
     navigate('/') // Volta para a home
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (isRetry = false) => {
     if (!isComplete()) {
       toast({
         title: 'Formulário incompleto',
@@ -130,19 +141,28 @@ export default function QuestionnairePage() {
       return
     }
 
+    // Clear previous error when retrying
+    if (isRetry) {
+      setApiError(null)
+    }
+
     const userProfile = toUserProfile()
 
     getRecommendations(userProfile, {
       onSuccess: (data) => {
+        // Reset error state and retry count on success
+        setApiError(null)
+        setRetryCount(0)
+
         // Validar se recebemos dados válidos
         if (!data || !data.profile_summary) {
-          toast({
-            title: 'Erro ao processar recomendações',
-            description: 'Não foi possível processar sua busca. Tente novamente.',
-            status: 'error',
-            duration: 5000,
-            isClosable: true,
-          })
+          const validationError: ApiError = {
+            message: 'Erro ao processar recomendações',
+            detail: 'Não foi possível processar sua busca. Tente novamente.',
+            status: 500,
+            code: 'INVALID_RESPONSE',
+          }
+          setApiError(validationError)
           return
         }
 
@@ -168,29 +188,61 @@ export default function QuestionnairePage() {
         // Navegar para resultados com dados
         navigate('/resultados', { state: { recommendations: data } })
       },
-      onError: (error) => {
+      onError: (error: ApiError) => {
         console.error('Erro na API:', error)
 
-        // Mensagem de erro mais amigável
-        let errorMessage = 'Não foi possível buscar recomendações. Tente novamente.'
+        // Store error for display
+        setApiError(error)
 
-        if (error?.detail?.includes('cidade') || error?.detail?.includes('estado')) {
-          errorMessage = 'Não temos concessionárias na região selecionada. Tente outra cidade ou estado.'
-        } else if (error?.status === 500) {
-          errorMessage = 'Erro no servidor. Nossa equipe já foi notificada.'
-        } else if (error?.message) {
-          errorMessage = error.message
+        // Implement exponential backoff retry logic for network errors
+        if (
+          (error.code === 'NETWORK_ERROR' ||
+            error.code === 'ECONNABORTED' ||
+            error.code === 'ETIMEDOUT') &&
+          retryCount < MAX_RETRIES
+        ) {
+          const nextRetryCount = retryCount + 1
+          const backoffDelay = Math.pow(2, nextRetryCount) * 1000 // 2s, 4s, 8s
+
+          setRetryCount(nextRetryCount)
+
+          toast({
+            title: 'Tentando reconectar...',
+            description: `Tentativa ${nextRetryCount} de ${MAX_RETRIES}`,
+            status: 'info',
+            duration: 2000,
+            isClosable: true,
+          })
+
+          // Retry with exponential backoff
+          setTimeout(() => {
+            handleSubmit(true)
+          }, backoffDelay)
+        } else {
+          // Show error toast for non-retryable errors or max retries reached
+          let errorTitle = 'Erro ao buscar recomendações'
+          let errorDescription = error.message
+
+          if (retryCount >= MAX_RETRIES) {
+            errorTitle = 'Não foi possível conectar'
+            errorDescription = 'Verifique sua conexão e tente novamente.'
+          }
+
+          toast({
+            title: errorTitle,
+            description: errorDescription,
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          })
         }
-
-        toast({
-          title: 'Erro ao buscar recomendações',
-          description: errorMessage,
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-        })
       },
     })
+  }
+
+  const handleRetry = () => {
+    setRetryCount(0) // Reset retry count for manual retry
+    handleSubmit(true)
   }
 
   const renderStep = () => {
@@ -218,6 +270,50 @@ export default function QuestionnairePage() {
             totalSteps={4}
             stepTitles={STEP_TITLES}
           />
+
+          {/* Error Alert */}
+          {apiError && (
+            <Alert
+              status="error"
+              variant="subtle"
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+              textAlign="center"
+              borderRadius="xl"
+              p={6}
+            >
+              <AlertIcon boxSize="40px" mr={0} />
+              <AlertTitle mt={4} mb={1} fontSize="lg">
+                {apiError.message}
+              </AlertTitle>
+              <AlertDescription maxWidth="sm" mb={4}>
+                {apiError.detail || 'Ocorreu um erro ao processar sua solicitação.'}
+              </AlertDescription>
+              <HStack spacing={4}>
+                <Button
+                  colorScheme="red"
+                  leftIcon={<FaRedo />}
+                  onClick={handleRetry}
+                  isLoading={isPending}
+                  loadingText="Tentando..."
+                >
+                  Tentar Novamente
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setApiError(null)}
+                >
+                  Fechar
+                </Button>
+              </HStack>
+              {retryCount > 0 && (
+                <Text fontSize="sm" color="gray.600" mt={3}>
+                  Tentativa {retryCount} de {MAX_RETRIES}
+                </Text>
+              )}
+            </Alert>
+          )}
 
           {/* Current Step Content */}
           <Box
