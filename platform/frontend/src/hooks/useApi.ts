@@ -39,7 +39,6 @@ export const useStats = (): UseQueryResult<Stats, ApiError> => {
         queryKey: queryKeys.stats,
         queryFn: getStats,
         staleTime: 0, // Sempre buscar dados frescos
-        cacheTime: 0, // Não fazer cache
     })
 }
 
