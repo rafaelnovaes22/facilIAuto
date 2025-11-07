@@ -523,6 +523,39 @@ def list_brands():
     return sorted(list(brands))
 
 
+@app.get("/brands-models")
+def list_brands_with_models():
+    """
+    Listar marcas de carros disponíveis com seus modelos correspondentes
+    
+    Retorna um dicionário onde:
+    - Chave: marca (ex: "Fiat", "Chevrolet")
+    - Valor: lista de modelos únicos disponíveis para aquela marca
+    
+    Exemplo de resposta:
+    {
+        "Fiat": ["Cronos", "Argo", "Toro"],
+        "Chevrolet": ["Onix", "Tracker", "S10"]
+    }
+    """
+    from collections import defaultdict
+    
+    brands_models = defaultdict(set)
+    
+    # Agrupar modelos por marca
+    for car in engine.all_cars:
+        if car.disponivel:
+            brands_models[car.marca].add(car.modelo)
+    
+    # Converter sets para listas ordenadas
+    result = {
+        marca: sorted(list(modelos))
+        for marca, modelos in sorted(brands_models.items())
+    }
+    
+    return result
+
+
 # ========================================
 # 🤖 FASE 2: Endpoints de Feedback
 # ========================================

@@ -202,6 +202,11 @@ export const getCar = async (carId: string): Promise<Car> => {
     return data
 }
 
+export const getBrandsWithModels = async (): Promise<Record<string, string[]>> => {
+    const { data } = await api.get<Record<string, string[]>>('/brands-models')
+    return data
+}
+
 // ============================================
 // RECOMMENDATIONS (CORE FEATURE)
 // ============================================
@@ -274,6 +279,7 @@ export const queryKeys = {
     dealership: (id: string) => ['dealership', id] as const,
     cars: (filters?: CarFilter) => ['cars', filters] as const,
     car: (id: string) => ['car', id] as const,
+    brandsModels: ['brands-models'] as const,
     recommendations: (profile: UserProfile) =>
         ['recommendations', profile] as const,
 }

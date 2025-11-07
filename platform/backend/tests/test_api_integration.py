@@ -314,4 +314,23 @@ class TestStatsAPI:
         assert response.status_code == 200
         data = response.json()
         assert isinstance(data, list)
+    
+    def test_list_brands_with_models(self, client):
+        """Teste: listar marcas com modelos"""
+        response = client.get("/brands-models")
+        assert response.status_code == 200
+        data = response.json()
+        
+        # Deve retornar um dicionário
+        assert isinstance(data, dict)
+        
+        # Cada marca deve ter uma lista de modelos
+        for marca, modelos in data.items():
+            assert isinstance(marca, str)
+            assert isinstance(modelos, list)
+            assert len(modelos) > 0
+            
+            # Modelos devem ser strings únicas e ordenadas
+            assert all(isinstance(modelo, str) for modelo in modelos)
+            assert modelos == sorted(modelos)  # Verificar ordenação
 
