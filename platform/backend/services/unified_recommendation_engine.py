@@ -1169,11 +1169,14 @@ class UnifiedRecommendationEngine:
             
             if final_score >= score_threshold:
                 # Validar status do orçamento usando novo método
+                # IMPORTANTE: Só validar se usuário informou capacidade financeira
                 fits_budget = None
                 budget_status_message = "Orçamento não informado"
                 
-                if tco:
+                # Verificar explicitamente se usuário informou renda
+                if tco and profile.financial_capacity and profile.financial_capacity.is_disclosed:
                     fits_budget, budget_status_message = self.validate_budget_status(tco, profile)
+                # Se não informou, fits_budget permanece None
                 
                 # Calcular percentual da renda (para compatibilidade)
                 budget_percentage = None
