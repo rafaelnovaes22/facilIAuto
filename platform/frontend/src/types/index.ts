@@ -247,6 +247,7 @@ export interface ApiError {
     message: string
     detail?: string
     status: number
+    code?: string  // Error code for specific error types (e.g., 'NETWORK_ERROR', 'TIMEOUT')
 }
 
 export interface HealthCheck {
