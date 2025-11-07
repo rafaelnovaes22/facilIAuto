@@ -1246,8 +1246,13 @@ class UnifiedRecommendationEngine:
         # Prioridades atendidas
         # Economia: verificar consumo REAL, não apenas score relativo
         if profile.prioridades.get("economia", 0) >= 4 and car.score_economia > 0.7:
-            # Estimar consumo real do carro
-            consumo_estimado = self.estimate_fuel_consumption(car)
+            # Obter consumo real do carro (mesma lógica do TCO)
+            consumo_estimado = (
+                getattr(car, 'consumo_cidade', None) or 
+                getattr(car, 'consumo_estrada', None) or 
+                getattr(car, 'consumo', None) or
+                self._estimate_fuel_efficiency_by_category(car.categoria)
+            )
             
             # Só mencionar "excelente economia" se consumo for realmente bom (>= 12 km/L)
             if consumo_estimado >= 12:
