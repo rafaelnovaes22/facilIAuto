@@ -5,7 +5,10 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import App from './App'
 import theme from './theme'
-import { ErrorBoundary } from '@/components/common'
+
+// Validate environment variables on app startup
+// This will throw an error if required variables are missing or invalid
+import '@/config/env'
 
 // React Query client config
 const queryClient = new QueryClient({
@@ -20,13 +23,11 @@ const queryClient = new QueryClient({
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ErrorBoundary>
-      <QueryClientProvider client={queryClient}>
-        <ChakraProvider theme={theme}>
-          <App />
-        </ChakraProvider>
-      </QueryClientProvider>
-    </ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <ChakraProvider theme={theme}>
+        <App />
+      </ChakraProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 )
 
