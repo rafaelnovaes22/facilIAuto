@@ -374,7 +374,7 @@ export default function ResultsPage() {
   // Verificar se há recomendações vazias (sem concessionárias no estado)
   if (data && data.total_recommendations === 0) {
     const userState = data.profile_summary?.location?.split(',')[1]?.trim() || 'seu estado'
-    const nearbyStates = ['SP', 'RJ', 'MG', 'PR', 'SC', 'RS'] // Estados com mais concessionárias
+    const nearbyStates = ['SP'] // Estados com concessionárias disponíveis atualmente
 
     return (
       <Box bg="gray.50" minH="100vh" display="flex" alignItems="center" justifyContent="center">

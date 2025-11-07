@@ -523,7 +523,7 @@ describe('ResultsPage', () => {
 
             expect(screen.getByText(/Nenhuma concessionária em AM/i)).toBeInTheDocument()
             expect(screen.getByText(/Estados com concessionárias disponíveis/i)).toBeInTheDocument()
-            expect(screen.getByText(/SP, RJ, MG, PR, SC, RS/i)).toBeInTheDocument()
+            expect(screen.getByText(/SP/i)).toBeInTheDocument()
             expect(screen.getByText(/Editar Localização/i)).toBeInTheDocument()
         })
     })
