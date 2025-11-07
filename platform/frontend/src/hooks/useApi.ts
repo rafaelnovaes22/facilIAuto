@@ -38,7 +38,8 @@ export const useStats = (): UseQueryResult<Stats, ApiError> => {
     return useQuery({
         queryKey: queryKeys.stats,
         queryFn: getStats,
-        staleTime: 5 * 60 * 1000, // 5 minutos
+        staleTime: 0, // Sempre buscar dados frescos
+        cacheTime: 0, // Não fazer cache
     })
 }
 
@@ -144,7 +145,7 @@ export const useAggregatedStats = () => {
         totalDealerships: stats.total_dealerships || 0,
         avgPrice: stats.avg_price || 0,
         priceRange: stats.price_range || { min: 0, max: 0 },
-        topCategories: stats.cars_by_category 
+        topCategories: stats.cars_by_category
             ? Object.entries(stats.cars_by_category)
                 .sort(([, a], [, b]) => (b as number) - (a as number))
                 .slice(0, 5)
