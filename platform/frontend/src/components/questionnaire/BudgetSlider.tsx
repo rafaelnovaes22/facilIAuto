@@ -1,4 +1,4 @@
-// 🎨 UX Especialist: Dual-handle range slider for budget selection
+// 🎨 UX Especialist: Dual-handle range slider for budget selection with mobile-friendly input
 import {
     VStack,
     HStack,
@@ -11,8 +11,13 @@ import {
     FormControl,
     FormLabel,
     FormHelperText,
+    Input,
+    InputGroup,
+    InputLeftAddon,
+    useBreakpointValue,
 } from '@chakra-ui/react'
 import { formatCurrency } from '@/services/api'
+import { useState } from 'react'
 
 interface BudgetSliderProps {
     minValue: number
@@ -31,8 +36,61 @@ export const BudgetSlider = ({
     maxLimit = 500000,
     step = 5000,
 }: BudgetSliderProps) => {
-    const handleChange = (values: number[]) => {
+    // Local state for input values (formatted)
+    const [minInput, setMinInput] = useState(minValue.toString())
+    const [maxInput, setMaxInput] = useState(maxValue.toString())
+
+    // Detect mobile for better UX
+    const isMobile = useBreakpointValue({ base: true, md: false })
+
+    const handleSliderChange = (values: number[]) => {
         onChange(values[0], values[1])
+        setMinInput(values[0].toString())
+        setMaxInput(values[1].toString())
+    }
+
+    const parseInputValue = (value: string): number => {
+        // Remove non-numeric characters
+        const numericValue = value.replace(/\D/g, '')
+        return numericValue ? parseInt(numericValue, 10) : 0
+    }
+
+    const handleMinInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value
+        setMinInput(value)
+
+        const numericValue = parseInputValue(value)
+        if (numericValue >= minLimit && numericValue < maxValue) {
+            onChange(numericValue, maxValue)
+        }
+    }
+
+    const handleMaxInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value
+        setMaxInput(value)
+
+        const numericValue = parseInputValue(value)
+        if (numericValue <= maxLimit && numericValue > minValue) {
+            onChange(minValue, numericValue)
+        }
+    }
+
+    const handleMinInputBlur = () => {
+        const numericValue = parseInputValue(minInput)
+        if (numericValue < minLimit || numericValue >= maxValue) {
+            setMinInput(minValue.toString())
+        } else {
+            onChange(numericValue, maxValue)
+        }
+    }
+
+    const handleMaxInputBlur = () => {
+        const numericValue = parseInputValue(maxInput)
+        if (numericValue > maxLimit || numericValue <= minValue) {
+            setMaxInput(maxValue.toString())
+        } else {
+            onChange(minValue, numericValue)
+        }
     }
 
     return (
@@ -42,90 +100,142 @@ export const BudgetSlider = ({
             </FormLabel>
 
             <VStack spacing={6} align="stretch">
-                {/* Display Values */}
+                {/* Input Fields - Mobile First */}
+                <VStack spacing={3} align="stretch">
+                    <InputGroup size="lg">
+                        <InputLeftAddon bg="gray.100" color="gray.600" fontWeight="medium">
+                            Mínimo
+                        </InputLeftAddon>
+                        <Input
+                            type="tel"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
+                            value={minInput}
+                            onChange={handleMinInputChange}
+                            onBlur={handleMinInputBlur}
+                            placeholder="Ex: 50000"
+                            fontSize="lg"
+                            fontWeight="semibold"
+                            color="brand.600"
+                            _focus={{
+                                borderColor: 'brand.500',
+                                boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)',
+                            }}
+                        />
+                    </InputGroup>
+
+                    <InputGroup size="lg">
+                        <InputLeftAddon bg="gray.100" color="gray.600" fontWeight="medium">
+                            Máximo
+                        </InputLeftAddon>
+                        <Input
+                            type="tel"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
+                            value={maxInput}
+                            onChange={handleMaxInputChange}
+                            onBlur={handleMaxInputBlur}
+                            placeholder="Ex: 100000"
+                            fontSize="lg"
+                            fontWeight="semibold"
+                            color="brand.600"
+                            _focus={{
+                                borderColor: 'brand.500',
+                                boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)',
+                            }}
+                        />
+                    </InputGroup>
+                </VStack>
+
+                {/* Display Formatted Values */}
                 <HStack justify="space-between" px={2}>
                     <VStack align="flex-start" spacing={0}>
                         <Text fontSize="xs" color="gray.500" fontWeight="medium">
-                            Mínimo
+                            De
                         </Text>
-                        <Text fontSize="xl" fontWeight="bold" color="brand.600">
+                        <Text fontSize="lg" fontWeight="bold" color="brand.600">
                             {formatCurrency(minValue)}
                         </Text>
                     </VStack>
 
-                    <Text fontSize="lg" color="gray.400" fontWeight="bold">
+                    <Text fontSize="md" color="gray.400" fontWeight="bold">
                         até
                     </Text>
 
                     <VStack align="flex-end" spacing={0}>
                         <Text fontSize="xs" color="gray.500" fontWeight="medium">
-                            Máximo
+                            Até
                         </Text>
-                        <Text fontSize="xl" fontWeight="bold" color="brand.600">
+                        <Text fontSize="lg" fontWeight="bold" color="brand.600">
                             {formatCurrency(maxValue)}
                         </Text>
                     </VStack>
                 </HStack>
 
-                {/* Range Slider */}
-                <Box px={2} py={4}>
-                    <RangeSlider
-                        value={[minValue, maxValue]}
-                        min={minLimit}
-                        max={maxLimit}
-                        step={step}
-                        onChange={handleChange}
-                        minStepsBetweenThumbs={1}
-                    >
-                        <RangeSliderTrack bg="gray.200" h="8px" borderRadius="full">
-                            <RangeSliderFilledTrack bg="brand.500" />
-                        </RangeSliderTrack>
-                        <RangeSliderThumb
-                            index={0}
-                            boxSize="44px"
-                            bg="white"
-                            borderWidth="3px"
-                            borderColor="brand.500"
-                            _focus={{
-                                boxShadow: '0 0 0 3px rgba(14, 165, 233, 0.3)',
-                            }}
-                            _active={{
-                                transform: 'scale(1.1)',
-                            }}
+                {/* Range Slider - Optional visual aid */}
+                {!isMobile && (
+                    <Box px={2} py={4}>
+                        <RangeSlider
+                            value={[minValue, maxValue]}
+                            min={minLimit}
+                            max={maxLimit}
+                            step={step}
+                            onChange={handleSliderChange}
+                            minStepsBetweenThumbs={1}
                         >
-                            <Box
-                                w="12px"
-                                h="12px"
-                                bg="brand.500"
-                                borderRadius="full"
-                            />
-                        </RangeSliderThumb>
-                        <RangeSliderThumb
-                            index={1}
-                            boxSize="44px"
-                            bg="white"
-                            borderWidth="3px"
-                            borderColor="brand.500"
-                            _focus={{
-                                boxShadow: '0 0 0 3px rgba(14, 165, 233, 0.3)',
-                            }}
-                            _active={{
-                                transform: 'scale(1.1)',
-                            }}
-                        >
-                            <Box
-                                w="12px"
-                                h="12px"
-                                bg="brand.500"
-                                borderRadius="full"
-                            />
-                        </RangeSliderThumb>
-                    </RangeSlider>
-                </Box>
+                            <RangeSliderTrack bg="gray.200" h="8px" borderRadius="full">
+                                <RangeSliderFilledTrack bg="brand.500" />
+                            </RangeSliderTrack>
+                            <RangeSliderThumb
+                                index={0}
+                                boxSize="44px"
+                                bg="white"
+                                borderWidth="3px"
+                                borderColor="brand.500"
+                                _focus={{
+                                    boxShadow: '0 0 0 3px rgba(14, 165, 233, 0.3)',
+                                }}
+                                _active={{
+                                    transform: 'scale(1.1)',
+                                }}
+                            >
+                                <Box
+                                    w="12px"
+                                    h="12px"
+                                    bg="brand.500"
+                                    borderRadius="full"
+                                />
+                            </RangeSliderThumb>
+                            <RangeSliderThumb
+                                index={1}
+                                boxSize="44px"
+                                bg="white"
+                                borderWidth="3px"
+                                borderColor="brand.500"
+                                _focus={{
+                                    boxShadow: '0 0 0 3px rgba(14, 165, 233, 0.3)',
+                                }}
+                                _active={{
+                                    transform: 'scale(1.1)',
+                                }}
+                            >
+                                <Box
+                                    w="12px"
+                                    h="12px"
+                                    bg="brand.500"
+                                    borderRadius="full"
+                                />
+                            </RangeSliderThumb>
+                        </RangeSlider>
+                    </Box>
+                )}
 
                 {/* Helper Text */}
                 <FormHelperText fontSize="sm" color="gray.600" textAlign="center">
-                    Arraste os controles para ajustar sua faixa de orçamento
+                    {isMobile
+                        ? 'Digite os valores diretamente nos campos acima'
+                        : 'Digite os valores ou arraste os controles para ajustar'
+                    }
                 </FormHelperText>
 
                 {/* Summary Box */}

@@ -371,9 +371,15 @@ export default function ResultsPage() {
     )
   }
 
-  // Verificar se há recomendações vazias (sem concessionárias no estado)
+  // Verificar se há recomendações vazias
   if (data && data.total_recommendations === 0) {
-    const userState = data.profile_summary?.location?.split(',')[1]?.trim() || 'seu estado'
+    // Determinar se é problema de localização ou de critérios
+    const message = (data as any).message || ''
+    const suggestion = (data as any).suggestion || ''
+    const isLocationIssue = message.includes('concessionária') || message.includes('disponível')
+
+    const userLocation = data.profile_summary?.location || 'sua região'
+    const userState = userLocation.split(',')[1]?.trim() || userLocation
     const nearbyStates = ['SP'] // Estados com concessionárias disponíveis atualmente
 
     return (
@@ -381,7 +387,7 @@ export default function ResultsPage() {
         <Container maxW="container.md">
           <VStack spacing={6} textAlign="center" p={8}>
             <Alert
-              status="info"
+              status={isLocationIssue ? "info" : "warning"}
               variant="subtle"
               flexDirection="column"
               alignItems="center"
@@ -392,25 +398,87 @@ export default function ResultsPage() {
               bg="white"
               boxShadow="lg"
             >
-              <Text fontSize="6xl" mb={4}>🗺️</Text>
+              <Text fontSize="6xl" mb={4}>
+                {isLocationIssue ? '🗺️' : '🔍'}
+              </Text>
               <AlertTitle mt={4} mb={2} fontSize="2xl" color="gray.800">
-                Nenhuma concessionária em {userState}
+                {isLocationIssue
+                  ? `Nenhuma concessionária em ${userState}`
+                  : 'Nenhum carro encontrado'
+                }
               </AlertTitle>
               <AlertDescription maxWidth="md" fontSize="lg" color="gray.600" mb={4}>
-                Infelizmente ainda não temos concessionárias parceiras na sua região.
+                {isLocationIssue ? (
+                  <>
+                    Infelizmente ainda não temos concessionárias parceiras na sua região.
+                  </>
+                ) : (
+                  <>
+                    Não encontramos carros que atendam aos seus critérios na faixa de{' '}
+                    <Text as="span" fontWeight="bold" color="brand.600">
+                      {data.profile_summary.budget_range}
+                    </Text>
+                    {data.profile_summary.usage === 'transporte_passageiros' && (
+                      <>
+                        {' '}para uso como <Text as="span" fontWeight="bold" color="brand.600">Uber/99</Text>
+                      </>
+                    )}
+                    .
+                  </>
+                )}
               </AlertDescription>
 
-              <VStack spacing={3} mb={6} align="start" bg="blue.50" p={4} borderRadius="md" w="full" maxW="md">
-                <HStack>
-                  <FaMapMarkerAlt color="blue" />
-                  <Text fontSize="md" fontWeight="bold" color="blue.800">
-                    Estados com concessionárias disponíveis:
+              {isLocationIssue ? (
+                // Problema de localização - mostrar estados disponíveis
+                <VStack spacing={3} mb={6} align="start" bg="blue.50" p={4} borderRadius="md" w="full" maxW="md">
+                  <HStack>
+                    <FaMapMarkerAlt color="blue" />
+                    <Text fontSize="md" fontWeight="bold" color="blue.800">
+                      Estados com concessionárias disponíveis:
+                    </Text>
+                  </HStack>
+                  <Text fontSize="sm" color="blue.700">
+                    {nearbyStates.join(', ')}
                   </Text>
-                </HStack>
-                <Text fontSize="sm" color="blue.700">
-                  {nearbyStates.join(', ')}
-                </Text>
-              </VStack>
+                </VStack>
+              ) : (
+                // Problema de critérios - mostrar sugestões
+                <VStack spacing={3} mb={6} align="start" bg="orange.50" p={4} borderRadius="md" w="full" maxW="md">
+                  <Text fontSize="md" fontWeight="bold" color="orange.800">
+                    {data.profile_summary.usage === 'transporte_passageiros' ? 'Por que não encontramos?' : 'Sugestões:'}
+                  </Text>
+                  <VStack spacing={2} align="start" pl={2}>
+                    {data.profile_summary.usage === 'transporte_passageiros' ? (
+                      <>
+                        <Text fontSize="sm" color="orange.700">
+                          • Carros para Uber/99 precisam ter <strong>ano mínimo 2015</strong>
+                        </Text>
+                        <Text fontSize="sm" color="orange.700">
+                          • Apenas <strong>modelos específicos</strong> são aceitos
+                        </Text>
+                        <Text fontSize="sm" color="orange.700">
+                          • Veículo não pode ter mais de <strong>10 anos de uso</strong>
+                        </Text>
+                        <Text fontSize="sm" color="orange.700">
+                          • Tente <strong>ampliar o orçamento</strong> para R$ 40k-80k
+                        </Text>
+                      </>
+                    ) : (
+                      <>
+                        <Text fontSize="sm" color="orange.700">
+                          • Tente ampliar sua faixa de orçamento
+                        </Text>
+                        <Text fontSize="sm" color="orange.700">
+                          • Ajuste o ano mínimo do veículo
+                        </Text>
+                        <Text fontSize="sm" color="orange.700">
+                          • Revise suas preferências ou prioridades
+                        </Text>
+                      </>
+                    )}
+                  </VStack>
+                </VStack>
+              )}
 
               <HStack spacing={4}>
                 <Button
@@ -419,7 +487,7 @@ export default function ResultsPage() {
                   leftIcon={<FaEdit />}
                   onClick={handleEditSearch}
                 >
-                  Editar Localização
+                  {isLocationIssue ? 'Editar Localização' : 'Editar Busca'}
                 </Button>
                 <Button
                   variant="outline"
@@ -597,8 +665,8 @@ export default function ResultsPage() {
           </VStack>
 
           {/* Results Grid ou Mensagem de Nenhum Resultado */}
-          {data.total_recommendations === 0 || processedRecommendations.length === 0 ? (
-            // Nenhum resultado encontrado
+          {processedRecommendations.length === 0 ? (
+            // Nenhum resultado encontrado (após filtros)
             <Alert
               status="info"
               variant="subtle"
@@ -617,6 +685,7 @@ export default function ResultsPage() {
               </AlertTitle>
               <AlertDescription maxWidth="md" fontSize="lg" color="gray.600">
                 {data.total_recommendations === 0 ? (
+                  // Caso original: nenhum carro retornado pela API
                   <>
                     Não encontramos carros que correspondam aos seus critérios na faixa de{' '}
                     <Text as="span" fontWeight="bold" color="brand.600">
@@ -630,45 +699,84 @@ export default function ResultsPage() {
                     .
                   </>
                 ) : (
-                  'Nenhum carro corresponde aos filtros selecionados.'
+                  // Caso filtrado: havia carros mas os filtros eliminaram todos
+                  <>
+                    Nenhum carro corresponde aos <strong>filtros selecionados</strong>.
+                    <br />
+                    Tente remover alguns filtros de categoria ou ano.
+                  </>
                 )}
               </AlertDescription>
               <VStack spacing={3} mt={6}>
                 <Text fontSize="md" color="gray.600" fontWeight="semibold">
-                  {data.profile_summary.usage === 'transporte_passageiros' ? 'Por que não encontramos?' : 'Sugestões:'}
+                  {data.profile_summary.usage === 'transporte_passageiros' && data.total_recommendations === 0
+                    ? 'Por que não encontramos?'
+                    : 'Sugestões:'}
                 </Text>
                 <VStack spacing={2} align="start">
-                  {data.profile_summary.usage === 'transporte_passageiros' ? (
-                    <>
-                      <Text fontSize="sm" color="gray.600">
-                        • Carros para Uber/99 precisam ter <strong>ano mínimo 2015</strong>
-                      </Text>
-                      <Text fontSize="sm" color="gray.600">
-                        • Apenas <strong>modelos específicos</strong> são aceitos pelas plataformas
-                      </Text>
-                      <Text fontSize="sm" color="gray.600">
-                        • Veículo não pode ter mais de <strong>10 anos de uso</strong>
-                      </Text>
-                      <Text fontSize="sm" color="gray.600">
-                        • Tente <strong>ampliar o orçamento</strong> para R$ 40k-80k
-                      </Text>
-                    </>
+                  {data.total_recommendations === 0 ? (
+                    // Sugestões quando não há carros na API
+                    data.profile_summary.usage === 'transporte_passageiros' ? (
+                      <>
+                        <Text fontSize="sm" color="gray.600">
+                          • Carros para Uber/99 precisam ter <strong>ano mínimo 2015</strong>
+                        </Text>
+                        <Text fontSize="sm" color="gray.600">
+                          • Apenas <strong>modelos específicos</strong> são aceitos pelas plataformas
+                        </Text>
+                        <Text fontSize="sm" color="gray.600">
+                          • Veículo não pode ter mais de <strong>10 anos de uso</strong>
+                        </Text>
+                        <Text fontSize="sm" color="gray.600">
+                          • Tente <strong>ampliar o orçamento</strong> para R$ 40k-80k
+                        </Text>
+                      </>
+                    ) : (
+                      <>
+                        <Text fontSize="sm" color="gray.600">
+                          • Tente ampliar sua faixa de orçamento
+                        </Text>
+                        <Text fontSize="sm" color="gray.600">
+                          • Ajuste o ano mínimo do veículo
+                        </Text>
+                        <Text fontSize="sm" color="gray.600">
+                          • Revise suas preferências ou prioridades
+                        </Text>
+                      </>
+                    )
                   ) : (
+                    // Sugestões quando há carros mas filtros eliminaram todos
                     <>
                       <Text fontSize="sm" color="gray.600">
-                        • Tente ampliar sua faixa de orçamento
+                        • Remova o filtro de categoria (mostrando: {filterCategory})
                       </Text>
+                      {(filterYearMin || filterYearMax) && (
+                        <Text fontSize="sm" color="gray.600">
+                          • Remova os filtros de ano
+                        </Text>
+                      )}
                       <Text fontSize="sm" color="gray.600">
-                        • Ajuste suas preferências ou prioridades
-                      </Text>
-                      <Text fontSize="sm" color="gray.600">
-                        • Remova filtros de categoria
+                        • Ou edite sua busca para ajustar os critérios
                       </Text>
                     </>
                   )}
                 </VStack>
               </VStack>
               <HStack spacing={4} mt={6}>
+                {data.total_recommendations > 0 && (
+                  // Se há carros mas filtros eliminaram, mostrar botão para limpar filtros
+                  <Button
+                    colorScheme="orange"
+                    size="lg"
+                    onClick={() => {
+                      setFilterCategory('all')
+                      setFilterYearMin(null)
+                      setFilterYearMax(null)
+                    }}
+                  >
+                    🔄 Limpar Filtros
+                  </Button>
+                )}
                 <Button
                   colorScheme="brand"
                   size="lg"

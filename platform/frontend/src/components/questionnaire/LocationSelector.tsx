@@ -1,17 +1,18 @@
-// 🎨 UX Especialist: Location selector with state dropdown and city input
+// 🎨 UX Especialist: Location selector with state dropdown and dynamic city selector
 import {
     VStack,
     HStack,
     FormControl,
     FormLabel,
     Select,
-    Input,
     Text,
     Box,
     Icon,
 } from '@chakra-ui/react'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import { ESTADOS_BR } from '@/types'
+import { getCitiesByState, hasCities } from '@/data/cities'
+import { useState, useEffect } from 'react'
 
 interface LocationSelectorProps {
     city?: string
@@ -24,8 +25,26 @@ export const LocationSelector = ({
     state,
     onChange,
 }: LocationSelectorProps) => {
+    const [availableCities, setAvailableCities] = useState<string[]>([])
+
+    // Atualiza lista de cidades quando estado muda
+    useEffect(() => {
+        if (state) {
+            const cities = getCitiesByState(state)
+            setAvailableCities(cities)
+
+            // Se a cidade atual não está na lista do novo estado, limpa
+            if (city && !cities.includes(city)) {
+                onChange({ city: undefined, state })
+            }
+        } else {
+            setAvailableCities([])
+        }
+    }, [state])
+
     const handleStateChange = (newState: string) => {
-        onChange({ city, state: newState || undefined })
+        // Limpa a cidade ao trocar de estado
+        onChange({ city: undefined, state: newState || undefined })
     }
 
     const handleCityChange = (newCity: string) => {
@@ -47,14 +66,14 @@ export const LocationSelector = ({
             </Text>
 
             {/* Location Inputs */}
-            <HStack spacing={4} w="full">
+            <VStack spacing={4} w="full">
                 {/* Estado */}
-                <FormControl flex={1}>
+                <FormControl>
                     <FormLabel fontSize="sm" color="gray.700">
                         Estado
                     </FormLabel>
                     <Select
-                        placeholder="Selecione"
+                        placeholder="Selecione o estado"
                         value={state || ''}
                         onChange={(e) => handleStateChange(e.target.value)}
                         size="lg"
@@ -74,29 +93,40 @@ export const LocationSelector = ({
                     </Select>
                 </FormControl>
 
-                {/* Cidade */}
-                <FormControl flex={2}>
-                    <FormLabel fontSize="sm" color="gray.700">
-                        Cidade
-                    </FormLabel>
-                    <Input
-                        placeholder="Ex: São Paulo"
-                        value={city || ''}
-                        onChange={(e) => handleCityChange(e.target.value)}
-                        size="lg"
-                        bg="white"
-                        borderColor="gray.300"
-                        _hover={{ borderColor: 'brand.400' }}
-                        _focus={{
-                            borderColor: 'brand.500',
-                            boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)',
-                        }}
-                    />
-                </FormControl>
-            </HStack>
+                {/* Cidade - Aparece apenas quando estado está selecionado */}
+                {state && hasCities(state) && (
+                    <FormControl>
+                        <FormLabel fontSize="sm" color="gray.700">
+                            Cidade (opcional)
+                        </FormLabel>
+                        <Select
+                            placeholder="Todo o estado"
+                            value={city || ''}
+                            onChange={(e) => handleCityChange(e.target.value)}
+                            size="lg"
+                            bg="white"
+                            borderColor="gray.300"
+                            _hover={{ borderColor: 'brand.400' }}
+                            _focus={{
+                                borderColor: 'brand.500',
+                                boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)',
+                            }}
+                        >
+                            {availableCities.map((cidade) => (
+                                <option key={cidade} value={cidade}>
+                                    {cidade}
+                                </option>
+                            ))}
+                        </Select>
+                        <Text fontSize="xs" color="gray.500" mt={2}>
+                            Deixe em "Todo o estado" para buscar em todas as cidades
+                        </Text>
+                    </FormControl>
+                )}
+            </VStack>
 
             {/* Info Box */}
-            {(city || state) && (
+            {state && (
                 <Box
                     bg="green.50"
                     p={3}
@@ -105,7 +135,10 @@ export const LocationSelector = ({
                     borderColor="green.200"
                 >
                     <Text fontSize="sm" color="green.800">
-                        ✓ Vamos priorizar concessionárias próximas a você
+                        {city
+                            ? `✓ Vamos priorizar concessionárias em ${city} - ${state}`
+                            : `✓ Vamos buscar concessionárias em todo o estado de ${state}`
+                        }
                     </Text>
                 </Box>
             )}
