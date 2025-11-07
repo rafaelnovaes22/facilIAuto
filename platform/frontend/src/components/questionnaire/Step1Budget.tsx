@@ -9,7 +9,6 @@ import { useQuestionnaireStore } from '@/store/questionnaireStore'
 import { BudgetSlider } from './BudgetSlider'
 import { LocationSelector } from './LocationSelector'
 import { YearSelector } from './YearSelector'
-import { SalaryRangeSelector } from './SalaryRangeSelector'
 
 export const Step1Budget = () => {
   const { formData, updateFormData } = useQuestionnaireStore()
@@ -27,10 +26,6 @@ export const Step1Budget = () => {
 
   const handleYearChange = (min?: number, max?: number) => {
     updateFormData({ ano_minimo: min, ano_maximo: max })
-  }
-
-  const handleSalaryChange = (range: string | null) => {
-    updateFormData({ faixa_salarial: range })
   }
 
   return (
@@ -63,15 +58,6 @@ export const Step1Budget = () => {
         minValue={formData.ano_minimo}
         maxValue={formData.ano_maximo}
         onChange={handleYearChange}
-      />
-
-      {/* Divider */}
-      <Divider />
-
-      {/* Salary Range Selector */}
-      <SalaryRangeSelector
-        value={formData.faixa_salarial || null}
-        onChange={handleSalaryChange}
       />
 
       {/* Divider */}
