@@ -252,10 +252,10 @@ def _recommend_cars_impl(profile: UserProfile):
                 detail=f"monthly_income_range inválido. Opções válidas: {', '.join(valid_ranges)}"
             )
     
-    # Gerar recomendações - apenas os 3 melhores
+    # Gerar recomendações - os 5 melhores
     recommendations = engine.recommend(
         profile=profile,
-        limit=3,
+        limit=5,
         score_threshold=0.2
     )
     
