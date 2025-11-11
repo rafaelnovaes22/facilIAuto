@@ -960,6 +960,65 @@ async def get_ml_stats():
         )
 
 
+@app.get("/api/ml/export-data")
+async def export_ml_data(
+    limit: Optional[int] = Query(None, description="Limitar número de interações retornadas")
+):
+    """
+    🤖 ML System: Exportar dados de interações para análise
+    
+    Permite download dos dados coletados para análise offline
+    ou treinamento de modelos.
+    
+    Args:
+        limit: Número máximo de interações a retornar (None = todas)
+        
+    Returns:
+        Dados de interações em formato JSON
+    """
+    try:
+        # Obter todas as interações
+        interactions = interaction_service.get_all_interactions()
+        
+        # Aplicar limite se especificado
+        if limit:
+            interactions = interactions[-limit:]  # Últimas N interações
+        
+        # Obter estatísticas
+        stats = interaction_service.get_stats()
+        
+        return {
+            "status": "success",
+            "exported_at": datetime.now().isoformat(),
+            "total_interactions": len(interactions),
+            "data": {
+                "interactions": interactions,
+                "statistics": {
+                    "total": stats.total_interactions,
+                    "by_type": {
+                        "click": stats.click_count,
+                        "view_details": stats.view_details_count,
+                        "whatsapp_contact": stats.whatsapp_contact_count
+                    },
+                    "unique_sessions": stats.unique_sessions,
+                    "unique_cars": stats.unique_cars,
+                    "avg_duration_seconds": stats.avg_duration_seconds
+                }
+            },
+            "metadata": {
+                "version": "1.0",
+                "format": "json",
+                "encoding": "utf-8"
+            }
+        }
+    
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Erro ao exportar dados de ML: {str(e)}"
+        )
+
+
 # ⛽ Fuel Price Management Endpoints
 
 @app.get("/fuel-price")
