@@ -406,8 +406,8 @@ class UnifiedRecommendationEngine:
         final_score = score / weights_sum if weights_sum > 0 else 0.0
         
         # 5. 🚚 AJUSTE COMERCIAL: Penalizar veículos inadequados
-        if profile.uso_principal == "comercial" and hasattr(car, 'commercial_suitability'):
-            suitability = car.commercial_suitability
+        if profile.uso_principal == "comercial" and hasattr(self, '_commercial_suitability_cache') and car.id in self._commercial_suitability_cache:
+            suitability = self._commercial_suitability_cache[car.id]
             # Multiplicar score pela adequação comercial
             final_score = final_score * suitability["score"]
             
@@ -724,6 +724,10 @@ class UnifiedRecommendationEngine:
         if profile.uso_principal != "comercial":
             return cars
         
+        # Inicializar dicionário de adequação comercial se não existir
+        if not hasattr(self, '_commercial_suitability_cache'):
+            self._commercial_suitability_cache = {}
+        
         classified_cars = []
         rejected_cars = []
         
@@ -736,8 +740,8 @@ class UnifiedRecommendationEngine:
                 categoria=car.categoria
             )
             
-            # Adicionar metadados de adequação ao carro
-            car.commercial_suitability = suitability
+            # Armazenar adequação no cache (não no objeto Car)
+            self._commercial_suitability_cache[car.id] = suitability
             
             # Filtrar: aceitar apenas IDEAL, ADEQUADO e LIMITADO
             # Rejeitar: INADEQUADO
@@ -756,11 +760,11 @@ class UnifiedRecommendationEngine:
                 print(f"[COMERCIAL] ❌ {car.marca} {car.modelo} - {suitability['tipo']} (score: {suitability['score']}) - REJEITADO (inadequado)")
         
         # Ordenar por adequação (ideais primeiro)
-        classified_cars.sort(key=lambda c: c.commercial_suitability["score"], reverse=True)
+        classified_cars.sort(key=lambda c: self._commercial_suitability_cache[c.id]["score"], reverse=True)
         
-        ideal_count = len([c for c in classified_cars if c.commercial_suitability["nivel"] == "ideal"])
-        adequate_count = len([c for c in classified_cars if c.commercial_suitability["nivel"] == "adequado"])
-        limited_count = len([c for c in classified_cars if c.commercial_suitability["nivel"] == "limitado"])
+        ideal_count = len([c for c in classified_cars if self._commercial_suitability_cache[c.id]["nivel"] == "ideal"])
+        adequate_count = len([c for c in classified_cars if self._commercial_suitability_cache[c.id]["nivel"] == "adequado"])
+        limited_count = len([c for c in classified_cars if self._commercial_suitability_cache[c.id]["nivel"] == "limitado"])
         
         print(f"[COMERCIAL] Resultado: {ideal_count} ideais, {adequate_count} adequados, {limited_count} limitados")
         
@@ -1232,8 +1236,8 @@ class UnifiedRecommendationEngine:
         warnings = []
         
         # 🚚 AVISOS COMERCIAIS (se aplicável)
-        if profile.uso_principal == "comercial" and hasattr(car, 'commercial_suitability'):
-            suitability = car.commercial_suitability
+        if profile.uso_principal == "comercial" and hasattr(self, '_commercial_suitability_cache') and car.id in self._commercial_suitability_cache:
+            suitability = self._commercial_suitability_cache[car.id]
             
             if suitability["nivel"] == "ideal":
                 reasons.append(f"✅ Veículo comercial ideal ({suitability['tipo'].replace('_', ' ')})")

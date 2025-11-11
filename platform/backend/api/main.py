@@ -266,12 +266,61 @@ def _recommend_cars_impl(profile: UserProfile):
     
     # Requirement 2.1: Melhorar resposta quando não há recomendações
     if len(recommendations) == 0:
-        # Verificar se o usuário especificou localização (cidade E/OU estado)
+        # 🔍 DIAGNÓSTICO: Verificar se o problema é localização ou filtros
+        # Verificar se existem concessionárias no local especificado
+        has_dealerships_in_location = False
+        has_cars_in_location = False
+        
+        if profile.state:
+            # Verificar se há concessionárias no estado
+            dealerships_in_state = [
+                d for d in engine.dealerships 
+                if d.active and d.state and d.state.upper() == profile.state.upper()
+            ]
+            has_dealerships_in_location = len(dealerships_in_state) > 0
+            
+            # Se há concessionárias, verificar se há carros (ignorando orçamento)
+            if has_dealerships_in_location:
+                if profile.city:
+                    # Verificar cidade específica
+                    cars_in_city = [
+                        c for c in engine.all_cars 
+                        if c.disponivel 
+                        and c.dealership_city 
+                        and c.dealership_city.lower() == profile.city.lower()
+                        and c.dealership_state 
+                        and c.dealership_state.upper() == profile.state.upper()
+                    ]
+                    has_cars_in_location = len(cars_in_city) > 0
+                else:
+                    # Verificar estado
+                    cars_in_state = [
+                        c for c in engine.all_cars 
+                        if c.disponivel 
+                        and c.dealership_state 
+                        and c.dealership_state.upper() == profile.state.upper()
+                    ]
+                    has_cars_in_location = len(cars_in_state) > 0
+        
+        # Determinar mensagem apropriada baseada no diagnóstico
         if profile.city and profile.state:
-            # Usuário especificou cidade E estado
             location_str = f"{profile.city}, {profile.state}"
-            print(f"[API] ⚠️ Nenhuma recomendação encontrada para {location_str}")
-            print(f"[API] Possíveis razões: sem concessionárias na cidade ou sem carros no orçamento")
+            
+            if not has_dealerships_in_location:
+                # Caso 1: Não há concessionárias no estado
+                print(f"[API] ⚠️ Nenhuma concessionária encontrada em {profile.state}")
+                message = f"Nenhuma concessionária disponível em {profile.state}"
+                suggestion = "Tente selecionar um estado próximo"
+            elif not has_cars_in_location:
+                # Caso 2: Há concessionárias mas não na cidade específica
+                print(f"[API] ⚠️ Nenhuma concessionária encontrada em {profile.city}")
+                message = f"Nenhuma concessionária disponível em {profile.city}"
+                suggestion = "Tente buscar em cidades próximas ou expandir para todo o estado"
+            else:
+                # Caso 3: Há concessionárias e carros, mas não na faixa de preço
+                print(f"[API] ⚠️ Há carros em {location_str}, mas não na faixa R$ {profile.orcamento_min:,.0f} - R$ {profile.orcamento_max:,.0f}")
+                message = f"Nenhum carro encontrado na faixa de R$ {profile.orcamento_min:,.0f} - R$ {profile.orcamento_max:,.0f}"
+                suggestion = "Tente expandir seu orçamento ou ajustar seus filtros"
             
             return {
                 "total_recommendations": 0,
@@ -282,15 +331,27 @@ def _recommend_cars_impl(profile: UserProfile):
                     "top_priorities": []
                 },
                 "recommendations": [],
-                "message": f"Nenhuma concessionária disponível em {location_str}",
-                "suggestion": "Tente expandir seu orçamento ou buscar em cidades próximas"
+                "message": message,
+                "suggestion": suggestion
             }
         elif profile.state:
-            # Usuário especificou estado mas não há carros disponíveis
-            print(f"[API] ⚠️ Nenhuma recomendação encontrada para {profile.state}")
-            print(f"[API] Possíveis razões: sem concessionárias no estado ou sem carros no orçamento")
+            # Usuário especificou apenas estado
+            if not has_dealerships_in_location:
+                # Caso 1: Não há concessionárias no estado
+                print(f"[API] ⚠️ Nenhuma concessionária encontrada em {profile.state}")
+                message = f"Nenhuma concessionária disponível em {profile.state}"
+                suggestion = "Tente selecionar um estado próximo"
+            elif not has_cars_in_location:
+                # Caso 2: Há concessionárias mas sem carros disponíveis
+                print(f"[API] ⚠️ Concessionárias em {profile.state} não têm carros disponíveis")
+                message = f"Nenhum carro disponível em {profile.state}"
+                suggestion = "Tente selecionar um estado próximo ou ajustar seus filtros"
+            else:
+                # Caso 3: Há carros, mas não na faixa de preço
+                print(f"[API] ⚠️ Há carros em {profile.state}, mas não na faixa R$ {profile.orcamento_min:,.0f} - R$ {profile.orcamento_max:,.0f}")
+                message = f"Nenhum carro encontrado na faixa de R$ {profile.orcamento_min:,.0f} - R$ {profile.orcamento_max:,.0f}"
+                suggestion = "Tente expandir seu orçamento ou ajustar seus filtros"
             
-            # Retornar 200 com lista vazia e mensagem explicativa
             return {
                 "total_recommendations": 0,
                 "profile_summary": {
@@ -300,15 +361,14 @@ def _recommend_cars_impl(profile: UserProfile):
                     "top_priorities": []
                 },
                 "recommendations": [],
-                "message": f"Nenhuma concessionária disponível em {profile.state}",
-                "suggestion": "Tente expandir seu orçamento ou selecionar um estado próximo"
+                "message": message,
+                "suggestion": suggestion
             }
         else:
-            # Usuário NÃO especificou estado - não há carros em NENHUM lugar
+            # Usuário NÃO especificou estado - problema é com filtros/orçamento
             print(f"[API] ⚠️ Nenhuma recomendação encontrada (sem filtro de localização)")
             print(f"[API] Possíveis razões: orçamento muito restrito ou filtros muito específicos")
             
-            # Retornar 200 com lista vazia e mensagem genérica
             return {
                 "total_recommendations": 0,
                 "profile_summary": {
