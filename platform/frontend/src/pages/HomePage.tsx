@@ -15,6 +15,7 @@ import {
     Alert,
     AlertIcon,
     AlertDescription,
+    Image,
 } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -53,6 +54,17 @@ export default function HomePage() {
                             },
                         }}
                     >
+                        {/* Logo */}
+                        <Image 
+                            src="/src/assets/logo.png" 
+                            alt="FacilIAuto Logo" 
+                            maxHeight="120px" 
+                            width="auto" 
+                            mx="auto" 
+                            mb={8}
+                            objectFit="contain"
+                        />
+
                         {/* Badge */}
                         <Box
                             bg="brand.100"
