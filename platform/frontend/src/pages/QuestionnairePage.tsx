@@ -344,13 +344,19 @@ export default function QuestionnairePage() {
             {/* Botão Próximo/Finalizar */}
             <Button
               size="lg"
-              colorScheme="brand"
+              colorScheme="secondary"
               rightIcon={currentStep === 3 ? <FaCheck /> : <FaArrowRight />}
               onClick={handleNext}
               isDisabled={!canGoNext()}
               isLoading={isPending}
               loadingText="Buscando..."
               px={8}
+              borderRadius="xl"
+              boxShadow="md"
+              _hover={{
+                transform: 'translateY(-2px)',
+                boxShadow: 'lg',
+              }}
             >
               {currentStep === 3 ? 'Ver Recomendações' : 'Próximo'}
             </Button>

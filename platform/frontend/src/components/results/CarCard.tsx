@@ -16,7 +16,7 @@ import {
   AspectRatio,
   Tooltip,
 } from '@chakra-ui/react'
-import { FaWhatsapp, FaGasPump, FaCog, FaCalendar, FaTachometerAlt, FaMapMarkerAlt, FaImages, FaCircle, FaExclamationTriangle, FaInfoCircle } from 'react-icons/fa'
+import { FaWhatsapp, FaGasPump, FaCog, FaCalendar, FaTachometerAlt, FaMapMarkerAlt, FaImages, FaCircle, FaExclamationTriangle, FaInfoCircle, FaStar } from 'react-icons/fa'
 import type { Recommendation } from '@/types'
 import { formatCurrency, formatNumber } from '@/services/api'
 import { TCOBreakdownCard } from './TCOBreakdownCard'
@@ -193,8 +193,20 @@ export const CarCard = ({ recommendation, onWhatsAppClick, onDetailsClick, posit
             )}
             {/* Score Badge no canto superior direito */}
             <Box position="absolute" top={2} right={2}>
-              <Badge colorScheme="green" fontSize="lg" px={3} py={2} borderRadius="full">
-                {Math.round(match_percentage)}% Match
+              <Badge 
+                colorScheme="secondary" 
+                fontSize="lg" 
+                px={3} 
+                py={2} 
+                borderRadius="full"
+                bg="secondary.500"
+                color="white"
+                boxShadow="md"
+              >
+                <HStack spacing={1}>
+                  <Icon as={FaStar} boxSize={4} color="yellow.300" />
+                  <Text fontWeight="bold">{Math.round(match_percentage)}% Match</Text>
+                </HStack>
               </Badge>
             </Box>
           </Box>
@@ -216,12 +228,14 @@ export const CarCard = ({ recommendation, onWhatsAppClick, onDetailsClick, posit
                 {fits_budget !== null && fits_budget !== undefined && (
                   <HStack spacing={1}>
                     <Badge
-                      colorScheme={fits_budget ? 'green' : 'yellow'}
+                      colorScheme={fits_budget ? 'secondary' : 'yellow'}
                       fontSize="xs"
                       display="flex"
                       alignItems="center"
                       gap={1}
                       data-testid="budget-tag"
+                      bg={fits_budget ? 'secondary.500' : undefined}
+                      color={fits_budget ? 'white' : undefined}
                     >
                       {fits_budget ? '✓ Dentro do orçamento' : '⚠ Acima do orçamento'}
                     </Badge>

@@ -191,18 +191,19 @@ export const BudgetSlider = ({
                                 boxSize="44px"
                                 bg="white"
                                 borderWidth="3px"
-                                borderColor="brand.500"
+                                borderColor="secondary.500"
                                 _focus={{
-                                    boxShadow: '0 0 0 3px rgba(14, 165, 233, 0.3)',
+                                    boxShadow: '0 0 0 3px rgba(34, 197, 94, 0.3)',
                                 }}
                                 _active={{
                                     transform: 'scale(1.1)',
                                 }}
+                                borderRadius="full"
                             >
                                 <Box
                                     w="12px"
                                     h="12px"
-                                    bg="brand.500"
+                                    bg="secondary.500"
                                     borderRadius="full"
                                 />
                             </RangeSliderThumb>
@@ -211,18 +212,19 @@ export const BudgetSlider = ({
                                 boxSize="44px"
                                 bg="white"
                                 borderWidth="3px"
-                                borderColor="brand.500"
+                                borderColor="secondary.500"
                                 _focus={{
-                                    boxShadow: '0 0 0 3px rgba(14, 165, 233, 0.3)',
+                                    boxShadow: '0 0 0 3px rgba(34, 197, 94, 0.3)',
                                 }}
                                 _active={{
                                     transform: 'scale(1.1)',
                                 }}
+                                borderRadius="full"
                             >
                                 <Box
                                     w="12px"
                                     h="12px"
-                                    bg="brand.500"
+                                    bg="secondary.500"
                                     borderRadius="full"
                                 />
                             </RangeSliderThumb>
@@ -240,11 +242,11 @@ export const BudgetSlider = ({
 
                 {/* Summary Box */}
                 <Box
-                    bg="brand.50"
+                    bg="secondary.50"
                     p={4}
-                    borderRadius="lg"
+                    borderRadius="xl"
                     borderWidth="2px"
-                    borderColor="brand.200"
+                    borderColor="secondary.200"
                 >
                     <Text fontSize="sm" color="gray.600" mb={1}>
                         Você está buscando carros entre:
