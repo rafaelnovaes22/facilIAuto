@@ -279,7 +279,6 @@ export const Step4Preferences = () => {
         borderRadius="xl"
         borderWidth="2px"
         borderColor="secondary.200"
-        borderRadius="xl"
       >
         <Text fontSize="sm" color="gray.700">
           💡 <strong>Dica:</strong> Essas preferências são opcionais. Se você
@@ -296,7 +295,6 @@ export const Step4Preferences = () => {
         borderWidth="2px"
         borderColor="secondary.200"
         textAlign="center"
-        borderRadius="xl"
       >
         <Text fontSize="md" fontWeight="bold" color="secondary.800" mb={2}>
           ✨ Tudo pronto!
