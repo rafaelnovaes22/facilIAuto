@@ -55,12 +55,12 @@ export default function HomePage() {
                         }}
                     >
                         {/* Logo */}
-                        <Image 
-                            src="/src/assets/logo.png" 
-                            alt="FacilIAuto Logo" 
-                            maxHeight="120px" 
-                            width="auto" 
-                            mx="auto" 
+                        <Image
+                            src="/src/assets/logo.png"
+                            alt="FacilIAuto Logo"
+                            maxHeight="120px"
+                            width="auto"
+                            mx="auto"
                             mb={8}
                             objectFit="contain"
                         />
@@ -103,7 +103,7 @@ export default function HomePage() {
                         <Button
                             size="lg"
                             h="64px"
-                            px={16}
+                            px={10}
                             fontSize="xl"
                             colorScheme="brand"
                             rightIcon={<FaRocket />}
@@ -113,9 +113,20 @@ export default function HomePage() {
                                 boxShadow: '2xl',
                             }}
                             transition="all 0.3s"
+                            w={{ base: "full", md: "auto" }} // Full width on mobile
                         >
-                            Começar Agora - É Grátis
+                            Encontrar Meu Carro Ideal
                         </Button>
+
+                        {/* Value Props & Social Proof */}
+                        <VStack spacing={1}>
+                            <Text fontSize="sm" color="brand.600" fontWeight="medium">
+                                ⚡ Receba recomendações + Consultoria via WhatsApp
+                            </Text>
+                            <Text fontSize="sm" color="gray.500">
+                                <i>Mais de 500 pessoas já encontraram seu carro</i>
+                            </Text>
+                        </VStack>
 
                         {/* Trust Indicators */}
                         <HStack spacing={8} pt={4} flexWrap="wrap" justify="center">

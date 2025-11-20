@@ -4,6 +4,7 @@ import { Box } from '@chakra-ui/react'
 import HomePage from '@/pages/HomePage'
 import QuestionnairePage from '@/pages/QuestionnairePage'
 import ResultsPage from '@/pages/ResultsPage'
+import DealershipInventoryPage from '@/pages/DealershipInventoryPage'
 import { PageErrorBoundary } from '@/components/common'
 import Header from '@/components/common/Header'
 
@@ -35,6 +36,14 @@ function App() {
               element={
                 <PageErrorBoundary>
                   <ResultsPage />
+                </PageErrorBoundary>
+              }
+            />
+            <Route
+              path="/admin/inventory"
+              element={
+                <PageErrorBoundary>
+                  <DealershipInventoryPage />
                 </PageErrorBoundary>
               }
             />

@@ -2,11 +2,13 @@
 API REST - FacilIAuto Platform
 FastAPI backend para sistema de recomendação multi-tenant
 """
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional
 import sys
 import os
+import shutil
+import uuid
 
 # Adicionar backend ao path
 backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -34,6 +36,12 @@ app = FastAPI(
     description="API REST para plataforma multi-tenant de recomendação automotiva",
     version="1.0.0"
 )
+
+# Montar arquivos estáticos para imagens
+from fastapi.staticfiles import StaticFiles
+images_dir = os.path.join(backend_dir, "data", "images")
+os.makedirs(images_dir, exist_ok=True)
+app.mount("/static/images", StaticFiles(directory=images_dir), name="images")
 
 # CORS - Configuração para produção
 ALLOWED_ORIGINS = [
@@ -614,6 +622,73 @@ def list_brands_with_models():
     }
     
     return result
+
+
+# ========================================
+# 📸 FASE 2: Endpoints de Imagens (Concessionárias)
+# ========================================
+
+@app.post("/api/dealerships/{dealership_id}/cars/{car_id}/images")
+async def upload_car_image(
+    dealership_id: str, 
+    car_id: str, 
+    file: UploadFile = File(...)
+):
+    """
+    Upload de imagem para um carro específico
+    """
+    # Validar se carro existe e pertence à concessionária
+    car_found = None
+    for car in engine.all_cars:
+        if car.id == car_id:
+            if car.dealership_id != dealership_id:
+                raise HTTPException(status_code=403, detail="Carro não pertence a esta concessionária")
+            car_found = car
+            break
+    
+    if not car_found:
+        raise HTTPException(status_code=404, detail="Carro não encontrado")
+    
+    # Validar tipo de arquivo
+    if not file.content_type.startswith("image/"):
+        raise HTTPException(status_code=400, detail="Arquivo deve ser uma imagem")
+    
+    # Criar diretório se não existir
+    # Estrutura: data/images/{dealership_id}/{car_id}/
+    car_images_dir = os.path.join(images_dir, dealership_id, car_id)
+    os.makedirs(car_images_dir, exist_ok=True)
+    
+    # Gerar nome único para o arquivo
+    file_ext = os.path.splitext(file.filename)[1]
+    filename = f"{uuid.uuid4()}{file_ext}"
+    file_path = os.path.join(car_images_dir, filename)
+    
+    # Salvar arquivo
+    try:
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro ao salvar imagem: {str(e)}")
+    
+    # Gerar URL pública
+    # URL base deve ser configurada via env var em produção
+    base_url = os.getenv("API_URL", "http://localhost:8000")
+    image_url = f"{base_url}/static/images/{dealership_id}/{car_id}/{filename}"
+    
+    # Atualizar modelo do carro
+    if not car_found.imagens:
+        car_found.imagens = []
+    car_found.imagens.append(image_url)
+    
+    # Persistir alterações (simulado por enquanto, idealmente salvar no DB/JSON)
+    # engine.save_car(car_found) # TODO: Implementar persistência
+    
+    return {
+        "status": "success",
+        "filename": filename,
+        "url": image_url,
+        "car_id": car_id
+    }
 
 
 # ========================================

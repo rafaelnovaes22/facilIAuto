@@ -67,7 +67,7 @@ export const CarCard = ({ recommendation, onWhatsAppClick, onDetailsClick, posit
     const whatsappNumber = import.meta.env.VITE_WHATSAPP_NUMBER || '5511949105033'
 
     const message = encodeURIComponent(
-      `Olá! Vi o ${car.nome} (${car.ano}) por R$ ${formatCurrency(car.preco)} no FacilIAuto e gostaria de mais informações.`
+      `Olá, acabei de fazer o quiz no FacilIAuto e me interessei pelo ${car.nome} (${car.ano}) por R$ ${formatCurrency(car.preco)}. Poderiam me ajudar?`
     )
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`
 
@@ -193,11 +193,11 @@ export const CarCard = ({ recommendation, onWhatsAppClick, onDetailsClick, posit
             )}
             {/* Score Badge no canto superior direito */}
             <Box position="absolute" top={2} right={2}>
-              <Badge 
-                colorScheme="secondary" 
-                fontSize="lg" 
-                px={3} 
-                py={2} 
+              <Badge
+                colorScheme="secondary"
+                fontSize="lg"
+                px={3}
+                py={2}
                 borderRadius="full"
                 bg="secondary.500"
                 color="white"

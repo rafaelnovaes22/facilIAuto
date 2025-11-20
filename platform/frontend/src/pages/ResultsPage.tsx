@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useState, useMemo } from 'react'
-import { FaArrowLeft, FaFilter, FaSortAmountDown, FaCalendar, FaRedo, FaEdit, FaMapMarkerAlt } from 'react-icons/fa'
+import { FaArrowLeft, FaFilter, FaSortAmountDown, FaCalendar, FaRedo, FaEdit, FaMapMarkerAlt, FaWhatsapp } from 'react-icons/fa'
 import type { RecommendationResponse, Recommendation, ApiError } from '@/types'
 import { CarCard } from '@/components/results/CarCard'
 import { CarDetailsModal } from '@/components/results/CarDetailsModal'
@@ -548,6 +548,44 @@ export default function ResultsPage() {
                   'Não encontramos carros que atendam aos seus critérios'
                 )}
               </Text>
+
+              {/* CTA Pós-Quiz */}
+              {data.total_recommendations > 0 && (
+                <Box
+                  mt={6}
+                  p={6}
+                  bg="green.50"
+                  borderRadius="lg"
+                  borderLeft="4px solid"
+                  borderLeftColor="green.500"
+                >
+                  <HStack justify="space-between" flexWrap="wrap" gap={4}>
+                    <VStack align="start" spacing={1}>
+                      <Heading size="md" color="green.800">
+                        Quer ajuda de um especialista?
+                      </Heading>
+                      <Text color="green.700">
+                        Nossos consultores podem analisar seu perfil e sugerir as melhores opções.
+                      </Text>
+                    </VStack>
+                    <Button
+                      leftIcon={<FaWhatsapp />}
+                      colorScheme="whatsapp"
+                      size="lg"
+                      w={{ base: "full", md: "auto" }}
+                      onClick={() => {
+                        const whatsappNumber = import.meta.env.VITE_WHATSAPP_NUMBER || '5511949105033'
+                        const message = encodeURIComponent(
+                          `Olá, acabei de fazer o quiz no FacilIAuto e gostaria de falar com um consultor especializado sobre as recomendações.`
+                        )
+                        window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank')
+                      }}
+                    >
+                      Falar com Especialista
+                    </Button>
+                  </HStack>
+                </Box>
+              )}
             </Box>
 
             {/* Profile Summary */}

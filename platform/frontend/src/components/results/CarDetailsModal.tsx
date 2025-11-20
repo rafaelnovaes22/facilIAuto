@@ -109,7 +109,7 @@ export const CarDetailsModal = ({ isOpen, onClose, car, tco_breakdown, fits_budg
 
   const handleWhatsAppClick = () => {
     const message = encodeURIComponent(
-      `Olá! Vi o ${car.nome} no FacilIAuto e gostaria de mais informações.`
+      `Olá, acabei de fazer o quiz no FacilIAuto e me interessei pelo ${car.nome} (${car.ano}). Poderiam me ajudar?`
     )
     const whatsappUrl = `https://wa.me/${car.dealership_whatsapp}?text=${message}`
     window.open(whatsappUrl, '_blank')

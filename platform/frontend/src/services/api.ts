@@ -207,6 +207,26 @@ export const getBrandsWithModels = async (): Promise<Record<string, string[]>> =
     return data
 }
 
+export const uploadCarImage = async (
+    dealershipId: string,
+    carId: string,
+    file: File
+): Promise<{ url: string; filename: string }> => {
+    const formData = new FormData()
+    formData.append('file', file)
+
+    const { data } = await api.post<{ url: string; filename: string }>(
+        `/api/dealerships/${dealershipId}/cars/${carId}/images`,
+        formData,
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        }
+    )
+    return data
+}
+
 // ============================================
 // RECOMMENDATIONS (CORE FEATURE)
 // ============================================
