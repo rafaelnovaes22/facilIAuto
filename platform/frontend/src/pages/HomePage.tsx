@@ -56,7 +56,7 @@ export default function HomePage() {
                     >
                         {/* Logo */}
                         <Image
-                            src="/src/assets/logo.png"
+                            src="/src/assets/faciliauto-logo.png"
                             alt="FacilIAuto Logo"
                             maxHeight="120px"
                             width="auto"

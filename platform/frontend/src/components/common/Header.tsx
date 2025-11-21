@@ -7,7 +7,7 @@ export default function Header() {
       <Box maxW="container.xl" mx="auto" px={4} py={3}>
         <HStack spacing={4}>
           <Image 
-            src="/src/assets/logo.png" 
+            src="/src/assets/faciliauto-logo.png" 
             alt="FacilIAuto Logo" 
             height="40px" 
             width="auto" 
