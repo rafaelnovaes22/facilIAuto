@@ -1,6 +1,7 @@
 // 🎨 UX Especialist + 💻 Tech Lead: Header com logo
 import { Box, Image, HStack, Link, Flex, Button } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
+import faciliautoLogo from '@/assets/faciliauto-logo.png'
 
 export default function Header() {
   const navigate = useNavigate()
@@ -17,7 +18,7 @@ export default function Header() {
       <Box maxW="container.xl" mx="auto" px={4} py={3}>
         <Flex justify="space-between" align="center">
           <Image
-            src="/src/assets/faciliauto-logo.png"
+            src={faciliautoLogo}
             alt="FacilIAuto Logo"
             height="40px"
             width="auto"
