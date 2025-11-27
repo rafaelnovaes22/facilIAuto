@@ -1,276 +1,168 @@
-// 🎨 UX + ✍️ Content Creator: Step 4 - Confirmação e Preferências
+// 🎨 UX + ✍️ Content Creator: Step 4 - Preferências de Marca e Modelo
 import {
   VStack,
   Heading,
   Text,
   FormControl,
   FormLabel,
-  CheckboxGroup,
-  Stack,
   SimpleGrid,
-  RadioGroup,
-  Radio,
   Box,
   HStack,
-  Button,
-  Icon,
-  Divider,
-  Badge,
-  Spinner,
-  Center,
   Card,
   CardBody,
-  Checkbox,
-  useCheckbox,
-  chakra,
-  useCheckboxGroup,
+  Select,
+  Badge,
+  Icon,
 } from '@chakra-ui/react'
-import { useQuery } from '@tanstack/react-query'
 import { useQuestionnaireStore } from '@/store/questionnaireStore'
-import { CATEGORIAS } from '@/types'
-import { getBrandsWithModels, queryKeys } from '@/services/api'
-import { FaCheck, FaCarSide, FaTruckPickup, FaShuttleVan, FaBus, FaCar, FaCheckCircle, FaCircle } from 'react-icons/fa'
+import { BRANDS_MODELS, getBrandsOrdered, getModelsByBrand } from '@/data/brandsModels'
+import { FaCheck, FaCar } from 'react-icons/fa'
 
-// Brand Card Component
-interface BrandCardProps {
-  marca: string
-  modelCount: number
-  isChecked: boolean
-  onToggle: (checked: boolean) => void
-}
+// Marcas mais famosas (priorizadas no topo da lista)
+const TOP_BRANDS = [
+  'Chevrolet',
+  'Volkswagen',
+  'Fiat',
+  'Hyundai',
+  'Toyota',
+  'Honda',
+  'Jeep',
+  'Renault',
+  'Nissan',
+  'Ford',
+]
 
-const BrandCard = ({ marca, modelCount, isChecked, onToggle }: BrandCardProps) => {
-  const { getInputProps, getCheckboxProps, htmlProps } = useCheckbox({
-    isChecked,
-    onChange: (e) => onToggle(e.target.checked),
-  })
-
-  const input = getInputProps()
-  const checkbox = getCheckboxProps()
-
-  return (
-    <Card
-      as="label"
-      cursor="pointer"
-      borderWidth="2px"
-      borderColor={isChecked ? 'brand.500' : 'gray.200'}
-      bg={isChecked ? 'brand.50' : 'white'}
-      _hover={{
-        borderColor: 'brand.300',
-        boxShadow: 'md',
-        transform: 'translateY(-2px)',
-      }}
-      transition="all 0.2s"
-      borderRadius="xl"
-      {...htmlProps}
-    >
-      <CardBody p={4}>
-        <input {...input} />
-        <HStack spacing={3} justify="space-between">
-          <Text fontWeight="medium" color={isChecked ? 'brand.700' : 'gray.700'}>
-            {marca}
-          </Text>
-          <HStack spacing={2}>
-            <Badge colorScheme="gray" fontSize="xs">
-              {modelCount}
-            </Badge>
-            <Box
-              {...checkbox}
-              w={5}
-              h={5}
-              borderRadius="full"
-              borderWidth="2px"
-              borderColor={isChecked ? 'brand.500' : 'gray.300'}
-              bg={isChecked ? 'secondary.500' : 'transparent'}
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              transition="all 0.2s"
-            >
-              {isChecked && <Box as={FaCheck} color="white" boxSize={3} />}
-            </Box>
-          </HStack>
-        </HStack>
-      </CardBody>
-    </Card>
-  )
+// Função para ordenar marcas: top brands primeiro, depois alfabético
+const getOrderedBrands = (): string[] => {
+  const allBrands = getBrandsOrdered()
+  const otherBrands = allBrands.filter(b => !TOP_BRANDS.includes(b)).sort()
+  return [...TOP_BRANDS, ...otherBrands]
 }
 
 export const Step4Preferences = () => {
   const { formData, updateFormData } = useQuestionnaireStore()
 
-  // Buscar marcas e modelos disponíveis da API
-  const { data: brandsModels, isLoading: isLoadingBrands } = useQuery({
-    queryKey: queryKeys.brandsModels,
-    queryFn: getBrandsWithModels,
-    staleTime: 1000 * 60 * 60, // 1 hora (dados raramente mudam)
-  })
+  const orderedBrands = getOrderedBrands()
+  const selectedBrand = formData.marca_preferida || ''
+  const availableModels = selectedBrand ? getModelsByBrand(selectedBrand) : []
 
-  // Extrair lista de marcas ordenadas
-  const availableBrands = brandsModels ? Object.keys(brandsModels).sort() : []
+  const handleBrandChange = (brand: string) => {
+    updateFormData({
+      marca_preferida: brand || undefined,
+      modelo_preferido: undefined // Limpa modelo ao trocar marca
+    })
+  }
+
+  const handleModelChange = (model: string) => {
+    updateFormData({ modelo_preferido: model || undefined })
+  }
 
   return (
     <VStack spacing={8} align="stretch" maxW="700px" mx="auto">
       {/* Header */}
       <VStack spacing={3} textAlign="center">
         <Heading size="lg" color="gray.800">
-          Quase lá! 🎉
+          Tem alguma preferência? 🚗
         </Heading>
         <Text color="gray.600" fontSize="md">
-          Confirme sua localização e adicione preferências se quiser
+          Se você já sabe qual marca ou modelo quer, nos conte aqui
         </Text>
       </VStack>
 
-      {/* Tipos de Veículo */}
+      {/* Seleção de Marca */}
       <FormControl>
-        <FormLabel fontSize="md" fontWeight="semibold" mb={4}>
-          🚗 Tipos de Veículo Preferidos
+        <FormLabel fontSize="md" fontWeight="semibold" mb={3}>
+          <HStack spacing={2}>
+            <Icon as={FaCar} color="brand.500" />
+            <Text>Marca do Carro</Text>
+          </HStack>
         </FormLabel>
-        <Text fontSize="sm" color="gray.600" mb={3}>
-          Selecione os tipos de carro que você prefere (opcional)
+        <Text fontSize="sm" color="gray.600" mb={4}>
+          Escolha uma marca para ver os modelos disponíveis (opcional)
         </Text>
-        <CheckboxGroup
-          value={formData.tipos_preferidos || []}
-          onChange={(values) =>
-            updateFormData({ tipos_preferidos: values as string[] })
-          }
+
+        <Select
+          placeholder="Selecione uma marca..."
+          value={selectedBrand}
+          onChange={(e) => handleBrandChange(e.target.value)}
+          size="lg"
+          bg="white"
+          borderWidth="2px"
+          borderColor="gray.200"
+          _hover={{ borderColor: 'brand.300' }}
+          _focus={{ borderColor: 'brand.500', boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)' }}
         >
-          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={3}>
-            {CATEGORIAS.map((categoria) => {
-              const categoryIcons: Record<string, any> = {
-                'Hatchback': FaCar,
-                'Sedan': FaCarSide,
-                'SUV': FaShuttleVan,
-                'Pickup': FaTruckPickup,
-                'Minivan': FaBus,
-                'Hatch': FaCar,
-              }
-              const IconComponent = categoryIcons[categoria] || FaCar
-              
-              return (
-                <Card
-                  key={categoria}
-                  cursor="pointer"
-                  borderWidth="2px"
-                  borderColor="transparent"
-                  _hover={{
-                    borderColor: 'brand.300',
-                    bg: 'brand.50',
-                    transform: 'translateY(-2px)',
-                    boxShadow: 'md',
-                  }}
-                  transition="all 0.2s"
-                  borderRadius="xl"
-                >
-                  <CardBody p={4}>
-                    <HStack spacing={3}>
-                      <Box
-                        as={IconComponent}
-                        color="brand.500"
-                        boxSize={6}
-                      />
-                      <Checkbox value={categoria} size="lg" colorScheme="brand">
-                        {categoria}
-                      </Checkbox>
-                    </HStack>
-                  </CardBody>
-                </Card>
-              )
-            })}
-          </SimpleGrid>
-        </CheckboxGroup>
+          <optgroup label="⭐ Marcas Populares">
+            {TOP_BRANDS.map((marca) => (
+              <option key={marca} value={marca}>
+                {marca} ({BRANDS_MODELS[marca]?.length || 0} modelos)
+              </option>
+            ))}
+          </optgroup>
+          <optgroup label="📋 Outras Marcas">
+            {orderedBrands
+              .filter(b => !TOP_BRANDS.includes(b))
+              .map((marca) => (
+                <option key={marca} value={marca}>
+                  {marca} ({BRANDS_MODELS[marca]?.length || 0} modelos)
+                </option>
+              ))}
+          </optgroup>
+        </Select>
       </FormControl>
 
-      {/* Marcas */}
-      <FormControl>
-        <FormLabel fontSize="md" fontWeight="semibold" mb={4}>
-          🏷️ Marcas Preferidas
-        </FormLabel>
-        <Text fontSize="sm" color="gray.600" mb={3}>
-          Tem alguma marca de preferência? (opcional)
-        </Text>
+      {/* Seleção de Modelo (aparece após selecionar marca) */}
+      {selectedBrand && (
+        <FormControl>
+          <FormLabel fontSize="md" fontWeight="semibold" mb={3}>
+            <HStack spacing={2}>
+              <Badge colorScheme="brand" fontSize="sm">{selectedBrand}</Badge>
+              <Text>Modelo</Text>
+            </HStack>
+          </FormLabel>
+          <Text fontSize="sm" color="gray.600" mb={4}>
+            Escolha um modelo específico ou deixe em branco para ver todos
+          </Text>
 
-        {isLoadingBrands ? (
-          <Center py={8}>
-            <Spinner size="md" color="brand.500" />
-          </Center>
-        ) : (
-          <SimpleGrid columns={{ base: 2, md: 3 }} spacing={3}>
-            {availableBrands.map((marca) => {
-              const modelCount = brandsModels?.[marca]?.length || 0
-              return (
-                <BrandCard
-                  key={marca}
-                  marca={marca}
-                  modelCount={modelCount}
-                  isChecked={formData.marcas_preferidas?.includes(marca) || false}
-                  onToggle={(checked) => {
-                    const currentBrands = formData.marcas_preferidas || []
-                    const newBrands = checked
-                      ? [...currentBrands, marca]
-                      : currentBrands.filter(b => b !== marca)
-                    updateFormData({ marcas_preferidas: newBrands })
-                  }}
-                />
-              )
-            })}
-          </SimpleGrid>
-        )}
-      </FormControl>
+          <Select
+            placeholder={`Todos os modelos ${selectedBrand}...`}
+            value={formData.modelo_preferido || ''}
+            onChange={(e) => handleModelChange(e.target.value)}
+            size="lg"
+            bg="white"
+            borderWidth="2px"
+            borderColor="gray.200"
+            _hover={{ borderColor: 'brand.300' }}
+            _focus={{ borderColor: 'brand.500', boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)' }}
+          >
+            {availableModels.map((modelo) => (
+              <option key={modelo} value={modelo}>
+                {modelo}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
+      )}
 
-      {/* Câmbio */}
-      <FormControl>
-        <FormLabel fontSize="md" fontWeight="semibold" mb={4}>
-          ⚙️ Preferência de Câmbio
-        </FormLabel>
-        <Text fontSize="sm" color="gray.600" mb={3}>
-          Qual tipo de câmbio você prefere? (opcional)
-        </Text>
-        <RadioGroup
-          value={formData.cambio_preferido || ''}
-          onChange={(value) =>
-            updateFormData({ cambio_preferido: value || undefined })
-          }
-        >
-          <Stack spacing={3}>
-            <Radio value="" size="lg" colorScheme="gray">
+      {/* Resumo da Seleção */}
+      {(selectedBrand || formData.modelo_preferido) && (
+        <Card bg="brand.50" borderWidth="2px" borderColor="brand.200">
+          <CardBody>
+            <HStack spacing={3}>
+              <Icon as={FaCheck} color="brand.500" />
               <Box>
-                <Text fontWeight="semibold">Sem preferência</Text>
-                <Text fontSize="sm" color="gray.600">
-                  Considerar todas as opções
+                <Text fontWeight="semibold" color="brand.700">
+                  Sua preferência:
+                </Text>
+                <Text color="brand.600">
+                  {selectedBrand}
+                  {formData.modelo_preferido && ` ${formData.modelo_preferido}`}
                 </Text>
               </Box>
-            </Radio>
-
-            <Radio value="Manual" size="lg" colorScheme="brand">
-              <Box>
-                <Text fontWeight="semibold">Manual</Text>
-                <Text fontSize="sm" color="gray.600">
-                  Mais econômico e maior controle
-                </Text>
-              </Box>
-            </Radio>
-
-            <Radio value="Automático" size="lg" colorScheme="brand">
-              <Box>
-                <Text fontWeight="semibold">Automático</Text>
-                <Text fontSize="sm" color="gray.600">
-                  Mais conforto, especialmente no trânsito
-                </Text>
-              </Box>
-            </Radio>
-
-            <Radio value="CVT" size="lg" colorScheme="brand">
-              <Box>
-                <Text fontWeight="semibold">CVT (Automático Contínuo)</Text>
-                <Text fontSize="sm" color="gray.600">
-                  Suavidade e eficiência
-                </Text>
-              </Box>
-            </Radio>
-          </Stack>
-        </RadioGroup>
-      </FormControl>
+            </HStack>
+          </CardBody>
+        </Card>
+      )}
 
       {/* Info Box */}
       <Box
@@ -281,9 +173,9 @@ export const Step4Preferences = () => {
         borderColor="secondary.200"
       >
         <Text fontSize="sm" color="gray.700">
-          💡 <strong>Dica:</strong> Essas preferências são opcionais. Se você
-          não selecionar nada, nossa IA considerará todas as opções disponíveis
-          para você.
+          💡 <strong>Dica:</strong> Essa preferência é opcional. Se você não
+          selecionar nada, nossa IA vai considerar todas as marcas e modelos
+          disponíveis para encontrar o carro ideal para você.
         </Text>
       </Box>
 

@@ -78,6 +78,8 @@ const initialFormData: Partial<QuestionnaireFormData> = {
     conforto: 3,
     seguranca: 3,
   },
+  marca_preferida: undefined,
+  modelo_preferido: undefined,
   tipos_preferidos: [],
   marcas_preferidas: [],
   cambio_preferido: undefined,
@@ -160,6 +162,12 @@ export const useQuestionnaireStore = create<QuestionnaireStore>((set, get) => ({
   toUserProfile: (): UserProfile => {
     const { formData } = get()
 
+    // Converte marca_preferida (singular) para marcas_preferidas (array) para a API
+    const marcasPreferidas: string[] = []
+    if (formData.marca_preferida) {
+      marcasPreferidas.push(formData.marca_preferida)
+    }
+
     return {
       orcamento_min: formData.orcamento_min || 50000,
       orcamento_max: formData.orcamento_max || 100000,
@@ -179,7 +187,7 @@ export const useQuestionnaireStore = create<QuestionnaireStore>((set, get) => ({
         conforto: 3,
         seguranca: 3,
       },
-      marcas_preferidas: formData.marcas_preferidas || [],
+      marcas_preferidas: marcasPreferidas,
       marcas_rejeitadas: [],
       tipos_preferidos: formData.tipos_preferidos || [],
       cambio_preferido: formData.cambio_preferido,

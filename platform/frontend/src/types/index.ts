@@ -294,7 +294,11 @@ export interface QuestionnaireFormData {
     // Step 3: Prioridades
     prioridades: UserProfile['prioridades']
 
-    // Step 4: Preferências
+    // Step 4: Preferências de Marca e Modelo
+    marca_preferida?: string
+    modelo_preferido?: string
+
+    // Campos legados (mantidos para compatibilidade)
     tipos_preferidos?: string[]
     marcas_preferidas?: string[]
     cambio_preferido?: string
