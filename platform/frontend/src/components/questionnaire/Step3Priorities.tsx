@@ -47,21 +47,21 @@ type PriorityKey = 'economia' | 'espaco' | 'performance' | 'conforto' | 'seguran
 export const Step3Priorities = () => {
   const { formData, updateFormData } = useQuestionnaireStore()
   const toast = useToast()
-  const [selectedPriorities, setSelectedPriorities] = useState<PriorityKey[]>([])
 
   // Initialize from formData if exists (only if user has actually selected priorities)
-  useEffect(() => {
+  const initialPriorities = (() => {
     if (formData.prioridades) {
       // Only initialize if there are priorities with value 5 (user selected)
       const selected = Object.entries(formData.prioridades)
         .filter(([, value]) => value === 5)
         .map(([key]) => key as PriorityKey)
 
-      if (selected.length > 0) {
-        setSelectedPriorities(selected)
-      }
+      return selected.length > 0 ? selected : []
     }
-  }, [])
+    return []
+  })()
+
+  const [selectedPriorities, setSelectedPriorities] = useState<PriorityKey[]>(initialPriorities)
 
   const handlePriorityToggle = (key: PriorityKey) => {
     setSelectedPriorities((prev) => {

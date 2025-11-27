@@ -11,200 +11,155 @@ import {
     Icon,
     Stack,
     Flex,
-    Spinner,
-    Alert,
-    AlertIcon,
-    AlertDescription,
     Image,
+    Link,
 } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import {
     FaRocket,
     FaBrain,
     FaChartLine,
-    FaClock,
+    FaWhatsapp,
     FaCheckCircle,
-    FaHeart,
 } from 'react-icons/fa'
-import { useStats } from '@/hooks/useApi'
-import { formatCurrency, formatNumber } from '@/services/api'
+import PartnerLogos from '@/components/PartnerLogos'
+import CarHighlights from '@/components/CarHighlights'
+import Testimonials from '@/components/Testimonials'
+import TrustBadges from '@/components/TrustBadges'
 
 export default function HomePage() {
     const navigate = useNavigate()
-    const { data: stats, isLoading, isError } = useStats()
 
     return (
         <Box bg="white">
             {/* HERO SECTION */}
             <Box
-                bgGradient="linear(to-br, brand.50, white, secondary.50)"
+                position="relative"
                 minH="90vh"
                 display="flex"
                 alignItems="center"
+                overflow="hidden"
             >
-                <Container maxW="container.xl" py={20}>
-                    <VStack
-                        spacing={8}
-                        textAlign="center"
-                        animation="fadeIn 0.8s ease-in"
-                        sx={{
-                            '@keyframes fadeIn': {
-                                '0%': { opacity: 0, transform: 'translateY(20px)' },
-                                '100%': { opacity: 1, transform: 'translateY(0)' },
-                            },
-                        }}
-                    >
-                        {/* Logo */}
-                        <Image
-                            src="/src/assets/faciliauto-logo.png"
-                            alt="FacilIAuto Logo"
-                            maxHeight="120px"
-                            width="auto"
-                            mx="auto"
-                            mb={8}
-                            objectFit="contain"
-                        />
+                {/* Background Image with Overlay */}
+                <Box
+                    position="absolute"
+                    top={0}
+                    left={0}
+                    right={0}
+                    bottom={0}
+                    zIndex={0}
+                >
+                    <Image
+                        src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1920&auto=format&fit=crop"
+                        alt="Carro Premium"
+                        w="full"
+                        h="full"
+                        objectFit="cover"
+                    />
+                    <Box
+                        position="absolute"
+                        top={0}
+                        left={0}
+                        right={0}
+                        bottom={0}
+                        bgGradient="linear(to-r, blackAlpha.800, blackAlpha.600, transparent)"
+                    />
+                </Box>
 
+                <Container maxW="container.xl" position="relative" zIndex={1} py={20}>
+                    <VStack
+                        align="flex-start"
+                        spacing={8}
+                        maxW="2xl"
+                        animation="fadeIn 0.8s ease-in"
+                    >
                         {/* Badge */}
                         <Box
-                            bg="brand.100"
-                            color="brand.700"
+                            bg="brand.500"
+                            color="white"
                             px={4}
                             py={2}
                             borderRadius="full"
                             fontSize="sm"
-                            fontWeight="semibold"
+                            fontWeight="bold"
+                            boxShadow="lg"
                         >
-                            🚀 Plataforma B2B de Recomendação Inteligente
+                            🚀 O jeito mais inteligente de comprar seminovos
                         </Box>
 
                         {/* Main Heading */}
                         <Heading
                             as="h1"
                             size="3xl"
-                            bgGradient="linear(to-r, brand.500, secondary.500)"
-                            bgClip="text"
-                            maxW="4xl"
-                            lineHeight="1.2"
+                            color="white"
+                            lineHeight="1.1"
+                            textShadow="0 2px 4px rgba(0,0,0,0.3)"
                         >
-                            Encontre o Carro Perfeito em 3 Minutos
+                            Seu Seminovo de Confiança, Escolhido por IA
                         </Heading>
 
                         {/* Subheading */}
-                        <Text fontSize="2xl" color="gray.600" maxW="2xl" lineHeight="1.6">
-                            Recomendação inteligente baseada em{' '}
-                            <Text as="span" color="brand.600" fontWeight="semibold">
-                                IA
-                            </Text>
-                            , considerando suas necessidades, orçamento e preferências
+                        <Text fontSize="xl" color="gray.100" lineHeight="1.6">
+                            Esqueça a busca interminável. Nossa inteligência artificial analisa milhares de ofertas e encontra o carro perfeito para sua necessidade e bolso.
                         </Text>
 
-                        {/* CTA Button */}
-                        <Button
-                            size="lg"
-                            h="64px"
-                            px={10}
-                            fontSize="xl"
-                            colorScheme="brand"
-                            rightIcon={<FaRocket />}
-                            onClick={() => navigate('/questionario')}
-                            _hover={{
-                                transform: 'translateY(-4px)',
-                                boxShadow: '2xl',
-                            }}
-                            transition="all 0.3s"
-                            w={{ base: "full", md: "auto" }} // Full width on mobile
-                        >
-                            Encontrar Meu Carro Ideal
-                        </Button>
+                        {/* CTA Buttons */}
+                        <Stack direction={{ base: 'column', sm: 'row' }} spacing={4} w="full">
+                            <Button
+                                size="lg"
+                                h="64px"
+                                px={8}
+                                fontSize="xl"
+                                colorScheme="brand"
+                                rightIcon={<FaRocket />}
+                                onClick={() => navigate('/questionario')}
+                                _hover={{
+                                    transform: 'translateY(-4px)',
+                                    boxShadow: 'xl',
+                                }}
+                                transition="all 0.3s"
+                            >
+                                Descobrir Meu Carro Ideal
+                            </Button>
+                            <Button
+                                size="lg"
+                                h="64px"
+                                px={8}
+                                fontSize="xl"
+                                bg="whiteAlpha.200"
+                                color="white"
+                                _hover={{
+                                    bg: 'whiteAlpha.300',
+                                }}
+                                leftIcon={<FaWhatsapp />}
+                                onClick={() => window.open('https://wa.me/5511999999999', '_blank')}
+                            >
+                                Falar com Consultor
+                            </Button>
+                        </Stack>
 
-                        {/* Value Props & Social Proof */}
-                        <VStack spacing={1}>
-                            <Text fontSize="sm" color="brand.600" fontWeight="medium">
-                                ⚡ Receba recomendações + Consultoria via WhatsApp
-                            </Text>
-                            <Text fontSize="sm" color="gray.500">
-                                <i>Mais de 500 pessoas já encontraram seu carro</i>
-                            </Text>
-                        </VStack>
-
-                        {/* Trust Indicators */}
-                        <HStack spacing={8} pt={4} flexWrap="wrap" justify="center">
-                            <HStack>
-                                <Icon as={FaClock} color="green.500" />
-                                <Text fontSize="sm" color="gray.600">
-                                    <strong>3 minutos</strong> para completar
-                                </Text>
-                            </HStack>
-                            <HStack>
-                                <Icon as={FaCheckCircle} color="green.500" />
-                                <Text fontSize="sm" color="gray.600">
-                                    <strong>100% gratuito</strong>
-                                </Text>
-                            </HStack>
-                            <HStack>
-                                <Icon as={FaHeart} color="green.500" />
-                                <Text fontSize="sm" color="gray.600">
-                                    <strong>Personalizado</strong> para você
-                                </Text>
-                            </HStack>
+                        {/* Social Proof Text */}
+                        <HStack spacing={2} color="gray.300" fontSize="sm">
+                            <Icon as={FaCheckCircle} color="green.400" />
+                            <Text>Mais de 500 carros analisados hoje</Text>
+                            <Text mx={2}>•</Text>
+                            <Icon as={FaCheckCircle} color="green.400" />
+                            <Text>50+ Concessionárias Parceiras</Text>
                         </HStack>
-
-                        {/* Stats */}
-                        {isLoading && (
-                            <VStack pt={8} spacing={4}>
-                                <Spinner size="lg" color="brand.500" thickness="4px" />
-                                <Text fontSize="sm" color="gray.600">
-                                    Carregando estatísticas...
-                                </Text>
-                            </VStack>
-                        )}
-
-                        {isError && (
-                            <Alert
-                                status="warning"
-                                borderRadius="lg"
-                                maxW="2xl"
-                                mt={8}
-                            >
-                                <AlertIcon />
-                                <AlertDescription>
-                                    Não foi possível carregar as estatísticas no momento.
-                                </AlertDescription>
-                            </Alert>
-                        )}
-
-                        {!isLoading && !isError && stats && (
-                            <SimpleGrid
-                                columns={{ base: 1, md: 3 }}
-                                spacing={8}
-                                pt={8}
-                                w="full"
-                                animation="fadeIn 0.6s ease-in 0.3s both"
-                            >
-                                <StatCard
-                                    label="Carros Disponíveis"
-                                    value={formatNumber(stats.total_cars || 0)}
-                                    icon={FaRocket}
-                                />
-                                <StatCard
-                                    label="Concessionárias"
-                                    value={formatNumber(stats.total_dealerships || 0)}
-                                    icon={FaChartLine}
-                                />
-                                <StatCard
-                                    label="Preço Médio"
-                                    value={formatCurrency(stats.avg_price || 0)}
-                                    icon={FaBrain}
-                                />
-                            </SimpleGrid>
-                        )}
                     </VStack>
                 </Container>
             </Box>
 
+            {/* PARTNER LOGOS */}
+            <PartnerLogos />
+
+            {/* HIGHLIGHTS */}
+            <Box id="destaques">
+                <CarHighlights />
+            </Box>
+
             {/* HOW IT WORKS */}
-            <Box bg="gray.50" py={20}>
+            <Box id="como-funciona" bg="gray.50" py={20}>
                 <Container maxW="container.xl">
                     <VStack spacing={12}>
                         <VStack spacing={4} textAlign="center">
@@ -219,20 +174,20 @@ export default function HomePage() {
                         <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10} w="full">
                             <StepCard
                                 number="1"
-                                title="Responda o Questionário"
-                                description="Conte-nos sobre suas necessidades, orçamento e preferências em 3 minutos"
+                                title="Responda o Quiz"
+                                description="Conte-nos sobre suas necessidades, orçamento e preferências em 3 minutos."
                                 icon={FaBrain}
                             />
                             <StepCard
                                 number="2"
-                                title="IA Analisa e Recomenda"
-                                description="Nossa inteligência artificial analisa milhares de opções e encontra os melhores matches"
+                                title="IA Analisa"
+                                description="Nossa inteligência artificial cruza seus dados com milhares de ofertas verificadas."
                                 icon={FaRocket}
                             />
                             <StepCard
                                 number="3"
                                 title="Receba Recomendações"
-                                description="Veja carros personalizados com score de compatibilidade e contato direto via WhatsApp"
+                                description="Veja os melhores matches e negocie direto com a concessionária via WhatsApp."
                                 icon={FaChartLine}
                             />
                         </SimpleGrid>
@@ -240,50 +195,34 @@ export default function HomePage() {
                 </Container>
             </Box>
 
-            {/* FEATURES */}
-            <Box bg="white" py={20}>
-                <Container maxW="container.xl">
-                    <VStack spacing={12}>
-                        <VStack spacing={4} textAlign="center">
-                            <Heading size="2xl" color="gray.800">
-                                Por Que FacilIAuto?
-                            </Heading>
-                            <Text fontSize="xl" color="gray.600" maxW="2xl">
-                                A forma mais inteligente de encontrar seu próximo carro
-                            </Text>
-                        </VStack>
+            {/* TRUST BADGES */}
+            <Box id="seguranca">
+                <TrustBadges />
+            </Box>
 
-                        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8} w="full">
-                            <FeatureCard
-                                title="🎯 Recomendações Personalizadas"
-                                description="Algoritmo de IA considera suas necessidades específicas e encontra o match perfeito"
-                            />
-                            <FeatureCard
-                                title="⚡ Rápido e Fácil"
-                                description="Questionário intuitivo de apenas 3 minutos. Sem complicações"
-                            />
-                            <FeatureCard
-                                title="💰 Múltiplas Concessionárias"
-                                description="Compare ofertas de diversas concessionárias em um só lugar"
-                            />
-                            <FeatureCard
-                                title="📱 Contato Direto"
-                                description="Fale diretamente com a concessionária via WhatsApp após escolher"
-                            />
-                        </SimpleGrid>
-                    </VStack>
-                </Container>
+            {/* TESTIMONIALS */}
+            <Box id="depoimentos">
+                <Testimonials />
             </Box>
 
             {/* CTA FINAL */}
-            <Box bgGradient="linear(to-r, brand.500, secondary.500)" py={20}>
-                <Container maxW="container.md">
+            <Box bgGradient="linear(to-r, brand.600, brand.800)" py={24} position="relative" overflow="hidden">
+                <Box
+                    position="absolute"
+                    top={0}
+                    left={0}
+                    right={0}
+                    bottom={0}
+                    bgImage="url('https://www.transparenttextures.com/patterns/carbon-fibre.png')"
+                    opacity={0.1}
+                />
+                <Container maxW="container.md" position="relative" zIndex={1}>
                     <VStack spacing={8} textAlign="center" color="white">
                         <Heading size="2xl">
-                            Pronto para Encontrar Seu Carro Ideal?
+                            Pare de Procurar, Comece a Dirigir
                         </Heading>
                         <Text fontSize="xl" opacity={0.9}>
-                            Comece agora e receba recomendações personalizadas em minutos
+                            Faça como mais de 500 pessoas e encontre seu seminovo ideal hoje mesmo.
                         </Text>
                         <Button
                             size="lg"
@@ -291,7 +230,7 @@ export default function HomePage() {
                             px={16}
                             fontSize="xl"
                             bg="white"
-                            color="brand.600"
+                            color="brand.700"
                             rightIcon={<FaRocket />}
                             onClick={() => navigate('/questionario')}
                             _hover={{
@@ -300,14 +239,14 @@ export default function HomePage() {
                             }}
                             transition="all 0.3s"
                         >
-                            Começar Gratuitamente
+                            Começar Quiz Gratuito
                         </Button>
                     </VStack>
                 </Container>
             </Box>
 
             {/* FOOTER */}
-            <Box bg="gray.900" color="white" py={10}>
+            <Box bg="gray.900" color="white" py={12}>
                 <Container maxW="container.xl">
                     <Stack
                         direction={{ base: 'column', md: 'row' }}
@@ -316,21 +255,51 @@ export default function HomePage() {
                         align="center"
                     >
                         <VStack align={{ base: 'center', md: 'flex-start' }} spacing={2}>
-                            <Text fontSize="2xl" fontWeight="bold">
-                                FacilIAuto
-                            </Text>
+                            <HStack>
+                                <Image
+                                    src="/src/assets/faciliauto-logo.png"
+                                    alt="FacilIAuto Logo"
+                                    h="40px"
+                                    filter="brightness(0) invert(1)"
+                                />
+                            </HStack>
                             <Text fontSize="sm" color="gray.400">
-                                Recomendação Inteligente de Veículos
+                                A revolução na compra de seminovos.
                             </Text>
                         </VStack>
 
                         <HStack spacing={8}>
+                            <Link href="#" color="gray.400" _hover={{ color: 'white' }}>Termos de Uso</Link>
+                            <Link href="#" color="gray.400" _hover={{ color: 'white' }}>Privacidade</Link>
                             <Text fontSize="sm" color="gray.400">
-                                © 2024 FacilIAuto. Todos os direitos reservados.
+                                © 2024 FacilIAuto.
                             </Text>
                         </HStack>
                     </Stack>
                 </Container>
+            </Box>
+
+            {/* Floating WhatsApp Button */}
+            <Box
+                position="fixed"
+                bottom={8}
+                right={8}
+                zIndex={999}
+            >
+                <Button
+                    w={16}
+                    h={16}
+                    borderRadius="full"
+                    colorScheme="green"
+                    boxShadow="lg"
+                    onClick={() => window.open('https://wa.me/5511999999999', '_blank')}
+                    _hover={{
+                        transform: 'scale(1.1)',
+                    }}
+                    transition="all 0.2s"
+                >
+                    <Icon as={FaWhatsapp} w={8} h={8} />
+                </Button>
             </Box>
         </Box>
     )
@@ -339,35 +308,6 @@ export default function HomePage() {
 // ============================================
 // SUB-COMPONENTS
 // ============================================
-
-interface StatCardProps {
-    label: string
-    value: string
-    icon: any
-}
-
-const StatCard = ({ label, value, icon }: StatCardProps) => (
-    <VStack
-        bg="white"
-        p={6}
-        borderRadius="xl"
-        boxShadow="lg"
-        spacing={3}
-        _hover={{
-            transform: 'translateY(-4px)',
-            boxShadow: '2xl',
-        }}
-        transition="all 0.3s"
-    >
-        <Icon as={icon} boxSize={10} color="brand.500" />
-        <Text fontSize="3xl" fontWeight="bold" color="gray.800">
-            {value}
-        </Text>
-        <Text fontSize="sm" color="gray.600" textAlign="center">
-            {label}
-        </Text>
-    </VStack>
-)
 
 interface StepCardProps {
     number: string
@@ -417,33 +357,4 @@ const StepCard = ({ number, title, description, icon }: StepCardProps) => (
             {description}
         </Text>
     </VStack>
-)
-
-interface FeatureCardProps {
-    title: string
-    description: string
-}
-
-const FeatureCard = ({ title, description }: FeatureCardProps) => (
-    <Box
-        bg="gray.50"
-        p={6}
-        borderRadius="xl"
-        borderWidth="2px"
-        borderColor="gray.100"
-        _hover={{
-            borderColor: 'brand.300',
-            boxShadow: 'md',
-        }}
-        transition="all 0.3s"
-    >
-        <VStack align="flex-start" spacing={3}>
-            <Text fontSize="xl" fontWeight="bold" color="gray.800">
-                {title}
-            </Text>
-            <Text color="gray.600" lineHeight="1.7">
-                {description}
-            </Text>
-        </VStack>
-    </Box>
 )

@@ -13,7 +13,7 @@ function App() {
     <BrowserRouter>
       <Box minH="100vh" bg="gray.50">
         <Header />
-        <Box pt={16}>
+        <Box>
           <Routes>
             <Route
               path="/"

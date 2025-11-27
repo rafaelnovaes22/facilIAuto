@@ -72,6 +72,9 @@ export default function QuestionnairePage() {
 
   // Restore step from URL on mount
   useEffect(() => {
+    // Scroll to top when page loads
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+
     const params = new URLSearchParams(window.location.search)
     const urlStep = params.get('step')
 
@@ -126,6 +129,7 @@ export default function QuestionnairePage() {
   const handleResetAndGoHome = () => {
     console.log('Reset: Usuário voltando ao início do questionário')
     resetForm() // Limpa todos os dados e volta para step 0
+    window.scrollTo({ top: 0, behavior: 'smooth' })
     navigate('/') // Volta para a home
   }
 
