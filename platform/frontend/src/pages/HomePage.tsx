@@ -26,6 +26,7 @@ import PartnerLogos from '@/components/PartnerLogos'
 import CarHighlights from '@/components/CarHighlights'
 import Testimonials from '@/components/Testimonials'
 import TrustBadges from '@/components/TrustBadges'
+import faciliautoLogo from '@/assets/faciliauto-logo.png'
 
 export default function HomePage() {
     const navigate = useNavigate()
@@ -257,7 +258,7 @@ export default function HomePage() {
                         <VStack align={{ base: 'center', md: 'flex-start' }} spacing={2}>
                             <HStack>
                                 <Image
-                                    src="/src/assets/faciliauto-logo.png"
+                                    src={faciliautoLogo}
                                     alt="FacilIAuto Logo"
                                     h="40px"
                                     filter="brightness(0) invert(1)"
