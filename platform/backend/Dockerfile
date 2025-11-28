@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Copiar requirements e instalar
-COPY requirements.txt .
+COPY platform/backend/requirements.txt .
 RUN pip install --user --no-cache-dir -r requirements.txt
 
 # Stage 2: Runtime
@@ -34,8 +34,8 @@ WORKDIR /app
 # Copiar dependências do builder
 COPY --from=builder /root/.local /home/faciliauto/.local
 
-# Copiar código
-COPY --chown=faciliauto:faciliauto . .
+# Copiar código do backend
+COPY --chown=faciliauto:faciliauto platform/backend/ .
 
 # Configurar PATH
 ENV PATH=/home/faciliauto/.local/bin:$PATH
@@ -54,4 +54,3 @@ EXPOSE 8000
 
 # Comando para rodar
 CMD ["python", "-m", "uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
-
