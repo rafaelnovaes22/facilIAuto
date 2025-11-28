@@ -1,15 +1,29 @@
 // 🎨 UX Especialist + 💻 Tech Lead: Header com logo
 import { Box, Image, HStack, Link, Flex, Button } from '@chakra-ui/react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import faciliautoLogo from '@/assets/faciliauto-logo.png'
 
 export default function Header() {
   const navigate = useNavigate()
+  const location = useLocation()
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+  const navigateToSection = (sectionId: string) => {
+    // Se não estiver na home, navega primeiro e depois faz scroll
+    if (location.pathname !== '/') {
+      navigate('/')
+      // Aguarda a navegação e então faz scroll
+      setTimeout(() => {
+        const element = document.getElementById(sectionId)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' })
+        }
+      }, 100)
+    } else {
+      // Já está na home, apenas faz scroll
+      const element = document.getElementById(sectionId)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
     }
   }
 
@@ -29,7 +43,7 @@ export default function Header() {
 
           <HStack spacing={8} display={{ base: 'none', md: 'flex' }}>
             <Link
-              onClick={() => scrollToSection('destaques')}
+              onClick={() => navigateToSection('destaques')}
               fontSize="sm"
               fontWeight="medium"
               color="gray.700"
@@ -39,7 +53,7 @@ export default function Header() {
               Carros Selecionados
             </Link>
             <Link
-              onClick={() => scrollToSection('como-funciona')}
+              onClick={() => navigateToSection('como-funciona')}
               fontSize="sm"
               fontWeight="medium"
               color="gray.700"
@@ -49,7 +63,7 @@ export default function Header() {
               Como Funciona
             </Link>
             <Link
-              onClick={() => scrollToSection('seguranca')}
+              onClick={() => navigateToSection('seguranca')}
               fontSize="sm"
               fontWeight="medium"
               color="gray.700"
@@ -59,7 +73,7 @@ export default function Header() {
               Segurança
             </Link>
             <Link
-              onClick={() => scrollToSection('depoimentos')}
+              onClick={() => navigateToSection('depoimentos')}
               fontSize="sm"
               fontWeight="medium"
               color="gray.700"
