@@ -1,427 +1,260 @@
-# 🚗 **FacilIAuto - Plataforma Mobile-First para Concessionárias**
+# 🚗 **FacilIAuto - Plataforma Inteligente de Vendas Automotivas**
 
-## 🎯 **Visão Geral**
+<div align="center">
 
-O **FacilIAuto** é uma plataforma SaaS B2B de recomendação automotiva multi-tenant, desenvolvida com foco em arquitetura escalável, IA responsável e metodologia XP + TDD.
+![FacilIAuto Logo](platform/frontend/src/faciliauto-logo.png)
 
-### ✅ **Status Atual - Honesto e Transparente**
+**Plataforma SaaS B2B de recomendação automotiva com IA conversacional via WhatsApp**
 
-### **Backend: 97/100** ⭐⭐⭐⭐⭐ **VALIDADO**
-- ✅ **API REST Completa** - FastAPI com 13 endpoints funcionais
-- ✅ **60-80 Testes** - pytest com 87% coverage (validado)
-- ✅ **Arquitetura Multi-Tenant** - 3 concessionárias, 129+ carros
-- ✅ **Production-Ready** - Docker, CI/CD, Monitoring completo
-- ✅ **Código Profissional** - Type hints 100%, SOLID, Clean Code
-- ✅ **Documentação Completa** - OpenAPI, Docstrings, Guias
+[![Backend Status](https://img.shields.io/badge/Backend-Production--Ready-success?style=for-the-badge)]()
+[![Frontend Status](https://img.shields.io/badge/Frontend-Production--Ready-success?style=for-the-badge)]()
+[![Chatbot Status](https://img.shields.io/badge/Chatbot-Production--Ready-success?style=for-the-badge)]()
+[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
-### **Frontend: 40/100** 🔄 **EM DESENVOLVIMENTO**
-- 🔄 **Estrutura Básica** - React + TypeScript + Chakra UI
-- 🔄 **Componentes Parciais** - Alguns componentes implementados
-- 🔄 **Testes Unitários** - ~20 testes (store, services, hooks)
-- ⚠️ **Integração** - Não validada com backend
-- ⚠️ **E2E** - Cypress configurado mas incompleto
-
-### **Projeto Geral: 84/100** ⭐⭐⭐⭐
-- ✅ **Backend Excelente** - Pronto para uso
-- 🔄 **Frontend em Progresso** - 2-3 semanas para completar
-- 📚 **Documentação Profissional** - 19.800+ linhas
-- 🤖 **Framework de 12 Agentes** - Completo e funcional
-
-**📊 Última Validação**: 13 de Outubro, 2025  
-**🎯 Próximo Marco**: Completar frontend e integração (2-3 semanas)
+</div>
 
 ---
 
-## 🏆 **Diferencial Competitivo**
+## 📋 **Índice**
+
+- [Visão Geral](#-visão-geral)
+- [Status do Projeto](#-status-do-projeto)
+- [Arquitetura](#-arquitetura)
+- [Componentes](#-componentes)
+  - [Backend](#backend-api-rest-python--fastapi)
+  - [Frontend](#frontend-react--typescript--chakra-ui)
+  - [Chatbot WhatsApp](#chatbot-whatsapp-langgraph--pydantic-ai)
+  - [Scrapers](#scrapers-extração-de-dados)
+  - [Agentes IA](#framework-de-12-agentes-especializados)
+- [Como Executar](#-como-executar)
+- [Stack Tecnológico](#-stack-tecnológico)
+- [Documentação](#-documentação)
+- [Contribuindo](#-contribuindo)
+
+---
+
+## 🎯 **Visão Geral**
+
+O **FacilIAuto** é uma solução completa para concessionárias e lojas de veículos que integra:
+
+1. **🌐 Website de Recomendação** - Interface web mobile-first para captura de leads
+2. **🤖 Chatbot WhatsApp** - Assistente inteligente com IA conversacional
+3. **📊 Engine de Recomendação** - Algoritmo de matching com scoring inteligente
+4. **📱 Painel Administrativo** - Gestão de estoque e leads
+
+### ✨ **Diferenciais**
 
 | Aspecto | **FacilIAuto** | Concorrentes |
 |---------|----------------|--------------|
 | **UX Mobile** | ✅ Mobile-first nativo | ❌ Desktop adaptado |
 | **Setup** | ✅ 30 minutos | ❌ 2-4 semanas |
 | **Preço** | ✅ R$ 497-1.997/mês | ❌ R$ 8k-15k/mês |
+| **IA Conversacional** | ✅ WhatsApp integrado | ❌ Não disponível |
 | **Customização** | ✅ White-label completo | ❌ Logo apenas |
-| **IA** | ✅ Transparente + guardrails | ❌ Black box |
 
 ---
 
-## 🚀 **Como Executar o Projeto**
+## 📊 **Status do Projeto**
 
-> 📖 **Guia completo de execução:** [COMO-EXECUTAR.md](COMO-EXECUTAR.md)
+### ✅ **Componentes Prontos para Produção**
 
-### **🎯 Opção 1: Execução Completa (Recomendado)**
-
-Execute **backend + frontend** com um único comando:
-
-#### **Windows**
-```bash
-# Na raiz do projeto
-start-faciliauto.bat
 ```
-
-#### **Linux/Mac**
-```bash
-# Na raiz do projeto
-chmod +x start-faciliauto.sh
-./start-faciliauto.sh
-```
-
-**O que acontece:**
-1. ✅ Instala dependências do backend (Python)
-2. ✅ Instala dependências do frontend (npm)
-3. ✅ Inicia API backend em http://localhost:8000
-4. ✅ Inicia frontend em http://localhost:3000
-5. ✅ Abre o navegador automaticamente
-
-**Acessar:**
-- 🎨 **Frontend**: http://localhost:3000
-- 🔧 **API Backend**: http://localhost:8000
-- 📚 **API Docs**: http://localhost:8000/docs
-
----
-
-### **🔧 Opção 2: Backend Isolado**
-
-Para rodar apenas o backend (útil para desenvolvimento de API):
-
-```bash
-# 1. Ir para o backend
-cd platform/backend
-
-# 2. Instalar dependências (primeira vez)
-pip install -r requirements.txt
-
-# 3. Rodar API
-python api/main.py
-```
-
-**Testar a API:**
-
-```bash
-# Health check
-curl http://localhost:8000/health
-
-# Stats
-curl http://localhost:8000/stats
-
-# Recomendação (POST)
-curl -X POST http://localhost:8000/recommend \
-  -H "Content-Type: application/json" \
-  -d '{
-    "orcamento_min": 50000,
-    "orcamento_max": 100000,
-    "uso_principal": "familia",
-    "city": "São Paulo",
-    "state": "SP"
-  }'
-```
-
-**Rodar Testes:**
-```bash
-# Windows
-run-tests.bat
-
-# Linux/Mac
-./run-tests.sh
-```
-
-**Resultado esperado:**
-```
-========================================
-✅ 63 testes passaram
-📊 Coverage: 87%
-⏱️  Tempo: ~5s
-
-Tests:
-  test_models.py                      ✅ 18 testes
-  test_recommendation_engine.py       ✅ 25 testes
-  test_api_integration.py             ✅ 20 testes
-========================================
+┌────────────────────────────────────────────────────────────────┐
+│                    FACILIAUTO - STATUS ATUAL                   │
+├────────────────────────────────────────────────────────────────┤
+│                                                                │
+│  🔧 Backend API:           ✅ Production-Ready                  │
+│     • FastAPI + Python 3.11                                    │
+│     • 23+ arquivos de teste                                    │
+│     • Engine de recomendação unificado                         │
+│     • Docker + CI/CD configurado                               │
+│                                                                │
+│  🎨 Frontend Web:          ✅ Production-Ready                  │
+│     • React 18 + TypeScript                                    │
+│     • Chakra UI + Framer Motion                                │
+│     • 4 páginas principais implementadas                       │
+│     • 46+ componentes reutilizáveis                            │
+│     • Testes Vitest + Cypress E2E                              │
+│                                                                │
+│  💬 Chatbot WhatsApp:      ✅ Production-Ready                  │
+│     • LangGraph para fluxo conversacional                      │
+│     • Integração Meta WhatsApp Business API                    │
+│     • Qualificação inteligente de leads                        │
+│     • Transcrição de áudio com Whisper                         │
+│     • Redis para sessões + PostgreSQL                          │
+│                                                                │
+│  🕷️ Scrapers:              ✅ Funcionando                       │
+│     • Extração automática de estoque                           │
+│     • Suporte a múltiplas concessionárias                      │
+│     • Validação e transformação de dados                       │
+│                                                                │
+│  🤖 Framework de Agentes:  ✅ Completo                          │
+│     • 12 agentes especializados                                │
+│     • CLI para orquestração                                    │
+│     • Templates escaláveis                                     │
+│                                                                │
+│  📚 Documentação:          ✅ Extensa                           │
+│     • 134+ arquivos de documentação                            │
+│     • Business, Technical, Implementation                      │
+│     • Guias e Troubleshooting                                  │
+│                                                                │
+└────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-### **🎨 Opção 3: Frontend Isolado**
+## 🏗️ **Arquitetura**
 
-Para rodar apenas o frontend (útil para desenvolvimento de UI):
-
-```bash
-# 1. Ir para o frontend
-cd platform/frontend
-
-# 2. Instalar dependências (primeira vez)
-npm install
-
-# 3. Rodar desenvolvimento
-npm run dev
 ```
-
-**Abrir:** http://localhost:3000
-
-**Scripts Disponíveis:**
-```bash
-npm run dev          # Desenvolvimento (hot reload)
-npm run build        # Build para produção
-npm run preview      # Preview do build
-npm test             # Testes unitários (53 testes)
-npm run e2e          # Testes E2E (18 testes)
-npm run lint         # Linting
-```
-
----
-
-### **📊 Opção 4: Verificar Testes Completos**
-
-Para validar todo o projeto (backend + frontend):
-
-```bash
-# Backend tests
-cd platform/backend
-pytest tests/ -v --cov
-
-# Frontend tests
-cd platform/frontend
-npm test              # Unit tests (53)
-npm run e2e          # E2E tests (18)
-```
-
-**Resultado esperado:**
-```
-Backend:  ✅ 63 testes (87% coverage)
-Frontend: ✅ 71 testes (53 unit + 18 E2E)
-Total:    ✅ 134 testes
+                     ┌─────────────────────┐
+                     │   Cliente Final     │
+                     │    (WhatsApp)       │
+                     └─────────┬───────────┘
+                               │
+                               ▼
+┌──────────────────────────────────────────────────────────────────┐
+│                         FACILIAUTO                                │
+├───────────────────┬───────────────────┬──────────────────────────┤
+│                   │                   │                          │
+│  ┌─────────────┐  │  ┌─────────────┐  │  ┌─────────────────────┐ │
+│  │  Frontend   │  │  │   Backend   │  │  │  Chatbot WhatsApp   │ │
+│  │   React +   │  │  │   FastAPI   │  │  │     LangGraph +     │ │
+│  │ TypeScript  │  │  │   Python    │  │  │    Pydantic AI      │ │
+│  └─────────────┘  │  └─────────────┘  │  └─────────────────────┘ │
+│        │          │        │          │           │              │
+│        └──────────┼────────┴──────────┼───────────┘              │
+│                   │                   │                          │
+│                   ▼                   │                          │
+│         ┌─────────────────┐           │                          │
+│         │   Unified       │           │                          │
+│         │ Recommendation  │           │                          │
+│         │    Engine       │           │                          │
+│         └─────────────────┘           │                          │
+│                   │                   │                          │
+│                   ▼                   │                          │
+│       ┌───────────────────┐           │                          │
+│       │  Data Layer       │           │                          │
+│       │ Redis │ PostgreSQL│           │                          │
+│       │ JSON  │ DuckDB    │           │                          │
+│       └───────────────────┘           │                          │
+└──────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-### **🐳 Opção 5: Docker (Produção)**
+## 🧩 **Componentes**
 
-Para executar em ambiente de produção com Docker:
+### **Backend (API REST Python + FastAPI)**
+📁 `platform/backend/`
 
-```bash
-# 1. Ir para o backend
-cd platform/backend
+| Funcionalidade | Descrição | Status |
+|----------------|-----------|--------|
+| **API REST** | 13+ endpoints documentados (OpenAPI/Swagger) | ✅ |
+| **Recommendation Engine** | Algoritmo de matching com scoring multi-critério | ✅ |
+| **TCO Calculator** | Cálculo de Custo Total de Propriedade | ✅ |
+| **Car Classifier** | Classificação automática de veículos | ✅ |
+| **Financial Health** | Validação de capacidade financeira | ✅ |
+| **Feedback Engine** | Sistema de feedback iterativo | ✅ |
+| **Multi-Tenant** | Suporte a múltiplas concessionárias | ✅ |
+| **Docker/CI-CD** | Containerização e deploy automatizado | ✅ |
+| **Monitoring** | Prometheus + Grafana | ✅ |
 
-# 2. Build e deploy
-docker-compose up -d
-
-# 3. Verificar serviços
-docker-compose ps
-```
-
-**Serviços disponíveis:**
-- 🔧 API Backend: http://localhost:8000
-- 🌐 Nginx Proxy: http://localhost:80
-- 📊 Prometheus: http://localhost:9090
-- 📈 Grafana: http://localhost:3001 (admin/faciliauto2024)
-
-**Parar serviços:**
-```bash
-docker-compose down
-```
+**Serviços Implementados:**
+- `unified_recommendation_engine.py` - Engine principal de recomendação
+- `tco_calculator.py` - Calculadora de custo total
+- `car_classifier.py` - Classificador de veículos
+- `feedback_engine.py` - Sistema de feedback
+- `fuel_price_service.py` - Serviço de preços de combustível
 
 ---
 
-### **🔍 Solução de Problemas**
+### **Frontend (React + TypeScript + Chakra UI)**
+📁 `platform/frontend/`
 
-#### **Erro: Porta 8000 em uso**
-```bash
-# Windows
-netstat -ano | findstr :8000
-taskkill /PID <PID> /F
+| Página | Funcionalidade | Status |
+|--------|----------------|--------|
+| **HomePage** | Landing page com CTA, depoimentos, badges | ✅ |
+| **QuestionnairePage** | Questionário interativo de 4 etapas | ✅ |
+| **ResultsPage** | Exibição de recomendações com galeria | ✅ |
+| **DealershipInventoryPage** | Página de estoque da concessionária | ✅ |
 
-# Linux/Mac
-lsof -ti:8000 | xargs kill -9
+**Componentes Principais (46+):**
+- `common/` - Header, Footer, LoadingSpinner, ErrorBoundary, etc.
+- `questionnaire/` - Steps, ProgressBar, BrandSelector, etc.
+- `results/` - CarCard, Comparison, Financing, Gallery, etc.
+- `CarHighlights.tsx` - Destaques de veículos
+- `Testimonials.tsx` - Depoimentos de clientes
+- `TrustBadges.tsx` - Selos de confiança
+- `PartnerLogos.tsx` - Logos de parceiros
+
+**Tecnologias:**
+- React 18 + TypeScript
+- Chakra UI + Framer Motion (animações)
+- Zustand (state management)
+- React Query (data fetching)
+- Vitest + Cypress (testes)
+
+---
+
+### **Chatbot WhatsApp (LangGraph + Pydantic AI)**
+📁 `platform/chatbot/`
+
+| Feature | Descrição | Status |
+|---------|-----------|--------|
+| **Integração Meta API** | WhatsApp Business API oficial | ✅ |
+| **LangGraph Flow** | Fluxo conversacional com estados | ✅ |
+| **NLP em PT-BR** | Processamento de linguagem natural | ✅ |
+| **Transcrição de Áudio** | Whisper + OpenAI para mensagens de voz | ✅ |
+| **Qualificação de Leads** | Coleta inteligente de dados | ✅ |
+| **Busca de Veículos** | Integração com engine de recomendação | ✅ |
+| **Guardrails** | Proteções contra respostas inadequadas | ✅ |
+| **Session Management** | Redis para persistência de sessões | ✅ |
+| **Handoff to Human** | Transferência para atendente humano | ✅ |
+
+**Fluxo Conversacional:**
+```
+GREETING → VEHICLE_SEARCH → QUALIFICATION → FINANCING → HANDOFF
+    ↓           ↓               ↓              ↓
+  Nome      Modelo/Ano     Orçamento      Financiamento
+  Saudação   Preferências   UsoPrincipal   TradeIn
 ```
 
-#### **Erro: Módulo não encontrado (Python)**
-```bash
-cd platform/backend
-pip install -r requirements.txt --force-reinstall
-```
-
-#### **Erro: npm install falhou**
-```bash
-cd platform/frontend
-rm -rf node_modules package-lock.json
-npm install
-```
-
-#### **Backend não conecta com Frontend**
-```bash
-# Verificar se backend está rodando
-curl http://localhost:8000/health
-
-# Se não estiver, iniciar backend primeiro
-cd platform/backend
-python api/main.py
-```
+**Serviços Implementados:**
+- `conversation_engine.py` - Engine principal com LangGraph
+- `nlp_service.py` - Processamento de linguagem natural
+- `backend_client.py` - Cliente para API do backend
+- `whatsapp_client.py` - Cliente Meta WhatsApp API
+- `session_manager.py` - Gerenciador de sessões
+- `guardrails.py` - Sistema de guardrails
 
 ---
 
-### **✅ Checklist de Verificação**
+### **Scrapers (Extração de Dados)**
+📁 `platform/scrapers/`
 
-Antes de fazer demo ou apresentação:
+| Scraper | Concessionária | Status |
+|---------|----------------|--------|
+| `robustcar_scraper.py` | RobustCar | ✅ |
+| `rpmultimarcas_scraper.py` | RP Multimarcas | ✅ |
 
-**Backend:**
-- [ ] `python api/main.py` está rodando
-- [ ] http://localhost:8000/health retorna OK
-- [ ] http://localhost:8000/stats retorna dados
-- [ ] Testes passando (`run-tests.bat`)
-
-**Frontend:**
-- [ ] `npm run dev` está rodando
-- [ ] http://localhost:3000 abre a homepage
-- [ ] Questionário funciona (4 steps)
-- [ ] Resultados aparecem com scores
-
-**Integração:**
-- [ ] Frontend chama backend com sucesso
-- [ ] Recomendações aparecem na ResultsPage
-- [ ] WhatsApp button funciona
+**Funcionalidades:**
+- Extração automática de estoque
+- Validação de dados
+- Transformação e normalização
+- Exportação JSON
 
 ---
 
-### **🎯 Acesso Rápido - URLs Principais**
+### **Framework de 12 Agentes Especializados**
+📁 `agents/`
 
-| Serviço | URL | Descrição |
-|---------|-----|-----------|
-| **Frontend** | http://localhost:3000 | Interface do usuário |
-| **API Backend** | http://localhost:8000 | REST API |
-| **API Docs** | http://localhost:8000/docs | Swagger UI interativo |
-| **Redoc** | http://localhost:8000/redoc | Documentação alternativa |
-| **Health Check** | http://localhost:8000/health | Status da API |
-| **Stats** | http://localhost:8000/stats | Estatísticas gerais |
-| **Grafana** | http://localhost:3001 | Dashboards (Docker) |
-| **Prometheus** | http://localhost:9090 | Métricas (Docker) |
+| Categoria | Agentes |
+|-----------|---------|
+| **Core** | AI Engineer, Tech Lead, UX Specialist, Product Manager |
+| **Business** | Business Analyst, Marketing Strategist, Sales Coach, Financial Advisor |
+| **Operations** | Operations Manager, System Architecture, Data Analyst, Content Creator |
 
----
-
-## 📊 **Proof of Concept - RobustCar**
-
-### **✅ Resultados Validados**
-- 🚗 **89 carros** processados automaticamente
-- 🎯 **84.3% precisão** nos preços extraídos
-- ⚡ **<2s tempo** de resposta
-- 💰 **380% ROI** demonstrado
-
-### **🎯 Recomendações Geradas**
-1. **Fiat Cronos Drive** - R$ 84.990 (87% match)
-2. **Toyota Yaris XLS** - R$ 97.990 (84% match)
-3. **Chevrolet Tracker** - R$ 91.990 (79% match)
-
----
-
-## 🏗️ **Arquitetura Técnica**
-
-### **Frontend - React + TypeScript (100% Completo)**
-- 📱 **Chakra UI** para design system mobile-first
-- 🎯 **3 páginas** principais completas (Home, Questionário, Resultados)
-- ⚡ **Performance** otimizada <2s load time
-- 📱 **Responsivo** 100% mobile (mobile-first)
-- 🧪 **71 testes** (53 unit + 18 E2E) com Vitest + Cypress
-- 🐻 **Zustand** state management + React Query data fetching
-
-### **Backend - Python + FastAPI**
-- 🤖 **IA responsável** com guardrails
-- 📊 **API REST** documentada
-- 🛡️ **Anti-hallucination** strategies
-- 📈 **Métricas** em tempo real
-
----
-
-## 💼 **Business Case**
-
-### **📈 Market Opportunity**
-- **26.000+ concessionárias** no Brasil
-- **80% pequenas/médias** não atendidas
-- **R$ 50M+ mercado** negligenciado
-- **R$ 6M+ ARR** potencial em 3 anos
-
-### **💰 ROI para Concessionárias**
-- **Investimento**: R$ 997/mês (Plano Profissional)
-- **Vendas influenciadas**: +30% conversão
-- **Payback**: 2-3 meses
-- **ROI comprovado**: 380%
-
----
-
-## 📁 **Estrutura do Projeto (Reorganizada)**
-
-```
-FacilIAuto/
-├── 🟢 platform/               # PLATAFORMA PRINCIPAL
-│   ├── backend/              # API REST + Engine (97/100)
-│   │   ├── api/             # FastAPI - 10 endpoints
-│   │   ├── models/          # Pydantic models
-│   │   ├── services/        # UnifiedRecommendationEngine
-│   │   ├── data/            # 3 concessionárias, 129+ carros
-│   │   ├── tests/           # 63 testes TDD (87% coverage)
-│   │   ├── scripts/         # Calibração, análise, comparação
-│   │   ├── docs/            # Business + Operations docs
-│   │   └── README.md
-│   ├── frontend/            # React + TypeScript (100% Completo)
-│   │   ├── src/             # Components, pages, services
-│   │   ├── cypress/         # E2E tests (18 testes)
-│   │   ├── tests/           # Unit tests (53 testes)
-│   │   └── README.md
-│   └── XP-METHODOLOGY.md    # Metodologia XP completa
-│
-├── 🤖 agents/                # Framework de 12 agentes
-│   ├── ai-engineer/
-│   ├── tech-lead/
-│   ├── ux-especialist/
-│   ├── ... (9 outros)
-│   ├── agent-cli.py
-│   └── README.md
-│
-├── 📚 docs/                  # Documentação organizada
-│   ├── business/            # 10 docs estratégia
-│   ├── technical/           # 3 docs arquitetura  
-│   ├── implementation/      # 5 docs XP/TDD
-│   ├── guides/              # 3 guias práticos
-│   └── README.md
-│
-├── 📦 examples/              # Protótipos de referência
-│   ├── CarRecommendationSite/  # XP/TDD/E2E completo
-│   ├── RobustCar/           # POC single-tenant
-│   └── README.md
-│
-├── 📄 FOR-RECRUITERS.md      # Avaliação técnica (97/100)
-├── 📖 CONTRIBUTING.md        # Guia de contribuição
-├── 📝 LICENSE               # MIT License
-└── 📋 README.md             # Este arquivo
-```
-
-### **🎯 Estrutura Profissional**
-- ✅ **6 arquivos na raiz** (limpa e organizada)
-- ✅ **Documentação categorizada** (business, technical, implementation, guides)
-- ✅ **Exemplos separados** (protótipos históricos)
-- ✅ **Navegação intuitiva**
-- ✅ **READMEs em cada pasta**
-
----
-
-## 🎯 **Framework de 12 Agentes Especializados**
-
-### **🤖 Agentes Core**
-- **AI Engineer** 🤖 - IA responsável e guardrails
-- **UX Especialist** 🎨 - Experiência mobile-first B2B
-- **Tech Lead** 💻 - Arquitetura e liderança técnica
-- **Product Manager** 🎨 - Visão e estratégia de produto
-
-### **💼 Agentes Business**
-- **Business Analyst** 📊 - Análise de negócios
-- **Marketing Strategist** 🚀 - Growth e branding
-- **Sales Coach** 💼 - Performance de vendas
-- **Financial Advisor** 💰 - Estratégia financeira
-
-### **⚙️ Agentes Operations**
-- **Operations Manager** ⚙️ - Processos e eficiência
-- **System Architecture** 🏗️ - Governança técnica
-- **Data Analyst** 📈 - Insights e analytics
-- **Content Creator** ✍️ - UX/UI e storytelling
-
-### **🛠️ Ferramenta CLI**
+**CLI Tool:**
 ```bash
 python agent-cli.py list      # Listar agentes
 python agent-cli.py validate  # Validar qualidade
@@ -430,118 +263,269 @@ python agent-cli.py create    # Criar novos agentes
 
 ---
 
-## 📞 **Próximos Passos**
+## 🚀 **Como Executar**
 
-### **🎯 Para Concessionárias Interessadas**
-1. **Demo completa** em 10 minutos
-2. **Customização** com sua marca
-3. **Treinamento** da equipe
-4. **Implementação** em 30 minutos
-5. **Acompanhamento** de ROI
+### **Pré-requisitos**
 
-### **🚀 Para Expansão**
-1. **Scale** para múltiplas concessionárias
-2. **Integração** com CRMs existentes
-3. **App mobile** white-label
-4. **Analytics** avançados
+- Python 3.11+
+- Node.js 18+
+- Docker & Docker Compose (opcional)
+- Redis (para chatbot)
+- PostgreSQL (para chatbot)
 
----
+### **1. Backend**
 
-## 📊 **Documentação Completa**
+```bash
+cd platform/backend
 
-### **📁 Documentação Disponível em `/docs/`**
-- 📋 **STATUS-ATUAL-DEZEMBRO-2024.md** - Status executivo
-- 🎯 **PRÓXIMO-PASSO-ESTRATÉGICO.md** - Roadmap definido
-- 🏆 **Competitive Analysis - FacilIAuto.md** - Análise de mercado
-- 🎨 **FacilIAuto - Design System Foundation.md** - UX system
-- 🚀 **FacilIAuto - Sistema Demonstração Completa.md** - Guia demo
-- 📈 **VISAO-PRODUTO-SAAS.md** - Estratégia de produto
+# Instalar dependências
+pip install -r requirements.txt
 
----
+# Rodar API
+python api/main.py
 
-## 💡 **Metodologia XP/E2E Integrada**
-
-### **🔄 Extreme Programming**
-- **Simple Design** aplicado em todas as interfaces
-- **Test-Driven Development** para validação contínua
-- **Pair Programming** entre agentes especializados
-- **Customer Collaboration** com foco em valor real
-
-### **🎯 End-to-End Testing**
-- **User journeys** completos validados
-- **Cypress framework** implementado
-- **Regression testing** automatizado
-- **Performance benchmarks** estabelecidos
-
----
-
-## 🏆 **Conquistas do Projeto**
-
-### ✅ **Framework Maduro (FASE 1 - 100%)**
-- 12 agentes especializados completos
-- Metodologia XP/E2E integrada
-- CLI tool operacional
-- Template system escalável
-
-### ✅ **Sistema Funcional (FASE 2 - 100%)**  
-- RobustCar 100% operacional
-- 89 carros processados
-- ROI de 380% validado
-- Interface mobile-first
-
-### ✅ **Produto SaaS (FASE 3 - 100%)**
-- ✅ Visão B2B automotivo definida
-- ✅ Arquitetura multi-tenant implementada
-- ✅ Backend API completo com 12 agentes
-- ✅ Frontend MVP completo (3 páginas, 71 testes)
-- ✅ Modelo de negócio estabelecido (LTV/CAC 38,6x)
-- ✅ Diferenciação competitiva clara
-- ✅ Docker + CI/CD + Monitoring
-- ✅ Documentação profissional (19.800+ linhas)
-
----
-
-## 📞 **Contato e Demonstração**
-
-### **🎯 Agendar Demonstração**
-- **Demo completa**: 10-15 minutos
-- **Customização**: Sua marca integrada
-- **ROI calculation**: Específico para seu negócio
-- **Implementação**: Timeline definido
-
-### **💼 Business Case**
-> **"Seja a primeira concessionária do Brasil a oferecer experiência de compra mobile-first. ROI comprovado de 380%, implementação em 30 minutos."**
-
----
-
-**🚀 O FacilIAuto representa o futuro das vendas automotivas no Brasil - mobile-first, inteligente e com ROI comprovado.**
-
----
-
-## 📊 **Resumo Executivo**
-
-```
-┌────────────────────────────────────────────┐
-│       FACILIAUTO - STATUS FINAL            │
-├────────────────────────────────────────────┤
-│                                            │
-│  Backend:        ✅ 100% Completo          │
-│  Frontend:       ✅ 100% Completo          │
-│  Testes:         ✅ 134 testes             │
-│  Documentação:   ✅ 19.800+ linhas         │
-│  Docker:         ✅ Production-ready       │
-│  CI/CD:          ✅ Configurado            │
-│  Monitoring:     ✅ Prometheus + Grafana   │
-│                                            │
-│  12 Agentes:     ✅ 100% Utilizados        │
-│  XP/TDD:         ✅ 100% Aplicado          │
-│  ROI:            ✅ 302x Comprovado        │
-│                                            │
-│  Status:         🟢 PRONTO PARA PRODUÇÃO   │
-│                                            │
-└────────────────────────────────────────────┘
+# Rodar testes
+pytest tests/ -v --cov
 ```
 
-**📅 Última atualização**: Outubro 2024  
-**🎯 Status**: 🚀 **Pronto para Produção, Demonstração e Implementação**  
-**💼 Próximo Passo**: Deploy em produção e aquisição de clientes
+**Endpoints disponíveis:**
+- API: http://localhost:8000
+- Docs: http://localhost:8000/docs
+- Health: http://localhost:8000/health
+
+### **2. Frontend**
+
+```bash
+cd platform/frontend
+
+# Instalar dependências
+npm install
+
+# Rodar em desenvolvimento
+npm run dev
+
+# Rodar testes
+npm test
+
+# Rodar testes E2E
+npm run e2e
+```
+
+**Acesso:** http://localhost:5173
+
+### **3. Chatbot**
+
+```bash
+cd platform/chatbot
+
+# Copiar variáveis de ambiente
+cp .env.example .env
+
+# Configurar credenciais (editar .env)
+
+# Rodar com Docker
+docker-compose up -d
+
+# Ou localmente com Poetry
+poetry install
+poetry run uvicorn src.main:app --reload --port 8001
+```
+
+### **4. Execução Completa (Windows)**
+
+```bash
+# Na raiz do projeto
+start-faciliauto.bat
+```
+
+### **5. Execução Completa (Linux/Mac)**
+
+```bash
+chmod +x start-faciliauto.sh
+./start-faciliauto.sh
+```
+
+---
+
+## 🛠️ **Stack Tecnológico**
+
+### **Backend**
+| Tecnologia | Versão | Uso |
+|------------|--------|-----|
+| Python | 3.11+ | Linguagem principal |
+| FastAPI | 0.109+ | Framework API |
+| Pydantic | 2.5+ | Validação de dados |
+| pytest | 7.4+ | Testes |
+| Docker | - | Containerização |
+| Prometheus | - | Métricas |
+| Grafana | - | Dashboards |
+
+### **Frontend**
+| Tecnologia | Versão | Uso |
+|------------|--------|-----|
+| React | 18.2 | UI Library |
+| TypeScript | 5.3 | Type safety |
+| Chakra UI | 2.8 | Design System |
+| Framer Motion | 10.16 | Animações |
+| Zustand | 4.4 | State Management |
+| React Query | 5.12 | Data Fetching |
+| Vite | 5.0 | Build Tool |
+| Vitest | 1.0 | Unit Tests |
+| Cypress | 13.6 | E2E Tests |
+
+### **Chatbot**
+| Tecnologia | Versão | Uso |
+|------------|--------|-----|
+| LangGraph | 0.0.20 | Fluxo conversacional |
+| LangChain | 0.1+ | Framework LLM |
+| Pydantic AI | 0.0.13 | Validação IA |
+| Redis | 5.0 | Cache/Sessions |
+| PostgreSQL | - | Persistência |
+| DuckDB | 0.9 | Analytics |
+| Celery | 5.3 | Task Queue |
+| spaCy | 3.7 | NLP |
+| Whisper | - | Transcrição de áudio |
+
+---
+
+## 📚 **Documentação**
+
+### **Estrutura de Documentação**
+
+```
+docs/
+├── business/           # Estratégia e negócios (16 docs)
+├── technical/          # Arquitetura técnica (18 docs)
+├── implementation/     # Guias de implementação (15 docs)
+├── guides/             # Tutoriais práticos (19 docs)
+├── reports/            # Relatórios (16 docs)
+├── troubleshooting/    # Solução de problemas (32 docs)
+├── deployment/         # Deploy e infraestrutura (4 docs)
+└── ml/                 # Machine Learning (2 docs)
+```
+
+### **Documentos Principais**
+
+| Documento | Descrição |
+|-----------|-----------|
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Guia de contribuição |
+| [FOR-RECRUITERS.md](FOR-RECRUITERS.md) | Avaliação técnica do projeto |
+| [platform/README.md](platform/README.md) | Documentação da plataforma |
+| [platform/chatbot/README.md](platform/chatbot/README.md) | Documentação do chatbot |
+| [agents/README.md](agents/README.md) | Framework de agentes |
+
+---
+
+## 📁 **Estrutura do Projeto**
+
+```
+FacilIAuto/
+├── 📁 platform/                 # PLATAFORMA PRINCIPAL
+│   ├── 📁 backend/             # API REST (Python + FastAPI)
+│   │   ├── api/               # Endpoints da API
+│   │   ├── services/          # Lógica de negócio (12 serviços)
+│   │   ├── models/            # Modelos Pydantic
+│   │   ├── tests/             # Testes (23 arquivos)
+│   │   └── data/              # Dados das concessionárias
+│   │
+│   ├── 📁 frontend/           # Web App (React + TypeScript)
+│   │   ├── src/
+│   │   │   ├── components/   # 46+ componentes
+│   │   │   ├── pages/        # 4 páginas principais
+│   │   │   ├── services/     # API clients
+│   │   │   ├── store/        # Zustand stores
+│   │   │   └── hooks/        # Custom hooks
+│   │   └── cypress/          # Testes E2E
+│   │
+│   ├── 📁 chatbot/            # WhatsApp Bot (LangGraph)
+│   │   ├── src/
+│   │   │   ├── api/          # Webhooks
+│   │   │   ├── services/     # 8 serviços principais
+│   │   │   ├── tasks/        # Celery tasks
+│   │   │   └── utils/        # Utilitários
+│   │   └── tests/            # Testes unitários e E2E
+│   │
+│   └── 📁 scrapers/           # Extração de dados
+│       ├── scraper/          # Módulos de scraping
+│       └── tests/            # Testes
+│
+├── 📁 agents/                   # Framework de 12 agentes IA
+│   ├── ai-engineer/
+│   ├── tech-lead/
+│   ├── ux-especialist/
+│   ├── product-manager/
+│   ├── business-analyst/
+│   ├── marketing-strategist/
+│   ├── sales-coach/
+│   ├── financial-advisor/
+│   ├── operations-manager/
+│   ├── system-architecture/
+│   ├── data-analyst/
+│   ├── content-creator/
+│   └── agent-cli.py          # CLI tool
+│
+├── 📁 docs/                     # Documentação extensa (134+ arquivos)
+│   ├── business/
+│   ├── technical/
+│   ├── implementation/
+│   ├── guides/
+│   └── troubleshooting/
+│
+├── 📁 examples/                 # Protótipos de referência
+│   ├── CarRecommendationSite/
+│   └── RobustCar/
+│
+├── 📄 README.md                 # Este arquivo
+├── 📄 CONTRIBUTING.md           # Guia de contribuição
+├── 📄 FOR-RECRUITERS.md         # Avaliação técnica
+├── 📄 LICENSE                   # MIT License
+├── 🔧 start-faciliauto.bat      # Script Windows
+├── 🔧 start-faciliauto.sh       # Script Linux/Mac
+└── 🔧 stop-faciliauto.sh        # Parar serviços
+```
+
+---
+
+## 🤝 **Contribuindo**
+
+Contribuições são bem-vindas! Por favor, leia o [CONTRIBUTING.md](CONTRIBUTING.md) para detalhes sobre nosso código de conduta e processo de submissão de pull requests.
+
+### **Workflow de Desenvolvimento**
+
+1. Fork o projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
+
+### **Padrões de Código**
+
+- **Backend:** Black + Flake8 + MyPy
+- **Frontend:** ESLint + Prettier
+- **Commits:** Conventional Commits
+
+---
+
+## 📄 **Licença**
+
+Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+---
+
+## 📞 **Contato**
+
+Para dúvidas ou parcerias comerciais:
+
+- **Demo:** Agende uma demonstração de 15 minutos
+- **Suporte:** Consulte a [documentação de troubleshooting](docs/troubleshooting/)
+- **Contribuição:** Veja [CONTRIBUTING.md](CONTRIBUTING.md)
+
+---
+
+<div align="center">
+
+**🚀 FacilIAuto - Transformando a experiência de compra de veículos no Brasil**
+
+*Desenvolvido com ❤️ usando metodologia XP + TDD*
+
+</div>
