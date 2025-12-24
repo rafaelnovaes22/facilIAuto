@@ -798,8 +798,74 @@ class AgentOrchestrator:
         
         return recovery_result
     
+    def register_context_skill(self, context_skill_instance):
+        """Registra a Context-Based Recommendation Skill"""
+        skill_capabilities = [
+            AgentCapability(
+                name="contextual_search",
+                description="Busca contextual de veículos baseada em intenção",
+                input_schema={
+                    "query": "string",
+                    "user_data": "object"
+                },
+                output_schema={
+                    "recommendations": "array",
+                    "context_analysis": "object"
+                },
+                sla_response_time=30
+            ),
+            AgentCapability(
+                name="intent_classification", 
+                description="Classificação de intenção de busca",
+                input_schema={
+                    "query": "string"
+                },
+                output_schema={
+                    "intent": "string",
+                    "confidence": "float",
+                    "entities": "array"
+                },
+                sla_response_time=10
+            )
+        ]
+        
+        self.register_agent("context_recommendation_skill", context_skill_instance, skill_capabilities)
+        logger.info("Context-Based Recommendation Skill registrada no orquestrador")
+
     def _initialize_workflows(self):
         """Inicializa workflows built-in"""
+        
+        # Workflow: Contextual Vehicle Search
+        contextual_search = WorkflowDefinition(
+            workflow_id='contextual_vehicle_search',
+            name='Busca Contextual de Veículos',
+            description='Workflow para busca inteligente baseada em contexto',
+            phases=[
+                {
+                    'name': 'intent_analysis',
+                    'agents': ['context_recommendation_skill'],
+                    'parallel': False,
+                    'timeout': 30
+                },
+                {
+                    'name': 'recommendation_generation',
+                    'agents': ['context_recommendation_skill', 'ai_engineer'],
+                    'parallel': True,
+                    'timeout': 60
+                },
+                {
+                    'name': 'result_validation',
+                    'agents': ['business_analyst', 'tech_lead'],
+                    'parallel': True,
+                    'timeout': 30
+                }
+            ],
+            success_criteria=['intent_detected', 'recommendations_generated'],
+            rollback_strategy='fallback_to_standard_search',
+            timeout=180
+        )
+        
+        self.register_workflow(contextual_search)
         
         # Workflow: Product Launch
         product_launch = WorkflowDefinition(

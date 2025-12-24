@@ -5,6 +5,7 @@ FastAPI backend para sistema de recomendação multi-tenant
 from fastapi import FastAPI, HTTPException, Query, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional
+from datetime import datetime
 import sys
 import os
 import shutil
@@ -29,6 +30,8 @@ from services.feedback_engine import FeedbackEngine
 from services.interaction_service import InteractionService
 from services.app_transport_validator import validator as app_transport_validator
 from services.fuel_price_service import fuel_price_service
+from services.context_based_recommendation_skill import create_context_skill
+from services.search_intent_classifier import create_intent_classifier
 
 # Inicializar app
 app = FastAPI(
@@ -80,6 +83,12 @@ try:
     
     print("[STARTUP] Inicializando InteractionService...")
     interaction_service = InteractionService(data_dir=os.path.join(data_dir, "interactions"))
+    
+    print("[STARTUP] Inicializando Context-Based Recommendation Skill...")
+    context_skill = create_context_skill(data_dir=data_dir)
+    
+    print("[STARTUP] Inicializando Search Intent Classifier...")
+    intent_classifier = create_intent_classifier()
     
     print("[STARTUP] ✅ Todos os engines inicializados com sucesso!")
 except Exception as e:
@@ -487,6 +496,275 @@ def recommend_cars(profile: UserProfile):
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Erro ao gerar recomendações: {str(e)}")
+
+
+@app.get("/search/contextual")
+def contextual_search(
+    query: str = Query(..., description="Query de busca do usuário (ex: 'carros para fazer uber')"),
+    max_results: int = Query(10, description="Número máximo de resultados"),
+    budget_min: Optional[float] = Query(None, description="Orçamento mínimo"),
+    budget_max: Optional[float] = Query(None, description="Orçamento máximo"),
+    location: Optional[str] = Query(None, description="Localização do usuário")
+):
+    """
+    🎯 Busca contextual usando Context-Based Recommendation Skill
+    
+    Esta rota utiliza a skill de recomendação baseada em contexto para:
+    1. Analisar a intenção da busca do usuário
+    2. Classificar o tipo de uso pretendido  
+    3. Aplicar conhecimento da base de perfis de uso
+    4. Recomendar carros adequados ao contexto
+    
+    Exemplos de queries:
+    - "carros para fazer uber"
+    - "carro para trabalho diário"  
+    - "SUV para família com crianças"
+    - "pickup para entregas"
+    - "primeiro carro econômico"
+    """
+    try:
+        # Preparar dados do usuário
+        user_data = {}
+        if budget_min is not None:
+            user_data['budget_min'] = budget_min
+        if budget_max is not None:
+            user_data['budget_max'] = budget_max
+        if location:
+            user_data['location'] = location
+            
+        # Obter recomendações contextuais
+        recommendations = context_skill.recommend_by_context(
+            query=query,
+            user_data=user_data,
+            max_results=max_results
+        )
+        
+        # Analisar contexto para insights
+        context = context_skill.analyze_search_context(query, user_data)
+        
+        return {
+            "query": query,
+            "context_analysis": {
+                "detected_intent": context.detected_intent.value,
+                "confidence": round(context.confidence, 2),
+                "profile_match": context.profile_match,
+                "extracted_entities": context.extracted_entities
+            },
+            "total_results": len(recommendations),
+            "recommendations": [
+                {
+                    "car": {
+                        "id": rec.car.id,
+                        "nome": rec.car.nome,
+                        "marca": rec.car.marca,
+                        "modelo": rec.car.modelo,
+                        "ano": rec.car.ano,
+                        "preco": rec.car.preco,
+                        "quilometragem": rec.car.quilometragem,
+                        "combustivel": rec.car.combustivel,
+                        "categoria": rec.car.categoria,
+                        "imagens": rec.car.imagens[:3] if rec.car.imagens else [],
+                        "dealership_name": rec.car.dealership_name,
+                        "dealership_city": rec.car.dealership_city,
+                        "dealership_state": rec.car.dealership_state,
+                        "dealership_phone": rec.car.dealership_phone,
+                        "dealership_whatsapp": rec.car.dealership_whatsapp
+                    },
+                    "scores": {
+                        "base_score": round(rec.base_score, 2),
+                        "context_boost": round(rec.context_boost, 2),
+                        "final_score": round(rec.final_score, 2)
+                    },
+                    "reasoning": rec.reasoning,
+                    "profile_alignment": {
+                        key: round(value, 2) for key, value in rec.profile_alignment.items()
+                    }
+                }
+                for rec in recommendations
+            ]
+        }
+        
+    except Exception as e:
+        print(f"[API ERROR] /search/contextual: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Erro na busca contextual: {str(e)}")
+
+
+@app.get("/search/intent-analysis") 
+def analyze_search_intent(
+    query: str = Query(..., description="Query para análise de intenção")
+):
+    """
+    🧠 Análise de intenção de busca usando Search Intent Classifier
+    
+    Esta rota analisa uma query de busca e retorna:
+    1. Intenção principal detectada
+    2. Confiança da classificação
+    3. Intenções secundárias
+    4. Entidades extraídas (marcas, modelos, preços, etc.)
+    5. Palavras-chave importantes
+    6. Persona inferida do usuário
+    7. Fatores de prioridade recomendados
+    """
+    try:
+        # Analisar intenção
+        analysis = intent_classifier.classify_intent(query)
+        
+        return {
+            "query": query,
+            "analysis": {
+                "primary_intent": {
+                    "category": analysis.primary_intent.value,
+                    "confidence": round(analysis.confidence, 3)
+                },
+                "secondary_intents": [
+                    {
+                        "category": intent.value,
+                        "confidence": round(confidence, 3)
+                    }
+                    for intent, confidence in analysis.secondary_intents
+                ],
+                "entities": [
+                    {
+                        "type": entity.type,
+                        "value": entity.value,
+                        "confidence": entity.confidence,
+                        "context": entity.context[:50] + "..." if len(entity.context) > 50 else entity.context
+                    }
+                    for entity in analysis.entities
+                ],
+                "keywords": analysis.keywords,
+                "user_persona": analysis.user_persona,
+                "priority_factors": {
+                    key: round(value, 2) 
+                    for key, value in analysis.priority_factors.items()
+                }
+            }
+        }
+        
+    except Exception as e:
+        print(f"[API ERROR] /search/intent-analysis: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Erro na análise de intenção: {str(e)}")
+
+
+@app.get("/validate/app-transport")
+def validate_app_transport(
+    marca: str = Query(..., description="Marca do veículo"),
+    modelo: str = Query(..., description="Modelo do veículo"), 
+    ano: int = Query(..., description="Ano de fabricação"),
+    categoria: str = Query("uberx_99pop", description="Categoria desejada: uberx_99pop, uber_comfort, uber_black")
+):
+    """
+    🚗 Validação de critérios REAIS da Uber/99
+    
+    Valida se um veículo específico atende aos requisitos das plataformas
+    de transporte usando dados oficiais atualizados.
+    
+    Retorna:
+    - ✅ Se é aceito na categoria solicitada
+    - 📋 Todas as categorias aceitas
+    - 📊 Detalhes dos requisitos
+    - 💰 Estimativa de ganhos por categoria
+    """
+    try:
+        # Validar categoria específica
+        from services.app_transport_validator import validator as app_validator
+        
+        is_valid, accepted_category = app_validator.is_valid_for_app_transport(
+            marca=marca,
+            modelo=modelo, 
+            ano=ano,
+            categoria_desejada=categoria
+        )
+        
+        # Obter todas as categorias aceitas
+        all_categories = app_validator.get_accepted_categories(
+            marca=marca,
+            modelo=modelo,
+            ano=ano
+        )
+        
+        # Obter detalhes dos requisitos
+        requirements = app_validator.get_requirements_for_category(categoria)
+        
+        # Analisar por que pode ter sido rejeitado
+        rejection_reasons = []
+        if not is_valid:
+            if ano < requirements.get('ano_minimo_fabricacao', 2015):
+                rejection_reasons.append(f"Ano muito antigo (mínimo: {requirements.get('ano_minimo_fabricacao')})")
+            
+            current_year = datetime.now().year
+            vehicle_age = current_year - ano
+            if vehicle_age > requirements.get('idade_maxima_anos', 10):
+                rejection_reasons.append(f"Veículo muito antigo (máximo: {requirements.get('idade_maxima_anos')} anos)")
+                
+            modelo_completo = f"{marca} {modelo}"
+            modelos_aceitos = requirements.get('modelos_aceitos', [])
+            if modelos_aceitos and not any(modelo_aceito.lower() in modelo_completo.lower() for modelo_aceito in modelos_aceitos):
+                rejection_reasons.append("Modelo não está na lista de aceitos")
+                
+        # Estimativas de ganho (valores aproximados)
+        earnings_estimates = {
+            'uberx_99pop': {
+                'corrida_media': 12.50,
+                'corridas_dia_estimado': 15,
+                'ganho_bruto_dia': 187.50,
+                'ganho_bruto_mes': 5625
+            },
+            'uber_comfort': {
+                'corrida_media': 16.80,
+                'corridas_dia_estimado': 12,
+                'ganho_bruto_dia': 201.60,
+                'ganho_bruto_mes': 6048
+            },
+            'uber_black': {
+                'corrida_media': 24.50,
+                'corridas_dia_estimado': 8,
+                'ganho_bruto_dia': 196.00,
+                'ganho_bruto_mes': 5880
+            }
+        }
+        
+        return {
+            "vehicle": {
+                "marca": marca,
+                "modelo": modelo,
+                "ano": ano
+            },
+            "validation": {
+                "categoria_solicitada": categoria,
+                "is_valid": is_valid,
+                "accepted_category": accepted_category,
+                "all_categories": all_categories,
+                "rejection_reasons": rejection_reasons if not is_valid else []
+            },
+            "requirements": requirements,
+            "earnings_estimate": {
+                category: earnings_estimates.get(category, {})
+                for category in all_categories
+            } if all_categories else {},
+            "recommendations": [
+                "💡 UberX/99Pop: Maior volume de corridas, menor valor médio",
+                "💼 Uber Comfort: Equilíbrio entre volume e valor",
+                "👔 Uber Black: Menor volume, maior valor médio",
+                "📊 Considere custos: combustível, manutenção, seguro",
+                "📱 Apps múltiplos aumentam oportunidades"
+            ] if is_valid else [
+                "🔍 Verifique modelos similares aceitos",
+                "📅 Considere carros mais novos",
+                "💰 Avalie custo-benefício vs outros usos",
+                "📋 Consulte requisitos locais da sua cidade"
+            ]
+        }
+        
+    except Exception as e:
+        print(f"[API ERROR] /validate/app-transport: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Erro na validação: {str(e)}")
 
 
 @app.post("/api/recommend")
