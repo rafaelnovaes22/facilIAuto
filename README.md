@@ -1,5 +1,7 @@
 # 🚗 **FacilIAuto - Plataforma Inteligente de Vendas Automotivas**
 
+> 🇺🇸 [**Read this in English**](README_EN.md)
+
 <div align="center">
 
 ![FacilIAuto Logo](platform/frontend/src/faciliauto-logo.png)

@@ -10,6 +10,9 @@ echo "   FACILIAUTO - Parando Serviços"
 echo "========================================"
 echo ""
 
+# Ir para a raiz do projeto
+cd "$(dirname "$0")/.."
+
 # Parar Backend
 if [ -f "platform/backend/backend.pid" ]; then
     BACKEND_PID=$(cat platform/backend/backend.pid)
@@ -55,4 +58,3 @@ echo "========================================"
 echo "   FACILIAUTO PARADO COM SUCESSO!"
 echo "========================================"
 echo ""
-

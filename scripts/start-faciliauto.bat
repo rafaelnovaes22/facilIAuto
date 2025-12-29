@@ -9,9 +9,13 @@ echo   FACILIAUTO - Iniciando Projeto
 echo ========================================
 echo.
 
+REM Ir para a raiz do projeto (assumindo que script esta em /scripts)
+cd ..
+
 REM Verificar se estamos na raiz do projeto
 if not exist "platform" (
-    echo [ERRO] Execute este script na raiz do projeto FacilIAuto
+    echo [ERRO] Estrutura de projeto invalida.
+    echo Certifique-se de executar este script da pasta 'scripts' e que a pasta 'platform' existe na raiz.
     pause
     exit /b 1
 )
@@ -120,4 +124,3 @@ echo ========================================
 echo.
 
 pause
-

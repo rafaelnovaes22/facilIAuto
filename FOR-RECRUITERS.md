@@ -1,5 +1,7 @@
 # 👔 **Para Recrutadores Técnicos - FacilIAuto**
 
+> 🇺🇸 [**Read this in English**](FOR-RECRUITERS_EN.md)
+
 ## 🎯 **Avaliação Rápida (5 minutos)**
 
 Este documento foi criado especificamente para facilitar a avaliação técnica do projeto por recrutadores e líderes técnicos.

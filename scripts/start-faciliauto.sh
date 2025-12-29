@@ -10,9 +10,12 @@ echo "   FACILIAUTO - Iniciando Projeto"
 echo "========================================"
 echo ""
 
+# Ir para a raiz do projeto
+cd "$(dirname "$0")/.."
+
 # Verificar se estamos na raiz do projeto
 if [ ! -d "platform" ]; then
-    echo "[ERRO] Execute este script na raiz do projeto FacilIAuto"
+    echo "[ERRO] Estrutura de projeto inválida."
     exit 1
 fi
 
@@ -129,8 +132,7 @@ echo "   Backend PID:  $BACKEND_PID (salvo em platform/backend/backend.pid)"
 echo "   Frontend PID: $FRONTEND_PID (salvo em platform/frontend/frontend.pid)"
 echo ""
 echo "   Para parar os serviços:"
-echo "   ./stop-faciliauto.sh"
+echo "   ./scripts/stop-faciliauto.sh"
 echo ""
 echo "========================================"
 echo ""
-
