@@ -148,3 +148,6 @@ Desktop.ini
 
 # Archive folder (temporary/historical files)
 .archive/
+
+# Claude Code
+.claude/
