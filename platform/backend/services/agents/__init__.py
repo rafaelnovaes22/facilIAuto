@@ -22,6 +22,7 @@ from services.agents.scoring_orchestrator import (
     ScoringAgentOrchestrator,
     get_scoring_orchestrator
 )
+from services.agents.economy_agent import EconomyAgent
 
 
 __all__ = [
@@ -29,6 +30,9 @@ __all__ = [
     'BaseAgent',
     'CacheManager',
     'ScoringAgentOrchestrator',
+
+    # Agentes especializados
+    'EconomyAgent',
 
     # Funções helper
     'get_cache_manager',
