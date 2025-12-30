@@ -61,10 +61,15 @@ class UnifiedRecommendationEngine:
             EconomyAgent,
             MaintenanceAgent,
             ResaleAgent,
-            WeightOptimizerAgent
+            ResaleAgent,
+            WeightOptimizerAgent,
+            FinancingAgent
         )
         
         self.orchestrator = get_scoring_orchestrator(enable_parallel=True)
+        
+        # Inicializar agente de financiamento (SLM)
+        self.financing_agent = FinancingAgent()
         
         # Registrar agentes se ainda não registrados
         if not self.orchestrator.agents:
@@ -973,10 +978,27 @@ class UnifiedRecommendationEngine:
             fuel_price = fuel_price_service.get_current_price(state=profile.state or "SP")
             
             # Criar calculadora de TCO com parâmetros do usuário
+            # 🤖 AI Engineer: Usar FinancingAgent para prever taxas personalizadas (SLM)
+            predicted_rate = 0.24  # Default fallback
+            predicted_down = 0.20  # Default fallback
+            
+            try:
+                if hasattr(self, 'financing_agent'):
+                    # Prever termos baseados no perfil (Renda, Score estimado)
+                    terms = self.financing_agent.predict_terms(profile)
+                    predicted_rate = terms.get('annual_interest_rate', 0.24)
+                    predicted_down = terms.get('min_down_payment', 0.20)
+                    # Opcional: Logar se a taxa for diferente do padrão
+                    if predicted_rate != 0.24:
+                        # Debug leve para confirmar funcionamento
+                        pass 
+            except Exception as e:
+                print(f"[AVISO] Erro no FinancingAgent: {e}. Usando defaults.")
+
             calculator = TCOCalculator(
-                down_payment_percent=0.20,
+                down_payment_percent=predicted_down,
                 financing_months=60,
-                annual_interest_rate=0.24,  # 24% a.a. (2% a.m.) - média mercado 2025
+                annual_interest_rate=predicted_rate,
                 monthly_km=1000,  # Padrão, pode ser ajustado baseado no perfil
                 fuel_price_per_liter=fuel_price,
                 state=profile.state or "SP",

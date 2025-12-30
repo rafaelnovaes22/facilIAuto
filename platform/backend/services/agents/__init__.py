@@ -26,6 +26,7 @@ from services.agents.economy_agent import EconomyAgent
 from services.agents.maintenance_agent import MaintenanceAgent
 from services.agents.resale_agent import ResaleAgent
 from services.agents.weight_optimizer_agent import WeightOptimizerAgent
+from services.agents.financing_agent import FinancingAgent
 
 
 __all__ = [
@@ -39,6 +40,7 @@ __all__ = [
     'MaintenanceAgent',
     'ResaleAgent',
     'WeightOptimizerAgent',
+    'FinancingAgent',
 
     # Funções helper
     'get_cache_manager',
