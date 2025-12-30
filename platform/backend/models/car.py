@@ -34,6 +34,11 @@ class Car(BaseModel):
     
     # Categorização (para recomendação)
     categoria: str  # "Hatch", "Sedan", "SUV", "Pickup", "Compacto"
+
+    # Consumo (kml/L)
+    consumo_cidade: Optional[float] = None
+    consumo_estrada: Optional[float] = None
+    consumo: Optional[float] = None
     
     # 📊 Data Analyst: Itens de segurança e conforto (FASE 1)
     itens_seguranca: List[str] = []  # Ex: ["ISOFIX", "6_airbags", "controle_estabilidade", "ABS", "camera_re"]

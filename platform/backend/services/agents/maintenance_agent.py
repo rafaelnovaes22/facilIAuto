@@ -17,7 +17,7 @@ from datetime import datetime
 from models.car import Car
 from models.user_profile import UserProfile
 from services.agents.base_agent import BaseAgent
-from services.car_metrics import CarMetricsCalculator
+from services.car.car_metrics import CarMetricsCalculator
 
 
 logger = logging.getLogger(__name__)

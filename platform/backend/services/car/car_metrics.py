@@ -294,10 +294,10 @@ class CarMetricsCalculator:
         # 2. Aumento por idade
         age = self.current_year - ano
         age_multiplier = 1.0
-        if age > 5:
-            age_multiplier = 1.2   # +20% (peças desgastadas)
-        elif age > 10:
+        if age > 10:
             age_multiplier = 1.5   # +50% (muitas trocas)
+        elif age > 5:
+            age_multiplier = 1.2   # +20% (peças desgastadas)
         
         # 3. Aumento por quilometragem
         km_multiplier = 1.0

@@ -12,7 +12,8 @@ Author: FacilIAuto
 Date: 2025-11-05
 """
 
-from typing import Dict, Optional, Any, Tuple
+from typing import Dict, Optional, Any, Tuple, List
+import asyncio
 from pydantic import BaseModel
 
 
@@ -532,3 +533,73 @@ class TCOCalculator:
             "estimated_max_car_price": round(estimated_max_price, 2),
             "recommended_percentage": 30
         }
+
+    async def calculate_batch_tco(
+        self,
+        cars_data: List[Dict[str, Any]]
+    ) -> List[TCOBreakdown]:
+        """
+        Calcula TCO para múltiplos carros em paralelo
+        
+        Útil para processar listas grandes de recomendações.
+        
+        Args:
+            cars_data: Lista de dicts com dados dos carros:
+                [
+                    {
+                        "price": 50000,
+                        "category": "Hatch",
+                        "efficiency": 12.0,
+                        "age": 2,
+                        "mileage": 30000
+                    },
+                    ...
+                ]
+                
+        Returns:
+            Lista de TCOBreakdown na mesma ordem
+        """
+        # Como o cálculo é CPU-bound mas muito rápido, asyncio ajudaria
+        # principalmente se houvesse I/O (ex: fetch de preços online).
+        # Aqui simulamos a estrutura para futura escalabilidade.
+        
+        # Função wrapper para execução
+        def _calc_single(data):
+            # Preservar estado original
+            original_down = self.down_payment_percent
+            original_months = self.financing_months
+            original_rate = self.annual_interest_rate
+            
+            try:
+                # Aplicar overrides se fornecidos no data
+                # (Lógica opcional, mantemos simples por enquanto)
+                
+                return self.calculate_tco(
+                    car_price=data.get("price", 0),
+                    car_category=data.get("category", "Hatch"),
+                    fuel_efficiency_km_per_liter=data.get("efficiency", 10.0),
+                    car_age=data.get("age", 0),
+                    car_mileage=data.get("mileage", 0)
+                )
+            finally:
+                # Restaurar estado
+                self.down_payment_percent = original_down
+                self.financing_months = original_months
+                self.annual_interest_rate = original_rate
+
+        # Executar (em thread pool se for muito pesado, mas aqui loop direto é ok)
+        # Para simular "paralelismo" real em I/O, usaríamos gather.
+        # Para CPU-bound em Python, Threads não ajudam muito devido ao GIL,
+        # mas asyncio permite concorrência cooperativa se houver await.
+        # Como calculate_tco é síncrono pura matemática, rodar em executor é melhor prática.
+        
+        loop = asyncio.get_event_loop()
+        tasks = []
+        
+        for data in cars_data:
+            tasks.append(
+                loop.run_in_executor(None, _calc_single, data)
+            )
+            
+        results = await asyncio.gather(*tasks)
+        return results

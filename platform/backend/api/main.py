@@ -29,7 +29,7 @@ from services.unified_recommendation_engine import UnifiedRecommendationEngine
 from services.feedback_engine import FeedbackEngine
 from services.interaction_service import InteractionService
 from services.app_transport_validator import validator as app_transport_validator
-from services.fuel_price_service import fuel_price_service
+from services.car.fuel_price_service import fuel_price_service
 from services.context_based_recommendation_skill import create_context_skill
 from services.search_intent_classifier import create_intent_classifier
 

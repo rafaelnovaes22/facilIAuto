@@ -15,7 +15,7 @@ from typing import Dict, Optional
 from models.car import Car
 from models.user_profile import UserProfile
 from services.agents.base_agent import BaseAgent
-from services.fuel_price_service import fuel_price_service
+from services.car.fuel_price_service import fuel_price_service
 
 
 logger = logging.getLogger(__name__)

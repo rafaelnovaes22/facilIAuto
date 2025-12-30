@@ -1,9 +1,68 @@
 {
-    "interactions": [],
-    "metadata": {
-        "created_at": "2024-10-14T00:00:00Z",
-        "last_updated": "2024-10-14T00:00:00Z",
-        "total_count": 0,
-        "version": "1.0"
+  "interactions": [
+    {
+      "session_id": "sess_test_api_001",
+      "car_id": "car_robust_001",
+      "interaction_type": "click",
+      "timestamp": "2025-12-29T22:59:37.601359",
+      "duration_seconds": null,
+      "user_preferences": {
+        "budget": 120000.0,
+        "usage": "urbano",
+        "priorities": [
+          "economia",
+          "conforto"
+        ]
+      },
+      "car_snapshot": {
+        "marca": "Toyota",
+        "modelo": "Corolla",
+        "ano": 2022,
+        "preco": 115990.0,
+        "categoria": "Sedan",
+        "combustivel": "Flex",
+        "cambio": "Automático",
+        "quilometragem": 25000
+      },
+      "recommendation_position": 1,
+      "score": 0.92,
+      "id": "int_000001"
+    },
+    {
+      "session_id": "sess_click_test",
+      "car_id": "car_test_001",
+      "interaction_type": "click",
+      "timestamp": "2025-12-29T22:59:37.626021",
+      "duration_seconds": null,
+      "user_preferences": {
+        "budget": 100000.0,
+        "usage": "urbano",
+        "priorities": [
+          "economia"
+        ]
+      },
+      "car_snapshot": {
+        "marca": "Fiat",
+        "modelo": "Argo",
+        "ano": 2023,
+        "preco": 75000.0,
+        "categoria": "Hatch",
+        "combustivel": "Flex",
+        "cambio": "Manual",
+        "quilometragem": null
+      },
+      "recommendation_position": null,
+      "score": null,
+      "id": "int_000002"
     }
+  ],
+  "metadata": {
+    "created_at": "2024-10-14T00:00:00Z",
+    "last_updated": "2025-12-29T22:59:37.633148",
+    "total_count": 2,
+    "version": "1.0"
+  }
+},
+    "version": "1.0"
+  }
 }

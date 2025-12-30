@@ -24,6 +24,8 @@ from services.agents.scoring_orchestrator import (
 )
 from services.agents.economy_agent import EconomyAgent
 from services.agents.maintenance_agent import MaintenanceAgent
+from services.agents.resale_agent import ResaleAgent
+from services.agents.weight_optimizer_agent import WeightOptimizerAgent
 
 
 __all__ = [
@@ -35,6 +37,8 @@ __all__ = [
     # Agentes especializados
     'EconomyAgent',
     'MaintenanceAgent',
+    'ResaleAgent',
+    'WeightOptimizerAgent',
 
     # Funções helper
     'get_cache_manager',

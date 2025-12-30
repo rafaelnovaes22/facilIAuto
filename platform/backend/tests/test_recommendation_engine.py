@@ -20,15 +20,13 @@ class TestUnifiedRecommendationEngine:
         """Criar diretório temporário com dados de teste"""
         temp_dir = tempfile.mkdtemp()
         
-        # Criar dealerships.json
-        dealerships_data = [sample_dealership.model_dump()]
+        # Criar dealerships.json com carros embutidos
+        dealership_dict = sample_dealership.model_dump()
+        dealership_dict['carros'] = [sample_car.model_dump()]
+        
+        dealerships_data = [dealership_dict]
         with open(os.path.join(temp_dir, "dealerships.json"), 'w', encoding='utf-8') as f:
             json.dump(dealerships_data, f, default=str)
-        
-        # Criar estoque
-        cars_data = [sample_car.model_dump()]
-        with open(os.path.join(temp_dir, f"{sample_dealership.id}_estoque.json"), 'w', encoding='utf-8') as f:
-            json.dump(cars_data, f, default=str)
         
         yield temp_dir
         
@@ -738,3 +736,34 @@ class TestUnifiedRecommendationEngine:
         
         # Deve retornar None
         assert health is None
+
+    @pytest.mark.asyncio
+    async def test_calculate_advanced_match_score(self, temp_data_dir, sample_car, sample_user_profile):
+        """
+        Teste: Integração com score avançado (Orchestrator + Agents)
+        """
+        engine = UnifiedRecommendationEngine(data_dir=temp_data_dir)
+        
+        # Como o engine inicializa o orquestrador singleton, podemos injetar mocks nele
+        from services.agents import get_scoring_orchestrator
+        from services.agents.base_agent import BaseAgent
+        
+        class MockScoreAgent(BaseAgent):
+            async def calculate_score(self, car, profile):
+                return 0.8
+        
+        orchestrator = get_scoring_orchestrator()
+        # Limpar agentes reais e usar mock para teste rápido
+        orchestrator.agents.clear()
+        orchestrator.register_agent("economy", MockScoreAgent(name="economy"))
+        orchestrator.register_agent("resale", MockScoreAgent(name="resale"))
+        orchestrator.register_agent("maintenance", MockScoreAgent(name="maintenance"))
+        
+        result = await engine.calculate_advanced_match_score(sample_car, sample_user_profile)
+        
+        assert result is not None
+        assert 0.0 <= result['final_score'] <= 1.0
+        assert 'breakdown' in result
+        assert 'weights_used' in result['breakdown']
+        assert 'agent_scores' in result['breakdown']
+        assert result['breakdown']['agent_scores']['economy'] == 0.8

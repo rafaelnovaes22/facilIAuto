@@ -12,11 +12,11 @@ from models.car import Car
 from models.user_profile import UserProfile, TCOBreakdown
 from models.dealership import Dealership
 from utils.geo_distance import calculate_distance, get_city_coordinates
-from services.car_metrics import CarMetricsCalculator
+from services.car.car_metrics import CarMetricsCalculator
 from services.app_transport_validator import validator as app_transport_validator
 from services.commercial_vehicle_validator import validator as commercial_vehicle_validator
 from services.tco_calculator import TCOCalculator
-from services.fuel_price_service import fuel_price_service
+from services.car.fuel_price_service import FuelPriceService
 from services.llm_justification_service import LLMJustificationService
 
 
@@ -54,6 +54,25 @@ class UnifiedRecommendationEngine:
         # Carregar dados
         self.load_dealerships()
         self.load_all_cars()
+
+        # 🤖 FASE 6: Inicializar Orquestrador de Agentes e Agentes Especializados
+        from services.agents import (
+            get_scoring_orchestrator,
+            EconomyAgent,
+            MaintenanceAgent,
+            ResaleAgent,
+            WeightOptimizerAgent
+        )
+        
+        self.orchestrator = get_scoring_orchestrator(enable_parallel=True)
+        
+        # Registrar agentes se ainda não registrados
+        if not self.orchestrator.agents:
+            self.orchestrator.register_agent("economy", EconomyAgent())
+            self.orchestrator.register_agent("maintenance", MaintenanceAgent())
+            self.orchestrator.register_agent("resale", ResaleAgent())
+            self.orchestrator.register_agent("weight_optimizer", WeightOptimizerAgent())
+            print("[ENGINE] ✅ Agentes de scoring registrados e prontos")
     
     def load_dealerships(self):
         """Carregar lista de concessionárias ativas"""
@@ -437,6 +456,106 @@ class UnifiedRecommendationEngine:
                 print(f"[SCORE] {car.marca} {car.modelo}: {final_score:.2f} (penalizado por adequação comercial: {suitability['score']})")
         
         return max(0.0, min(1.0, final_score))
+
+    async def calculate_advanced_match_score(self, car: Car, profile: UserProfile) -> Dict[str, Any]:
+        """
+        🤖 FASE 6: Cálculo de score avançado usando Orchestrator e Agentes
+        
+        Substitui o cálculo estático por uma abordagem dinâmica e baseada em IA/ML.
+        
+        Args:
+            car: Veículo
+            profile: Perfil do usuário
+            
+        Returns:
+            dict: {
+                'final_score': float,
+                'breakdown': dict,
+                'metadata': dict
+            }
+        """
+        # 1. Executar agentes em paralelo via orquestrador
+        # Agentes: economy, maintenance, resale
+        # WeightOptimizer é executado separadamente ou implicitamente
+        
+        results = await self.orchestrator.calculate_advanced_scores(
+            car, 
+            profile, 
+            agent_names=['economy', 'maintenance', 'resale']
+        )
+        
+        scores = results['scores']
+        metadata = results['metadata']
+        
+        # 2. Obter pesos otimizados (WeightOptimizerAgent)
+        weight_agent = self.orchestrator.agents.get('weight_optimizer')
+        if weight_agent:
+            weights = weight_agent.get_optimized_weights(profile)
+            # Log se pesos forem personalizados
+            if 'ml_adjusted' in weights:
+                print(f"[ENGINE] Pesos personalizados ML usados para user {profile.id if hasattr(profile, 'id') else 'anon'}")
+        else:
+            # Fallback para pesos estáticos
+            weights = self.get_dynamic_weights(profile)
+            
+        # 3. Combinar scores
+        final_score = 0.0
+        total_weight = 0.0
+        
+        # Mapear scores dos agentes para categorias de peso
+        # Agent Score -> Weight Category
+        mapping = {
+            'economy': 'priorities',      # Economia compõe prioridades
+            'maintenance': 'priorities',  # Manutenção compõe prioridades
+            'resale': 'priorities'        # Revenda compõe prioridades
+        }
+        
+        # Calcular média dos scores de prioridade vindos dos agentes
+        agent_priority_scores = []
+        if 'economy' in scores: agent_priority_scores.append(scores['economy'])
+        if 'maintenance' in scores: agent_priority_scores.append(scores['maintenance'])
+        if 'resale' in scores: agent_priority_scores.append(scores['resale'])
+        
+        # Score de prioridades composto (Agentes + Estático do carro)
+        avg_agent_priority = sum(agent_priority_scores) / len(agent_priority_scores) if agent_priority_scores else 0.5
+        static_priority = self.score_priorities(car, profile)
+        
+        # Combinar 50% agentes / 50% estático (gradual rollout)
+        combined_priority_score = (avg_agent_priority * 0.5) + (static_priority * 0.5)
+        
+        # Recalcular score final usando pesos
+        # Category (Uso)
+        category_score = self.score_category_by_usage(car, profile)
+        final_score += category_score * weights['category']
+        total_weight += weights['category']
+        
+        # Priorities (Agentes Integrados)
+        final_score += combined_priority_score * weights['priorities']
+        total_weight += weights['priorities']
+        
+        # Preferences
+        preferences_score = self.score_preferences(car, profile)
+        final_score += preferences_score * weights['preferences']
+        total_weight += weights['preferences']
+        
+        # Budget
+        budget_score = self.score_budget_position(car, profile)
+        final_score += budget_score * weights['budget']
+        total_weight += weights['budget']
+        
+        # Normalizar
+        final_score = final_score / total_weight if total_weight > 0 else 0.0
+        
+        return {
+            'final_score': max(0.0, min(1.0, final_score)),
+            'breakdown': {
+                'category_score': category_score,
+                'priority_score': combined_priority_score,
+                'agent_scores': scores,
+                'weights_used': weights
+            },
+            'metadata': metadata
+        }
     
     def score_category_by_usage(self, car: Car, profile: UserProfile) -> float:
         """

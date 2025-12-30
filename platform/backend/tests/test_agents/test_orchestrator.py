@@ -27,6 +27,9 @@ class MockAgent(BaseAgent):
             raise ValueError(f"{self.name} failed")
         return self.score_to_return
 
+    async def calculate_score_with_cache(self, car: Car, profile: UserProfile) -> float:
+        return await self.calculate_score(car, profile)
+
 
 class TestScoringAgentOrchestrator:
     """Testes do ScoringAgentOrchestrator"""
@@ -310,6 +313,9 @@ class TestScoringAgentOrchestrator:
 
     def test_reset_metrics(self, orchestrator):
         """Testa reset de métricas"""
+        # Registrar um agente para garantir execução
+        orchestrator.register_agent("mock", MockAgent("mock"))
+
         # Gerar métricas
         asyncio.run(
             orchestrator.calculate_advanced_scores(
