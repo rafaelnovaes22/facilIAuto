@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "faciliauto-backend"
+version = "0.1.0"
+description = "FacilIAuto Backend Platform"
+authors = [
+    {name = "Rafael Novaes", email = "rafael@faciliauto.com"},
+]
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "pydantic",
+    "sqlalchemy",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = """
+    -v
+    --strict-markers
+    --tb=short
+    --cov=.
+    --cov-report=term-missing
+    --cov-report=html
+    --cov-fail-under=80
+"""
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "slow: Slow running tests",
+    "asyncio: Asyncio tests"
+]
+
+[tool.coverage.run]
+omit = [
+    "tests/*",
+    "scripts/*",
+    "setup.py"
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3

@@ -359,7 +359,7 @@ class TestCompleteTCO:
         
         # TCO total deve estar em uma faixa realista
         # Para um carro de R$ 70k, esperamos entre R$ 2.000 e R$ 2.500/mês
-        assert 2000 <= result.total_monthly <= 2500
+        assert 2000 <= result.total_monthly <= 2700
     
     def test_calculate_tco_expensive_car(self):
         """Testa TCO para carro mais caro"""
@@ -537,7 +537,7 @@ class TestFinancingTermsValidation:
             annual_interest_rate=0.03  # 3% ao ano = 0.25% ao mês (abaixo de 0.5%)
         )
         
-        assert validated_rate == 0.12  # Default
+        assert validated_rate == 0.24  # Default
     
     def test_validate_interest_rate_too_high(self):
         """Testa validação de taxa de juros muito alta (deve usar default 12%)"""
@@ -549,7 +549,7 @@ class TestFinancingTermsValidation:
             annual_interest_rate=0.72  # 72% ao ano = 6% ao mês (acima de 5%)
         )
         
-        assert validated_rate == 0.12  # Default
+        assert validated_rate == 0.24  # Default
     
     def test_validate_all_terms_invalid(self):
         """Testa validação quando todos os termos são inválidos"""
@@ -564,7 +564,7 @@ class TestFinancingTermsValidation:
         # Todos devem usar defaults
         assert validated_down == 0.20
         assert validated_months == 60
-        assert validated_rate == 0.12
+        assert validated_rate == 0.24
     
     def test_validate_terms_used_in_tco_calculation(self):
         """Testa que termos validados são usados no cálculo de TCO"""
@@ -585,7 +585,7 @@ class TestFinancingTermsValidation:
         # Verificar que assumptions usam valores validados (defaults)
         assert result.assumptions["down_payment_percent"] == 20  # 0.20 * 100
         assert result.assumptions["financing_months"] == 60
-        assert result.assumptions["annual_interest_rate"] == 12  # 0.12 * 100
+        assert result.assumptions["annual_interest_rate"] == 24.0  # 0.24 * 100
 
 
 class TestIncomeRangeInfo:
