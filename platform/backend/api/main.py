@@ -75,7 +75,9 @@ print(f"[STARTUP] Data directory: {data_dir}")
 
 try:
     print("[STARTUP] Carregando UnifiedRecommendationEngine...")
-    engine = UnifiedRecommendationEngine(data_dir=data_dir)
+    # 🤖 FASE 1: Habilitar LLM para justificativas (configurável via .env)
+    use_llm = os.getenv("LLM_ENABLED", "true").lower() == "true"
+    engine = UnifiedRecommendationEngine(data_dir=data_dir, use_llm=use_llm)
     print(f"[STARTUP] Engine carregado com {len(engine.all_cars)} carros")
     
     print("[STARTUP] Inicializando FeedbackEngine...")

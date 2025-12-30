@@ -17,6 +17,7 @@ from services.app_transport_validator import validator as app_transport_validato
 from services.commercial_vehicle_validator import validator as commercial_vehicle_validator
 from services.tco_calculator import TCOCalculator
 from services.fuel_price_service import fuel_price_service
+from services.llm_justification_service import LLMJustificationService
 
 
 class UnifiedRecommendationEngine:
@@ -24,12 +25,32 @@ class UnifiedRecommendationEngine:
     Engine de recomendação que busca carros em TODAS as concessionárias ativas
     """
     
-    def __init__(self, data_dir: str = "data"):
+    def __init__(self, data_dir: str = "data", use_llm: bool = True):
         self.data_dir = data_dir
         self.dealerships: List[Dealership] = []
         self.all_cars: List[Car] = []
         self.metrics_calculator = CarMetricsCalculator()  # 📊 FASE 3
-        
+
+        # 🤖 FASE 1: Inicializar LLM service para justificativas inteligentes
+        self.use_llm = use_llm
+        self.llm_service = None
+
+        if use_llm:
+            try:
+                self.llm_service = LLMJustificationService(
+                    primary_provider="groq",  # Groq Llama como primário
+                    primary_model="llama-3.1-8b-instant",
+                    fallback_provider="openai",  # OpenAI como fallback
+                    fallback_model="gpt-4o-mini"
+                )
+                print("[ENGINE] ✅ LLM justification service habilitado (Groq + OpenAI fallback)")
+            except Exception as e:
+                print(f"[ENGINE] ⚠️ Erro ao inicializar LLM service: {e}")
+                print("[ENGINE] Usando justificativas template como fallback")
+                self.llm_service = None
+        else:
+            print("[ENGINE] LLM justification service desabilitado (use_llm=False)")
+
         # Carregar dados
         self.load_dealerships()
         self.load_all_cars()
@@ -1209,7 +1230,7 @@ class UnifiedRecommendationEngine:
                     'car': car,
                     'score': final_score,
                     'match_percentage': int(final_score * 100),
-                    'justificativa': self.generate_justification(car, profile, final_score),
+                    'justificativa': None,  # Será preenchido depois do ranking
                     'tco_breakdown': tco,  # Requirement 6.4
                     'fits_budget': fits_budget,
                     'budget_percentage': budget_percentage,
@@ -1218,7 +1239,7 @@ class UnifiedRecommendationEngine:
         
         # 15. Ordenar por score
         scored_cars.sort(key=lambda x: x['score'], reverse=True)
-        
+
         # 🐛 DEBUG: Verificar anos antes de retornar
         if profile.ano_minimo or profile.ano_maximo:
             print(f"\n[DEBUG] Verificando anos antes de retornar {len(scored_cars)} carros:")
@@ -1226,79 +1247,163 @@ class UnifiedRecommendationEngine:
                 car = rec['car']
                 status = "✅" if (not profile.ano_minimo or car.ano >= profile.ano_minimo) and (not profile.ano_maximo or car.ano <= profile.ano_maximo) else "❌"
                 print(f"  {status} {car.nome} ({car.ano}) - Score: {rec['score']:.2f}")
-        
+
+        # 16. 🤖 FASE 1: Gerar justificativas com LLM (após ranking para ter posição)
+        top_n = scored_cars[:limit]
+        for i, rec in enumerate(top_n):
+            rec['justificativa'] = self.generate_justification(
+                car=rec['car'],
+                profile=profile,
+                score=rec['score'],
+                position=i + 1,  # 1-based
+                total_results=len(top_n),
+                tco_breakdown=rec.get('tco_breakdown')
+            )
+
         # 5. Retornar top N
-        return scored_cars[:limit]
+        return top_n
     
-    def generate_justification(self, car: Car, profile: UserProfile, score: float) -> str:
-        """Gerar justificativa para a recomendação"""
+    def generate_justification(
+        self,
+        car: Car,
+        profile: UserProfile,
+        score: float,
+        position: int = 1,
+        total_results: int = 5,
+        tco_breakdown: Optional[TCOBreakdown] = None
+    ) -> str:
+        """
+        Gerar justificativa para a recomendação
+
+        🤖 FASE 1: Usa LLM para gerar justificativas contextuais e didáticas
+        Se LLM falhar, usa fallback baseado em templates
+
+        Args:
+            car: Carro recomendado
+            profile: Perfil do usuário
+            score: Score de matching (0-1)
+            position: Posição no ranking (1-based)
+            total_results: Total de resultados retornados
+            tco_breakdown: Detalhamento do TCO (opcional)
+
+        Returns:
+            Justificativa em português claro e acessível
+        """
+        # 🤖 FASE 1: Tentar usar LLM service
+        if self.llm_service:
+            try:
+                # Converter TCOBreakdown para dict se necessário
+                tco_dict = {}
+                if tco_breakdown:
+                    if isinstance(tco_breakdown, dict):
+                        tco_dict = tco_breakdown
+                    elif hasattr(tco_breakdown, 'dict'):
+                        tco_dict = tco_breakdown.dict()
+                    else:
+                        # Extrair atributos manualmente
+                        tco_dict = {
+                            'total_mensal': getattr(tco_breakdown, 'total_monthly', 0),
+                            'financiamento': getattr(tco_breakdown, 'monthly_installment', 0),
+                            'combustivel': getattr(tco_breakdown, 'monthly_fuel', 0),
+                            'manutencao': getattr(tco_breakdown, 'monthly_maintenance', 0),
+                            'seguro': getattr(tco_breakdown, 'monthly_insurance', 0),
+                            'ipva': getattr(tco_breakdown, 'monthly_ipva', 0),
+                        }
+
+                justification = self.llm_service.generate_justification(
+                    car=car,
+                    profile=profile,
+                    score=score,
+                    position=position,
+                    total_results=total_results,
+                    tco_breakdown=tco_dict
+                )
+
+                return justification
+
+            except Exception as e:
+                print(f"[ENGINE] ⚠️ LLM falhou para {car.nome}: {e}")
+                # Continua para fallback
+
+        # Fallback: Template-based justification (código original)
+        return self._generate_justification_template(car, profile, score)
+
+    def _generate_justification_template(
+        self,
+        car: Car,
+        profile: UserProfile,
+        score: float
+    ) -> str:
+        """
+        Fallback: Gerar justificativa usando templates (lógica original)
+        """
         reasons = []
         warnings = []
-        
+
         # 🚚 AVISOS COMERCIAIS (se aplicável)
         if profile.uso_principal == "comercial" and hasattr(self, '_commercial_suitability_cache') and car.id in self._commercial_suitability_cache:
             suitability = self._commercial_suitability_cache[car.id]
-            
+
             if suitability["nivel"] == "ideal":
                 reasons.append(f"✅ Veículo comercial ideal ({suitability['tipo'].replace('_', ' ')})")
             elif suitability["nivel"] == "limitado":
                 warnings.extend(suitability["avisos"])
             elif suitability["nivel"] == "inadequado":
                 warnings.extend(suitability["avisos"])
-        
+
         # Categoria apropriada
         if self.score_category_by_usage(car, profile) > 0.7:
             reasons.append(f"Categoria {car.categoria} ideal para {profile.uso_principal}")
-        
+
         # Prioridades atendidas
         # Economia: verificar consumo REAL, não apenas score relativo
         if profile.prioridades.get("economia", 0) >= 4 and car.score_economia > 0.7:
             # Obter consumo real do carro (mesma lógica do TCO)
             consumo_estimado = (
-                getattr(car, 'consumo_cidade', None) or 
-                getattr(car, 'consumo_estrada', None) or 
+                getattr(car, 'consumo_cidade', None) or
+                getattr(car, 'consumo_estrada', None) or
                 getattr(car, 'consumo', None) or
                 self._estimate_fuel_efficiency_by_category(car.categoria)
             )
-            
+
             # Só mencionar "excelente economia" se consumo for realmente bom (>= 12 km/L)
             if consumo_estimado >= 12:
                 reasons.append("Excelente economia de combustível")
             elif consumo_estimado >= 10:
                 reasons.append("Boa economia de combustível para a categoria")
             # Se consumo < 10 km/L, não mencionar economia (mesmo que score seja alto)
-        
+
         if profile.prioridades.get("espaco", 0) >= 4 and car.score_familia > 0.7:
             reasons.append("Amplo espaço para família")
-        
+
         # 📊 FASE 3: Métricas avançadas
         if profile.prioridades.get("revenda", 0) >= 4 and car.indice_revenda > 0.8:
             reasons.append("Excelente revenda")
-        
+
         if profile.prioridades.get("confiabilidade", 0) >= 4 and car.indice_confiabilidade > 0.8:
             reasons.append("Alta confiabilidade")
-        
+
         if profile.prioridades.get("custo_manutencao", 0) >= 4 and car.custo_manutencao_anual and car.custo_manutencao_anual < 2500:
             reasons.append("Baixo custo de manutenção")
-        
+
         # Localização
         if car.dealership_city == profile.city:
             reasons.append(f"Concessionária em {car.dealership_city}")
-        
+
         # Marca preferida
         if car.marca in profile.marcas_preferidas:
             reasons.append(f"Marca {car.marca} de sua preferência")
-        
+
         if not reasons:
             reasons.append("Boa opção dentro do seu orçamento")
-        
+
         # Montar justificativa
         justification = ". ".join(reasons) + "."
-        
+
         # Adicionar avisos se houver
         if warnings:
             justification += " | AVISOS: " + " | ".join(warnings)
-        
+
         return justification
     
     def get_stats(self) -> Dict:
