@@ -2,6 +2,26 @@
 
 > 🇺🇸 [**Read this in English**](FOR-RECRUITERS_EN.md)
 
+---
+
+## ⚠️ **Aviso de Licença Proprietária**
+
+> Este repositório é disponibilizado **EXCLUSIVAMENTE** para fins de avaliação profissional e demonstração de competências técnicas.
+
+**O que você PODE fazer:**
+- ✅ Analisar o código para avaliar habilidades técnicas
+- ✅ Discutir o projeto em entrevistas
+- ✅ Usar como referência em processos seletivos
+
+**O que você NÃO pode fazer:**
+- ❌ Copiar ou redistribuir o código
+- ❌ Usar em projetos comerciais
+- ❌ Criar trabalhos derivados
+
+**Por que esta licença?** Este projeto contém lógica proprietária de IA, prompts otimizados e algoritmos de recomendação que representam propriedade intelectual. A licença protege esses ativos enquanto permite avaliação técnica transparente.
+
+---
+
 ## 🎯 **Avaliação Rápida (5 minutos)**
 
 Este documento foi criado especificamente para facilitar a avaliação técnica do projeto por recrutadores e líderes técnicos.

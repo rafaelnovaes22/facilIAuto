@@ -1,22 +1,60 @@
-MIT License
+AVISO DE PROPRIEDADE INTELECTUAL E USO RESTRITO
+INTELLECTUAL PROPERTY AND RESTRICTED USE NOTICE
 
-Copyright (c) 2024-2025 FacilIAuto Contributors
+================================================================================
+                              PORTUGUÊS
+================================================================================
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Copyright (c) 2024-2025 Rafael Novaes. Todos os direitos reservados.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+Este repositório é disponibilizado EXCLUSIVAMENTE para fins de avaliação 
+profissional e demonstração de competências técnicas para potenciais 
+empregadores e recrutadores.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+USOS PERMITIDOS:
+✓ Visualização e análise do código para avaliação técnica
+✓ Discussão em contexto de entrevistas de emprego
+✓ Referência em processos seletivos
 
+USOS PROIBIDOS:
+✗ Cópia, reprodução ou distribuição de qualquer parte do código
+✗ Uso comercial ou incorporação em outros projetos
+✗ Criação de trabalhos derivados
+✗ Engenharia reversa para extração de lógica proprietária
+
+Para licenciamento comercial ou outras permissões, entre em contato 
+diretamente com o autor.
+
+Este software é fornecido "COMO ESTÁ", sem garantias de qualquer tipo, 
+expressas ou implícitas, incluindo, mas não se limitando a, garantias de 
+comercialização, adequação a um propósito específico e não violação.
+
+================================================================================
+                              ENGLISH
+================================================================================
+
+Copyright (c) 2024-2025 Rafael Novaes. All rights reserved.
+
+This repository is made available EXCLUSIVELY for professional evaluation 
+purposes and technical skills demonstration to potential employers and 
+recruiters.
+
+PERMITTED USES:
+✓ Viewing and analyzing code for technical evaluation
+✓ Discussion in job interview contexts
+✓ Reference in hiring processes
+
+PROHIBITED USES:
+✗ Copying, reproducing, or distributing any part of the code
+✗ Commercial use or incorporation into other projects
+✗ Creation of derivative works
+✗ Reverse engineering to extract proprietary logic
+
+For commercial licensing or other permissions, please contact the author 
+directly.
+
+This software is provided "AS IS", without warranty of any kind, express or 
+implied, including but not limited to the warranties of merchantability, 
+fitness for a particular purpose, and non-infringement.
+
+================================================================================

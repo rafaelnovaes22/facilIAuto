@@ -2,6 +2,8 @@
 
 > 🇺🇸 [**Read this in English**](README_EN.md)
 
+> ⚠️ **AVISO DE LICENÇA PROPRIETÁRIA:** Este repositório é disponibilizado exclusivamente para fins de avaliação técnica por recrutadores e potenciais empregadores. Uso comercial, cópia ou redistribuição são estritamente proibidos. Veja [LICENSE](LICENSE) para detalhes.
+
 <div align="center">
 
 ![FacilIAuto Logo](platform/frontend/src/faciliauto-logo.png)
@@ -11,7 +13,7 @@
 [![Backend Status](https://img.shields.io/badge/Backend-Production--Ready-success?style=for-the-badge)]()
 [![Frontend Status](https://img.shields.io/badge/Frontend-Production--Ready-success?style=for-the-badge)]()
 [![Chatbot Status](https://img.shields.io/badge/Chatbot-Production--Ready-success?style=for-the-badge)]()
-[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+[![License](https://img.shields.io/badge/License-Proprietary-red?style=for-the-badge)](LICENSE)
 
 </div>
 
@@ -510,7 +512,21 @@ Contribuições são bem-vindas! Por favor, leia o [CONTRIBUTING.md](CONTRIBUTIN
 
 ## 📄 **Licença**
 
-Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
+> ⚠️ **LICENÇA PROPRIETÁRIA - USO RESTRITO**
+
+Este repositório é disponibilizado **EXCLUSIVAMENTE** para fins de avaliação profissional e demonstração de competências técnicas para potenciais empregadores e recrutadores.
+
+**Usos Permitidos:**
+- ✅ Visualização e análise do código para avaliação técnica
+- ✅ Discussão em contexto de entrevistas de emprego
+- ✅ Referência em processos seletivos
+
+**Usos Proibidos:**
+- ❌ Cópia, reprodução ou distribuição de qualquer parte do código
+- ❌ Uso comercial ou incorporação em outros projetos
+- ❌ Criação de trabalhos derivados
+
+Veja o arquivo [LICENSE](LICENSE) para detalhes completos.
 
 ---
 

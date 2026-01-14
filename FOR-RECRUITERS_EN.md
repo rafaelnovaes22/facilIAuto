@@ -1,5 +1,25 @@
 # 👔 **For Technical Recruiters - FacilIAuto**
 
+---
+
+## ⚠️ **Proprietary License Notice**
+
+> This repository is made available **EXCLUSIVELY** for professional evaluation purposes and technical skills demonstration.
+
+**What you CAN do:**
+- ✅ Analyze the code to evaluate technical skills
+- ✅ Discuss the project in interviews
+- ✅ Use as reference in hiring processes
+
+**What you CANNOT do:**
+- ❌ Copy or redistribute the code
+- ❌ Use in commercial projects
+- ❌ Create derivative works
+
+**Why this license?** This project contains proprietary AI logic, optimized prompts, and recommendation algorithms that represent intellectual property. The license protects these assets while allowing transparent technical evaluation.
+
+---
+
 ## 🎯 **Quick Evaluation (5 minutes)**
 
 This document was specifically created to facilitate the technical evaluation of the project by recruiters and technical leads.

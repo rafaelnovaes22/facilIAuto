@@ -1,5 +1,7 @@
 # 🚗 **FacilIAuto - Intelligent Automotive Sales Platform**
 
+> ⚠️ **PROPRIETARY LICENSE NOTICE:** This repository is made available exclusively for technical evaluation by recruiters and potential employers. Commercial use, copying, or redistribution is strictly prohibited. See [LICENSE](LICENSE) for details.
+
 <div align="center">
 
 ![FacilIAuto Logo](platform/frontend/src/faciliauto-logo.png)
@@ -9,7 +11,7 @@
 [![Backend Status](https://img.shields.io/badge/Backend-Production--Ready-success?style=for-the-badge)]()
 [![Frontend Status](https://img.shields.io/badge/Frontend-Production--Ready-success?style=for-the-badge)]()
 [![Chatbot Status](https://img.shields.io/badge/Chatbot-Production--Ready-success?style=for-the-badge)]()
-[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+[![License](https://img.shields.io/badge/License-Proprietary-red?style=for-the-badge)](LICENSE)
 
 </div>
 
@@ -478,7 +480,7 @@ FacilIAuto/
 ├── 📄 README.md                 # This file
 ├── 📄 CONTRIBUTING.md           # Contribution guide
 ├── 📄 FOR-RECRUITERS.md         # Technical evaluation
-├── 📄 LICENSE                   # MIT License
+├── 📄 LICENSE                   # Proprietary License
 ├── 🔧 start-faciliauto.bat      # Windows Script
 ├── 🔧 start-faciliauto.sh       # Linux/Mac Script
 └── 🔧 stop-faciliauto.sh        # Stop services script
@@ -508,7 +510,21 @@ Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for de
 
 ## 📄 **License**
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+> ⚠️ **PROPRIETARY LICENSE - RESTRICTED USE**
+
+This repository is made available **EXCLUSIVELY** for professional evaluation purposes and technical skills demonstration to potential employers and recruiters.
+
+**Permitted Uses:**
+- ✅ Viewing and analyzing code for technical evaluation
+- ✅ Discussion in job interview contexts
+- ✅ Reference in hiring processes
+
+**Prohibited Uses:**
+- ❌ Copying, reproducing, or distributing any part of the code
+- ❌ Commercial use or incorporation into other projects
+- ❌ Creation of derivative works
+
+See the [LICENSE](LICENSE) file for full details.
 
 ---
 
